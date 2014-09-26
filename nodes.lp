@@ -13,9 +13,10 @@
 
 % TODO: detect node overflow
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NODE LAYERS AND NODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#include "config_params.lp".
 _nodeLayer(1..numNodeLayers).
-_childrenForLayer(1, 2).	%(layer, count)
-_childrenForLayer(2, 4).
+_childrenForLayer(1, 4).	%(layer, count)
+_childrenForLayer(2, 3).
 _childrenForLayer(3, 3).
 _childrenForLayer(4, 2).
 
@@ -25,26 +26,29 @@ _childrenForLayer(4, 2).
 
 % define nodes based on layers and nodes in each layer
 _node(rightSide;leftSide).
-_layerOfNode(_id(Layer, Node), Layer)
+_layerOfNode(_id(Layer, Number), Layer)
 		:-	_node(_id(Layer, Number)).
-_numberOfNode(_id(Layer, Node), Node)
+_numberOfNode(_id(Layer, Number), Number)
 		:-	_node(_id(Layer, Number)).
 
 % TODO: don't like the way nodes are defined 
-_validChildOf(Node, NewNode)
+_childNum(Node, NewNode, ChildNum)
 		:-	_node(Node),
 			_layerOfNode(Node, Layer),
-			_numerOfNode(Node, NodeNum),
+			_numberOfNode(Node, NodeNum),
 			_childrenForLayer(Layer, NumChildren),
-			NewNode = _id(ChildID, NewLayer),
+			NewNode = _id(NewLayer, ChildID),
 			NewLayer = Layer+1,
 			NewLayer <= numNodeLayers,
 			ChildNum = 1..NumChildren,
 			ChildID =(NodeNum - 1)*NumChildren + ChildNum.
+
+_validChildOf(Parent, Child) 
+		:-	_childNum(Parent, Child, ChildNum).
 _node(Child)
 		:-	_validChildOf(Parent, Child).
-% NOTE: _id(...) should not be referenced outside of this code!!
 
+% NOTE: _id(...) should not be referenced outside of this code!!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NODE PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _depthOfNode(Node, Layer)	
 		:-	_layerOf(Node, Layer).
