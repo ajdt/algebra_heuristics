@@ -88,15 +88,25 @@ _isOper(Time, Node)
 		:-	_isActive(Time, Node),
 			not _isMono(Time, Node).
 
-% node fields
-_numerOf(Time, Node, Child)
-		:-	_holds(Time, _fact(Node, _nodeField(numer, Child))).
-_denomOf(Time, Node, Child)
-		:-	_holds(Time, _fact(Node, _nodeField(denom, Child))).
+_activeChild(Time, Parent, Child)
+		:-	_isActive(Time, Parent),
+			_validChildOf(Time, Parent, Child),
+			_isActive(Time, Child).
 
 % NOTE: monomials store degree and coeff info separately, to limit groundings when copying nodeFields
 _degOf(Time, Node, Deg)
 		:-	_holds(Time, _fact(Node, _nodeField(degree, Deg))).
 _coeffOf(Time, Node, Coeff)
 		:-	_holds(Time, _fact(Node, _nodeField(coeff, Coeff))).
+
+% node fields
+_numerOf(Time, Parent, Child)
+		:-	_isDiv(Time, Parent),
+			_activeChild(Time, Parent, Child),
+			_childNum(Parent, Child, 1).
+_denomOf(Time, Parent, Child)
+		:-	_isDiv(Time, Parent),
+			_activeChild(Time, Parent, Child),
+			_childNum(Parent, Child, 2).
+
 
