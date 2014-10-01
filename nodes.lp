@@ -13,7 +13,6 @@
 
 % TODO: detect node overflow
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NODE LAYERS AND NODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-#include "config_params.lp".
 _nodeLayer(1..numNodeLayers).
 _childrenForLayer(1, 4).	%(layer, count)
 _childrenForLayer(2, 3).
@@ -25,18 +24,28 @@ _childrenForLayer(4, 2).
 #const leftSide 		= _id(1,1).
 
 % define nodes based on layers and nodes in each layer
-_node(rightSide;leftSide).
+_rootNode(rightSide;leftSide).
+_node(Node) 
+		:-	_rootNode(Node).
 _layerOfNode(_id(Layer, Number), Layer)
 		:-	_node(_id(Layer, Number)).
 _numberOfNode(_id(Layer, Number), Number)
 		:-	_node(_id(Layer, Number)).
 
+% number of children a node may have (varies by node depth)
+_maxNumChildren(Node, NumChildren)
+		:-	_childrenForLayer(Layer, NumChildren),
+			_layerOfNode(Node, Layer).
+_validNumChildren(Node, Num)
+		:-	_maxNumChildren(Node, NumChildren),
+			Num = 2..NumChildren.
+
 % TODO: don't like the way nodes are defined 
 _childNum(Node, NewNode, ChildNum)
 		:-	_node(Node),
+			_maxNumChildren(Node, NumChildren),
 			_layerOfNode(Node, Layer),
 			_numberOfNode(Node, NodeNum),
-			_childrenForLayer(Layer, NumChildren),
 			NewNode = _id(NewLayer, ChildID),
 			NewLayer = Layer+1,
 			NewLayer <= numNodeLayers,
@@ -51,7 +60,7 @@ _node(Child)
 % NOTE: _id(...) should not be referenced outside of this code!!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NODE PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _depthOfNode(Node, Layer)	
-		:-	_layerOf(Node, Layer).
+		:-	_layerOfNode(Node, Layer).
 % a node can only be a parent of nodes in succeeding layer
 
 % enforcing the valid child constraint
@@ -90,8 +99,8 @@ _isOper(Time, Node)
 
 _activeChild(Time, Parent, Child)
 		:-	_isActive(Time, Parent),
-			_validChildOf(Time, Parent, Child),
-			_isActive(Time, Child).
+			_isActive(Time, Child),
+			_validChildOf(Parent, Child).
 
 % NOTE: monomials store degree and coeff info separately, to limit groundings when copying nodeFields
 _degOf(Time, Node, Deg)
