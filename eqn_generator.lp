@@ -10,6 +10,7 @@
 #include "nodes.lp".
 #include "polynomial.lp".
 #include "eqn_solver.lp".
+#include "rules.lp".
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM GENERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % every root node (see node.lp) is active initially

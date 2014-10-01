@@ -127,3 +127,9 @@ _holds(Time, _fact(Parent, _nodeField(denom, Child)))
 % TODO: for testing visualizer only, remove later
 _holds(_time(0,1), Fact)
 		:-	_holds(initially, Fact).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CHANGING NODE PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+_update(Time, Node, type, Oper)
+		:-	_setNodeType(Time, Node, Oper).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SUBTREE OPERATIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
