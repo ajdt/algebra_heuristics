@@ -9,6 +9,7 @@
 #include "config_params.lp".
 #include "nodes.lp".
 #include "polynomial.lp".
+#include "eqn_solver.lp".
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM GENERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % every root node (see node.lp) is active initially
