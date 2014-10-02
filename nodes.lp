@@ -175,3 +175,27 @@ _removePointersToNode(Time, Node)
 _remove(Time, _fact(Parent, _nodeField(activechild, Node)))
 		:-	_removePointersToNode(Time, Node),
 			_activeChild(Time, Parent, Node).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TEMPNODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTE: predicates for temp Nodes are different to make clear when we're
+% talking about temp nodes.
+_tempNode(_temp(Node))
+		:-	_node(Node).
+_layerOfTempNode(_temp(Node), Layer)
+		:-	_layerOfNode(Node, Layer).
+_numberOfTempNode(_temp(Node), Number)
+		:-	_numberOfNode(Node, Number).
+% number of children a node may have (varies by node depth)
+_maxNumTempChildren(TempNode, NumChildren)
+		:-	_childrenForLayer(Layer, NumChildren),
+			_layerOfTempNode(TempNode, Layer).
+_validNumTempChildren(TempNode, Num)
+		:-	_maxNumTempChildren(TempNode, NumChildren),
+			Num = 2..NumChildren.
+
+% TODO: don't like the way nodes are defined 
+_tempChildNum(_temp(Node), _temp(Child), childNum)
+		:-	_childNum(Node, Child, ChildNum).
+
+_validTempChildOf(_temp(Parent), _temp(Child))
+		:-	_childNum(Parent, Child, ChildNum).
