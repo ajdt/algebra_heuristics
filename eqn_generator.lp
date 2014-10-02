@@ -11,6 +11,7 @@
 #include "polynomial.lp".
 #include "eqn_solver.lp".
 #include "rules.lp".
+#include "math_operations.lp".
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM GENERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % every root node (see node.lp) is active initially

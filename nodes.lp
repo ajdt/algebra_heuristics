@@ -133,3 +133,45 @@ _update(Time, Node, type, Oper)
 		:-	_setNodeType(Time, Node, Oper).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SUBTREE OPERATIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+_nodeOper(delete;deallocate;clear).
+
+_applyNodeOp(Time, Node, Op)
+		:-	_applyNodeOpRecursive(Time, Node, Op).
+_applyNodeOpRecursive(Time, Child, Op)
+		:-	_applyNodeOpRecursive(Time, Node, Op),
+			_activeChild(Time, Node, Child).
+
+% applying the operations
+% NOTE: won't delete any nodes in the subtree rooted at 'Node'
+_remove(Time, _fact(Node, Info))			% clearing a node
+		:-	_applyNodeOp(Time, Node, clear),
+			_holds(Time, _fact(Node, Info)),
+			Info != _nodeField(active,yes).
+
+_applyNodeOp(Time, Node, clear)				% deleting a node
+		:-	_applyNodeOp(Time, Node, delete).
+_applyNodeOp(Time, Node, deallocate)	
+		:-	_applyNodeOp(Time, Node, delete).
+
+
+% XX: deallocation doesn't remove pointers to deleted node or any nodeFields
+_deallocated(Time, Node)					% deallocating a node
+		:-	_applyNodeOp(Time, Node, deallocate).
+_remove(Time, _fact(Node, _nodeField(active, yes)))	
+		:-	_applyNodeOp(Time, Node, deallocate).
+
+%% clear node, delete its descendants
+_applyNodeOp(Time, Node, clear)
+		:-	_clearNodeDeleteDescendants(Time, Node).
+
+_applyNodeOpRecursive(Time, Child, delete)
+		:-	_clearNodeDeleteDescendants(Time, RootNode),
+			_activeChild(Time, RootNode, Child).
+%% remove a subtree including pointers to it
+_clearNodeDeleteDescendants(Time, Node)
+		:-	_cancelTerm(Time, Node).
+_removePointersToNode(Time, Node)
+		:-	_cancelTerm(Time, Node).
+_remove(Time, _fact(Parent, _nodeField(activechild, Node)))
+		:-	_removePointersToNode(Time, Node),
+			_activeChild(Time, Parent, Node).

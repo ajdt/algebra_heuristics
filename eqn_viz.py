@@ -110,7 +110,11 @@ class StepParser:
 		if as_latex:
 			string =  '$$' + sp.latex( sp.sympify(left, evaluate=False)) + '=' + sp.latex( sp.sympify(right, evaluate=False)) + '$$'
 		else:
-			string = left[1:-1] + '=' + right[1:-1] # NOTE: slicing to avoid outermost parens
+			if left[0] == '(':# NOTE: slicing to avoid outermost parens
+				left = left[1:-1]
+			if right[0] == '(':
+				right = right[1:-1]
+			string = left + '=' + right 
 		return string
 		
 	def makeEqnString(self, root_node):
