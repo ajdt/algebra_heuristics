@@ -69,9 +69,9 @@ _depthOfNode(Node, Layer)
 
 %  types of nodeField fields
 _type(div;mul;add;mono).
-_pointerFact(activechild).
+_pointerField(activechild).
 % for lack of a better name, simple facts are safe to make shallow copies of
-_simpleFact(type;degree;coeff). 
+_simpleField(type;degree;coeff;active). 
 
 % derived node properties: don't need to be updated, but rather can be 
 % obtained from regular holds() predicates
@@ -176,6 +176,31 @@ _remove(Time, _fact(Parent, _nodeField(activechild, Node)))
 		:-	_removePointersToNode(Time, Node),
 			_activeChild(Time, Parent, Node).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COPYING NODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTE: all copying is deep copying
+
+% deep copying means copying all attributes and deep copying children
+_copyAttributes(Time, Copy, Orig)
+		:-	_deepCopy(Time, Copy, Orig).
+_deepCopyChildren(Time, Copy, Orig)
+		:-	_deepCopy(Time, Copy, Orig).
+% copying attributes
+_introduce(Time, _fact(Copy, NodeFact))
+		:-	_copyAttributes(Time, Copy, Original),
+			_holds(Time, _fact(Original, _nodeField(Field, Value))),
+			_simpleField(Field),
+			NodeFact = _nodeField(Field, Value).
+% deep copying children
+_deepCopy(Time, CopyChild, OrigChild)
+		:-	_deepCopyChildren(Time, Copy, Original),
+			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
+			_childNum(Original, OrigChild, ChildNum),
+			_childNum(Copy, CopyChild, ChildNum).
+_introduce(Time, Copy, activechild, CopyChild)
+		:-	_deepCopyChildren(Time, Copy, Original),
+			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
+			_childNum(Original, OrigChild, ChildNum),
+			_childNum(Copy, CopyChild, ChildNum).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TEMPNODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: predicates for temp Nodes are different to make clear when we're
 % talking about temp nodes.
@@ -199,3 +224,9 @@ _tempChildNum(_temp(Node), _temp(Child), childNum)
 
 _validTempChildOf(_temp(Parent), _temp(Child))
 		:-	_childNum(Parent, Child, ChildNum).
+
+% useful handle for both types of nodes
+_anyNode(TempNode)
+		:-	_tempNode(TempNode).
+_anyNode(Node)
+		:-	_node(Node).
