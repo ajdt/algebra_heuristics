@@ -85,6 +85,7 @@ _isActive(Time, Node)
 		:-	_holds(Time, _fact(Node, _nodeField(active, yes))).
 _hasType(Time, Node, Type)
 		:-	_holds(Time, _fact(Node, _nodeField(type, Type))).
+
 _isDiv(Time, Node)
 		:-	_hasType(Time, Node, div).
 _isMul(Time, Node)
@@ -97,10 +98,19 @@ _isOper(Time, Node)
 		:-	_isActive(Time, Node),
 			not _isMono(Time, Node).
 
+_parentType(Time, Child, Type)
+		:-	_activeChild(Time, Parent, Child),
+			_hasType(Time, Parent, Type).
+
 _activeChild(Time, Parent, Child)
 		:-	_isActive(Time, Parent),
 			_isActive(Time, Child),
 			_validChildOf(Parent, Child).
+
+_siblings(Time, FstChild, SndChild)
+		:-	_activeChild(Time, Parent, FstChild),
+			_activeChild(Time, Parent, SndChild),
+			FstChild != SndChild.
 
 % NOTE: monomials store degree and coeff info separately, to limit groundings when copying nodeFields
 _degOf(Time, Node, Deg)

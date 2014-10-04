@@ -24,4 +24,14 @@ _applicable(Time, _action(divIdent, _data(Fraction)))
 		_equal(Time, Numer, Denom).
 _setToOne(Time, Fraction)
 	:-	_operand(Time, Fraction, oper(divIdent, left)).
-:- not _actionForTimeStep(_time(0,1), divIdent).
+
+%================================================================================
+% multFrac: a/b * c/d --> (a*c)/(b*d)
+%================================================================================
+_applicable(Time, _action(multFrac, _data(LeftFrac, RightFrac)))
+			:-	_isDiv(Time, LeftFrac),
+				_isDiv(Time, RightFrac),
+				_siblings(Time, LeftFrac, RightFrac),
+				_parentType(Time, LeftFrac, mul).
+
+:- not _actionForTimeStep(_time(0,1), multFrac).
