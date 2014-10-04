@@ -128,6 +128,10 @@ _holds(Time, _fact(Parent, _nodeField(denom, Child)))
 _holds(_time(0,1), Fact)
 		:-	_holds(initially, Fact).
 
+_hasTwoTerms(Time, Node)
+		:-	_validTime(Time),
+			_node(Node),
+			2 { _activeChild(Time, Node, Child) : _validChildOf(Node, Child) } 2.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CHANGING NODE PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _update(Time, Node, type, Oper)
 		:-	_setNodeType(Time, Node, Oper).
