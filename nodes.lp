@@ -244,3 +244,30 @@ _anyNode(TempNode)
 		:-	_tempNode(TempNode).
 _anyNode(Node)
 		:-	_node(Node).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SETTING TEMP NODE PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+_activateTempNode(Time, Temp, Type)
+		:-	_activateTempAndSetChildren(Time, Temp, Type, NumChildren),
+			_tempNode(Temp).
+_setTempChildren(Time, Temp, NumChildren)
+		:-	_activateTempAndSetChildren(Time, Temp, Type, NumChildren),
+			_tempNode(Temp).
+_tempHolds(Time, _fact(Temp, _nodeField(type, Type)))
+		:-	_activateTempNode(Time, Temp, Type),
+			_tempNode(Temp).
+
+% set as child any node with childNum in range 1..NumChildren
+_tempHolds(Time, _fact(Temp, _nodeField(activechild, Child)))
+		:-	_setTempChildren(Time, Temp, NumChildren),
+			_tempNode(Temp),
+			_tempChildNum(Temp, Child, Num),
+			Num <= NumChildren.
+
+% fail if more children are requested  than are available
+_insufficientNodesError
+		:-	_setTempChildren(Time, Temp, NumChildren),
+			_tempNode(Temp),
+			not _validNumTempChildren(Temp, NumChildren).
+
+%%% CONSTRAINT: if we run out of nodes then fail
+:- _insufficientNodesError.
