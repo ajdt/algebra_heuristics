@@ -55,6 +55,12 @@ _holds(NextTick, Fluent)
 		:-	_introduce(Time, Fluent),
 			_nextTimeTick(Time, NextTick).
 
+% NOTE: facts about tempNodes should not hold across time steps
+%	This is done b/c facts about tempNodes are also wrapped in _holds(..) predicate
+_remove(Time, _fact(TempNode, Fact))
+		:-	_holds(Time, _fact(TempNode, Fact)),
+			_tempNode(TempNode).
+
 % introduce/4 used to add fluents independent of representation
 _introduce(Time, _fact(Node, _nodeField(Field, Value)))
 		:-	_introduce(Time, Node, Field, Value).

@@ -22,6 +22,7 @@ _childrenForLayer(4, 2).
 % define left and right sides of eqn 
 #const rightSide		= _id(1,2).	
 #const leftSide 		= _id(1,1).
+#const tempRoot			= _temp(_id(1,1)).
 
 % define nodes based on layers and nodes in each layer
 _rootNode(rightSide;leftSide).
@@ -65,6 +66,7 @@ _depthOfNode(Node, Layer)
 
 % enforcing the valid child constraint
 :- _holds(Time, _fact(Parent, _nodeField(activechild, Child))),
+	_node(Parent), _node(Child),
 	not _validChildOf(Parent, Child).
 
 %  types of nodeField fields
@@ -198,9 +200,12 @@ _copyAttributes(Time, Copy, Orig)
 		:-	_deepCopy(Time, Copy, Orig).
 _deepCopyChildren(Time, Copy, Orig)
 		:-	_deepCopy(Time, Copy, Orig).
+_clearNodeDeleteDescendants(Time, Copy)
+		:-	_deepCopy(Time, Copy, Orig).
 % copying attributes
 _introduce(Time, _fact(Copy, NodeFact))
 		:-	_copyAttributes(Time, Copy, Original),
+			_node(Copy),
 			_holds(Time, _fact(Original, _nodeField(Field, Value))),
 			_simpleField(Field),
 			NodeFact = _nodeField(Field, Value).
@@ -212,9 +217,38 @@ _deepCopy(Time, CopyChild, OrigChild)
 			_childNum(Copy, CopyChild, ChildNum).
 _introduce(Time, Copy, activechild, CopyChild)
 		:-	_deepCopyChildren(Time, Copy, Original),
+			_node(Copy),
 			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
 			_childNum(Original, OrigChild, ChildNum),
 			_childNum(Copy, CopyChild, ChildNum).
+
+% deep copying children of temp nodes
+_deepCopy(Time, CopyChild, OrigChild)
+		:-	_deepCopyChildren(Time, Copy, Original),
+			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
+			_tempChildNum(Original, OrigChild, ChildNum),
+			_childNum(Copy, CopyChild, ChildNum).
+_introduce(Time, Copy, activechild, CopyChild)
+		:-	_deepCopyChildren(Time, Copy, Original),
+			_node(Copy),
+			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
+			_tempChildNum(Original, OrigChild, ChildNum),
+			_childNum(Copy, CopyChild, ChildNum).
+
+% if copying into a tempNode, use holds instead we want copy to exist during current 'Time'
+_holds(Time, _fact(Copy, NodeFact))	
+		:-	_copyAttributes(Time, Copy, Original),
+			_tempNode(Copy),
+			_holds(Time, _fact(Original, _nodeField(Field, Value))),
+			_simpleField(Field),
+			NodeFact = _nodeField(Field, Value).
+_holds(Time, Copy, activechild, CopyChild)
+		:-	_deepCopyChildren(Time, Copy, Original),
+			_tempNode(Copy),
+			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
+			_childNum(Original, OrigChild, ChildNum),
+			_childNum(Copy, CopyChild, ChildNum).
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TEMPNODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: predicates for temp Nodes are different to make clear when we're
 % talking about temp nodes.
@@ -232,8 +266,7 @@ _validNumTempChildren(TempNode, Num)
 		:-	_maxNumTempChildren(TempNode, NumChildren),
 			Num = 2..NumChildren.
 
-% TODO: don't like the way nodes are defined 
-_tempChildNum(_temp(Node), _temp(Child), childNum)
+_tempChildNum(_temp(Node), _temp(Child), ChildNum)
 		:-	_childNum(Node, Child, ChildNum).
 
 _validTempChildOf(_temp(Parent), _temp(Child))
@@ -252,12 +285,15 @@ _activateTempNode(Time, Temp, Type)
 _setTempChildren(Time, Temp, NumChildren)
 		:-	_activateTempAndSetChildren(Time, Temp, Type, NumChildren),
 			_tempNode(Temp).
-_tempHolds(Time, _fact(Temp, _nodeField(type, Type)))
+_holds(Time, _fact(Temp, _nodeField(type, Type)))
+		:-	_activateTempNode(Time, Temp, Type),
+			_tempNode(Temp).
+_holds(Time, _fact(Temp, _nodeField(active, yes)))
 		:-	_activateTempNode(Time, Temp, Type),
 			_tempNode(Temp).
 
 % set as child any node with childNum in range 1..NumChildren
-_tempHolds(Time, _fact(Temp, _nodeField(activechild, Child)))
+_holds(Time, _fact(Temp, _nodeField(activechild, Child)))
 		:-	_setTempChildren(Time, Temp, NumChildren),
 			_tempNode(Temp),
 			_tempChildNum(Temp, Child, Num),
