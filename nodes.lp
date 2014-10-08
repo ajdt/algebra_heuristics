@@ -52,6 +52,11 @@ _childNum(Node, NewNode, ChildNum)
 			NewLayer <= numNodeLayers,
 			ChildNum = 1..NumChildren,
 			ChildID =(NodeNum - 1)*NumChildren + ChildNum.
+% useful aliases for first two children
+_childNum(Node, Child, left)
+	:-	_childNum(Node, Child, 1).
+_childNum(Node, Child, right)
+	:-	_childNum(Node, Child, 2).
 
 _validChildOf(Parent, Child) 
 		:-	_childNum(Parent, Child, ChildNum).
@@ -268,6 +273,10 @@ _validNumTempChildren(TempNode, Num)
 
 _tempChildNum(_temp(Node), _temp(Child), ChildNum)
 		:-	_childNum(Node, Child, ChildNum).
+_tempChildNum(Temp, Child, left)
+	:-	_tempChildNum(Temp, Child, 1).
+_tempChildNum(Temp, Child, right)
+	:-	_tempChildNum(Temp, Child, 2).
 
 _validTempChildOf(_temp(Parent), _temp(Child))
 		:-	_childNum(Parent, Child, ChildNum).

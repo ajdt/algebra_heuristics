@@ -37,3 +37,23 @@ _cancelTerm(Time, LeftOper)
 _deepCopy(Time, Root, tempRoot)
 	:-	_setResultTo(Time, Root).
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% tree operations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTE: assumes only one tree operation is to be stored in each Dest
+% TODO: can we avoid generating treeOp/5 all together?
+_treeOp(Time, Dest, Left, left)
+	:-	_treeOp(Time, Dest, Left, Right, Op).
+_treeOp(Time, Dest, Right, right)
+	:-	_treeOp(Time, Dest, Left, Right, Op).
+_treeOp(Time, Dest, Op)
+	:-	_treeOp(Time, Dest, Left, Right, Op).
+% treemult
+_activateTempAndSetChildren(Time, Temp, mul, 2)
+	:-	_treeOp(Time, Temp, mul).
+_deepCopy(Time, TempChild, Node)
+	:-	_treeOp(Time, Temp, mul),
+		_treeOp(Time, Temp, Node, Side),
+		_tempChildNum(Temp, TempChild, Side).
+
+
