@@ -53,9 +53,9 @@ _childNum(Node, NewNode, ChildNum)
 			ChildNum = 1..NumChildren,
 			ChildID =(NodeNum - 1)*NumChildren + ChildNum.
 % useful aliases for first two children
-_childNum(Node, Child, left)
+_childOnSide(Node, Child, left)
 	:-	_childNum(Node, Child, 1).
-_childNum(Node, Child, right)
+_childOnSide(Node, Child, right)
 	:-	_childNum(Node, Child, 2).
 
 _validChildOf(Parent, Child) 
@@ -247,12 +247,18 @@ _holds(Time, _fact(Copy, NodeFact))
 			_holds(Time, _fact(Original, _nodeField(Field, Value))),
 			_simpleField(Field),
 			NodeFact = _nodeField(Field, Value).
-_holds(Time, Copy, activechild, CopyChild)
+% TODO: this is needed to copy from regular node to a temp node. Try simplifying all of this copying code!!!
+_holds(Time, _fact(Copy, _nodeField(activechild, CopyChild)))
 		:-	_deepCopyChildren(Time, Copy, Original),
 			_tempNode(Copy),
 			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
 			_childNum(Original, OrigChild, ChildNum),
-			_childNum(Copy, CopyChild, ChildNum).
+			_tempChildNum(Copy, CopyChild, ChildNum).
+_deepCopy(Time, CopyChild, OrigChild) % NOTE: necessary for copying from regular to tempNode
+		:-	_deepCopyChildren(Time, Copy, Original),
+			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
+			_childNum(Original, OrigChild, ChildNum),
+			_tempChildNum(Copy, CopyChild, ChildNum).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TEMPNODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: predicates for temp Nodes are different to make clear when we're
@@ -273,9 +279,9 @@ _validNumTempChildren(TempNode, Num)
 
 _tempChildNum(_temp(Node), _temp(Child), ChildNum)
 		:-	_childNum(Node, Child, ChildNum).
-_tempChildNum(Temp, Child, left)
+_tempChildOnSide(Temp, Child, left)
 	:-	_tempChildNum(Temp, Child, 1).
-_tempChildNum(Temp, Child, right)
+_tempChildOnSide(Temp, Child, right)
 	:-	_tempChildNum(Temp, Child, 2).
 
 _validTempChildOf(_temp(Parent), _temp(Child))

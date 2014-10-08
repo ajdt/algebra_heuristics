@@ -38,11 +38,11 @@ _applicable(Time, _action(multFrac, _data(LeftFrac, RightFrac)))
 _activateTempAndSetChildren(Time, tempRoot, div, 2)
 	:-	_actionForTimeStep(Time, multFrac).
 _treeOp(Time, TempNumer, FstNumer, SndNumer, mul)
-	:-	_tempChildNum(tempRoot, TempNumer, left),
+	:-	_tempChildOnSide(tempRoot, TempNumer, left),
 		_numerOfOperand(Time, FstNumer, left),
 		_numerOfOperand(Time, SndNumer, right).
 _treeOp(Time, TempDenom, FstDenom, SndDenom, mul)
-	:-	_tempChildNum(tempRoot, TempDenom, right),
+	:-	_tempChildOnSide(tempRoot, TempDenom, right),
 		_denomOfOperand(Time, FstDenom, left),
 		_denomOfOperand(Time, SndDenom, right).
 
@@ -61,15 +61,33 @@ _writeBinaryOp(Time, LeftFrac, RightFrac)
 %================================================================================
 % fracDiv: a/c / b/d --> a/c * d/b
 %================================================================================
-_applicable(Time, _action(fracDiv, _data(DenomFrac)))
+_applicable(Time, _action(fracDiv, _data(NumerFrac, DenomFrac)))
 			:-	_siblings(Time, NumerFrac, DenomFrac),
 				_isDiv(Time, NumerFrac),
 				_isDiv(Time, DenomFrac),
+				NumerFrac < DenomFrac, % to ensure NumerFrac actually corresponds to numerator
 				_parentType(Time, NumerFrac, div).
+
+% set root node to multiplication node
+_activateTempAndSetChildren(Time, tempRoot, mul, 2)
+	:-	_actionForTimeStep(Time, fracDiv).
+% 'left' fraction remains unchanged
+_deepCopy(Time, LeftTemp, NumerFrac)
+	:-	_tempChildOnSide(tempRoot, LeftTemp, left),
+		_actionForTimeStep(Time, fracDiv),
+		_operand(Time, NumerFrac, oper(fracDiv, left)).
+% flip numer/denom fields
+_treeOp(Time, RightTemp, Numer, Denom, reciprocal)
+	:-	_operand(Time, DenomFrac, oper(fracDiv, right)),
+		_numerOf(Time, DenomFrac, Numer),
+		_denomOf(Time, DenomFrac, Denom),
+		_tempChildOnSide(tempRoot, RightTemp, right).
+
+_setResultTo(Time, Root)
+	:-	_operand(Time, DenomFrac, oper(fracDiv, right)),
+		_activeChild(Time, Root, DenomFrac).
 
 :- not _actionForTimeStep(_time(0,1), fracDiv).
 
-% TODO: find out why this constraint is necessary
-:- _isMono(Time, Mono), 0 { _degOf(Time, Mono, Deg) : _degree(Deg) } 0.
  
 

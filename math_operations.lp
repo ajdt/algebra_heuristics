@@ -54,6 +54,14 @@ _activateTempAndSetChildren(Time, Temp, mul, 2)
 _deepCopy(Time, TempChild, Node)
 	:-	_treeOp(Time, Temp, mul),
 		_treeOp(Time, Temp, Node, Side),
-		_tempChildNum(Temp, TempChild, Side).
+		_tempChildOnSide(Temp, TempChild, Side).
 
+% set to fraction, deep copy
+_activateTempAndSetChildren(Time, Temp, div, 2)
+	:-	_treeOp(Time, Temp, reciprocal).
+_deepCopy(Time, TempChild, Node)
+	:-	_treeOp(Time, Temp, reciprocal),
+		_treeOp(Time, Temp, Node, Side),
+		_otherSide(Side, OtherSide),
+		_tempChildOnSide(Temp, TempChild, OtherSide).
 

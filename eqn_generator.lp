@@ -13,6 +13,9 @@
 #include "rules.lp".
 #include "math_operations.lp".
 
+% sides of an equation
+_side(right;left).
+_otherSide(left, right; right, left). 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM GENERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % every root node (see node.lp) is active initially
 _holds(initially, _fact(Node, _nodeField(active,yes)))	
@@ -59,3 +62,8 @@ _holds(initially, _fact(Child, _nodeField(active,yes)))
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREVENTING ZERO DENOMINATORS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%:-	_denomOf(Time, Frac, Denom),%%
 	%%_isZero(Time, Denom).%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MISC GENERATION CONSTRAINTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% constraint: div node has at most 2 children
+:- _isDiv(Time, Node), _activeChild(Time, Node, Child), _childNum(Node, Child, Num), Num >= 3.
+:- _isMono(Time, Mono), 0 { _degOf(Time, Mono, Deg) : _degree(Deg) } 0.
