@@ -58,4 +58,18 @@ _writeBinaryOp(Time, LeftFrac, RightFrac)
 	:-	_operand(Time, LeftFrac, oper(multFrac, left)),
 		_operand(Time, RightFrac, oper(multFrac, right)).
 
-:- not _actionForTimeStep(_time(0,1), multFrac).
+%================================================================================
+% fracDiv: a/c / b/d --> a/c * d/b
+%================================================================================
+_applicable(Time, _action(fracDiv, _data(DenomFrac)))
+			:-	_siblings(Time, NumerFrac, DenomFrac),
+				_isDiv(Time, NumerFrac),
+				_isDiv(Time, DenomFrac),
+				_parentType(Time, NumerFrac, div).
+
+:- not _actionForTimeStep(_time(0,1), fracDiv).
+
+% TODO: find out why this constraint is necessary
+:- _isMono(Time, Mono), 0 { _degOf(Time, Mono, Deg) : _degree(Deg) } 0.
+ 
+
