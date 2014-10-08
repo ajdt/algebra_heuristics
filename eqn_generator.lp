@@ -53,7 +53,7 @@ _holds(initially, _fact(Child, _nodeField(active,yes)))
 1 { _holds(initially, _fact(Node, _nodeField(degree, Order))) : _degree(Order) , Order <= maxInitialDeg } 1 	
 		:-	_isMono(initially, Node).
 
-1 { _holds(initially, _fact(Node, _nodeField(coeff, Coeff))) : _coeff(Coeff) , Coeff <= maxInitialCoeff } 1 	
+1 { _holds(initially, _fact(Node, _nodeField(coeff, Coeff))) : _coeff(Coeff) , |Coeff| <= maxInitialCoeff } 1 	
 		:-	_isMono(initially, Node).
 					
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREVENTING ZERO DENOMINATORS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

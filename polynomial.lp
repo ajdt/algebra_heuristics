@@ -17,10 +17,16 @@ _hasNestedExpression(Time, Node)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Equality %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _equalCoeffs(Time, FstMono, SndMono)
 	:-	_coeffOf(Time, FstMono, Coeff),
-		_coeffOf(Time, SndMono, Coeff).
+		_coeffOf(Time, SndMono, Coeff),
+		_node(FstMono),	% we don't care about equality among temp nodes
+		_node(SndMono).
 _equalDegs(Time, FstMono, SndMono)
 	:-	_degOf(Time, FstMono, Deg),
-		_degOf(Time, SndMono, Deg).
+		_degOf(Time, SndMono, Deg),
+		_node(FstMono),
+		_node(SndMono).
 _equal(Time, FstMono, SndMono)
 	:-	_equalCoeffs(Time, FstMono, SndMono),
-		_equalDegs(Time, FstMono, SndMono).
+		_equalDegs(Time, FstMono, SndMono),
+		_node(FstMono),
+		_node(SndMono).
