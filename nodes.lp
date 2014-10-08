@@ -122,20 +122,22 @@ _siblings(Time, FstChild, SndChild)
 % nodes equal to zero
 _isZero(Time, Node)
 		:-	_coeffOf(Time, Node, 0).
-_isZero(Time, Node)
+_reducibleToZero(Time, Node)
+		:-	_isZero(Time, Node).
+_reducibleToZero(Time, Node)
 		:-	_isMul(Time, Node),
 			_activeChild(Time, Node, Child),
-			_isZero(Time, Child).
-_isZero(Time, Node)
+			_reducibleToZero(Time, Child).
+_reducibleToZero(Time, Node)
 		:-	_isOper(Time, Node),
-			_everyChildIsZero(Time, Node).
-_everyChildIsZero(Time, Node)
+			_everyChildReducesToZero(Time, Node).
+_everyChildReducesToZero(Time, Node)
 		:-	_isOper(Time, Node),
 			not _hasNonZeroChild(Time, Node).
 _hasNonZeroChild(Time, Node)
 		:-	_isOper(Time, Node),
 			_activeChild(Time, Node, Child),
-			not _isZero(Time, Child).
+			not _reducibleToZero(Time, Child).
 					%%% node fields %%%
 % NOTE: monomials store degree and coeff info separately, to limit groundings when copying nodeFields
 _degOf(Time, Node, Deg)

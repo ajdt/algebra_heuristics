@@ -87,7 +87,21 @@ _setResultTo(Time, Root)
 	:-	_operand(Time, DenomFrac, oper(fracDiv, right)),
 		_activeChild(Time, Root, DenomFrac).
 
-:- not _actionForTimeStep(_time(0,1), fracDiv).
+%================================================================================
+% ignore denominator: a / b = 0 --> a = 0
+%================================================================================
+_applicable(Time, _action(numerSimp, _data(leftSide)))
+			:-	_isZero(Time, rightSide),
+				_isDiv(Time, leftSide).
+
+% assumes that fraction is poly/poly
+%%_clearNodeDeleteDescendants(Time, FracRoot)%%
+			%%:-	_doAction(Time, _action(numerSimp, _data(FracRoot))).%%
+%%_copyNodeInfo(Time, FracRoot, Numer)%%
+			%%:-	_doAction(Time, _action(numerSimp, _data(FracRoot))),%%
+				%%_numerOf(Time, FracRoot, Numer).%%
+
+
+:- not _actionForTimeStep(_time(0,1), numerSimp).
 
  
-
