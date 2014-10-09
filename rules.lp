@@ -142,5 +142,15 @@ _writeBinaryOp(Time, LeftMono, RightMono)
 	:-	_operand(Time, LeftMono, oper(monoMult, left)),
 		_operand(Time, RightMono, oper(monoMult, right)).
 
-:- not _actionForTimeStep(_time(0,1), monoMult).
+%================================================================================
+% fracCancel A*B/C*B --> A/C
+%================================================================================
+_applicable(Time, _action(fracCancel, _data(FstNode, SndNode)))
+			:-	_haveCommonTerms(Time, FstNode, SndNode),
+				_siblings(Time, FstNode, SndNode),
+				_isMul(Time, FstNode),
+				_isMul(Time, SndNode),
+				_parentType(Time, FstNode, div).
+
+:- not _actionForTimeStep(_time(0,1), fracCancel).
 
