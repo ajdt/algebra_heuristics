@@ -102,6 +102,20 @@ _setResultTo(Time, leftSide)
 	:-	_actionForTimeStep(Time, numerSimp).
 
 
-:- not _actionForTimeStep(_time(0,1), numerSimp).
+%================================================================================
+% addMonom: a*x^b + c*x^b ----> (a+c)*x^b
+%================================================================================
+% contains as a special case:		addIdentity: a*x^b + 0 ----> a*x^b 
+
+_applicable(Time, _action(addMonom, _data(LeftMono, RightMono)))
+			:-	_siblings(Time, LeftMono, RightMono),
+				_sameDeg(Time, LeftMono, RightMono),
+				_isMono(Time, LeftMono),
+				_isMono(Time, RightMono),
+				LeftMono != RightMono,
+				_parentType(Time, LeftMono, add).
+
+
+:- not _actionForTimeStep(_time(0,1), addMonom).
 
  

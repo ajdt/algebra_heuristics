@@ -65,3 +65,41 @@ _deepCopy(Time, TempChild, Node)
 		_otherSide(Side, OtherSide),
 		_tempChildOnSide(Temp, TempChild, OtherSide).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% mono  operations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+_monoOp(Time, Dest, Left, left)
+	:-	_monoOp(Time, Dest, Left, Right, Op).
+_monoOp(Time, Dest, Right, right)
+	:-	_monoOp(Time, Dest, Left, Right, Op).
+_monoOp(Time, Dest, Op)
+	:-	_monoOp(Time, Dest, Left, Right, Op).
+
+% isolate the coeff and degree values of monomial operands
+_monoOpCoeff(Time, Dest, Coeff, Side)
+	:-	_monoOp(Time, Dest, Op),
+		_monoOp(Time, Dest, Operand, Side),
+		_coeffOf(Time, Operand, Coeff).
+_monoOpDeg(Time, Dest, Deg, Side)
+	:-	_monoOp(Time, Dest, Op),
+		_monoOp(Time, Dest, Operand, Side),
+		_degOf(Time, Operand, Deg).
+
+% add two monomials
+_activateTempNode(Time, Dest, mono)
+	:-	_monoOp(Time, Dest, add).
+_holds(Time, _fact(Dest, _nodeField(degree, Deg)))
+	:-	_monoOp(Time, Dest, add),
+		_monoOpDeg(Time, Dest, Deg, left).
+_holds(Time, _fact(Dest, _nodeField(coeff, Sum)))
+	:-	_monoOp(Time, Dest, add),
+		_monoOpCoeff(Time, Dest, FstCoeff, left),
+		_monoOpCoeff(Time, Dest, SndCoeff, right),
+		Sum = FstCoeff + SndCoeff,
+		_coeff(Sum).
+
+	% handle coefficient overflow in sum nodes
+_coeffOverflow
+	:-	_monoOp(Time, Dest, add),
+		_monoOpCoeff(Time, Dest, FstCoeff, left),
+		_monoOpCoeff(Time, Dest, SndCoeff, right),
+		Sum = FstCoeff + SndCoeff,
+		not _coeff(Sum).
