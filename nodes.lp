@@ -153,11 +153,18 @@ _sameDeg(Time, FstNode, SndNode)
 
 
 % NOTE: used for fraction cancel rule, not much else
-_haveCommonTerms(Time, FstNode, SndNode)
+_factorOf(Time, Node, Child)
+	:-	_isMul(Time, Node),
+		_activeChild(Time, Node, Child).
+_factorOf(Time, Node, Node)
+	:-	_isActive(Time, Node),
+		not _isMul(Time, Node).
+_haveCommonFactors(Time, FstNode, SndNode)
 	:-	_siblings(Time, FstNode, SndNode),
-		_activeChild(Time, FstNode, FstChild),
-		_activeChild(Time, SndNode, SndChild),
-		_equal(Time, FstChild, SndChild).
+		_factorOf(Time, FstNode, FstFactor),
+		_factorOf(Time, SndNode, SndFactor),
+		_equal(Time, FstFactor, SndFactor).
+
 % node fields
 _numerOf(Time, Parent, Child)
 		:-	_isDiv(Time, Parent),
