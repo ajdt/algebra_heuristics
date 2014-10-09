@@ -108,13 +108,20 @@ _setResultTo(Time, leftSide)
 % contains as a special case:		addIdentity: a*x^b + 0 ----> a*x^b 
 
 _applicable(Time, _action(addMonom, _data(LeftMono, RightMono)))
-			:-	_siblings(Time, LeftMono, RightMono),
-				_sameDeg(Time, LeftMono, RightMono),
-				_isMono(Time, LeftMono),
-				_isMono(Time, RightMono),
-				LeftMono != RightMono,
-				_parentType(Time, LeftMono, add).
+	:-	_siblings(Time, LeftMono, RightMono),
+		_sameDeg(Time, LeftMono, RightMono),
+		_isMono(Time, LeftMono),
+		_isMono(Time, RightMono),
+		LeftMono != RightMono,
+		_parentType(Time, LeftMono, add).
 
+_monoOp(Time, tempRoot, LeftMono, RightMono, add)
+	:-	_operand(Time, LeftMono, oper(addMonom, left)),
+		_operand(Time, RightMono, oper(addMonom, right)).
+
+_writeBinaryOp(Time, LeftMono, RightMono)
+	:-	_operand(Time, LeftMono, oper(addMonom, left)),
+		_operand(Time, RightMono, oper(addMonom, right)).
 
 :- not _actionForTimeStep(_time(0,1), addMonom).
 
