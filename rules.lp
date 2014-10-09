@@ -123,6 +123,16 @@ _writeBinaryOp(Time, LeftMono, RightMono)
 	:-	_operand(Time, LeftMono, oper(addMonom, left)),
 		_operand(Time, RightMono, oper(addMonom, right)).
 
-:- not _actionForTimeStep(_time(0,1), addMonom).
-
+%================================================================================
+% monomult (a + b ) * c --> a*c + b*c
+%================================================================================
+% contains as special case:		multIdentity: a*x^b * 1 ----> a*x^b 
+_applicable(Time, _action(monoMult, _data(LeftMono, RightMono)))
+	:-	_siblings(Time, LeftMono, RightMono),
+		_isMono(Time, LeftMono),
+		_isMono(Time, RightMono),
+		LeftMono != RightMono,
+		_parentType(Time, LeftMono, mul).
  
+:- not _actionForTimeStep(_time(0,1), monoMult).
+
