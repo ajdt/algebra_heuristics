@@ -41,7 +41,7 @@ _numChildren(initially, Node, 2)
 
 % 3. activate children for parent node 
 _holds(initially, _fact(Parent, _nodeField(activechild, Child)))
-		:-	_numChildren(initially, Node,  TotalNumChildren), 
+		:-	_numChildren(initially, Parent,  TotalNumChildren), 
 			_childNum(Parent, Child, ChildNum),
 			ChildNum <= TotalNumChildren.
 
@@ -67,3 +67,10 @@ _holds(initially, _fact(Child, _nodeField(active,yes)))
 %%% constraint: div node has at most 2 children
 :- _isDiv(Time, Node), _activeChild(Time, Node, Child), _childNum(Node, Child, Num), Num >= 3.
 :- _isMono(Time, Mono), 0 { _degOf(Time, Mono, Deg) : _degree(Deg) } 0.
+
+% monomial nodes must be leave nodes
+_isLeafNode(Time, Mono)
+	:-	_isMono(Time, Mono), 
+		0 { _activeChild(Time, Mono, Child) : _node(Child) } 0 .
+:-	_isMono(Time, Mono), 
+	not _isLeafNode(Time, Mono).
