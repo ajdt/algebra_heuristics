@@ -103,3 +103,34 @@ _coeffOverflow
 		_monoOpCoeff(Time, Dest, SndCoeff, right),
 		Sum = FstCoeff + SndCoeff,
 		not _coeff(Sum).
+
+% multiply two monomials
+_activateTempNode(Time, Dest, mono)
+	:-	_monoOp(Time, Dest, mul).
+_holds(Time, _fact(Dest, _nodeField(degree, DegSum)))
+	:-	_monoOp(Time, Dest, mul),
+		_monoOpDeg(Time, Dest, FstDeg, left),
+		_monoOpDeg(Time, Dest, SndDeg, right),
+		DegSum = FstDeg + SndDeg,
+		_degree(DegSum).
+
+_holds(Time, _fact(Dest, _nodeField(coeff, Prod)))
+	:-	_monoOp(Time, Dest, mul),
+		_monoOpCoeff(Time, Dest, FstCoeff, left),
+		_monoOpCoeff(Time, Dest, SndCoeff, right),
+		Prod = FstCoeff * SndCoeff,
+		_coeff(Prod).
+
+	% handle coefficient and degree overflow when multiplying polynomials
+_coeffOverflow
+	:-	_monoOp(Time, Dest, mul),
+		_monoOpCoeff(Time, Dest, FstCoeff, left),
+		_monoOpCoeff(Time, Dest, SndCoeff, right),
+		Prod = FstCoeff * SndCoeff,
+		not _coeff(Prod).
+_degOverflow
+	:-	_monoOp(Time, Dest, mul),
+		_monoOpDeg(Time, Dest, FstDeg, left),
+		_monoOpDeg(Time, Dest, SndDeg, right),
+		DegSum = FstDeg + SndDeg,
+		not _degree(DegSum).

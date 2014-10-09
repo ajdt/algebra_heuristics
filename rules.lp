@@ -134,5 +134,13 @@ _applicable(Time, _action(monoMult, _data(LeftMono, RightMono)))
 		LeftMono != RightMono,
 		_parentType(Time, LeftMono, mul).
  
+_monoOp(Time, tempRoot, LeftMono, RightMono, mul)
+	:-	_operand(Time, LeftMono, oper(monoMult, left)),
+		_operand(Time, RightMono, oper(monoMult, right)).
+
+_writeBinaryOp(Time, LeftMono, RightMono)
+	:-	_operand(Time, LeftMono, oper(monoMult, left)),
+		_operand(Time, RightMono, oper(monoMult, right)).
+
 :- not _actionForTimeStep(_time(0,1), monoMult).
 
