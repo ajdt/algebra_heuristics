@@ -146,15 +146,24 @@ _writeBinaryOp(Time, LeftMono, RightMono)
 % fracCancel A*B/C*B --> A/C
 %================================================================================
 _applicable(Time, _action(fracCancel, _data(FstNode, SndNode)))
-			:-	_haveCommonFactors(Time, FstNode, SndNode),
-				_siblings(Time, FstNode, SndNode),
-				_isMul(Time, FstNode),
-				_isMul(Time, SndNode),
-				_parentType(Time, FstNode, div),
-				FstNode < SndNode. % ensure numerator comes first
+	:-	_haveCommonFactors(Time, FstNode, SndNode),
+		_siblings(Time, FstNode, SndNode),
+		_isMul(Time, FstNode),
+		_isMul(Time, SndNode),
+		_parentType(Time, FstNode, div),
+		FstNode < SndNode. % ensure numerator comes first
 
-%%% select a common factor and then cancel it%%
-	%%_operand(Time, Numer, oper(fracCancel%%
+% select a common factor and then cancel it
+1 { _factorsToCancel(Time, NumerFactor, DenomFactor) : 
+		_factorOf(Time, Numer, NumerFactor), 
+		_factorOf(Time, Denom, DenomFactor),
+		_equal(Time, NumerFactor, DenomFactor) } 1
+	:-	_operand(Time, Numer, oper(fracCancel, left)),
+		_operand(Time, Denom, oper(fracCancel, right)).
+_cancelTerm(Time, Fst)
+	:-	_factorsToCancel(Time, Fst, Snd).
+_cancelTerm(Time, Snd)
+	:-	_factorsToCancel(Time, Fst, Snd).
 
 :- not _actionForTimeStep(_time(0,1), fracCancel).
 
