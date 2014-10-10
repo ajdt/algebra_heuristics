@@ -165,5 +165,13 @@ _cancelTerm(Time, Fst)
 _cancelTerm(Time, Snd)
 	:-	_factorsToCancel(Time, Fst, Snd).
 
+%================================================================================
+% factor (ax^2 + bx + c) --> (x + e) * (x + d)
+%================================================================================
+_applicable(Time, _action(factor, _data(Node)))
+	:-	_isPolynomial(Time, Node),
+		_isQuadratic(Time, Node),
+		_isFactorable(Time, Node).
+
 :- not _actionForTimeStep(_time(0,1), fracCancel).
 

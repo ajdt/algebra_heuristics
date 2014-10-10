@@ -14,6 +14,28 @@ _isPolynomial(Time, Node)
 _hasNestedExpression(Time, Node)
 	:-	_activeChild(Time, Node, Child),
 		not _isMono(Time, Child).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Polynomial Properties %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+_polyHasTermWithDeg(Time, Poly, Deg)
+	:-	_isPolynomial(Time, Poly),
+		_activeChild(Time, Poly, Child),
+		_degOf(Time, Child, Deg).
+_hasSingleTermWithDeg(Time, Poly, Deg)
+	:-	_polyHasTermWithDeg(Time, Poly, Deg),
+		1 { _degOf(Time, Child, Deg) : _activeChild(Time, Poly, Child) } 1.
+_notStandardPoly(Time, Poly)
+	:-	_isPolynomial(Time, Poly),
+		_polyHasTermWithDeg(Time, Poly, Deg),
+		not _hasSingleTermWithDeg(Time, Poly, Deg).
+_isStandardPoly(Time, Poly)
+	:-	_isPolynomial(Time, Poly),
+		not _notStandardPoly(Time, Poly).
+
+_monoTermOfPoly(Time, Poly, Deg, Coeff)
+	:-	_isPolynomial(Time, Poly),
+		_activeChild(Time, Poly, Child),
+		_degOf(Time, Child, Deg),
+		_coeffOf(Time, Child, Coeff).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Equality %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _equalCoeffs(Time, FstMono, SndMono)
 	:-	_coeffOf(Time, FstMono, Coeff),
