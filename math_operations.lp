@@ -29,9 +29,9 @@ _setResultTo(Time, LeftOper)
 		_activeChild(Time, Root, LeftOper).
 
 % cancel unneeded terms
-_cancelTerm(Time, RightOper)
+_deleteTerm(Time, RightOper)
 	:-	_writeBinaryRight(Time, RightOper).
-_cancelTerm(Time, LeftOper)
+_deleteTerm(Time, LeftOper)
 	:-	_writeBinaryLeft(Time, LeftOper),
 		not _setResultTo(Time, LeftOper).
 _deepCopy(Time, Root, tempRoot)

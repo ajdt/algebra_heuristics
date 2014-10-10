@@ -229,11 +229,12 @@ _applyNodeOpRecursive(Time, Child, delete)
 		:-	_clearNodeDeleteDescendants(Time, RootNode),
 			_activeChild(Time, RootNode, Child).
 %% remove a subtree including pointers to it
+% cancelTerm -- used to remove terms cancelled via division operation, may update parent
+% deleteTerm -- delete a subtree
 % NOTE: three different ways to cancelTerm depending on context
 
 _setToOne(Time, Node)	% term is numer or denom of a fraction
 		:-	_cancelTerm(Time, Node),
-			_parentHasTwoChildren(Time, Node),
 			_parentType(Time, Node, div).
 
 _replaceParent(Time, Sibling) 	% term is one of two children, replace parent with other child
@@ -243,13 +244,15 @@ _replaceParent(Time, Sibling) 	% term is one of two children, replace parent wit
 			_siblings(Time, Node, Sibling),
 			not _cancelTerm(Time, Sibling),	% ensure the other child isn't also cancelled
 			Sibling != Node.
+% NOTE: if parent has more than two children, we assume that @ least two children will
+% remain after current time step
+_deleteTerm(Time, Term)
+		:-	_cancelTerm(Time, Term).
 
 _clearNodeDeleteDescendants(Time, Node)
-		:-	_cancelTerm(Time, Node),
-			not _parentHasTwoChildren(Time, Node).
+		:-	_deleteTerm(Time, Node).
 _removePointersToNode(Time, Node)
-		:-	_cancelTerm(Time, Node),
-			not _parentHasTwoChildren(Time, Node).
+		:-	_deleteTerm(Time, Node).
 		
 _remove(Time, _fact(Parent, _nodeField(activechild, Node)))
 		:-	_removePointersToNode(Time, Node),
