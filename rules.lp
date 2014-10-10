@@ -109,7 +109,7 @@ _setResultTo(Time, leftSide)
 
 _applicable(Time, _action(addMonom, _data(LeftMono, RightMono)))
 	:-	_siblings(Time, LeftMono, RightMono),
-		_sameDeg(Time, LeftMono, RightMono),
+		_equalDegs(Time, LeftMono, RightMono),
 		_isMono(Time, LeftMono),
 		_isMono(Time, RightMono),
 		LeftMono != RightMono,

@@ -145,13 +145,6 @@ _degOf(Time, Node, Deg)
 _coeffOf(Time, Node, Coeff)
 		:-	_holds(Time, _fact(Node, _nodeField(coeff, Coeff))).
 
-% NOTE: to reduce grounding can apply condition that monomials have to be siblings
-_sameDeg(Time, FstNode, SndNode)
-		:-	_degOf(Time, FstNode, Deg),
-			_degOf(Time, SndNode, Deg),
-			FstNode != SndNode.
-
-
 % NOTE: used for fraction cancel rule, not much else
 _factorOf(Time, Node, Child)
 	:-	_isMul(Time, Node),
