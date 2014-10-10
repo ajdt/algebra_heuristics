@@ -189,6 +189,9 @@ _hasTwoTerms(Time, Node)
 		:-	_validTime(Time),
 			_node(Node),
 			2 { _activeChild(Time, Node, Child) : _validChildOf(Node, Child) } 2.
+_parentHasTwoChildren(Time, Child)
+		:-	_hasTwoTerms(Time, Parent),
+			_activeChild(Time, Parent, Child).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CHANGING NODE PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _update(Time, Node, type, Oper)
 		:-	_setNodeType(Time, Node, Oper).
@@ -229,16 +232,38 @@ _applyNodeOpRecursive(Time, Child, delete)
 		:-	_clearNodeDeleteDescendants(Time, RootNode),
 			_activeChild(Time, RootNode, Child).
 %% remove a subtree including pointers to it
+% NOTE: three different ways to cancelTerm depending on context
+
+_setToOne(Time, Node)	% term is numer or denom of a fraction
+		:-	_cancelTerm(Time, Node),
+			_parentHasTwoChildren(Time, Node),
+			_parentType(Time, Node, div).
+
+_replaceParent(Time, Sibling) 	% term is one of two children, replace parent with other child
+		:-	_cancelTerm(Time, Node),
+			not _parentType(Time, Node, div),
+			_parentHasTwoChildren(Time, Node),
+			_siblings(Time, Node, Sibling),
+			Sibling != Node.
+
 _clearNodeDeleteDescendants(Time, Node)
-		:-	_cancelTerm(Time, Node).
+		:-	_cancelTerm(Time, Node),
+			not _parentHasTwoChildren(Time, Node).
 _removePointersToNode(Time, Node)
-		:-	_cancelTerm(Time, Node).
+		:-	_cancelTerm(Time, Node),
+			not _parentHasTwoChildren(Time, Node).
+		
 _remove(Time, _fact(Parent, _nodeField(activechild, Node)))
 		:-	_removePointersToNode(Time, Node),
 			_activeChild(Time, Parent, Node).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COPYING NODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: all copying is deep copying
+
+% replace parent with one of its children
+_deepCopy(Time, Parent, Node)
+		:-	_replaceParent(Time, Node),
+			_activeChild(Time, Parent, Node).
 
 % deep copying means copying all attributes and deep copying children
 _copyAttributes(Time, Copy, Orig)
