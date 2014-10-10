@@ -36,6 +36,16 @@ _monoTermOfPoly(Time, Poly, Deg, Coeff)
 		_activeChild(Time, Poly, Child),
 		_degOf(Time, Child, Deg),
 		_coeffOf(Time, Child, Coeff).
+% is factorable
+_factors(Fst, Snd, Sum, Prod)
+	:-	_coeff(Fst),
+		_coeff(Snd),
+		Sum = Fst + Snd,
+		Prod = Fst * Snd,
+		_coeff(Sum),
+		_coeff(Prod).
+_factorable(Sum, Prod)
+	:- _factors(Fst, Snd, Sum, Prod).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Equality %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _equalCoeffs(Time, FstMono, SndMono)
 	:-	_coeffOf(Time, FstMono, Coeff),
