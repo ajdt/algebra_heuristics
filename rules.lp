@@ -165,5 +165,7 @@ _cancelTerm(Time, Fst)
 _cancelTerm(Time, Snd)
 	:-	_factorsToCancel(Time, Fst, Snd).
 
-:- not _actionForTimeStep(_time(0,1), fracCancel).
+:- not _actionForTimeStep(_time(0,1), multFrac).
+:- not _isDiv(initially, leftSide).
+:- not _numChildren(initially, rightSide, 2).
 

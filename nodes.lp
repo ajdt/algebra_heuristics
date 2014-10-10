@@ -36,7 +36,11 @@ _numberOfNode(_id(Layer, Number), Number)
 % number of children a node may have (varies by node depth)
 _maxNumChildren(Node, NumChildren)
 		:-	_childrenForLayer(Layer, NumChildren),
-			_layerOfNode(Node, Layer).
+			_layerOfNode(Node, Layer),
+			Layer < numNodeLayers.
+_maxNumChildren(Node, 0)	% leaf nodes don't have children
+		:-	_layerOfNode(Node, Layer),
+			Layer == numNodeLayers.
 _validNumChildren(Node, Num)
 		:-	_maxNumChildren(Node, NumChildren),
 			Num = 2..NumChildren.
@@ -237,6 +241,7 @@ _replaceParent(Time, Sibling) 	% term is one of two children, replace parent wit
 			not _parentType(Time, Node, div),
 			_parentHasTwoChildren(Time, Node),
 			_siblings(Time, Node, Sibling),
+			not _cancelTerm(Time, Sibling),	% ensure the other child isn't also cancelled
 			Sibling != Node.
 
 _clearNodeDeleteDescendants(Time, Node)
@@ -318,6 +323,14 @@ _deepCopy(Time, CopyChild, OrigChild) % NOTE: necessary for copying from regular
 			_childNum(Original, OrigChild, ChildNum),
 			_tempChildNum(Copy, CopyChild, ChildNum).
 
+% detecting insufficient nodes: 
+% TODO: copying code has gotten too complex, simplify it
+_insufficientNodesError
+		:-	_deepCopyChildren(Time, Copy, Original),
+			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
+			_tempChildNum(Original, OrigChild, ChildNum),
+			_maxNumChildren(Copy, MaxNumKids),
+			ChildNum > MaxNumKids.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TEMPNODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: predicates for temp Nodes are different to make clear when we're
 % talking about temp nodes.
