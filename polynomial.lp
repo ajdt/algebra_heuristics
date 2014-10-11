@@ -56,14 +56,14 @@ _isFactorable(Time, Poly) % poly has form x^2 + b*x + c
 		_isStandardPoly(Time, Poly),
 		_monoTermOfPoly(Time, Poly, 2, 1),	
 		_monoTermOfPoly(Time, Poly, 1, LinearCoeff),
-		_monoTermOfPoly(Time, Poly, 2, ConstCoeff),
+		_monoTermOfPoly(Time, Poly, 0, ConstCoeff),
 		_factorable(LinearCoeff, ConstCoeff).
 
 % polynomial forms
 _isQuadratic(Time, Poly)
 	:-	_isPolynomial(Time, Poly),
 		_polyHasTermWithDeg(Time, Poly, 2),
-		_hasTermWithDegLargerThan(Time, Poly, 2).
+		not _hasTermWithDegLargerThan(Time, Poly, 2).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Equality %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _equalCoeffs(Time, FstMono, SndMono)
 	:-	_coeffOf(Time, FstMono, Coeff),

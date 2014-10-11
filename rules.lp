@@ -173,5 +173,5 @@ _applicable(Time, _action(factor, _data(Node)))
 		_isQuadratic(Time, Node),
 		_isFactorable(Time, Node).
 
-:- not _actionForTimeStep(_time(0,1), fracCancel).
+:- not _actionForTimeStep(_time(0,1), factor).
 
