@@ -394,5 +394,31 @@ _insufficientNodesError
 			_tempNode(Temp),
 			not _validNumTempChildren(Temp, NumChildren).
 
+% setting to binomial
+_activateTempAndSetChildren(Time, TempNode, add, 2)
+	:-	_setToBinomial(Time, TempNode, Factor).
+
+_activateTempNode(Time, Child, mono)
+	:-	_setToBinomial(Time, TempNode, Factor),
+		_tempChildOnSide(TempNode, Child, Side).
+
+_addMonomToNode(Time, LeftChild, 1, 1)	% time, node, degree, coeff
+	:-	_setToBinomial(Time, TempNode, Factor),
+		_tempChildOnSide(TempNode, LeftChild, left).
+_addMonomToNode(Time, RightChild, 0, Factor)
+	:-	_setToBinomial(Time, TempNode, Factor),
+		_tempChildOnSide(TempNode, RightChild, right).
+
+% adding monomial to temp node
+_holds(Time, _fact(Temp, _nodeField(degree, Deg)))
+	:-	_addMonomToNode(Time, Temp, Deg, Coeff),
+		_tempNode(Temp),
+		_degree(Deg),
+		_coeff(Coeff).
+_holds(Time, _fact(Temp, _nodeField(coeff, Coeff)))
+	:-	_addMonomToNode(Time, Temp, Deg, Coeff),
+		_tempNode(Temp),
+		_degree(Deg),
+		_coeff(Coeff).
 %%% CONSTRAINT: if we run out of nodes then fail
 :- _insufficientNodesError.

@@ -173,5 +173,29 @@ _applicable(Time, _action(factor, _data(Node)))
 		_isQuadratic(Time, Node),
 		_isFactorable(Time, Node).
 
+% select the factors to use
+_factorsForBinomials(Time, FstFactor, SndFactor)
+	:-	_operand(Time, Poly,  oper(factor, left)),
+		_monoTermOfPoly(Time, Poly, 1, LinearTerm),
+		_monoTermOfPoly(Time, Poly, 0, ConstTerm),
+		_factors(FstFactor, SndFactor, LinearTerm, ConstTerm),
+		FstFactor <= SndFactor. % NOTE: sanity check, ensure this rule is used @ most once per time step
+% result is product of two binomials
+_activateTempAndSetChildren(Time, tempRoot, mul, 2)
+	:-	_actionForTimeStep(Time, factor).
+
+% initialize binomials
+_setToBinomial(Time, LeftChild, FstFactor)
+	:-	_tempChildNum(tempRoot, LeftChild, 1),
+		_factorsForBinomials(Time, FstFactor, SndFactor).
+_setToBinomial(Time, RightChild, SndFactor)
+	:-	_tempChildNum(tempRoot, RightChild, 2),
+		_factorsForBinomials(Time, FstFactor, SndFactor).
+
+% save the result of factoring
+_setResultTo(Time, Poly)
+	:-	_operand(Time, Poly,  oper(factor, left)).
+
+
 :- not _actionForTimeStep(_time(0,1), factor).
 

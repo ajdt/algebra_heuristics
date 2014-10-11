@@ -45,6 +45,7 @@ _monoTermOfPoly(Time, Poly, Deg, Coeff)
 _factors(Fst, Snd, Sum, Prod)
 	:-	_coeff(Fst),
 		_coeff(Snd),
+		Fst <= Snd,	% establishes an ordering of factors to avoid redundancy
 		Sum = Fst + Snd,
 		Prod = Fst * Snd,
 		_coeff(Sum),
