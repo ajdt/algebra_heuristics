@@ -207,7 +207,6 @@ _setResultTo(Time, Poly)
 %================================================================================
 % addSameFrac A/B + C/B --> (A+C)/B
 %================================================================================
-% XXX: fractions must be siblings to be considered for sameDenom
 _applicable(Time, _action(addSameFrac, _data(Fst, Snd)))
 	:-	_siblings(Time, Fst, Snd),
 		_sameDenom(Time, Fst, Snd),
@@ -231,6 +230,14 @@ _writeBinaryOp(Time, Fst, Snd)
 	:-	_operand(Time, Fst, oper(addSameFrac, left)),
 		_operand(Time, Snd, oper(addSameFrac, right)).
 	
+%================================================================================
+% addDiffFrac A/B + C/D --> (A*D+C*B)/B*D
+%================================================================================
+_applicable(Time, _action(addDiffFrac, _data(Fst, Snd)))
+	:-	_siblings(Time, Fst, Snd),
+		_isDiv(Time, Fst),
+		_isDiv(Time, Snd),
+		_parentType(Time, Fst, add).
 
-:- not _actionForTimeStep(_time(0,1), addSameFrac).
+:- not _actionForTimeStep(_time(0,1), addDiffFrac).
 
