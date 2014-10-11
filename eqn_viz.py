@@ -140,6 +140,10 @@ class StepParser:
 		coeff	= self.coeff_of[node_name]
 		if coeff == '0' or deg == '0':
 			return coeff
+		elif deg == '1' and coeff == '1':
+			return 'x'
+		elif coeff == '1':
+			return 'x^' + deg
 		elif deg == '1':
 			return coeff + 'x'
 		else:
