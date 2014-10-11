@@ -197,5 +197,20 @@ _setResultTo(Time, Poly)
 	:-	_operand(Time, Poly,  oper(factor, left)).
 
 
-:- not _actionForTimeStep(_time(0,1), factor).
+%================================================================================
+% addSameFrac A/B + C/B --> (A+C)/B
+%================================================================================
+% XXX: fractions must be siblings to be considered for sameDenom
+_sameDenom(Time, FstFrac, SndFrac)
+	:-	_siblings(Time, FstFrac, SndFrac),
+		_denomOf(Time, FstFrac, FstDenom),
+		_denomOf(Time, SndFrac, SndDenom),
+		_equal(Time, FstDenom, SndDenom).
+		
+_applicable(Time, _action(addSameFrac, _data(Fst, Snd)))
+			:-	_siblings(Time, Fst, Snd),
+				_sameDenom(Time, Fst, Snd),
+				_parentType(Time, Fst, add).
+
+:- not _actionForTimeStep(_time(0,1), addSameFrac).
 
