@@ -189,6 +189,14 @@ _hasTwoTerms(Time, Node)
 _parentHasTwoChildren(Time, Child)
 		:-	_hasTwoTerms(Time, Parent),
 			_activeChild(Time, Parent, Child).
+
+% fractions that have same denominator
+_sameDenom(Time, FstFrac, SndFrac)
+	:-	_siblings(Time, FstFrac, SndFrac),
+		_denomOf(Time, FstFrac, FstDenom),
+		_denomOf(Time, SndFrac, SndDenom),
+		_equal(Time, FstDenom, SndDenom).
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CHANGING NODE PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _update(Time, Node, type, Oper)
 		:-	_setNodeType(Time, Node, Oper).

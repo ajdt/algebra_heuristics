@@ -201,16 +201,38 @@ _setResultTo(Time, Poly)
 % addSameFrac A/B + C/B --> (A+C)/B
 %================================================================================
 % XXX: fractions must be siblings to be considered for sameDenom
-_sameDenom(Time, FstFrac, SndFrac)
-	:-	_siblings(Time, FstFrac, SndFrac),
-		_denomOf(Time, FstFrac, FstDenom),
-		_denomOf(Time, SndFrac, SndDenom),
-		_equal(Time, FstDenom, SndDenom).
-		
 _applicable(Time, _action(addSameFrac, _data(Fst, Snd)))
-			:-	_siblings(Time, Fst, Snd),
-				_sameDenom(Time, Fst, Snd),
-				_parentType(Time, Fst, add).
+	:-	_siblings(Time, Fst, Snd),
+		_sameDenom(Time, Fst, Snd),
+		_parentType(Time, Fst, add).
+
+% isolate numer and denom fields (makes other groundings smaller
+% TODO: is there a more general way to do this, for all rules?
+_operandDenom(Time, Denom, oper(addSameFrac, Side))
+	:-	_operand(Time, Frac, oper(addSameFrac, Side)),
+		_denomOf(Time, Frac, Denom).
+_operandNumer(Time, Numer, oper(addSameFrac, Side))
+	:-	_operand(Time, Frac, oper(addSameFrac, Side)),
+		_numerOf(Time, Frac, Numer).
+
+% set root to a fraction
+_activateTempAndSetChildren(Time, tempRoot, div, 2)
+	:-	_actionForTimeStep(Time, addSameFrac).
+
+% set numerator to a sum
+_treeOp(Time, TempNumer, FstNumer, SndNumer, add)
+	:-	_tempChildNum(tempRoot, TempNumer, 1),
+		_operandNumer(Time, FstNumer, oper(addSameFrac, left)),
+		_operandNumer(Time, SndNumer, oper(addSameFrac, right)).
+% set denom 
+_deepCopy(Time, TempDenom, FstDenom)
+	:-	_tempChildNum(tempRoot, TempDenom, 2),
+		_operandDenom(Time, FstDenom, oper(addSameFrac, left)).
+% save result
+_writeBinaryOp(Time, Fst, Snd)
+	:-	_operand(Time, Fst, oper(addSameFrac, left)),
+		_operand(Time, Snd, oper(addSameFrac, right)).
+	
 
 :- not _actionForTimeStep(_time(0,1), addSameFrac).
 

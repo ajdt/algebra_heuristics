@@ -65,6 +65,15 @@ _deepCopy(Time, TempChild, Node)
 		_otherSide(Side, OtherSide),
 		_tempChildOnSide(Temp, TempChild, OtherSide).
 
+_activateTempAndSetChildren(Time, Temp, add, 2)
+	:-	_treeOp(Time, Temp, add).
+% TODO: 
+% what if nodes are already add nodes?
+% combine this rule with rule for mul?
+_deepCopy(Time, TempChild, Node)
+	:-	_treeOp(Time, Temp, add),
+		_treeOp(Time, Temp, Node, Side),
+		_tempChildOnSide(Temp, TempChild, Side).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% mono  operations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _monoOp(Time, Dest, Left, left)
 	:-	_monoOp(Time, Dest, Left, Right, Op).
