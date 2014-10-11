@@ -13,6 +13,13 @@ _operand(Time, Fst, oper(Name, left))
 	:-	_doAction(Time, _action(Name, _data(Fst, Snd))).
 _operand(Time, Snd, oper(Name, right))
 	:-	_doAction(Time, _action(Name, _data(Fst, Snd))).
+_operandDenom(Time, Denom, Operation)
+	:-	_operand(Time, Frac, Operation),
+		_denomOf(Time, Frac, Denom).
+_operandNumer(Time, Numer, Operation)
+	:-	_operand(Time, Frac, Operation),
+		_numerOf(Time, Frac, Numer).
+
 
 %================================================================================
 % divIdentity: A / A ----> 1
@@ -205,15 +212,6 @@ _applicable(Time, _action(addSameFrac, _data(Fst, Snd)))
 	:-	_siblings(Time, Fst, Snd),
 		_sameDenom(Time, Fst, Snd),
 		_parentType(Time, Fst, add).
-
-% isolate numer and denom fields (makes other groundings smaller
-% TODO: is there a more general way to do this, for all rules?
-_operandDenom(Time, Denom, oper(addSameFrac, Side))
-	:-	_operand(Time, Frac, oper(addSameFrac, Side)),
-		_denomOf(Time, Frac, Denom).
-_operandNumer(Time, Numer, oper(addSameFrac, Side))
-	:-	_operand(Time, Frac, oper(addSameFrac, Side)),
-		_numerOf(Time, Frac, Numer).
 
 % set root to a fraction
 _activateTempAndSetChildren(Time, tempRoot, div, 2)

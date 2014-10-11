@@ -48,11 +48,16 @@ _treeOp(Time, Dest, Right, right)
 	:-	_treeOp(Time, Dest, Left, Right, Op).
 _treeOp(Time, Dest, Op)
 	:-	_treeOp(Time, Dest, Left, Right, Op).
-% treemult
-_activateTempAndSetChildren(Time, Temp, mul, 2)
-	:-	_treeOp(Time, Temp, mul).
+
+_binaryMathOperation(add;mul;div).
+
+% treemult, treeadd, treediv: these are all binary operations
+_activateTempAndSetChildren(Time, Temp, Oper, 2)
+	:-	_treeOp(Time, Temp, Oper),
+		_binaryMathOperation(Oper).
 _deepCopy(Time, TempChild, Node)
-	:-	_treeOp(Time, Temp, mul),
+	:-	_treeOp(Time, Temp, Oper),
+		_binaryMathOperation(Oper),
 		_treeOp(Time, Temp, Node, Side),
 		_tempChildOnSide(Temp, TempChild, Side).
 
@@ -65,15 +70,6 @@ _deepCopy(Time, TempChild, Node)
 		_otherSide(Side, OtherSide),
 		_tempChildOnSide(Temp, TempChild, OtherSide).
 
-_activateTempAndSetChildren(Time, Temp, add, 2)
-	:-	_treeOp(Time, Temp, add).
-% TODO: 
-% what if nodes are already add nodes?
-% combine this rule with rule for mul?
-_deepCopy(Time, TempChild, Node)
-	:-	_treeOp(Time, Temp, add),
-		_treeOp(Time, Temp, Node, Side),
-		_tempChildOnSide(Temp, TempChild, Side).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% mono  operations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _monoOp(Time, Dest, Left, left)
 	:-	_monoOp(Time, Dest, Left, Right, Op).
