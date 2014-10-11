@@ -23,6 +23,11 @@ _polyHasTermWithDeg(Time, Poly, Deg)
 _hasSingleTermWithDeg(Time, Poly, Deg)
 	:-	_polyHasTermWithDeg(Time, Poly, Deg),
 		1 { _degOf(Time, Child, Deg) : _activeChild(Time, Poly, Child) } 1.
+_hasTermWithDegLargerThan(Time, Poly, FstDeg)
+	:-	_degree(FstDeg),
+		_polyHasTermWithDeg(Time, Poly, SndDeg),
+		FstDeg < SndDeg.
+
 _notStandardPoly(Time, Poly)
 	:-	_isPolynomial(Time, Poly),
 		_polyHasTermWithDeg(Time, Poly, Deg),
@@ -46,6 +51,19 @@ _factors(Fst, Snd, Sum, Prod)
 		_coeff(Prod).
 _factorable(Sum, Prod)
 	:- _factors(Fst, Snd, Sum, Prod).
+_isFactorable(Time, Poly) % poly has form x^2 + b*x + c
+	:-	_isPolynomial(Time, Poly),
+		_isStandardPoly(Time, Poly),
+		_monoTermOfPoly(Time, Poly, 2, 1),	
+		_monoTermOfPoly(Time, Poly, 1, LinearCoeff),
+		_monoTermOfPoly(Time, Poly, 2, ConstCoeff),
+		_factorable(LinearCoeff, ConstCoeff).
+
+% polynomial forms
+_isQuadratic(Time, Poly)
+	:-	_isPolynomial(Time, Poly),
+		_polyHasTermWithDeg(Time, Poly, 2),
+		_hasTermWithDegLargerThan(Time, Poly, 2).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Equality %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _equalCoeffs(Time, FstMono, SndMono)
 	:-	_coeffOf(Time, FstMono, Coeff),
