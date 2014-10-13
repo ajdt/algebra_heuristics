@@ -353,9 +353,8 @@ _layerOfTempNode(_temp(Node), Layer)
 _numberOfTempNode(_temp(Node), Number)
 		:-	_numberOfNode(Node, Number).
 % number of children a node may have (varies by node depth)
-_maxNumTempChildren(TempNode, NumChildren)
-		:-	_childrenForLayer(Layer, NumChildren),
-			_layerOfTempNode(TempNode, Layer).
+_maxNumTempChildren(_temp(Node), NumChildren)
+		:-	_maxNumChildren(Node, NumChildren).
 _validNumTempChildren(TempNode, Num)
 		:-	_maxNumTempChildren(TempNode, NumChildren),
 			Num = 2..NumChildren.
@@ -396,6 +395,12 @@ _holds(Time, _fact(Temp, _nodeField(activechild, Child)))
 			_tempNode(Temp),
 			_tempChildNum(Temp, Child, Num),
 			Num <= NumChildren.
+
+% error checking: more temp nodes are requested than are available
+_insufficientNodesError
+		:-	_setTempChildren(Time, Temp, NumChildren),
+			_maxNumTempChildren(Temp, MaxNumChildren),
+			NumChildren > MaxNumChildren.
 
 % fail if more children are requested  than are available
 _insufficientNodesError

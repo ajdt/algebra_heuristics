@@ -239,5 +239,36 @@ _applicable(Time, _action(addDiffFrac, _data(Fst, Snd)))
 		_isDiv(Time, Snd),
 		_parentType(Time, Fst, add).
 
-:- not _actionForTimeStep(_time(0,1), addDiffFrac).
+% set root to a fraction
+_activateTempAndSetChildren(Time, tempRoot, div, 2)
+	:-	_actionForTimeStep(Time, addDiffFrac).
+
+% set numer to sum of products
+_activateTempAndSetChildren(Time, Numer, add, 2)
+	:-	_actionForTimeStep(Time, addDiffFrac),
+		_tempChildNum(tempRoot, Numer, 1).
+
+_treeOp(Time, FstProd, FstNumer, SndDenom, mul)
+	:-	_tempChildNum(tempRoot, Numer, 1),
+		_tempChildNum(Numer, FstProd, 1),
+		_operandNumer(Time, FstNumer, oper(addDiffFrac, left)),
+		_operandDenom(Time, SndDenom, oper(addDiffFrac, right)).
+
+_treeOp(Time, SndProd, SndNumer, FstDenom, mul)
+	:-	_tempChildNum(tempRoot, Numer, 1),
+		_tempChildNum(Numer, SndProd, 2),
+		_operandNumer(Time, SndNumer, oper(addDiffFrac, right)),
+		_operandDenom(Time, FstDenom, oper(addDiffFrac, left)).
+
+% set denominator to product of two original numerators
+_treeOp(Time, RootDenom, FstDenom, SndDenom, mul)
+	:-	_tempChildNum(tempRoot, RootDenom, 2),
+		_operandDenom(Time, FstDenom, oper(addDiffFrac, left)),
+		_operandDenom(Time, SndDenom, oper(addDiffFrac, right)).
+% save result
+_writeBinaryOp(Time, Fst, Snd)
+	:-	_operand(Time, Fst, oper(addDiffFrac, left)),
+		_operand(Time, Snd, oper(addDiffFrac, right)).
+
+:- not _actionForTimeStep(_time(0,1), addSameFrac).
 
