@@ -270,5 +270,14 @@ _writeBinaryOp(Time, Fst, Snd)
 	:-	_operand(Time, Fst, oper(addDiffFrac, left)),
 		_operand(Time, Snd, oper(addDiffFrac, right)).
 
-:- not _actionForTimeStep(_time(0,1), addSameFrac).
+%================================================================================
+% distribute (a + b) * C --> (a*C + b*C)
+%================================================================================
+_applicable(Time, _action(distribute, _data(PlusTerm, DistribTerm)))
+	:-	_siblings(Time, PlusTerm, DistribTerm),
+		_parentType(Time, PlusTerm, mul),
+		_isMono(Time, DistribTerm), % TODO: remove this later, used just to check correctness
+		_isAdd(Time, PlusTerm).
+
+:- not _actionForTimeStep(_time(0,1), distribute).
 
