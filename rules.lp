@@ -279,5 +279,26 @@ _applicable(Time, _action(distribute, _data(PlusTerm, DistribTerm)))
 		_isMono(Time, DistribTerm), % TODO: remove this later, used just to check correctness
 		_isAdd(Time, PlusTerm).
 
+% every term in original plus node, is multiplied by distributed term
+_activateTempNode(Time, tempRoot, add)
+	:-	_actionForTimeStep(Time, distribute).
+% TODO: look @ grounding here!!
+_treeOp(Time, TempNode, Term, DistribTerm, mul)
+	:-	_operand(Time, DistribTerm, oper(distribute, right)),
+		_operand(Time, PlusTerm, oper(distribute, left)),
+		_activeChild(Time, PlusTerm, Term),
+		_childNum(PlusTerm, Term, ChildNum),
+		_tempChildNum(tempRoot, TempNode, ChildNum).
+% setup parent child links
+% TODO: simplify this, and comment more
+_holds(Time, _fact(tempRoot, _nodeField(activechild, Temp)))
+	:-	_holds(Time, _fact(Temp, _nodeField(active, yes))),
+		_validTempChildOf(tempRoot, Temp).
+% save result
+% TODO: refactor writing of binary op
+_writeBinaryOp(Time, Fst, Snd)
+	:-	_operand(Time, Fst, oper(distribute, left)),
+		_operand(Time, Snd, oper(distribute, right)).
+
 :- not _actionForTimeStep(_time(0,1), distribute).
 

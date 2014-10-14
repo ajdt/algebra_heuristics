@@ -64,9 +64,11 @@ _holds(initially, _fact(Child, _nodeField(active,yes)))
 	%%_isZero(Time, Denom).%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MISC GENERATION CONSTRAINTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% constraint: div node has at most 2 children
+%%% CONSTRAINT: div node has at most 2 children
 :- _isDiv(Time, Node), _activeChild(Time, Node, Child), _childNum(Node, Child, Num), Num >= 3.
-:- _isMono(Time, Mono), 0 { _degOf(Time, Mono, Deg) : _degree(Deg) } 0.
+_hasNoDeg(Time, Mono) :- _isMono(Time, Mono), 0 { _degOf(Time, Mono, Deg) : _degree(Deg) } 0.
+%%% CONSTRAINT: each monomial must have a degree term. NOTE: for some unknown reason, monomials without degree terms were being generated too
+:-	_validTime(Time), _isMono(Time, Mono), _hasNoDeg(Time, Mono).
 
 % monomial nodes must be leave nodes
 _isLeafNode(Time, Mono)
