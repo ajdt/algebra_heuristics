@@ -20,6 +20,13 @@ _operandNumer(Time, Numer, Operation)
 	:-	_operand(Time, Frac, Operation),
 		_numerOf(Time, Frac, Numer).
 
+% writing result of a binary operation
+% _writeBinaryOp/1. must be generated explicitly to write result as a binary operation
+_writeBinaryOp(Time, Fst, Snd)
+	:-	_operand(Time, Fst, oper(Operation, left)),
+		_operand(Time, Snd, oper(Operation, right)),
+		_writeBinaryOp(Time).
+
 
 %================================================================================
 % divIdentity: A / A ----> 1
@@ -61,9 +68,8 @@ _denomOfOperand(Time, Numer, Side)
 	:-	_operand(Time, Frac, oper(multFrac, Side)),
 		_denomOf(Time, Frac, Numer).
 
-_writeBinaryOp(Time, LeftFrac, RightFrac)
-	:-	_operand(Time, LeftFrac, oper(multFrac, left)),
-		_operand(Time, RightFrac, oper(multFrac, right)).
+_writeBinaryOp(Time)
+	:-	_actionForTimeStep(Time, multFrac).
 
 %================================================================================
 % fracDiv: a/c / b/d --> a/c * d/b
@@ -126,9 +132,8 @@ _monoOp(Time, tempRoot, LeftMono, RightMono, add)
 	:-	_operand(Time, LeftMono, oper(addMonom, left)),
 		_operand(Time, RightMono, oper(addMonom, right)).
 
-_writeBinaryOp(Time, LeftMono, RightMono)
-	:-	_operand(Time, LeftMono, oper(addMonom, left)),
-		_operand(Time, RightMono, oper(addMonom, right)).
+_writeBinaryOp(Time)
+	:-	_actionForTimeStep(Time, addMonom).
 
 %================================================================================
 % monomult (a + b ) * c --> a*c + b*c
@@ -145,9 +150,8 @@ _monoOp(Time, tempRoot, LeftMono, RightMono, mul)
 	:-	_operand(Time, LeftMono, oper(monoMult, left)),
 		_operand(Time, RightMono, oper(monoMult, right)).
 
-_writeBinaryOp(Time, LeftMono, RightMono)
-	:-	_operand(Time, LeftMono, oper(monoMult, left)),
-		_operand(Time, RightMono, oper(monoMult, right)).
+_writeBinaryOp(Time)
+	:-	_actionForTimeStep(Time, monoMult).
 
 %================================================================================
 % fracCancel A*B/C*B --> A/C
@@ -226,9 +230,8 @@ _deepCopy(Time, TempDenom, FstDenom)
 	:-	_tempChildNum(tempRoot, TempDenom, 2),
 		_operandDenom(Time, FstDenom, oper(addSameFrac, left)).
 % save result
-_writeBinaryOp(Time, Fst, Snd)
-	:-	_operand(Time, Fst, oper(addSameFrac, left)),
-		_operand(Time, Snd, oper(addSameFrac, right)).
+_writeBinaryOp(Time)
+	:-	_actionForTimeStep(Time, addSameFrac).
 	
 %================================================================================
 % addDiffFrac A/B + C/D --> (A*D+C*B)/B*D
@@ -266,9 +269,8 @@ _treeOp(Time, RootDenom, FstDenom, SndDenom, mul)
 		_operandDenom(Time, FstDenom, oper(addDiffFrac, left)),
 		_operandDenom(Time, SndDenom, oper(addDiffFrac, right)).
 % save result
-_writeBinaryOp(Time, Fst, Snd)
-	:-	_operand(Time, Fst, oper(addDiffFrac, left)),
-		_operand(Time, Snd, oper(addDiffFrac, right)).
+_writeBinaryOp(Time)
+	:-	_actionForTimeStep(Time, addDiffFrac).
 
 %================================================================================
 % distribute (a + b) * C --> (a*C + b*C)
@@ -282,23 +284,23 @@ _applicable(Time, _action(distribute, _data(PlusTerm, DistribTerm)))
 % every term in original plus node, is multiplied by distributed term
 _activateTempNode(Time, tempRoot, add)
 	:-	_actionForTimeStep(Time, distribute).
-% TODO: look @ grounding here!!
+
 _treeOp(Time, TempNode, Term, DistribTerm, mul)
 	:-	_operand(Time, DistribTerm, oper(distribute, right)),
 		_operand(Time, PlusTerm, oper(distribute, left)),
 		_activeChild(Time, PlusTerm, Term),
 		_childNum(PlusTerm, Term, ChildNum),
 		_tempChildNum(tempRoot, TempNode, ChildNum).
-% setup parent child links
-% TODO: simplify this, and comment more
+
+% setup parent child links 
+% NOTE: must be done explicitly b/c there may be gaps between active children
 _holds(Time, _fact(tempRoot, _nodeField(activechild, Temp)))
 	:-	_holds(Time, _fact(Temp, _nodeField(active, yes))),
 		_validTempChildOf(tempRoot, Temp).
 % save result
-% TODO: refactor writing of binary op
-_writeBinaryOp(Time, Fst, Snd)
-	:-	_operand(Time, Fst, oper(distribute, left)),
-		_operand(Time, Snd, oper(distribute, right)).
+_writeBinaryOp(Time)
+	:-	_actionForTimeStep(Time, distribute).
+
 
 :- not _actionForTimeStep(_time(0,1), distribute).
 
