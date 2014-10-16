@@ -73,7 +73,7 @@ _depthOfNode(Node, Layer)
 		:-	_layerOfNode(Node, Layer).
 % a node can only be a parent of nodes in succeeding layer
 
-% enforcing the valid child constraint
+% CONSTRAINT: enforcing the valid child constraint
 :- _holds(Time, _fact(Parent, _nodeField(activechild, Child))),
 	_node(Parent), _node(Child),
 	not _validChildOf(Parent, Child).
