@@ -312,6 +312,15 @@ _applicable(Time, _action(divByOne, _data(Fraction)))
 _deepCopy(Time, Fraction, Numer)
 	:-	_operand(Time, Fraction, oper(divByOne, left)),
 		_numerOf(Time, Fraction, Numer).
+%================================================================================
+% addZero A + 0 --> A
+%================================================================================
+_applicable(Time, _action(addZero, _data(Mono)))
+	:-	_isZero(Time, Mono),
+		_parentType(Time, Mono, add).
 
-:- not _actionForTimeStep(_time(0,1), divByOne).
+_cancelTerm(Time, ZeroTerm)
+	:-	_operand(Time, ZeroTerm, oper(addZero, left)).
+
+:- not _actionForTimeStep(_time(0,1), addZero).
 
