@@ -78,6 +78,30 @@ _hasCommonDeg(Time, Poly, Deg)
 	:-	_isPolynomial(Time, Poly),
 		_degree(Deg),
 		not _hasTermWithDegSmallerThan(Time, Poly, Deg).
+% coefficient factors
+_coeffFactorOf(Fst, Prod)
+	:-	_factors(Fst, Snd, Sum, Prod).
+_coeffFactorOf(Snd, Prod)
+	:-	_factors(Fst, Snd, Sum, Prod).
+
+_hasCommonCoeff(Time, Poly)
+	:-	_hasCommonCoeff(Time, Poly, Coeff).
+_hasCommonCoeff(Time, Poly, Coeff)
+	:-	_isPolynomial(Time, Poly),
+		_coeff(Coeff),
+		not _notCoeffFactorOfPoly(Time, Poly, Coeff).
+
+_notCoeffFactorOfPoly(Time, Poly, Coeff)
+	:-	_coeff(Coeff),
+		_polyHasTermWithCoeff(Time, Poly, MonoCoeff),
+		not _coeffFactorOf(Coeff, MonoCoeff).
+
+_polyHasTermWithCoeff(Time, Poly, Coeff)
+	:-	_isPolynomial(Time, Poly),
+		_activeChild(Time, Poly, Mono),
+		_coeffOf(Time, Mono, Coeff).
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Equality %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _equalCoeffs(Time, FstMono, SndMono)
 	:-	_coeffOf(Time, FstMono, Coeff),
