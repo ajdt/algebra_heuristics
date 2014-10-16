@@ -326,9 +326,36 @@ _cancelTerm(Time, ZeroTerm)
 % factorCommTerm:	(a*x^k + b*x^l ) --> (a*x^m + b*x^n ) * x^j
 %================================================================================
 _applicable(Time, _action(factorCommTerm, _data(Poly)))
-		:-	_isPolynomial(Time, Poly),
-			_hasCommonCoeff(Time, Poly),
-			_hasCommonDeg(Time, Poly).
+	:-	_isPolynomial(Time, Poly),
+		_hasCommonCoeff(Time, Poly),
+		_hasCommonDeg(Time, Poly).
 
+% select common term to factor our
+1 { _selectedCommonDeg(Time, Deg) : _hasCommonDeg(Time, Poly, Deg) } 1
+	:-	_operand(Time, Poly, oper(factorCommTerm, left)).
+1 { _selectedCommonCoeff(Time, Coeff) : _hasCommonCoeff(Time, Poly, Coeff) } 1
+	:-	_operand(Time, Poly, oper(factorCommTerm, left)).
+
+% setup correct tree structure
+_activateTempAndSetChildren(Time, tempRoot, mul, 2)
+	:-	_actionForTimeStep(Time, factorCommTerm).
+
+% save monomial that we factored out
+_activateTempNode(Time, TempRight, mono)
+	:-	_actionForTimeStep(Time, factorCommTerm),
+		_tempChildOnSide(tempRoot, TempRight, right).
+_addMonomToNode(Time, TempRight, Deg, Coeff)
+	:-	_actionForTimeStep(Time, factorCommTerm),
+		_tempChildOnSide(tempRoot, TempRight, right),
+		_selectedCommonDeg(Time, Deg),
+		_selectedCommonCoeff(Time, Coeff).
+% perform the division
+_deepCopy(Time, TempLeft, Poly)
+	:-	_actionForTimeStep(Time, factorCommTerm),
+		_tempChildOnSide(tempRoot, TempLeft, left),
+		_operand(Time, Poly, oper(factorCommTerm, left)).
+% save result
+_setResultTo(Time, Poly)
+	:-	_operand(Time, Poly, oper(factorCommTerm, left)).
 :- not _actionForTimeStep(_time(0,1), factorCommTerm).
 

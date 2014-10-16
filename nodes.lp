@@ -14,7 +14,7 @@
 % TODO: detect node overflow
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NODE LAYERS AND NODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _nodeLayer(1..numNodeLayers).
-_childrenForLayer(1, 4).	%(layer, count)
+_childrenForLayer(1, 3).	%(layer, count)
 _childrenForLayer(2, 3).
 _childrenForLayer(3, 3).
 _childrenForLayer(4, 2).
