@@ -322,5 +322,13 @@ _applicable(Time, _action(addZero, _data(Mono)))
 _cancelTerm(Time, ZeroTerm)
 	:-	_operand(Time, ZeroTerm, oper(addZero, left)).
 
-:- not _actionForTimeStep(_time(0,1), addZero).
+%================================================================================
+% factorCommTerm:	(a*x^k + b*x^l ) --> (a*x^m + b*x^n ) * x^j
+%================================================================================
+_applicable(Time, _action(factorCommTerm, _data(Poly)))
+		:-	_isPolynomial(Time, Poly),
+			_hasCommonCoeff(Time, Poly),
+			_hasCommonDeg(Time, Poly).
+
+:- not _actionForTimeStep(_time(0,1), factorCommTerm).
 
