@@ -27,6 +27,10 @@ _hasTermWithDegLargerThan(Time, Poly, FstDeg)
 	:-	_degree(FstDeg),
 		_polyHasTermWithDeg(Time, Poly, SndDeg),
 		FstDeg < SndDeg.
+_hasTermWithDegSmallerThan(Time, Poly, FstDeg)
+	:-	_degree(FstDeg),
+		_polyHasTermWithDeg(Time, Poly, SndDeg),
+		FstDeg > SndDeg.
 
 _notStandardPoly(Time, Poly)
 	:-	_isPolynomial(Time, Poly),
@@ -65,6 +69,15 @@ _isQuadratic(Time, Poly)
 	:-	_isPolynomial(Time, Poly),
 		_polyHasTermWithDeg(Time, Poly, 2),
 		not _hasTermWithDegLargerThan(Time, Poly, 2).
+
+% extracting a common term
+_hasCommonDeg(Time, Poly)
+	:-	_hasCommonDeg(Time, Poly, Deg).
+
+_hasCommonDeg(Time, Poly, Deg)
+	:-	_isPolynomial(Time, Poly),
+		_degree(Deg),
+		not _hasTermWithDegSmallerThan(Time, Poly, Deg).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Equality %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _equalCoeffs(Time, FstMono, SndMono)
 	:-	_coeffOf(Time, FstMono, Coeff),
