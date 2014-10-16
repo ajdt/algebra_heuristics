@@ -124,6 +124,11 @@ _siblings(Time, FstChild, SndChild)
 			FstChild != SndChild.
 
 % nodes equal to zero
+_isOne(Time, Node)
+	:-	_isMono(Time, Node),
+		_coeffOf(Time, Node, 1),
+		_degOf(Time, Node, 0).
+
 _isZero(Time, Node)
 		:-	_coeffOf(Time, Node, 0).
 _reducibleToZero(Time, Node)

@@ -302,5 +302,16 @@ _writeBinaryOp(Time)
 	:-	_actionForTimeStep(Time, distribute).
 
 
-:- not _actionForTimeStep(_time(0,1), distribute).
+%================================================================================
+% divByOne A/1 --> A
+%================================================================================
+_applicable(Time, _action(divByOne, _data(Fraction)))
+	:-	_denomOf(Time, Fraction, Denom),
+		_isOne(Time, Denom).
+
+_deepCopy(Time, Fraction, Numer)
+	:-	_operand(Time, Fraction, oper(divByOne, left)),
+		_numerOf(Time, Fraction, Numer).
+
+:- not _actionForTimeStep(_time(0,1), divByOne).
 
