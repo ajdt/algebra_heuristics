@@ -74,5 +74,8 @@ _hasNoDeg(Time, Mono) :- _isMono(Time, Mono), 0 { _degOf(Time, Mono, Deg) : _deg
 _isLeafNode(Time, Mono)
 	:-	_isMono(Time, Mono), 
 		0 { _activeChild(Time, Mono, Child) : _node(Child) } 0 .
-:-	_isMono(Time, Mono), 
+_monoHasChildren(Time, Mono)
+	:-	_isMono(Time, Mono), 
 	not _isLeafNode(Time, Mono).
+
+:- _monoHasChildren(Time, Mono).
