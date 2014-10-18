@@ -278,7 +278,6 @@ _writeBinaryOp(Time)
 _applicable(Time, _action(distribute, _data(PlusTerm, DistribTerm)))
 	:-	_siblings(Time, PlusTerm, DistribTerm),
 		_parentType(Time, PlusTerm, mul),
-		_isMono(Time, DistribTerm), % TODO: remove this later, used just to check correctness
 		_isAdd(Time, PlusTerm).
 
 % every term in original plus node, is multiplied by distributed term
@@ -376,7 +375,7 @@ _holds(Time, _fact(TempTerm, _nodeField(coeff, NewCoeff)))
 		_newMonoTerm(Time, TempTerm, Num),
 		_coeffOf(Time, Mono, MonoCoeff),
 		_selectedCommonCoeff(Time, CommonCoeff),
-		_coeffFactorsOf(CommonCoeff, NewCoeff, MonoCoeff).
+		_coeffFactorPairOf(CommonCoeff, NewCoeff, MonoCoeff).
 
 _holds(Time, _fact(TempTerm, _nodeField(degree, NewDeg)))
 	:-	_actionForTimeStep(Time, factorCommTerm),
