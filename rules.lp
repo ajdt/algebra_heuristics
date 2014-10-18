@@ -328,7 +328,9 @@ _cancelTerm(Time, ZeroTerm)
 _applicable(Time, _action(factorCommTerm, _data(Poly)))
 	:-	_isPolynomial(Time, Poly),
 		_hasCommonCoeff(Time, Poly),
-		_hasCommonDeg(Time, Poly).
+		_hasCommonDeg(Time, Poly),
+		_isZero(Time, leftSide),
+		_isPolynomial(Time, rightSide).
 
 % select common term to factor our
 1 { _selectedCommonDeg(Time, Deg) : _hasCommonDeg(Time, Poly, Deg) } 1
@@ -350,10 +352,43 @@ _addMonomToNode(Time, TempRight, Deg, Coeff)
 		_selectedCommonDeg(Time, Deg),
 		_selectedCommonCoeff(Time, Coeff).
 % perform the division
-_deepCopy(Time, TempLeft, Poly)
+_activateTempNode(Time, TempLeft, add)
+	:-	_actionForTimeStep(Time, factorCommTerm),
+		_tempChildOnSide(tempRoot, TempLeft, left).
+_originalMonoTerm(Time, Mono, Num)	% isolate monomial terms
+	:-	_operand(Time, Poly, oper(factorCommTerm, left)),
+		_activeChild(Time, Poly, Mono),
+		_childNum(Poly, Mono, Num).
+
+_holds(Time, _fact(TempLeft, _nodeField(activechild, TempChild)))
 	:-	_actionForTimeStep(Time, factorCommTerm),
 		_tempChildOnSide(tempRoot, TempLeft, left),
-		_operand(Time, Poly, oper(factorCommTerm, left)).
+		_originalMonoTerm(Time, Mono, Num),
+		_tempChildNum(TempLeft, TempChild, Num).
+_activateTempNode(Time, TempChild, mono)
+	:-	_actionForTimeStep(Time, factorCommTerm),
+		_tempChildOnSide(tempRoot, TempLeft, left),
+		_originalMonoTerm(Time, Mono, Num),
+		_tempChildNum(TempLeft, TempChild, Num).
+% set the new coeff and deg values
+_holds(Time, _fact(TempChild, _nodeField(coeff, NewCoeff)))
+	:-	_actionForTimeStep(Time, factorCommTerm),
+		_tempChildOnSide(tempRoot, TempLeft, left),
+		_originalMonoTerm(Time, Mono, Num),
+		_tempChildNum(TempLeft, TempChild, Num),
+		_coeffOf(Time, Mono, MonoCoeff),
+		_selectedCommonCoeff(Time, CommonCoeff),
+		NewCoeff = MonoCoeff/CommonCoeff.
+
+_holds(Time, _fact(TempChild, _nodeField(degree, NewDeg)))
+	:-	_actionForTimeStep(Time, factorCommTerm),
+		_tempChildOnSide(tempRoot, TempLeft, left),
+		_originalMonoTerm(Time, Mono, Num),
+		_tempChildNum(TempLeft, TempChild, Num),
+		_degOf(Time, Mono, MonoDeg),
+		_selectedCommonDeg(Time, CommonDeg),
+		NewDeg = MonoDeg - CommonDeg.
+
 % save result
 _setResultTo(Time, Poly)
 	:-	_operand(Time, Poly, oper(factorCommTerm, left)).

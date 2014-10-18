@@ -107,7 +107,8 @@ _isMono(Time, Node)
 		:-	_hasType(Time, Node, mono).
 _isOper(Time, Node)
 		:-	_isActive(Time, Node),
-			not _isMono(Time, Node).
+			_hasType(Time, Node, Type),
+			Type != mono.
 
 _parentType(Time, Child, Type)
 		:-	_activeChild(Time, Parent, Child),
