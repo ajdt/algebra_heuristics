@@ -328,9 +328,7 @@ _cancelTerm(Time, ZeroTerm)
 _applicable(Time, _action(factorCommTerm, _data(Poly)))
 	:-	_isPolynomial(Time, Poly),
 		_hasCommonCoeff(Time, Poly),
-		_hasCommonDeg(Time, Poly),
-		_isZero(Time, leftSide),
-		_isPolynomial(Time, rightSide).
+		_hasCommonDeg(Time, Poly).
 
 % select common term to factor our
 1 { _selectedCommonDeg(Time, Deg) : _hasCommonDeg(Time, Poly, Deg) } 1
@@ -391,5 +389,6 @@ _holds(Time, _fact(TempTerm, _nodeField(degree, NewDeg)))
 % save result
 _setResultTo(Time, Poly)
 	:-	_operand(Time, Poly, oper(factorCommTerm, left)).
+
 :- not _actionForTimeStep(_time(0,1), factorCommTerm).
 
