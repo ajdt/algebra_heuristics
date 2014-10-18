@@ -93,9 +93,11 @@ _simpleField(type;degree;coeff;active).
 % changes to node representation can be made easily.
 % node type
 _isActive(Time, Node)
-		:-	_holds(Time, _fact(Node, _nodeField(active, yes))).
+		:-	_holds(Time, _fact(Node, _nodeField(active, yes))),
+			_node(Node).
 _hasType(Time, Node, Type)
-		:-	_holds(Time, _fact(Node, _nodeField(type, Type))).
+		:-	_holds(Time, _fact(Node, _nodeField(type, Type))),
+			_node(Node).
 
 _isDiv(Time, Node)
 		:-	_hasType(Time, Node, div).
@@ -151,9 +153,11 @@ _hasNonZeroChild(Time, Node)
 					%%% node fields %%%
 % NOTE: monomials store degree and coeff info separately, to limit groundings when copying nodeFields
 _degOf(Time, Node, Deg)
-		:-	_holds(Time, _fact(Node, _nodeField(degree, Deg))).
+		:-	_holds(Time, _fact(Node, _nodeField(degree, Deg))),
+			_node(Node).
 _coeffOf(Time, Node, Coeff)
-		:-	_holds(Time, _fact(Node, _nodeField(coeff, Coeff))).
+		:-	_holds(Time, _fact(Node, _nodeField(coeff, Coeff))),
+			_node(Node).
 
 % NOTE: used for fraction cancel rule, not much else
 _factorOf(Time, Node, Child)
@@ -184,9 +188,6 @@ _holds(Time, _fact(Parent, _nodeField(numer, Child)))
 
 _holds(Time, _fact(Parent, _nodeField(denom, Child)))
 		:-	_denomOf(Time, Parent, Child).
-% TODO: for testing visualizer only, remove later
-_holds(_time(0,1), Fact)
-		:-	_holds(initially, Fact).
 
 _hasTwoTerms(Time, Node)
 		:-	_validTime(Time),
@@ -287,7 +288,8 @@ _copyAttributes(Time, Copy, Orig)
 _deepCopyChildren(Time, Copy, Orig)
 		:-	_deepCopy(Time, Copy, Orig).
 _clearNodeDeleteDescendants(Time, Copy)
-		:-	_deepCopy(Time, Copy, Orig).
+		:-	_deepCopy(Time, Copy, Orig),
+			_node(Copy).	% NOTE: temp nodes don't have to be cleared
 % copying attributes
 _introduce(Time, _fact(Copy, NodeFact))
 		:-	_copyAttributes(Time, Copy, Original),
@@ -444,4 +446,4 @@ _holds(Time, _fact(Temp, _nodeField(coeff, Coeff)))
 :- _insufficientNodesError.
 
 %%% CONSTRAINT: for some reason _hasType was not being generated for all nodes
-:-	_holds(Time, _fact(Node, _nodeField(type, Type))), not _hasType(Time, Node, Type).
+:-	_holds(Time, _fact(Node, _nodeField(type, Type))), not _hasType(Time, Node, Type), _node(Node).
