@@ -442,3 +442,6 @@ _holds(Time, _fact(Temp, _nodeField(coeff, Coeff)))
 		_coeff(Coeff).
 %%% CONSTRAINT: if we run out of nodes then fail
 :- _insufficientNodesError.
+
+%%% CONSTRAINT: for some reason _hasType was not being generated for all nodes
+:-	_holds(Time, _fact(Node, _nodeField(type, Type))), not _hasType(Time, Node, Type).
