@@ -376,7 +376,7 @@ _holds(Time, _fact(TempTerm, _nodeField(coeff, NewCoeff)))
 		_newMonoTerm(Time, TempTerm, Num),
 		_coeffOf(Time, Mono, MonoCoeff),
 		_selectedCommonCoeff(Time, CommonCoeff),
-		NewCoeff = MonoCoeff/CommonCoeff.
+		_coeffFactorsOf(CommonCoeff, NewCoeff, MonoCoeff).
 
 _holds(Time, _fact(TempTerm, _nodeField(degree, NewDeg)))
 	:-	_actionForTimeStep(Time, factorCommTerm),

@@ -79,9 +79,14 @@ _hasCommonDeg(Time, Poly, Deg)
 		_degree(Deg),
 		not _hasTermWithDegSmallerThan(Time, Poly, Deg).
 % coefficient factors
+% TODO: some of these coeffFactorOf predicates are redundant, remove them
 _coeffFactorOf(Fst, Prod)
 	:-	_factors(Fst, Snd, Sum, Prod).
 _coeffFactorOf(Snd, Prod)
+	:-	_factors(Fst, Snd, Sum, Prod).
+_coeffFactorsOf(Fst, Snd, Prod)
+	:-	_factors(Fst, Snd, Sum, Prod).
+_coeffFactorsOf(Snd, Fst, Prod)
 	:-	_factors(Fst, Snd, Sum, Prod).
 
 _hasCommonCoeff(Time, Poly)
