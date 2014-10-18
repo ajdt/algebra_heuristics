@@ -359,32 +359,31 @@ _originalMonoTerm(Time, Mono, Num)	% isolate monomial terms
 	:-	_operand(Time, Poly, oper(factorCommTerm, left)),
 		_activeChild(Time, Poly, Mono),
 		_childNum(Poly, Mono, Num).
+_newMonoTerm(Time, TempChild, Num)
+	:-	_tempChildOnSide(tempRoot, TempLeft, left),
+		_originalMonoTerm(Time, Mono, Num),
+		_tempChildNum(TempLeft, TempChild, Num).
 
-_holds(Time, _fact(TempLeft, _nodeField(activechild, TempChild)))
+_holds(Time, _fact(TempLeft, _nodeField(activechild, TempTerm)))
 	:-	_actionForTimeStep(Time, factorCommTerm),
 		_tempChildOnSide(tempRoot, TempLeft, left),
-		_originalMonoTerm(Time, Mono, Num),
-		_tempChildNum(TempLeft, TempChild, Num).
-_activateTempNode(Time, TempChild, mono)
+		_newMonoTerm(Time, TempTerm, Num).
+_activateTempNode(Time, TempTerm, mono)
 	:-	_actionForTimeStep(Time, factorCommTerm),
-		_tempChildOnSide(tempRoot, TempLeft, left),
-		_originalMonoTerm(Time, Mono, Num),
-		_tempChildNum(TempLeft, TempChild, Num).
+		_newMonoTerm(Time, TempTerm, Num).
 % set the new coeff and deg values
-_holds(Time, _fact(TempChild, _nodeField(coeff, NewCoeff)))
+_holds(Time, _fact(TempTerm, _nodeField(coeff, NewCoeff)))
 	:-	_actionForTimeStep(Time, factorCommTerm),
-		_tempChildOnSide(tempRoot, TempLeft, left),
 		_originalMonoTerm(Time, Mono, Num),
-		_tempChildNum(TempLeft, TempChild, Num),
+		_newMonoTerm(Time, TempTerm, Num),
 		_coeffOf(Time, Mono, MonoCoeff),
 		_selectedCommonCoeff(Time, CommonCoeff),
 		NewCoeff = MonoCoeff/CommonCoeff.
 
-_holds(Time, _fact(TempChild, _nodeField(degree, NewDeg)))
+_holds(Time, _fact(TempTerm, _nodeField(degree, NewDeg)))
 	:-	_actionForTimeStep(Time, factorCommTerm),
-		_tempChildOnSide(tempRoot, TempLeft, left),
 		_originalMonoTerm(Time, Mono, Num),
-		_tempChildNum(TempLeft, TempChild, Num),
+		_newMonoTerm(Time, TempTerm, Num),
 		_degOf(Time, Mono, MonoDeg),
 		_selectedCommonDeg(Time, CommonDeg),
 		NewDeg = MonoDeg - CommonDeg.
