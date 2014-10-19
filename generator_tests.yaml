@@ -1,0 +1,84 @@
+Definitions:
+    generator: {filename: eqn_generator.lp}
+    solver: {filename: eqn_solver.lp }
+
+Test equations exist:
+    Modules: generator
+    Expect: SAT
+
+Test should perform divIdent rule:
+    Modules: generator
+    Program: |
+        :- not _actionForTimeStep(_time(0,1), divIdent).
+    Expect: SAT
+
+Test should perform multFrac rule:
+    Modules: generator
+    Program: |
+        :- not _actionForTimeStep(_time(0,1), multFrac).
+    Expect: SAT
+
+Test should perform fracDiv rule:
+    Modules: generator
+    Program: |
+        :- not _actionForTimeStep(_time(0,1), fracDiv).
+    Expect: SAT
+
+Test should perform numerSimp rule:
+    Modules: generator
+    Program: |
+        :- not _actionForTimeStep(_time(0,1), numerSimp).
+    Expect: SAT
+
+Test should perform addMonom rule:
+    Modules: generator
+    Program: |
+        :- not _actionForTimeStep(_time(0,1), addMonom).
+    Expect: SAT
+
+Test should perform monoMult rule:
+    Modules: generator
+    Program: |
+        :- not _actionForTimeStep(_time(0,1), monoMult).
+    Expect: SAT
+
+Test should perform fracCancel rule:
+    Modules: generator
+    Program: |
+        :- not _actionForTimeStep(_time(0,1), fracCancel).
+    Expect: SAT
+
+Test should perform factor rule:
+    Modules: generator
+    Program: |
+        :- not _actionForTimeStep(_time(0,1), factor).
+    Expect: SAT
+
+Test should perform addSameFrac rule:
+    Modules: generator
+    Program: |
+        :- not _actionForTimeStep(_time(0,1), addSameFrac).
+    Expect: SAT
+
+Test should perform distribute rule:
+    Modules: generator
+    Program: |
+        :- not _actionForTimeStep(_time(0,1), distribute).
+    Expect: SAT
+
+Test should perform divByOne rule:
+    Modules: generator
+    Program: |
+        :- not _actionForTimeStep(_time(0,1), divByOne).
+    Expect: SAT
+Test should perform addZero rule:
+    Modules: generator
+    Program: |
+        :- not _actionForTimeStep(_time(0,1), addZero).
+    Expect: SAT
+Test should perform factorCommTerm rule:
+    Modules: generator
+    Program: |
+        :- not _actionForTimeStep(_time(0,1), factorCommTerm).
+    Expect: SAT
+
