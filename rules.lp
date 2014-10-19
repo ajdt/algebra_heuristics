@@ -389,5 +389,5 @@ _holds(Time, _fact(TempTerm, _nodeField(degree, NewDeg)))
 _setResultTo(Time, Poly)
 	:-	_operand(Time, Poly, oper(factorCommTerm, left)).
 
-:- not _actionForTimeStep(_time(0,1), factorCommTerm).
+%%:- not _actionForTimeStep(_time(0,1), factorCommTerm).%%
 
