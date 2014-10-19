@@ -8,6 +8,14 @@ _coeff(-1*maxCoeff..maxCoeff).
 _degree(0..maxDeg).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Polynomial Tree Structure %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+_isXTerm(Time, Node)
+	:-	_isMono(Time, Node),
+		_coeffOf(Time, Node, 1),
+		_degOf(Time, Node, 1).
+_isConstant(Time, Node)
+	:-	_isMono(Time, Node),
+		_degOf(Time, Node, 0).
+
 _isPolynomial(Time, Node)
 	:-	_isAdd(Time, Node),
 		not _hasNestedExpression(Time, Node).

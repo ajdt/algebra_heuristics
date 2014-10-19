@@ -90,14 +90,14 @@ _actionForTimeStep(Time, ActionName)
 		:-	_doAction(Time, _action(ActionName, Data)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% solvability constraints %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%[>:-	not _solved(Time), _stopTime(Time).<]%%
+% NOTE: all solvability constraints have x-term on leftSide
+% 		This is to avoid redundancy of producing results like x=4 and 4=x as two different answer sets
 
-%%_solved(Time)	% solved if x = constant%%
-	%%:-	_polyProperty(Time, leftSide, is_linear),%%
-		%%_polyProperty(Time, rightSide, is_const),%%
-		%%_polyOf(Time, leftSide, LeftPoly),%%
-		%%_linearCoeff(Time, LeftPoly, 1),%%
-		%%_constCoeff(Time, LeftPoly, 0).%%
+%%:-	not _solved(Time), _stopTime(Time).%%
+
+_solved(Time)	% solved if x = constant
+	:-	_isXTerm(Time, leftSide),
+		_isConstant(Time, rightSide).
 
 %%[>_solved(Time)	% solved if c = c<]%%
 	%%[>:-	_polyProperty(Time, leftSide, is_const),<]%%
