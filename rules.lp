@@ -390,4 +390,4 @@ _setResultTo(Time, Poly)
 	:-	_operand(Time, Poly, oper(factorCommTerm, left)).
 
 %%:- not _actionForTimeStep(_time(0,1), factorCommTerm).%%
-
+%%:- not usesAction(factor).%%

@@ -131,9 +131,22 @@ _isStdBinomial(Time, Poly)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 1-GRAM DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%_actionForTimeStream(Stream, Action)%%
-	%%:-	_actionForTimeStep(Time, Action),%%
-		%%_streamOf(Time, Stream).%%
+_actionForTimeStream(Stream, Action)
+	:-	_actionForTimeStep(Time, Action),
+		_streamOf(Time, Stream).
+_diffTimeStreams(Fst, Snd)
+	:-	_timeStream(Fst),
+		_timeStream(Snd),
+		Fst != Snd,
+		_actionForTimeStream(Fst, Action),
+		not _actionForTimeStream(Snd, Action).
+
+%%% CONSTRAINT: first time stream does not equal second
+:-	_timeStream(Fst),
+	_timeStream(Snd),
+	Fst != Snd,
+	not _diffTimeStreams(Fst, Snd).
+
 
 %%_actionOccursInOneTimeStream%%
 	%%:- _action(Action), 1 { _actionForTimeStream(Stream, Action) : _timeStream(Stream) } 1.%%
