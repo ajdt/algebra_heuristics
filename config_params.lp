@@ -25,7 +25,7 @@
 #const numNodeLayers 	=	maxDepth.
 
 % solver params
-#const maxSteps = 1.
+#const maxSteps = 2.
 #const maxNumStreams	= 1.
 #const minNumStreams	= 1.	% min number of distinct solutions problem must have
 
