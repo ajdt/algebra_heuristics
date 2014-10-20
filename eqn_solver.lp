@@ -167,9 +167,9 @@ _redundantStep(Fst)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NOPs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% CONSTRAINT: all NOPs must occur at the end%%
-%%:-	_nextTimeTick(FstTime, SndTime),%%
-	%%not _stepHasAction(FstTime),%%
-	%%_stepHasAction(SndTime).%%
+:-	_nextTimeTick(FstTime, SndTime),
+	not _stepHasAction(FstTime),
+	_stepHasAction(SndTime).
 
 
 % used for projection
