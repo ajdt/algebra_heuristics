@@ -141,29 +141,29 @@ _isStdBinomial(Time, Poly)
 %%:-	not _actionOccursInOneTimeStream.%%
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% AVOID REDUNDANT STEPS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%_stepHasAction(Time)%%
-	%%:-	_actionForTimeStep(Time, Name).%%
+_stepHasAction(Time)
+	:-	_actionForTimeStep(Time, Name).
 
-%%_sameTimeStream(Fst, Snd)%%
-	%%:-	_streamOf(Fst, Stream),%%
-		%%_streamOf(Snd, Stream),%%
-		%%Fst != Snd.%%
+_sameTimeStream(Fst, Snd)
+	:-	_streamOf(Fst, Stream),
+		_streamOf(Snd, Stream),
+		Fst != Snd.
 
-%%_unequal(Fst, Snd)%%
-	%%:-	_stepHasAction(Fst),%%
-		%%_stepHasAction(Snd),%%
-		%%Fst != Snd,%%
-		%%_sameTimeStream(Fst, Snd),%%
-		%%_holds(Fst, Fluent),%%
-		%%not _holds(Snd, Fluent).%%
-%%_redundantStep(Fst)%%
-	%%:-	_stepHasAction(Fst),%%
-		%%_stepHasAction(Snd),%%
-		%%Fst != Snd,%%
-		%%_sameTimeStream(Fst, Snd),%%
-		%%not _unequal(Fst, Snd).%%
+_unequalTimeSteps(Fst, Snd)
+	:-	_stepHasAction(Fst),
+		_stepHasAction(Snd),
+		Fst != Snd,
+		_sameTimeStream(Fst, Snd),
+		_holds(Fst, Fluent),
+		not _holds(Snd, Fluent).
+_redundantStep(Fst)
+	:-	_stepHasAction(Fst),
+		_stepHasAction(Snd),
+		Fst != Snd,
+		_sameTimeStream(Fst, Snd),
+		not _unequalTimeSteps(Fst, Snd).
 %%% CONSTRAINT: we should not have any redundant steps%%
-%%:- _redundantStep(Step).%%
+:- _redundantStep(Step).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NOPs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% CONSTRAINT: all NOPs must occur at the end%%
