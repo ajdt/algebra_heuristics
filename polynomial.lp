@@ -12,6 +12,11 @@ _isXTerm(Time, Node)
 	:-	_isMono(Time, Node),
 		_coeffOf(Time, Node, 1),
 		_degOf(Time, Node, 1).
+_hasXTerm(Time, Poly)
+	:-	_isPolynomial(Time, Poly),
+		_activeChild(Time, Poly, Child),
+		_isXTerm(Time, Child).
+
 _isConstant(Time, Node)
 	:-	_isMono(Time, Node),
 		_degOf(Time, Node, 0).
@@ -77,6 +82,10 @@ _isQuadratic(Time, Poly)
 	:-	_isPolynomial(Time, Poly),
 		_polyHasTermWithDeg(Time, Poly, 2),
 		not _hasTermWithDegLargerThan(Time, Poly, 2).
+_isLinear(Time, Poly)
+	:-	_isPolynomial(Time, Poly),
+		_polyHasTermWithDeg(Time, Poly, 1),
+		not _hasTermWithDegLargerThan(Time, Poly, 1).
 
 % extracting a common term
 _hasCommonDeg(Time, Poly)

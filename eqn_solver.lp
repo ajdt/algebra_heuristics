@@ -99,33 +99,35 @@ _solved(Time)	% solved if x = constant
 	:-	_isXTerm(Time, leftSide),
 		_isConstant(Time, rightSide).
 
+_solved(Time)	% solved if (x+c_1) * (x + c_2) ... = 0 
+	:-	_isProductOfLinearBinomials(Time, leftSide),
+		_isZero(Time, rightSide).
+
 %%[>_solved(Time)	% solved if c = c<]%%
 	%%[>:-	_polyProperty(Time, leftSide, is_const),<]%%
 		%%[>_polyProperty(Time, rightSide, is_const),<]%%
 		%%[>_equal(Time, leftSide, rightSide).<]%%
-%%_solved(Time)	% solved if (x+c_1) * (x + c_2) ... = 0 %%
-	%%:-	_isProductOfLinearBinomials(Time, leftSide),%%
-		%%_polyProperty(Time, rightSide, is_const),%%
-		%%_polyProperty(Time, rightSide, is_zero).%%
-%%_solved(SndTime)%%
-	%%:-	_solved(FstTime),%%
-		%%_nextTimeTick(FstTime, SndTime),%%
-		%%not _stepHasAction(FstTime).%%
 
-%%% NOTE: defining product of linear binomials only for leftSide b/c%%
-%%% it won't be used elsewhere%%
-%%_isProductOfLinearBinomials(Time, leftSide)%%
-	%%:-	_isMul(Time, leftSide),%%
-		%%not _hasNonBinomialChild(Time, leftSide).%%
+_solved(SndTime)
+	:-	_solved(FstTime),
+		_nextTimeTick(FstTime, SndTime),
+		not _stepHasAction(FstTime).
 
-%%_hasNonBinomialChild(Time, leftSide)%%
-	%%:-	_childOf(Time, leftSide, Child),%%
-		%%not _polyProperty(Time, Child, is_std_binomial).%%
+% NOTE: defining product of linear binomials only for leftSide b/c
+% it won't be used elsewhere
+_isProductOfLinearBinomials(Time, leftSide)
+	:-	_isMul(Time, leftSide),
+		not _hasNonBinomialChild(Time, leftSide).
 
-%%_polyProperty(Time, Poly, is_std_binomial)%%
-	%%:-	_activePoly(Time, Poly),%%
-		%%_polyProperty(Time, Poly, is_linear),%%
-		%%_linearCoeff(Time, Poly, 1).%%
+_hasNonBinomialChild(Time, leftSide)
+	:-	_activeChild(Time, leftSide, Child),
+		not _isStdBinomial(Time, Child).
+
+% NOTE: x + 4x, will count as std binomial, it shouldn't count
+_isStdBinomial(Time, Poly)	
+	:-	_isPolynomial(Time, Poly), 
+		_hasXTerm(Time, Poly),
+		_isLinear(Time, Poly).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 1-GRAM DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
