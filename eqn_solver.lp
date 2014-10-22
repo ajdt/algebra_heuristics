@@ -188,3 +188,5 @@ _redundantStep(Fst)
 % used for projection
 usesAction(Time, Name)
 	:-	_actionForTimeStep(Time, Name).
+%%% Constraint: if a denominator is reducible to zero, then fail
+:- _reducibleToZero(Time, Node), _denomOf(Time, Frac, Node).
