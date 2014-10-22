@@ -396,5 +396,8 @@ _applicable(Time, _action(multByZero, _data(ZeroTerm)))
 	:-	_isZero(Time, ZeroTerm),
 		_parentType(Time, ZeroTerm, mul).
 
+_setToZero(Time, Parent)
+	:-	_operand(Time, ZeroTerm, oper(multByZero, left)),
+		_activeChild(Time, Parent, ZeroTerm).
 :- not _actionForTimeStep(_time(0,1), multByZero).
 %%:- not usesAction(factor).%%
