@@ -389,5 +389,12 @@ _holds(Time, _fact(TempTerm, _nodeField(degree, NewDeg)))
 _setResultTo(Time, Poly)
 	:-	_operand(Time, Poly, oper(factorCommTerm, left)).
 
-%%:- not _actionForTimeStep(_time(0,1), factorCommTerm).%%
+%================================================================================
+% factorCommTerm:	(a*x^k + b*x^l ) --> (a*x^m + b*x^n ) * x^j
+%================================================================================
+_applicable(Time, _action(multByZero, _data(ZeroTerm)))
+	:-	_isZero(Time, ZeroTerm),
+		_parentType(Time, ZeroTerm, mul).
+
+:- not _actionForTimeStep(_time(0,1), multByZero).
 %%:- not usesAction(factor).%%

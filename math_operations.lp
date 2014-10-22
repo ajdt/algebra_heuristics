@@ -7,6 +7,16 @@ _introduce(Time, Node, coeff, 1)
 	:-	_setToOne(Time, Node).
 _introduce(Time, Node, degree, 0)
 	:-	_setToOne(Time, Node).
+
+% set to zero
+_clearNodeDeleteDescendants(Time, Node)
+	:-	_setToZero(Time, Node).
+_setNodeType(Time, Node, mono)
+	:-	_setToZero(Time, Node).
+_introduce(Time, Node, coeff, 0)
+	:-	_setToZero(Time, Node).
+_introduce(Time, Node, degree, 0)
+	:-	_setToZero(Time, Node).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SETTING RESULT OF BINARY OPERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % XXX: assumes each time step we're setting only using setResultTo(...) at most once

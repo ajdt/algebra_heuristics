@@ -60,8 +60,8 @@ _holds(initially, _fact(Child, _nodeField(active,yes)))
 		:-	_isMono(initially, Node).
 					
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREVENTING ZERO DENOMINATORS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%:-	_denomOf(Time, Frac, Denom),%%
-	%%_isZero(Time, Denom).%%
+%%% Constraint: if a denominator is reducible to zero, then fail
+:- _reducibleToZero(Time, Node), _denomOf(Time, Frac, Node).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MISC GENERATION CONSTRAINTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% CONSTRAINT: div node has at most 2 children
