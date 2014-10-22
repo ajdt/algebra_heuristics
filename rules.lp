@@ -138,7 +138,6 @@ _writeBinaryOp(Time)
 %================================================================================
 % monomult (a + b ) * c --> a*c + b*c
 %================================================================================
-% contains as special case:		multIdentity: a*x^b * 1 ----> a*x^b 
 _applicable(Time, _action(monoMult, _data(LeftMono, RightMono)))
 	:-	_siblings(Time, LeftMono, RightMono),
 		_isMono(Time, LeftMono),
@@ -390,7 +389,7 @@ _setResultTo(Time, Poly)
 	:-	_operand(Time, Poly, oper(factorCommTerm, left)).
 
 %================================================================================
-% factorCommTerm:	(a*x^k + b*x^l ) --> (a*x^m + b*x^n ) * x^j
+% multByZero:	A*0 --> 0
 %================================================================================
 _applicable(Time, _action(multByZero, _data(ZeroTerm)))
 	:-	_isZero(Time, ZeroTerm),
@@ -399,5 +398,15 @@ _applicable(Time, _action(multByZero, _data(ZeroTerm)))
 _setToZero(Time, Parent)
 	:-	_operand(Time, ZeroTerm, oper(multByZero, left)),
 		_activeChild(Time, Parent, ZeroTerm).
-:- not _actionForTimeStep(_time(0,1), multByZero).
-%%:- not usesAction(factor).%%
+
+%================================================================================
+% multIdentity:	A*1 --> A
+%================================================================================
+_applicable(Time, _action(multIdentity, _data(UnitTerm)))
+	:-	_isOne(Time, UnitTerm),
+		_parentType(Time, UnitTerm, mul).
+_cancelTerm(Time, UnitTerm)
+	:-	_operand(Time, UnitTerm, oper(multIdentity, left)).
+
+:- not _actionForTimeStep(_time(0,1), multIdentity).
+
