@@ -450,7 +450,8 @@ _applicable(Time, _action(addMonoToEqn, _data(leftSide, rightSide)))
 	:-	_actionForTimeStep(Time, addMonoToEqn).
 
 _eqnMonoOp(Time, Coeff, Deg, add)
-	:-	_selectedDeg(Time, Deg),
+	:-	_actionForTimeStep(Time, addMonoToEqn),
+		_selectedDeg(Time, Deg),
 		_selectedCoeff(Time, Coeff).
 
 % save the results
@@ -459,6 +460,28 @@ _deepCopy(Time, leftSide, tempRoot)
 _deepCopy(Time, rightSide, tempRightRoot)
 	:-	_actionForTimeStep(Time, addMonoToEqn).
 
+%================================================================================
+% multEqnWithMono:	A = B --> A * e = B * e
+%================================================================================
+_applicable(Time, _action(multEqnWithMono, _data(leftSide, rightSide)))
+	:-	_validTime(Time).	
 
-:- not _actionForTimeStep(_time(0,1), addMonoToEqn).
+% select an arbitrary degree and coefficient
+1 { _selectedDeg(Time, Deg) : _degree(Deg) } 1
+	:-	_actionForTimeStep(Time, multEqnWithMono).
+1 { _selectedCoeff(Time, Coeff) : _coeff(Coeff) } 1
+	:-	_actionForTimeStep(Time, multEqnWithMono).
+
+_eqnMonoOp(Time, Coeff, Deg, mul)
+	:-	_actionForTimeStep(Time, multEqnWithMono),
+		_selectedDeg(Time, Deg),
+		_selectedCoeff(Time, Coeff).
+
+% save the results
+_deepCopy(Time, leftSide, tempRoot)
+	:-	_actionForTimeStep(Time, multEqnWithMono).
+_deepCopy(Time, rightSide, tempRightRoot)
+	:-	_actionForTimeStep(Time, multEqnWithMono).
+
+:- not _actionForTimeStep(_time(0,1), multEqnWithMono).
 
