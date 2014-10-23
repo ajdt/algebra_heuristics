@@ -437,5 +437,28 @@ _treeOp(Time, TempNode, Denom, Poly, mul)
 _setResultTo(Time, Fraction)
 	:-	_operand(Time, Fraction, oper(multNumerAndDenom, left)).
 
-:- not _actionForTimeStep(_time(0,1), multNumerAndDenom).
+%================================================================================
+% addMonoToEqn:	A = B --> A + e = B + e
+%================================================================================
+_applicable(Time, _action(addMonoToEqn, _data(leftSide, rightSide)))
+	:-	_validTime(Time).	
+
+% select an arbitrary degree and coefficient
+1 { _selectedDeg(Time, Deg) : _degree(Deg) } 1
+	:-	_actionForTimeStep(Time, addMonoToEqn).
+1 { _selectedCoeff(Time, Coeff) : _coeff(Coeff) } 1
+	:-	_actionForTimeStep(Time, addMonoToEqn).
+
+_eqnMonoOp(Time, Coeff, Deg, add)
+	:-	_selectedDeg(Time, Deg),
+		_selectedCoeff(Time, Coeff).
+
+% save the results
+_deepCopy(Time, leftSide, tempRoot)
+	:-	_actionForTimeStep(Time, addMonoToEqn).
+_deepCopy(Time, rightSide, tempRightRoot)
+	:-	_actionForTimeStep(Time, addMonoToEqn).
+
+
+:- not _actionForTimeStep(_time(0,1), addMonoToEqn).
 
