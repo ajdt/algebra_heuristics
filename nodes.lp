@@ -346,12 +346,18 @@ _deepCopy(Time, CopyChild, OrigChild) % NOTE: necessary for copying from regular
 
 % detecting insufficient nodes: 
 % TODO: copying code has gotten too complex, simplify it
-_insufficientNodesError
+_insufficientNodesError % copying from tempnode to regular node
 		:-	_deepCopyChildren(Time, Copy, Original),
 			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
 			_tempChildNum(Original, OrigChild, ChildNum),
 			_maxNumChildren(Copy, MaxNumKids),
 			ChildNum > MaxNumKids.
+_insufficientNodesError	% copying from original node to temp node 
+		:-	_deepCopyChildren(Time, Copy, Original),
+			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
+			_childNum(Original, OrigChild, ChildNum),
+			_maxNumTempChildren(Copy, MaxNumTempKids),
+			ChildNum > MaxNumTempKids.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TEMPNODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: predicates for temp Nodes are different to make clear when we're
 % talking about temp nodes.

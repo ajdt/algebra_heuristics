@@ -149,3 +149,41 @@ _degOverflow
 		_monoOpDeg(Time, Dest, SndDeg, right),
 		DegSum = FstDeg + SndDeg,
 		not _degree(DegSum).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% eqn operations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TODO: not sure if this will need to be generalized 
+
+% define the left and right temp roots
+_tempEqnRoot(tempRoot;tempRightRoot).	
+
+% NOTE: eqnMonoOps are operations where a new mono is introduced across an equation
+% NOTE: Op should be one of: add, mul, div
+_eqnMonoOp(Time, Op)
+	:-	_eqnMonoOp(Time, Coeff, Deg, Op).
+
+% set each side's temp root node to appropriate operator
+_activateTempAndSetChildren(Time, TempRoot, Op, 2)
+	:-	_eqnMonoOp(Time, Op),
+		_tempEqnRoot(TempRoot).
+
+% copy root node to be the left child of temproot
+_deepCopy(Time, LeftChild, Root)
+	:-	_eqnMonoOp(Time, Op),
+		_rootNode(Root),
+		_matchingTempNode(Root, TempRoot),
+		_tempChildOnSide(TempRoot, LeftChild, left).
+	
+% set the other child to a monomial
+_activateTempNode(Time, RightChild, mono)
+	:-	_eqnMonoOp(Time, Op),
+		_rootNode(Root),
+		_matchingTempNode(Root, TempRoot),
+		_tempChildOnSide(TempRoot, RightChild, right).
+
+% NOTE: if necessary we can add coeff/deg separately to decrease grounding
+_addMonomToNode(Time, RightChild, Deg, Coeff)
+	:-	_eqnMonoOp(Time, Coeff, Deg, Op),
+		_rootNode(Root),
+		_matchingTempNode(Root, TempRoot),
+		_tempChildOnSide(TempRoot, RightChild, right).
+		
