@@ -411,9 +411,31 @@ _cancelTerm(Time, UnitTerm)
 %================================================================================
 % multNumerAndDenom:	A/B --> (A*C)/(B*C)
 %================================================================================
+% NOTE: This rule requres max tree depth to be at least 4, otherwise the generated
+% expression is to large and we get a node overflow
 _applicable(Time, _action(multNumerAndDenom, _data(Fraction, Poly)))
 	:-	_isDiv(Time, Fraction),
 		_isPolynomial(Time, Poly).
+
+% set root to div
+_activateTempAndSetChildren(Time, tempRoot, div, 2)
+	:-	_actionForTimeStep(Time, multNumerAndDenom).
+
+% multiply numer
+_treeOp(Time, TempNode, Numer, Poly, mul)
+	:-	_operandNumer(Time, Numer, oper(multNumerAndDenom, left)),
+		_operand(Time, Poly, oper(multNumerAndDenom, right)),
+		_tempChildOnSide(tempRoot, TempNode, left).
+
+% multiply denom
+_treeOp(Time, TempNode, Denom, Poly, mul)
+	:-	_operandDenom(Time, Denom, oper(multNumerAndDenom, left)),
+		_operand(Time, Poly, oper(multNumerAndDenom, right)),
+		_tempChildOnSide(tempRoot, TempNode, right).
+
+% save the result
+_setResultTo(Time, Fraction)
+	:-	_operand(Time, Fraction, oper(multNumerAndDenom, left)).
 
 :- not _actionForTimeStep(_time(0,1), multNumerAndDenom).
 
