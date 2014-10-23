@@ -23,6 +23,7 @@ _childrenForLayer(4, 2).
 #const rightSide		= _id(1,2).	
 #const leftSide 		= _id(1,1).
 #const tempRoot			= _temp(_id(1,1)).
+#const tempRightRoot	= _temp(_id(1,2)).
 
 % define nodes based on layers and nodes in each layer
 _rootNode(rightSide;leftSide).
@@ -354,6 +355,8 @@ _insufficientNodesError
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TEMPNODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: predicates for temp Nodes are different to make clear when we're
 % talking about temp nodes.
+_matchingTempNode(Node, _temp(Node))
+	:-	_node(Node).
 _tempNode(_temp(Node))
 		:-	_node(Node).
 _layerOfTempNode(_temp(Node), Layer)
