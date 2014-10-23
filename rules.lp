@@ -408,5 +408,12 @@ _applicable(Time, _action(multIdentity, _data(UnitTerm)))
 _cancelTerm(Time, UnitTerm)
 	:-	_operand(Time, UnitTerm, oper(multIdentity, left)).
 
-:- not _actionForTimeStep(_time(0,1), multIdentity).
+%================================================================================
+% multNumerAndDenom:	A/B --> (A*C)/(B*C)
+%================================================================================
+_applicable(Time, _action(multNumerAndDenom, _data(Fraction, Poly)))
+	:-	_isDiv(Time, Fraction),
+		_isPolynomial(Time, Poly).
+
+:- not _actionForTimeStep(_time(0,1), multNumerAndDenom).
 
