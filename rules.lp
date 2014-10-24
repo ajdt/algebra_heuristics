@@ -321,6 +321,45 @@ _cancelTerm(Time, ZeroTerm)
 	:-	_operand(Time, ZeroTerm, oper(addZero, left)).
 
 %================================================================================
+% factorMonom:	ax^k  --> bx^m * cx^n 
+%================================================================================
+% NOTE: this is the same rule as factorCommTerm, except written specifically for monomials
+_applicable(Time, _action(factorMonom, _data(Mono)))
+	:-	_isMono(Time, Mono),
+		not _isOne(Time, Mono),
+		not _isZero(Time, Mono).
+% select coefficient factors,
+1 { _selectedCoeffFactors(Time, FstFactor, SndFactor) 
+		: _factors(FstFactor, SndFactor, FactorSum, Coeff) } 1
+	:-	_operand(Time, Mono, oper(factorMonom, left)),
+		_coeffOf(Time, Mono, Coeff).
+% select degree factors
+1 { _selectedDegDecomposition(Time, Fst, Snd) 
+		: _degree(Fst), _degree(Snd),
+			MonoDeg = Fst + Snd } 1
+	:-	_operand(Time, Mono, oper(factorMonom, left)),
+		_degOf(Time, Mono, MonoDeg).
+% form product of monomials (careful with code reuse here!!)
+_activateTempAndSetChildren(Time, tempRoot, mul, 2)
+	:-	_actionForTimeStep(Time, factorMonom).
+_activateTempNode(Time, Child, mono)
+	:-	_actionForTimeStep(Time, factorMonom),
+		_tempChildOnSide(tempRoot, Child, Side).
+_addMonomToNode(Time, LeftChild, FstDeg, FstCoeff)
+	:-	_actionForTimeStep(Time, factorMonom),
+		_tempChildOnSide(tempRoot, LeftChild, left),
+		_selectedCoeffFactors(Time, FstCoeff, SndCoeff),
+		_selectedDegDecomposition(Time, FstDeg, SndDeg).
+_addMonomToNode(Time, RightChild, SndDeg, SndCoeff)
+	:-	_actionForTimeStep(Time, factorMonom),
+		_tempChildOnSide(tempRoot, RightChild, right),
+		_selectedCoeffFactors(Time, FstCoeff, SndCoeff),
+		_selectedDegDecomposition(Time, FstDeg, SndDeg).
+% save result 
+_setResultTo(Time, Mono)
+	:-	_operand(Time, Mono, oper(factorMonom, left)).
+
+%================================================================================
 % factorCommTerm:	(a*x^k + b*x^l ) --> (a*x^m + b*x^n ) * x^j
 %================================================================================
 _applicable(Time, _action(factorCommTerm, _data(Poly)))
@@ -483,5 +522,5 @@ _deepCopy(Time, leftSide, tempRoot)
 _deepCopy(Time, rightSide, tempRightRoot)
 	:-	_actionForTimeStep(Time, multEqnWithMono).
 
-:- not _actionForTimeStep(_time(0,1), multEqnWithMono).
+:- not _actionForTimeStep(_time(0,1), factorMonom).
 
