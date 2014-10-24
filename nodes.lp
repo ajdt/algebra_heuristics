@@ -81,6 +81,7 @@ _depthOfNode(Node, Layer)
 
 %  types of nodeField fields
 _type(div;mul;add;mono).
+_commutatitve(mul;add).
 _pointerField(activechild).
 % for lack of a better name, simple facts are safe to make shallow copies of
 _simpleField(type;degree;coeff;active). 
@@ -126,6 +127,10 @@ _siblings(Time, FstChild, SndChild)
 		:-	_activeChild(Time, Parent, FstChild),
 			_activeChild(Time, Parent, SndChild),
 			FstChild != SndChild.
+_swappableTerms(Time, Fst, Snd)
+		:-	_siblings(Time, Fst, Snd),
+			_parentType(Time, Fst, Type),
+			_commutatitve(Type).
 
 % nodes equal to zero
 _isOne(Time, Node)
