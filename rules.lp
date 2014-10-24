@@ -31,6 +31,7 @@ _writeBinaryOp(Time, Fst, Snd)
 %================================================================================
 % divIdentity: A / A ----> 1
 %================================================================================
+% NOTE: applicable only to subtrees over which equality is defined
 _applicable(Time, _action(divIdent, _data(Fraction)))
 	:-	_isDiv(Time, Fraction),
 		_numerOf(Time, Fraction, Numer),
@@ -118,7 +119,8 @@ _setResultTo(Time, leftSide)
 %================================================================================
 % addMonom: a*x^b + c*x^b ----> (a+c)*x^b
 %================================================================================
-% contains as a special case:		addIdentity: a*x^b + 0 ----> a*x^b 
+% TODO: contains as a special case:		addIdentity: a*x^b + 0 ----> a*x^b 
+% is this problematic?
 
 _applicable(Time, _action(addMonom, _data(LeftMono, RightMono)))
 	:-	_siblings(Time, LeftMono, RightMono),
@@ -136,7 +138,7 @@ _writeBinaryOp(Time)
 	:-	_actionForTimeStep(Time, addMonom).
 
 %================================================================================
-% monomult (a + b ) * c --> a*c + b*c
+% monomult ax^b  * cx^d --> (a*c)x^(b+d)
 %================================================================================
 _applicable(Time, _action(monoMult, _data(LeftMono, RightMono)))
 	:-	_siblings(Time, LeftMono, RightMono),
@@ -155,6 +157,7 @@ _writeBinaryOp(Time)
 %================================================================================
 % fracCancel A*B/C*B --> A/C
 %================================================================================
+% NOTE: relies on equal/3 predicate to work
 _applicable(Time, _action(fracCancel, _data(FstNode, SndNode)))
 	:-	_haveCommonFactors(Time, FstNode, SndNode),
 		_siblings(Time, FstNode, SndNode),
@@ -176,8 +179,10 @@ _cancelTerm(Time, Snd)
 	:-	_factorsToCancel(Time, Fst, Snd).
 
 %================================================================================
-% factor (ax^2 + bx + c) --> (x + e) * (x + d)
+% factor (x^2 + bx + c) --> (x + e) * (x + d)
 %================================================================================
+% NOTE: squared term must have coeff 1, divide by constant my be required to reach 
+% this form
 _applicable(Time, _action(factor, _data(Node)))
 	:-	_isPolynomial(Time, Node),
 		_isQuadratic(Time, Node),
@@ -210,6 +215,7 @@ _setResultTo(Time, Poly)
 %================================================================================
 % addSameFrac A/B + C/B --> (A+C)/B
 %================================================================================
+% NOTE: _sameDenom depends on equals/3 predicate (which applies only to monomials)
 _applicable(Time, _action(addSameFrac, _data(Fst, Snd)))
 	:-	_siblings(Time, Fst, Snd),
 		_sameDenom(Time, Fst, Snd),
@@ -235,6 +241,8 @@ _writeBinaryOp(Time)
 %================================================================================
 % addDiffFrac A/B + C/D --> (A*D+C*B)/B*D
 %================================================================================
+% NOTE: requires max depth of allowable expression trees to be at least 4 
+% NOTE: also dependent on equal/3 predicate
 _applicable(Time, _action(addDiffFrac, _data(Fst, Snd)))
 	:-	_siblings(Time, Fst, Snd),
 		_isDiv(Time, Fst),
@@ -451,7 +459,9 @@ _cancelTerm(Time, UnitTerm)
 % multNumerAndDenom:	A/B --> (A*C)/(B*C)
 %================================================================================
 % NOTE: This rule requres max tree depth to be at least 4, otherwise the generated
-% expression is to large and we get a node overflow
+% expression is too large and we get a node overflow.
+% Additionally, we can only multiply expression by a polynomial expression already existing
+% somewhere in the equation
 _applicable(Time, _action(multNumerAndDenom, _data(Fraction, Poly)))
 	:-	_isDiv(Time, Fraction),
 		_isPolynomial(Time, Poly).
