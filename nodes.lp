@@ -7,7 +7,7 @@
 % Nodes are grouped into layers, with the number of layers determined by the
 % maximum tree depth allowed. There are two nodes in the first layer,
 % nodes of each layer are assigned a specific number of children
-% (see childrenAtDepth predicate).
+% (see maxChildrenAtDepth predicate).
 % 
 %
 
@@ -16,11 +16,11 @@
 _depthValue(1..maxDepth).
 
 _childCount(2..maxChildren).	% childCount defines upper and lower limit on number of children allowable
-								% childrenAtDepth defines a more constraining upper limit depending on node depth
-_childrenAtDepth(1, 3).	%(depth, numChildren)
-_childrenAtDepth(2, 3).
-_childrenAtDepth(3, 3).
-_childrenAtDepth(4, 2).
+								% maxChildrenAtDepth defines a more constraining upper limit depending on node depth
+_maxChildrenAtDepth(1, 3).	%(depth, numChildren)
+_maxChildrenAtDepth(2, 3).
+_maxChildrenAtDepth(3, 3).
+_maxChildrenAtDepth(4, 2).
 
 % define left and right sides of eqn 
 #const rightSide		= _id(1,2).	
@@ -28,26 +28,29 @@ _childrenAtDepth(4, 2).
 #const tempRoot			= _temp(_id(1,1)).
 #const tempRightRoot	= _temp(_id(1,2)).
 
-% define nodes based on layers and nodes in each layer
-_rootNode(rightSide;leftSide).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DECLARING NODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTE: _id(...) should not be referenced outside of this code!!
+_rootNode(rightSide;leftSide).	% right and left side nodes explicitly declared. 
+								% Remaining nodes generated as children of existing nodes
 _node(Node) 
 		:-	_rootNode(Node).
+
+% defining node properties
 _nodeDepth(_id(Depth, Number), Depth)
 		:-	_node(_id(Depth, Number)).
 _numberOfNode(_id(Depth, Number), Number)
 		:-	_node(_id(Depth, Number)).
 
-% number of children a node may have (varies by node depth)
 _maxNumChildren(Node, NumChildren)
-		:-	_childrenAtDepth(Depth, NumChildren),
+		:-	_maxChildrenAtDepth(Depth, NumChildren),
 			_nodeDepth(Node, Depth),
 			Depth < maxDepth.
 _maxNumChildren(Node, 0)	% leaf nodes don't have children
 		:-	_nodeDepth(Node, Depth),
 			Depth == maxDepth.
 
-% TODO: don't like the way nodes are defined 
-_childNum(Node, NewNode, ChildNum)
+% generate children for internal nodes, if they have any
+_childNum(Node, NewNode, ChildNum) % (Parent, ChildNode, NumberOfChildNode)
 		:-	_node(Node),
 			_maxNumChildren(Node, NumChildren),
 			_nodeDepth(Node, Depth),
@@ -57,21 +60,20 @@ _childNum(Node, NewNode, ChildNum)
 			NewDepth <= maxDepth,
 			ChildNum = 1..NumChildren,
 			ChildID =(NodeNum - 1)*NumChildren + ChildNum.
+_validChildOf(Parent, Child) 
+		:-	_childNum(Parent, Child, ChildNum).
+_node(Child)	% declare children as nodes in their own right
+		:-	_validChildOf(Parent, Child).
+
 % useful aliases for first two children
 _childOnSide(Node, Child, left)
 	:-	_childNum(Node, Child, 1).
 _childOnSide(Node, Child, right)
 	:-	_childNum(Node, Child, 2).
 
-_validChildOf(Parent, Child) 
-		:-	_childNum(Parent, Child, ChildNum).
-_node(Child)
-		:-	_validChildOf(Parent, Child).
 
-% NOTE: _id(...) should not be referenced outside of this code!!
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NODE PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% a node can only be a parent of nodes in succeeding layer
-
 % CONSTRAINT: enforcing the valid child constraint
 :- _holds(Time, _fact(Parent, _nodeField(activechild, Child))),
 	_node(Parent), _node(Child),
