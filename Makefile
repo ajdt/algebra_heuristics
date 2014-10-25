@@ -21,4 +21,5 @@ ground:
 	clingo $(GEN) --text  > $(GROUNDFILE)
 prof: 
 	cat $(GROUNDFILE) | cut -c 1-10 | sort | uniq -c | sort -nr > $(PROFILE)
-
+test:
+	python -m ansunit generator_tests.yaml

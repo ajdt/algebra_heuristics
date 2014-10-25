@@ -12,8 +12,11 @@
 %
 
 % TODO: detect node overflow
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NODE DEPTH AND NODE GENERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NODE DEPTH, CHILDREN AND NODE GENERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _depthValue(1..maxDepth).
+
+_childCount(2..maxChildren).	% childCount defines upper and lower limit on number of children allowable
+								% childrenAtDepth defines a more constraining upper limit depending on node depth
 _childrenAtDepth(1, 3).	%(depth, numChildren)
 _childrenAtDepth(2, 3).
 _childrenAtDepth(3, 3).
@@ -42,9 +45,6 @@ _maxNumChildren(Node, NumChildren)
 _maxNumChildren(Node, 0)	% leaf nodes don't have children
 		:-	_nodeDepth(Node, Depth),
 			Depth == maxDepth.
-_validNumChildren(Node, Num)
-		:-	_maxNumChildren(Node, NumChildren),
-			Num = 2..NumChildren.
 
 % TODO: don't like the way nodes are defined 
 _childNum(Node, NewNode, ChildNum)
@@ -368,9 +368,9 @@ _matchingTempNode(Node, _temp(Node))
 	:-	_node(Node).
 _tempNode(_temp(Node))
 		:-	_node(Node).
-_layerOfTempNode(_temp(Node), Depth)
+_tempNodeDepth(_temp(Node), Depth)	% TODO: may not be needed
 		:-	_nodeDepth(Node, Depth).
-_numberOfTempNode(_temp(Node), Number)
+_numberOfTempNode(_temp(Node), Number) % TODO: may not be needed
 		:-	_numberOfNode(Node, Number).
 % number of children a node may have (varies by node depth)
 _maxNumTempChildren(_temp(Node), NumChildren)
@@ -388,12 +388,6 @@ _tempChildOnSide(Temp, Child, right)
 
 _validTempChildOf(_temp(Parent), _temp(Child))
 		:-	_childNum(Parent, Child, ChildNum).
-
-% useful handle for both types of nodes
-_anyNode(TempNode)
-		:-	_tempNode(TempNode).
-_anyNode(Node)
-		:-	_node(Node).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SETTING TEMP NODE PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _activateTempNode(Time, Temp, Type)

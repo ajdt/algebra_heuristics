@@ -18,7 +18,7 @@
 
 
 % expression tree parameters
-#const maxChildren	=	2.	% limit on children of operator nodes
+#const maxChildren	=	4.	% limit on children of operator nodes
 #const maxDepth		=	3.	% limits number of layers used during generation
 
 % solver params
