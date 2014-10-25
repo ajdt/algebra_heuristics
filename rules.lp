@@ -532,5 +532,22 @@ _deepCopy(Time, leftSide, tempRoot)
 _deepCopy(Time, rightSide, tempRightRoot)
 	:-	_actionForTimeStep(Time, multEqnWithMono).
 
-:- not _actionForTimeStep(_time(0,1), factorMonom).
+%================================================================================
+% swapTerms: A*B --> B*A, or A+B --> B*A	
+%================================================================================
+_applicable(Time, _action(swapTerms, _data(FstTerm, SndTerm)))
+	:-	_swappableTerms(Time, FstTerm, SndTerm),
+		not _equal(Time, FstTerm, SndTerm).	% NOTE: swapping equal terms is basically a NO-OP
+
+_deepCopy(Time, FstTerm, SndTerm)
+	:-	_operand(Time, FstTerm, oper(swapTerms, left)),
+		_operand(Time, SndTerm, oper(swapTerms, right)),
+		_siblings(Time, FstTerm, SndTerm).	% specify operands are siblings to avoid excessively large grounding
+
+_deepCopy(Time, SndTerm, FstTerm)
+	:-	_operand(Time, FstTerm, oper(swapTerms, left)),
+		_operand(Time, SndTerm, oper(swapTerms, right)),
+		_siblings(Time, FstTerm, SndTerm).
+
+:- not _actionForTimeStep(_time(0,1), swapTerms).
 
