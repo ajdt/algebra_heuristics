@@ -7,17 +7,17 @@
 % Nodes are grouped into layers, with the number of layers determined by the
 % maximum tree depth allowed. There are two nodes in the first layer,
 % nodes of each layer are assigned a specific number of children
-% (see childrenForLayer predicate).
+% (see childrenAtDepth predicate).
 % 
 %
 
 % TODO: detect node overflow
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NODE LAYERS AND NODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-_nodeLayer(1..numNodeLayers).
-_childrenForLayer(1, 3).	%(layer, count)
-_childrenForLayer(2, 3).
-_childrenForLayer(3, 3).
-_childrenForLayer(4, 2).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NODE DEPTH AND NODE GENERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+_depthValue(1..maxDepth).
+_childrenAtDepth(1, 3).	%(depth, numChildren)
+_childrenAtDepth(2, 3).
+_childrenAtDepth(3, 3).
+_childrenAtDepth(4, 2).
 
 % define left and right sides of eqn 
 #const rightSide		= _id(1,2).	
@@ -29,19 +29,19 @@ _childrenForLayer(4, 2).
 _rootNode(rightSide;leftSide).
 _node(Node) 
 		:-	_rootNode(Node).
-_layerOfNode(_id(Layer, Number), Layer)
-		:-	_node(_id(Layer, Number)).
-_numberOfNode(_id(Layer, Number), Number)
-		:-	_node(_id(Layer, Number)).
+_nodeDepth(_id(Depth, Number), Depth)
+		:-	_node(_id(Depth, Number)).
+_numberOfNode(_id(Depth, Number), Number)
+		:-	_node(_id(Depth, Number)).
 
 % number of children a node may have (varies by node depth)
 _maxNumChildren(Node, NumChildren)
-		:-	_childrenForLayer(Layer, NumChildren),
-			_layerOfNode(Node, Layer),
-			Layer < numNodeLayers.
+		:-	_childrenAtDepth(Depth, NumChildren),
+			_nodeDepth(Node, Depth),
+			Depth < maxDepth.
 _maxNumChildren(Node, 0)	% leaf nodes don't have children
-		:-	_layerOfNode(Node, Layer),
-			Layer == numNodeLayers.
+		:-	_nodeDepth(Node, Depth),
+			Depth == maxDepth.
 _validNumChildren(Node, Num)
 		:-	_maxNumChildren(Node, NumChildren),
 			Num = 2..NumChildren.
@@ -50,11 +50,11 @@ _validNumChildren(Node, Num)
 _childNum(Node, NewNode, ChildNum)
 		:-	_node(Node),
 			_maxNumChildren(Node, NumChildren),
-			_layerOfNode(Node, Layer),
+			_nodeDepth(Node, Depth),
 			_numberOfNode(Node, NodeNum),
-			NewNode = _id(NewLayer, ChildID),
-			NewLayer = Layer+1,
-			NewLayer <= numNodeLayers,
+			NewNode = _id(NewDepth, ChildID),
+			NewDepth = Depth+1,
+			NewDepth <= maxDepth,
 			ChildNum = 1..NumChildren,
 			ChildID =(NodeNum - 1)*NumChildren + ChildNum.
 % useful aliases for first two children
@@ -70,8 +70,6 @@ _node(Child)
 
 % NOTE: _id(...) should not be referenced outside of this code!!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NODE PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-_depthOfNode(Node, Layer)	
-		:-	_layerOfNode(Node, Layer).
 % a node can only be a parent of nodes in succeeding layer
 
 % CONSTRAINT: enforcing the valid child constraint
@@ -370,8 +368,8 @@ _matchingTempNode(Node, _temp(Node))
 	:-	_node(Node).
 _tempNode(_temp(Node))
 		:-	_node(Node).
-_layerOfTempNode(_temp(Node), Layer)
-		:-	_layerOfNode(Node, Layer).
+_layerOfTempNode(_temp(Node), Depth)
+		:-	_nodeDepth(Node, Depth).
 _numberOfTempNode(_temp(Node), Number)
 		:-	_numberOfNode(Node, Number).
 % number of children a node may have (varies by node depth)

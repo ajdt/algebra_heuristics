@@ -21,9 +21,6 @@
 #const maxChildren	=	2.	% limit on children of operator nodes
 #const maxDepth		=	3.	% limits number of layers used during generation
 
-% node definition constants
-#const numNodeLayers 	=	maxDepth.
-
 % solver params
 #const maxSteps = 1.
 #const maxNumStreams	= 1.

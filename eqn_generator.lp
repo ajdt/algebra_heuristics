@@ -24,12 +24,12 @@ _holds(initially, _fact(Node, _nodeField(active,yes)))
 % 1. assigning type to a node, if we're at max depth node must be a polynomial
 1 { _holds(initially, _fact(Node, _nodeField(type, Type))) : _type(Type)} 1		
 		:-	_isActive(initially, Node),
-			_depthOfNode(Node, Depth), 
+			_nodeDepth(Node, Depth), 
 			Depth < maxDepth.
 
  _holds(initially, _fact(Node, _nodeField(type, mono)))
 		:-	_isActive(initially, Node),
-			_depthOfNode(Node, maxDepth).
+			_nodeDepth(Node, maxDepth).
 
 % 2. assign number of children, for division node, num children must be 2
 1 { _numChildren(initially, Node,  Num) : _validNumChildren(Node, Num) } 1	
