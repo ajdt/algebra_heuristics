@@ -80,20 +80,20 @@ _introduce(Time, Node, Field, NewValue)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Selecting Rules %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % for each time step we can perform at most one applicable action
-0 { _doAction(Time, Action)	:	_applicable(Time, Action) } 1
+0 { _performRule(Time, Rule)	:	_applicable(Time, Rule) } 1
 		:-	_time(Step, Stream),
 			Time = _time(Step, Stream),
 			not _stopTime(Time).
 
 % action name performed at particular step
-_actionForTimeStep(Time, ActionName)
-		:-	_doAction(Time, _action(ActionName, Data)).
+_ruleForTimeStep(Time, RuleName)
+		:-	_performRule(Time, _rule(RuleName, Data)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% solvability constraints %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: all solvability constraints have x-term on leftSide
 % 		This is to avoid redundancy of producing results like x=4 and 4=x as two different answer sets
 
-:-	not _solved(Time), _stopTime(Time).
+%%:-	not _solved(Time), _stopTime(Time).%%
 
 _solved(Time)	% solved if x = constant
 	:-	_isXTerm(Time, leftSide),
@@ -111,7 +111,7 @@ _solved(Time)	% solved if (x+c_1) * (x + c_2) ... = 0
 _solved(SndTime)
 	:-	_solved(FstTime),
 		_nextTimeTick(FstTime, SndTime),
-		not _stepHasAction(FstTime).
+		not _stepHasRuleApplication(FstTime).
 
 % NOTE: defining product of linear binomials only for leftSide b/c
 % it won't be used elsewhere
@@ -131,15 +131,15 @@ _isStdBinomial(Time, Poly)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 1-GRAM DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-_actionForTimeStream(Stream, Action)
-	:-	_actionForTimeStep(Time, Action),
+_ruleForTimeStream(Stream, Rule)
+	:-	_ruleForTimeStep(Time, Rule),
 		_streamOf(Time, Stream).
 _diffTimeStreams(Fst, Snd)
 	:-	_timeStream(Fst),
 		_timeStream(Snd),
 		Fst != Snd,
-		_actionForTimeStream(Fst, Action),
-		not _actionForTimeStream(Snd, Action).
+		_ruleForTimeStream(Fst, Rule),
+		not _ruleForTimeStream(Snd, Rule).
 
 %%% CONSTRAINT: first time stream does not equal second
 :-	_timeStream(Fst),
@@ -148,14 +148,14 @@ _diffTimeStreams(Fst, Snd)
 	not _diffTimeStreams(Fst, Snd).
 
 
-%%_actionOccursInOneTimeStream%%
-	%%:- _action(Action), 1 { _actionForTimeStream(Stream, Action) : _timeStream(Stream) } 1.%%
+%%_ruleOccursInOneTimeStream%%
+	%%:- _rule(Rule), 1 { _ruleForTimeStream(Stream, Rule) : _timeStream(Stream) } 1.%%
 
-%%:-	not _actionOccursInOneTimeStream.%%
+%%:-	not _ruleOccursInOneTimeStream.%%
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% AVOID REDUNDANT STEPS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-_stepHasAction(Time)
-	:-	_actionForTimeStep(Time, Name).
+_stepHasRuleApplication(Time)
+	:-	_ruleForTimeStep(Time, Name).
 
 _sameTimeStream(Fst, Snd)
 	:-	_streamOf(Fst, Stream),
@@ -163,15 +163,15 @@ _sameTimeStream(Fst, Snd)
 		Fst != Snd.
 
 _unequalTimeSteps(Fst, Snd)
-	:-	_stepHasAction(Fst),
-		_stepHasAction(Snd),
+	:-	_stepHasRuleApplication(Fst),
+		_stepHasRuleApplication(Snd),
 		Fst != Snd,
 		_sameTimeStream(Fst, Snd),
 		_holds(Fst, Fluent),
 		not _holds(Snd, Fluent).
 _redundantStep(Fst)
-	:-	_stepHasAction(Fst),
-		_stepHasAction(Snd),
+	:-	_stepHasRuleApplication(Fst),
+		_stepHasRuleApplication(Snd),
 		Fst != Snd,
 		_sameTimeStream(Fst, Snd),
 		not _unequalTimeSteps(Fst, Snd).
@@ -181,10 +181,10 @@ _redundantStep(Fst)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NOPs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% CONSTRAINT: all NOPs must occur at the end%%
 :-	_nextTimeTick(FstTime, SndTime),
-	not _stepHasAction(FstTime),
-	_stepHasAction(SndTime).
+	not _stepHasRuleApplication(FstTime),
+	_stepHasRuleApplication(SndTime).
 
 
 % used for projection
-usesAction(Time, Name)
-	:-	_actionForTimeStep(Time, Name).
+usesRule(Time, Name)
+	:-	_ruleForTimeStep(Time, Name).
