@@ -8,11 +8,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% EXTRACTING RULE OPERANDS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Extract operands from a rule application. Unary operations only have a 'left' operand 
 _operand(Time, OnlyOper, RuleName, left)
-	:-	_performRule(Time, _rule(RuleName, _data(OnlyOper))).
+	:-	_performRule(Time, _rule(RuleName, _operands(OnlyOper))).
 _operand(Time, Fst, RuleName, left)
-	:-	_performRule(Time, _rule(RuleName, _data(Fst, Snd))).
+	:-	_performRule(Time, _rule(RuleName, _operands(Fst, Snd))).
 _operand(Time, Snd, RuleName, right)
-	:-	_performRule(Time, _rule(RuleName, _data(Fst, Snd))).
+	:-	_performRule(Time, _rule(RuleName, _operands(Fst, Snd))).
 _operandDenom(Time, Denom, RuleName, Side)
 	:-	_operand(Time, Frac, RuleName, Side),
 		_denomOf(Time, Frac, Denom).
@@ -32,7 +32,7 @@ _writeBinaryOp(Time, Fst, Snd)
 % divIdentity: A / A ----> 1
 %================================================================================
 % NOTE: applicable only to subtrees over which equality is defined
-_applicable(Time, _rule(divIdent, _data(Fraction)))
+_applicable(Time, _rule(divIdent, _operands(Fraction)))
 	:-	_isDiv(Time, Fraction),
 		_numerOf(Time, Fraction, Numer),
 		_denomOf(Time, Fraction, Denom),
@@ -43,7 +43,7 @@ _setToOne(Time, Fraction)
 %================================================================================
 % multFrac: a/b * c/d --> (a*c)/(b*d)
 %================================================================================
-_applicable(Time, _rule(multFrac, _data(LeftFrac, RightFrac)))
+_applicable(Time, _rule(multFrac, _operands(LeftFrac, RightFrac)))
 	:-	_isDiv(Time, LeftFrac),
 		_isDiv(Time, RightFrac),
 		_siblings(Time, LeftFrac, RightFrac),
@@ -75,7 +75,7 @@ _writeBinaryOp(Time)
 %================================================================================
 % fracDiv: a/c / b/d --> a/c * d/b
 %================================================================================
-_applicable(Time, _rule(fracDiv, _data(NumerFrac, DenomFrac)))
+_applicable(Time, _rule(fracDiv, _operands(NumerFrac, DenomFrac)))
 			:-	_siblings(Time, NumerFrac, DenomFrac),
 				_isDiv(Time, NumerFrac),
 				_isDiv(Time, DenomFrac),
@@ -104,7 +104,7 @@ _setResultTo(Time, Root)
 %================================================================================
 % ignore denominator: a / b = 0 --> a = 0
 %================================================================================
-_applicable(Time, _rule(numerSimp, _data(leftSide)))
+_applicable(Time, _rule(numerSimp, _operands(leftSide)))
 	:-	_isZero(Time, rightSide),
 		_isDiv(Time, leftSide).
 
@@ -122,7 +122,7 @@ _setResultTo(Time, leftSide)
 % TODO: contains as a special case:		addIdentity: a*x^b + 0 ----> a*x^b 
 % is this problematic?
 
-_applicable(Time, _rule(addMonom, _data(LeftMono, RightMono)))
+_applicable(Time, _rule(addMonom, _operands(LeftMono, RightMono)))
 	:-	_siblings(Time, LeftMono, RightMono),
 		_equalDegs(Time, LeftMono, RightMono),
 		_isMono(Time, LeftMono),
@@ -140,7 +140,7 @@ _writeBinaryOp(Time)
 %================================================================================
 % monomult ax^b  * cx^d --> (a*c)x^(b+d)
 %================================================================================
-_applicable(Time, _rule(monoMult, _data(LeftMono, RightMono)))
+_applicable(Time, _rule(monoMult, _operands(LeftMono, RightMono)))
 	:-	_siblings(Time, LeftMono, RightMono),
 		_isMono(Time, LeftMono),
 		_isMono(Time, RightMono),
@@ -158,7 +158,7 @@ _writeBinaryOp(Time)
 % fracCancel A*B/C*B --> A/C
 %================================================================================
 % NOTE: relies on equal/3 predicate to work
-_applicable(Time, _rule(fracCancel, _data(FstNode, SndNode)))
+_applicable(Time, _rule(fracCancel, _operands(FstNode, SndNode)))
 	:-	_haveCommonFactors(Time, FstNode, SndNode),
 		_siblings(Time, FstNode, SndNode),
 		_isMul(Time, FstNode),
@@ -183,7 +183,7 @@ _cancelTerm(Time, Snd)
 %================================================================================
 % NOTE: squared term must have coeff 1, divide by constant my be required to reach 
 % this form
-_applicable(Time, _rule(factor, _data(Node)))
+_applicable(Time, _rule(factor, _operands(Node)))
 	:-	_isPolynomial(Time, Node),
 		_isQuadratic(Time, Node),
 		_isFactorable(Time, Node).
@@ -216,7 +216,7 @@ _setResultTo(Time, Poly)
 % addSameFrac A/B + C/B --> (A+C)/B
 %================================================================================
 % NOTE: _sameDenom depends on equals/3 predicate (which applies only to monomials)
-_applicable(Time, _rule(addSameFrac, _data(Fst, Snd)))
+_applicable(Time, _rule(addSameFrac, _operands(Fst, Snd)))
 	:-	_siblings(Time, Fst, Snd),
 		_sameDenom(Time, Fst, Snd),
 		_parentType(Time, Fst, add).
@@ -243,7 +243,7 @@ _writeBinaryOp(Time)
 %================================================================================
 % NOTE: requires max depth of allowable expression trees to be at least 4 
 % NOTE: also dependent on equal/3 predicate
-_applicable(Time, _rule(addDiffFrac, _data(Fst, Snd)))
+_applicable(Time, _rule(addDiffFrac, _operands(Fst, Snd)))
 	:-	_siblings(Time, Fst, Snd),
 		_isDiv(Time, Fst),
 		_isDiv(Time, Snd),
@@ -282,7 +282,7 @@ _writeBinaryOp(Time)
 %================================================================================
 % distribute (a + b) * C --> (a*C + b*C)
 %================================================================================
-_applicable(Time, _rule(distribute, _data(PlusTerm, DistribTerm)))
+_applicable(Time, _rule(distribute, _operands(PlusTerm, DistribTerm)))
 	:-	_siblings(Time, PlusTerm, DistribTerm),
 		_parentType(Time, PlusTerm, mul),
 		_isAdd(Time, PlusTerm).
@@ -311,7 +311,7 @@ _writeBinaryOp(Time)
 %================================================================================
 % divByOne A/1 --> A
 %================================================================================
-_applicable(Time, _rule(divByOne, _data(Fraction)))
+_applicable(Time, _rule(divByOne, _operands(Fraction)))
 	:-	_denomOf(Time, Fraction, Denom),
 		_isOne(Time, Denom).
 
@@ -321,7 +321,7 @@ _deepCopy(Time, Fraction, Numer)
 %================================================================================
 % addZero A + 0 --> A
 %================================================================================
-_applicable(Time, _rule(addZero, _data(Mono)))
+_applicable(Time, _rule(addZero, _operands(Mono)))
 	:-	_isZero(Time, Mono),
 		_parentType(Time, Mono, add).
 
@@ -332,7 +332,7 @@ _cancelTerm(Time, ZeroTerm)
 % factorMonom:	ax^k  --> bx^m * cx^n 
 %================================================================================
 % NOTE: this is the same rule as factorCommTerm, except written specifically for monomials
-_applicable(Time, _rule(factorMonom, _data(Mono)))
+_applicable(Time, _rule(factorMonom, _operands(Mono)))
 	:-	_isMono(Time, Mono),
 		not _isOne(Time, Mono),
 		not _isZero(Time, Mono).
@@ -370,7 +370,7 @@ _setResultTo(Time, Mono)
 %================================================================================
 % factorCommTerm:	(a*x^k + b*x^l ) --> (a*x^m + b*x^n ) * x^j
 %================================================================================
-_applicable(Time, _rule(factorCommTerm, _data(Poly)))
+_applicable(Time, _rule(factorCommTerm, _operands(Poly)))
 	:-	_isPolynomial(Time, Poly),
 		_hasCommonCoeff(Time, Poly),
 		_hasCommonDeg(Time, Poly).
@@ -438,7 +438,7 @@ _setResultTo(Time, Poly)
 %================================================================================
 % multByZero:	A*0 --> 0
 %================================================================================
-_applicable(Time, _rule(multByZero, _data(ZeroTerm)))
+_applicable(Time, _rule(multByZero, _operands(ZeroTerm)))
 	:-	_isZero(Time, ZeroTerm),
 		_parentType(Time, ZeroTerm, mul).
 
@@ -449,7 +449,7 @@ _setToZero(Time, Parent)
 %================================================================================
 % multIdentity:	A*1 --> A
 %================================================================================
-_applicable(Time, _rule(multIdentity, _data(UnitTerm)))
+_applicable(Time, _rule(multIdentity, _operands(UnitTerm)))
 	:-	_isOne(Time, UnitTerm),
 		_parentType(Time, UnitTerm, mul).
 _cancelTerm(Time, UnitTerm)
@@ -462,7 +462,7 @@ _cancelTerm(Time, UnitTerm)
 % expression is too large and we get a node overflow.
 % Additionally, we can only multiply expression by a polynomial expression already existing
 % somewhere in the equation
-_applicable(Time, _rule(multNumerAndDenom, _data(Fraction, Poly)))
+_applicable(Time, _rule(multNumerAndDenom, _operands(Fraction, Poly)))
 	:-	_isDiv(Time, Fraction),
 		_isPolynomial(Time, Poly).
 
@@ -489,7 +489,7 @@ _setResultTo(Time, Fraction)
 %================================================================================
 % addMonoToEqn:	A = B --> A + e = B + e
 %================================================================================
-_applicable(Time, _rule(addMonoToEqn, _data(leftSide, rightSide)))
+_applicable(Time, _rule(addMonoToEqn, _operands(leftSide, rightSide)))
 	:-	_validTime(Time).	
 
 % select an arbitrary degree and coefficient
@@ -512,7 +512,7 @@ _deepCopy(Time, rightSide, tempRightRoot)
 %================================================================================
 % multEqnWithMono:	A = B --> A * e = B * e
 %================================================================================
-_applicable(Time, _rule(multEqnWithMono, _data(leftSide, rightSide)))
+_applicable(Time, _rule(multEqnWithMono, _operands(leftSide, rightSide)))
 	:-	_validTime(Time).	
 
 % select an arbitrary degree and coefficient
@@ -535,7 +535,7 @@ _deepCopy(Time, rightSide, tempRightRoot)
 %================================================================================
 % swapTerms: A*B --> B*A, or A+B --> B*A	
 %================================================================================
-_applicable(Time, _rule(swapTerms, _data(FstTerm, SndTerm)))
+_applicable(Time, _rule(swapTerms, _operands(FstTerm, SndTerm)))
 	:-	_swappableTerms(Time, FstTerm, SndTerm),
 		not _equal(Time, FstTerm, SndTerm).	% NOTE: swapping equal terms is basically a NO-OP
 

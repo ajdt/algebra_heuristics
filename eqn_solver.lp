@@ -87,7 +87,7 @@ _introduce(Time, Node, Field, NewValue)
 
 % action name performed at particular step
 _ruleForTimeStep(Time, RuleName)
-		:-	_performRule(Time, _rule(RuleName, Data)).
+		:-	_performRule(Time, _rule(RuleName, Operands)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% solvability constraints %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: all solvability constraints have x-term on leftSide
