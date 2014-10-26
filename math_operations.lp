@@ -77,8 +77,8 @@ _activateTempAndSetChildren(Time, Temp, div, 2)
 _deepCopy(Time, TempChild, Node)
 	:-	_treeOp(Time, Temp, reciprocal),
 		_treeOp(Time, Temp, Node, Side),
-		_otherSide(Side, OtherSide),
-		_tempChildOnSide(Temp, TempChild, OtherSide).
+		_tempChildOnSide(Temp, TempChild, OtherSide),
+		Side != OtherSide. % ensure 'left' child gets copied to 'right' and vice versa
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% mono  operations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _monoOp(Time, Dest, Left, left)

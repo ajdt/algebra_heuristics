@@ -13,9 +13,6 @@
 #include "rules.lp".
 #include "math_operations.lp".
 
-% sides of an equation
-_side(right;left).
-_otherSide(left, right; right, left). 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM GENERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % every root node (see node.lp) is active initially
 _holds(initially, _fact(Node, _nodeField(active,yes)))	
