@@ -6,25 +6,25 @@
 %
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% EXTRACTING RULE OPERANDS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% most operations are either binary or unary
-_operand(Time, OnlyOper, oper(Name, left))
-	:-	_performRule(Time, _rule(Name, _data(OnlyOper))).
-_operand(Time, Fst, oper(Name, left))
-	:-	_performRule(Time, _rule(Name, _data(Fst, Snd))).
-_operand(Time, Snd, oper(Name, right))
-	:-	_performRule(Time, _rule(Name, _data(Fst, Snd))).
-_operandDenom(Time, Denom, Operation)
-	:-	_operand(Time, Frac, Operation),
+% Extract operands from a rule application. Unary operations only have a 'left' operand 
+_operand(Time, OnlyOper, RuleName, left)
+	:-	_performRule(Time, _rule(RuleName, _data(OnlyOper))).
+_operand(Time, Fst, RuleName, left)
+	:-	_performRule(Time, _rule(RuleName, _data(Fst, Snd))).
+_operand(Time, Snd, RuleName, right)
+	:-	_performRule(Time, _rule(RuleName, _data(Fst, Snd))).
+_operandDenom(Time, Denom, RuleName, Side)
+	:-	_operand(Time, Frac, RuleName, Side),
 		_denomOf(Time, Frac, Denom).
-_operandNumer(Time, Numer, Operation)
-	:-	_operand(Time, Frac, Operation),
+_operandNumer(Time, Numer, RuleName, Side)
+	:-	_operand(Time, Frac, RuleName, Side),
 		_numerOf(Time, Frac, Numer).
 
 % writing result of a binary operation
 % _writeBinaryOp/1. must be generated explicitly to write result as a binary operation
 _writeBinaryOp(Time, Fst, Snd)
-	:-	_operand(Time, Fst, oper(Operation, left)),
-		_operand(Time, Snd, oper(Operation, right)),
+	:-	_operand(Time, Fst, Operation, left),
+		_operand(Time, Snd, Operation, right),
 		_writeBinaryOp(Time).
 
 
@@ -38,7 +38,7 @@ _applicable(Time, _rule(divIdent, _data(Fraction)))
 		_denomOf(Time, Fraction, Denom),
 		_equal(Time, Numer, Denom).
 _setToOne(Time, Fraction)
-	:-	_operand(Time, Fraction, oper(divIdent, left)).
+	:-	_operand(Time, Fraction, divIdent, left).
 
 %================================================================================
 % multFrac: a/b * c/d --> (a*c)/(b*d)
@@ -63,10 +63,10 @@ _treeOp(Time, TempDenom, FstDenom, SndDenom, mul)
 
 % isolate the numerators and denominators
 _numerOfOperand(Time, Numer, Side)
-	:-	_operand(Time, Frac, oper(multFrac, Side)),
+	:-	_operand(Time, Frac, multFrac, Side),
 		_numerOf(Time, Frac, Numer).
 _denomOfOperand(Time, Numer, Side)
-	:-	_operand(Time, Frac, oper(multFrac, Side)),
+	:-	_operand(Time, Frac, multFrac, Side),
 		_denomOf(Time, Frac, Numer).
 
 _writeBinaryOp(Time)
@@ -89,16 +89,16 @@ _activateTempAndSetChildren(Time, tempRoot, mul, 2)
 _deepCopy(Time, LeftTemp, NumerFrac)
 	:-	_tempChildOnSide(tempRoot, LeftTemp, left),
 		_ruleForTimeStep(Time, fracDiv),
-		_operand(Time, NumerFrac, oper(fracDiv, left)).
+		_operand(Time, NumerFrac, fracDiv, left).
 % flip numer/denom fields
 _treeOp(Time, RightTemp, Numer, Denom, reciprocal)
-	:-	_operand(Time, DenomFrac, oper(fracDiv, right)),
+	:-	_operand(Time, DenomFrac, fracDiv, right),
 		_numerOf(Time, DenomFrac, Numer),
 		_denomOf(Time, DenomFrac, Denom),
 		_tempChildOnSide(tempRoot, RightTemp, right).
 
 _setResultTo(Time, Root)
-	:-	_operand(Time, DenomFrac, oper(fracDiv, right)),
+	:-	_operand(Time, DenomFrac, fracDiv, right),
 		_activeChild(Time, Root, DenomFrac).
 
 %================================================================================
@@ -110,7 +110,7 @@ _applicable(Time, _rule(numerSimp, _data(leftSide)))
 
 % assumes that fraction is poly/poly
 _deepCopy(Time, tempRoot, Numer)
-	:-	_operand(Time, Frac, oper(numerSimp, left)),
+	:-	_operand(Time, Frac, numerSimp, left),
 		_numerOf(Time, Frac, Numer).
 _setResultTo(Time, leftSide)
 	:-	_ruleForTimeStep(Time, numerSimp).
@@ -131,8 +131,8 @@ _applicable(Time, _rule(addMonom, _data(LeftMono, RightMono)))
 		_parentType(Time, LeftMono, add).
 
 _monoOp(Time, tempRoot, LeftMono, RightMono, add)
-	:-	_operand(Time, LeftMono, oper(addMonom, left)),
-		_operand(Time, RightMono, oper(addMonom, right)).
+	:-	_operand(Time, LeftMono, addMonom, left),
+		_operand(Time, RightMono, addMonom, right).
 
 _writeBinaryOp(Time)
 	:-	_ruleForTimeStep(Time, addMonom).
@@ -148,8 +148,8 @@ _applicable(Time, _rule(monoMult, _data(LeftMono, RightMono)))
 		_parentType(Time, LeftMono, mul).
  
 _monoOp(Time, tempRoot, LeftMono, RightMono, mul)
-	:-	_operand(Time, LeftMono, oper(monoMult, left)),
-		_operand(Time, RightMono, oper(monoMult, right)).
+	:-	_operand(Time, LeftMono, monoMult, left),
+		_operand(Time, RightMono, monoMult, right).
 
 _writeBinaryOp(Time)
 	:-	_ruleForTimeStep(Time, monoMult).
@@ -171,8 +171,8 @@ _applicable(Time, _rule(fracCancel, _data(FstNode, SndNode)))
 		_factorOf(Time, Numer, NumerFactor), 
 		_factorOf(Time, Denom, DenomFactor),
 		_equal(Time, NumerFactor, DenomFactor) } 1
-	:-	_operand(Time, Numer, oper(fracCancel, left)),
-		_operand(Time, Denom, oper(fracCancel, right)).
+	:-	_operand(Time, Numer, fracCancel, left),
+		_operand(Time, Denom, fracCancel, right).
 _cancelTerm(Time, Fst)
 	:-	_factorsToCancel(Time, Fst, Snd).
 _cancelTerm(Time, Snd)
@@ -190,7 +190,7 @@ _applicable(Time, _rule(factor, _data(Node)))
 
 % select the factors to use
 _factorsForBinomials(Time, FstFactor, SndFactor)
-	:-	_operand(Time, Poly,  oper(factor, left)),
+	:-	_operand(Time, Poly,  factor, left),
 		_monoTermOfPoly(Time, Poly, 1, LinearTerm),
 		_monoTermOfPoly(Time, Poly, 0, ConstTerm),
 		_factors(FstFactor, SndFactor, LinearTerm, ConstTerm),
@@ -209,7 +209,7 @@ _setToBinomial(Time, RightChild, SndFactor)
 
 % save the result of factoring
 _setResultTo(Time, Poly)
-	:-	_operand(Time, Poly,  oper(factor, left)).
+	:-	_operand(Time, Poly,  factor, left).
 
 
 %================================================================================
@@ -228,12 +228,12 @@ _activateTempAndSetChildren(Time, tempRoot, div, 2)
 % set numerator to a sum
 _treeOp(Time, TempNumer, FstNumer, SndNumer, add)
 	:-	_tempChildNum(tempRoot, TempNumer, 1),
-		_operandNumer(Time, FstNumer, oper(addSameFrac, left)),
-		_operandNumer(Time, SndNumer, oper(addSameFrac, right)).
+		_operandNumer(Time, FstNumer, addSameFrac, left),
+		_operandNumer(Time, SndNumer, addSameFrac, right).
 % set denom 
 _deepCopy(Time, TempDenom, FstDenom)
 	:-	_tempChildNum(tempRoot, TempDenom, 2),
-		_operandDenom(Time, FstDenom, oper(addSameFrac, left)).
+		_operandDenom(Time, FstDenom, addSameFrac, left).
 % save result
 _writeBinaryOp(Time)
 	:-	_ruleForTimeStep(Time, addSameFrac).
@@ -261,20 +261,20 @@ _activateTempAndSetChildren(Time, Numer, add, 2)
 _treeOp(Time, FstProd, FstNumer, SndDenom, mul)
 	:-	_tempChildNum(tempRoot, Numer, 1),
 		_tempChildNum(Numer, FstProd, 1),
-		_operandNumer(Time, FstNumer, oper(addDiffFrac, left)),
-		_operandDenom(Time, SndDenom, oper(addDiffFrac, right)).
+		_operandNumer(Time, FstNumer, addDiffFrac, left),
+		_operandDenom(Time, SndDenom, addDiffFrac, right).
 
 _treeOp(Time, SndProd, SndNumer, FstDenom, mul)
 	:-	_tempChildNum(tempRoot, Numer, 1),
 		_tempChildNum(Numer, SndProd, 2),
-		_operandNumer(Time, SndNumer, oper(addDiffFrac, right)),
-		_operandDenom(Time, FstDenom, oper(addDiffFrac, left)).
+		_operandNumer(Time, SndNumer, addDiffFrac, right),
+		_operandDenom(Time, FstDenom, addDiffFrac, left).
 
 % set denominator to product of two original numerators
 _treeOp(Time, RootDenom, FstDenom, SndDenom, mul)
 	:-	_tempChildNum(tempRoot, RootDenom, 2),
-		_operandDenom(Time, FstDenom, oper(addDiffFrac, left)),
-		_operandDenom(Time, SndDenom, oper(addDiffFrac, right)).
+		_operandDenom(Time, FstDenom, addDiffFrac, left),
+		_operandDenom(Time, SndDenom, addDiffFrac, right).
 % save result
 _writeBinaryOp(Time)
 	:-	_ruleForTimeStep(Time, addDiffFrac).
@@ -292,8 +292,8 @@ _activateTempNode(Time, tempRoot, add)
 	:-	_ruleForTimeStep(Time, distribute).
 
 _treeOp(Time, TempNode, Term, DistribTerm, mul)
-	:-	_operand(Time, DistribTerm, oper(distribute, right)),
-		_operand(Time, PlusTerm, oper(distribute, left)),
+	:-	_operand(Time, DistribTerm, distribute, right),
+		_operand(Time, PlusTerm, distribute, left),
 		_activeChild(Time, PlusTerm, Term),
 		_childNum(PlusTerm, Term, ChildNum),
 		_tempChildNum(tempRoot, TempNode, ChildNum).
@@ -316,7 +316,7 @@ _applicable(Time, _rule(divByOne, _data(Fraction)))
 		_isOne(Time, Denom).
 
 _deepCopy(Time, Fraction, Numer)
-	:-	_operand(Time, Fraction, oper(divByOne, left)),
+	:-	_operand(Time, Fraction, divByOne, left),
 		_numerOf(Time, Fraction, Numer).
 %================================================================================
 % addZero A + 0 --> A
@@ -326,7 +326,7 @@ _applicable(Time, _rule(addZero, _data(Mono)))
 		_parentType(Time, Mono, add).
 
 _cancelTerm(Time, ZeroTerm)
-	:-	_operand(Time, ZeroTerm, oper(addZero, left)).
+	:-	_operand(Time, ZeroTerm, addZero, left).
 
 %================================================================================
 % factorMonom:	ax^k  --> bx^m * cx^n 
@@ -339,13 +339,13 @@ _applicable(Time, _rule(factorMonom, _data(Mono)))
 % select coefficient factors,
 1 { _selectedCoeffFactors(Time, FstFactor, SndFactor) 
 		: _factors(FstFactor, SndFactor, FactorSum, Coeff) } 1
-	:-	_operand(Time, Mono, oper(factorMonom, left)),
+	:-	_operand(Time, Mono, factorMonom, left),
 		_coeffOf(Time, Mono, Coeff).
 % select degree factors
 1 { _selectedDegDecomposition(Time, Fst, Snd) 
 		: _degree(Fst), _degree(Snd),
 			MonoDeg = Fst + Snd } 1
-	:-	_operand(Time, Mono, oper(factorMonom, left)),
+	:-	_operand(Time, Mono, factorMonom, left),
 		_degOf(Time, Mono, MonoDeg).
 % form product of monomials (careful with code reuse here!!)
 _activateTempAndSetChildren(Time, tempRoot, mul, 2)
@@ -365,7 +365,7 @@ _addMonomToNode(Time, RightChild, SndDeg, SndCoeff)
 		_selectedDegDecomposition(Time, FstDeg, SndDeg).
 % save result 
 _setResultTo(Time, Mono)
-	:-	_operand(Time, Mono, oper(factorMonom, left)).
+	:-	_operand(Time, Mono, factorMonom, left).
 
 %================================================================================
 % factorCommTerm:	(a*x^k + b*x^l ) --> (a*x^m + b*x^n ) * x^j
@@ -377,9 +377,9 @@ _applicable(Time, _rule(factorCommTerm, _data(Poly)))
 
 % select common term to factor our
 1 { _selectedCommonDeg(Time, Deg) : _hasCommonDeg(Time, Poly, Deg) } 1
-	:-	_operand(Time, Poly, oper(factorCommTerm, left)).
+	:-	_operand(Time, Poly, factorCommTerm, left).
 1 { _selectedCommonCoeff(Time, Coeff) : _hasCommonCoeff(Time, Poly, Coeff) } 1
-	:-	_operand(Time, Poly, oper(factorCommTerm, left)).
+	:-	_operand(Time, Poly, factorCommTerm, left).
 
 % setup correct tree structure
 _activateTempAndSetChildren(Time, tempRoot, mul, 2)
@@ -399,7 +399,7 @@ _activateTempNode(Time, TempLeft, add)
 	:-	_ruleForTimeStep(Time, factorCommTerm),
 		_tempChildOnSide(tempRoot, TempLeft, left).
 _originalMonoTerm(Time, Mono, Num)	% isolate monomial terms
-	:-	_operand(Time, Poly, oper(factorCommTerm, left)),
+	:-	_operand(Time, Poly, factorCommTerm, left),
 		_activeChild(Time, Poly, Mono),
 		_childNum(Poly, Mono, Num).
 _newMonoTerm(Time, TempChild, Num)
@@ -433,7 +433,7 @@ _holds(Time, _fact(TempTerm, _nodeField(degree, NewDeg)))
 
 % save result
 _setResultTo(Time, Poly)
-	:-	_operand(Time, Poly, oper(factorCommTerm, left)).
+	:-	_operand(Time, Poly, factorCommTerm, left).
 
 %================================================================================
 % multByZero:	A*0 --> 0
@@ -443,7 +443,7 @@ _applicable(Time, _rule(multByZero, _data(ZeroTerm)))
 		_parentType(Time, ZeroTerm, mul).
 
 _setToZero(Time, Parent)
-	:-	_operand(Time, ZeroTerm, oper(multByZero, left)),
+	:-	_operand(Time, ZeroTerm, multByZero, left),
 		_activeChild(Time, Parent, ZeroTerm).
 
 %================================================================================
@@ -453,7 +453,7 @@ _applicable(Time, _rule(multIdentity, _data(UnitTerm)))
 	:-	_isOne(Time, UnitTerm),
 		_parentType(Time, UnitTerm, mul).
 _cancelTerm(Time, UnitTerm)
-	:-	_operand(Time, UnitTerm, oper(multIdentity, left)).
+	:-	_operand(Time, UnitTerm, multIdentity, left).
 
 %================================================================================
 % multNumerAndDenom:	A/B --> (A*C)/(B*C)
@@ -472,19 +472,19 @@ _activateTempAndSetChildren(Time, tempRoot, div, 2)
 
 % multiply numer
 _treeOp(Time, TempNode, Numer, Poly, mul)
-	:-	_operandNumer(Time, Numer, oper(multNumerAndDenom, left)),
-		_operand(Time, Poly, oper(multNumerAndDenom, right)),
+	:-	_operandNumer(Time, Numer, multNumerAndDenom, left),
+		_operand(Time, Poly, multNumerAndDenom, right),
 		_tempChildOnSide(tempRoot, TempNode, left).
 
 % multiply denom
 _treeOp(Time, TempNode, Denom, Poly, mul)
-	:-	_operandDenom(Time, Denom, oper(multNumerAndDenom, left)),
-		_operand(Time, Poly, oper(multNumerAndDenom, right)),
+	:-	_operandDenom(Time, Denom, multNumerAndDenom, left),
+		_operand(Time, Poly, multNumerAndDenom, right),
 		_tempChildOnSide(tempRoot, TempNode, right).
 
 % save the result
 _setResultTo(Time, Fraction)
-	:-	_operand(Time, Fraction, oper(multNumerAndDenom, left)).
+	:-	_operand(Time, Fraction, multNumerAndDenom, left).
 
 %================================================================================
 % addMonoToEqn:	A = B --> A + e = B + e
@@ -540,13 +540,13 @@ _applicable(Time, _rule(swapTerms, _data(FstTerm, SndTerm)))
 		not _equal(Time, FstTerm, SndTerm).	% NOTE: swapping equal terms is basically a NO-OP
 
 _deepCopy(Time, FstTerm, SndTerm)
-	:-	_operand(Time, FstTerm, oper(swapTerms, left)),
-		_operand(Time, SndTerm, oper(swapTerms, right)),
+	:-	_operand(Time, FstTerm, swapTerms, left),
+		_operand(Time, SndTerm, swapTerms, right),
 		_siblings(Time, FstTerm, SndTerm).	% specify operands are siblings to avoid excessively large grounding
 
 _deepCopy(Time, SndTerm, FstTerm)
-	:-	_operand(Time, FstTerm, oper(swapTerms, left)),
-		_operand(Time, SndTerm, oper(swapTerms, right)),
+	:-	_operand(Time, FstTerm, swapTerms, left),
+		_operand(Time, SndTerm, swapTerms, right),
 		_siblings(Time, FstTerm, SndTerm).
 
 %%:- not _ruleForTimeStep(_time(0,1), swapTerms).%%
