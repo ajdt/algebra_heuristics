@@ -304,41 +304,58 @@ _introduce(Time, _fact(Copy, NodeFact))
 			_holds(Time, _fact(Original, _nodeField(Field, Value))),
 			_simpleField(Field),
 			NodeFact = _nodeField(Field, Value).
+_introduce(Time, _fact(Copy, NodeFact))
+		:-	_copyAttributes(Time, Copy, Original),
+			_node(Copy),
+			_tempHolds(Time, _fact(Original, _nodeField(Field, Value))),
+			_simpleField(Field),
+			NodeFact = _nodeField(Field, Value).
 % deep copying children
 _deepCopy(Time, CopyChild, OrigChild)
 		:-	_deepCopyChildren(Time, Copy, Original),
 			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
 			_childNum(Original, OrigChild, ChildNum),
 			_childNum(Copy, CopyChild, ChildNum).
+_deepCopy(Time, CopyChild, OrigChild)
+		:-	_deepCopyChildren(Time, Copy, Original),
+			_tempHolds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
+			_childNum(Original, OrigChild, ChildNum),
+			_childNum(Copy, CopyChild, ChildNum).
 _introduce(Time, Copy, activechild, CopyChild)
 		:-	_deepCopyChildren(Time, Copy, Original),
 			_node(Copy),
 			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
 			_childNum(Original, OrigChild, ChildNum),
 			_childNum(Copy, CopyChild, ChildNum).
+_introduce(Time, Copy, activechild, CopyChild)
+		:-	_deepCopyChildren(Time, Copy, Original),
+			_node(Copy),
+			_tempHolds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
+			_childNum(Original, OrigChild, ChildNum),
+			_childNum(Copy, CopyChild, ChildNum).
 
 % deep copying children of temp nodes
 _deepCopy(Time, CopyChild, OrigChild)
 		:-	_deepCopyChildren(Time, Copy, Original),
-			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
+			_tempHolds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
 			_tempChildNum(Original, OrigChild, ChildNum),
 			_childNum(Copy, CopyChild, ChildNum).
 _introduce(Time, Copy, activechild, CopyChild)
 		:-	_deepCopyChildren(Time, Copy, Original),
 			_node(Copy),
-			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
+			_tempHolds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
 			_tempChildNum(Original, OrigChild, ChildNum),
 			_childNum(Copy, CopyChild, ChildNum).
 
-% if copying into a tempNode, use holds instead we want copy to exist during current 'Time'
-_holds(Time, _fact(Copy, NodeFact))	
+% if copying into a tempNode, use tempHolds instead we want copy to exist during current 'Time'
+_tempHolds(Time, _fact(Copy, NodeFact))	
 		:-	_copyAttributes(Time, Copy, Original),
 			_tempNode(Copy),
 			_holds(Time, _fact(Original, _nodeField(Field, Value))),
 			_simpleField(Field),
 			NodeFact = _nodeField(Field, Value).
 % TODO: this is needed to copy from regular node to a temp node. Try simplifying all of this copying code!!!
-_holds(Time, _fact(Copy, _nodeField(activechild, CopyChild)))
+_tempHolds(Time, _fact(Copy, _nodeField(activechild, CopyChild)))
 		:-	_deepCopyChildren(Time, Copy, Original),
 			_tempNode(Copy),
 			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
@@ -354,7 +371,7 @@ _deepCopy(Time, CopyChild, OrigChild) % NOTE: necessary for copying from regular
 % TODO: copying code has gotten too complex, simplify it
 _insufficientNodesError % copying from tempnode to regular node
 		:-	_deepCopyChildren(Time, Copy, Original),
-			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
+			_tempHolds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
 			_tempChildNum(Original, OrigChild, ChildNum),
 			_maxNumChildren(Copy, MaxNumKids),
 			ChildNum > MaxNumKids.
@@ -399,15 +416,15 @@ _activateTempNode(Time, Temp, Type)
 _setTempChildren(Time, Temp, NumChildren)
 		:-	_activateTempAndSetChildren(Time, Temp, Type, NumChildren),
 			_tempNode(Temp).
-_holds(Time, _fact(Temp, _nodeField(type, Type)))
+_tempHolds(Time, _fact(Temp, _nodeField(type, Type)))
 		:-	_activateTempNode(Time, Temp, Type),
 			_tempNode(Temp).
-_holds(Time, _fact(Temp, _nodeField(active, yes)))
+_tempHolds(Time, _fact(Temp, _nodeField(active, yes)))
 		:-	_activateTempNode(Time, Temp, Type),
 			_tempNode(Temp).
 
 % set as child any node with childNum in range 1..NumChildren
-_holds(Time, _fact(Temp, _nodeField(activechild, Child)))
+_tempHolds(Time, _fact(Temp, _nodeField(activechild, Child)))
 		:-	_setTempChildren(Time, Temp, NumChildren),
 			_tempNode(Temp),
 			_tempChildNum(Temp, Child, Num),
@@ -441,12 +458,12 @@ _addMonomToNode(Time, RightChild, 0, Factor)
 		_tempChildOnSide(TempNode, RightChild, right).
 
 % adding monomial to temp node
-_holds(Time, _fact(Temp, _nodeField(degree, Deg)))
+_tempHolds(Time, _fact(Temp, _nodeField(degree, Deg)))
 	:-	_addMonomToNode(Time, Temp, Deg, Coeff),
 		_tempNode(Temp),
 		_degree(Deg),
 		_coeff(Coeff).
-_holds(Time, _fact(Temp, _nodeField(coeff, Coeff)))
+_tempHolds(Time, _fact(Temp, _nodeField(coeff, Coeff)))
 	:-	_addMonomToNode(Time, Temp, Deg, Coeff),
 		_tempNode(Temp),
 		_degree(Deg),

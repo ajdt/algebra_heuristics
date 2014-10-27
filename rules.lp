@@ -292,8 +292,8 @@ _treeOp(Time, TempNode, Term, DistribTerm, mul)
 
 % setup parent child links 
 % NOTE: must be done explicitly b/c there may be gaps between active children
-_holds(Time, _fact(tempResultRoot, _nodeField(activechild, Temp)))
-	:-	_holds(Time, _fact(Temp, _nodeField(active, yes))),
+_tempHolds(Time, _fact(tempResultRoot, _nodeField(activechild, Temp)))
+	:-	_tempHolds(Time, _fact(Temp, _nodeField(active, yes))),
 		_validTempChildOf(tempResultRoot, Temp).
 % save result
 _writeBinaryOp(Time)
@@ -399,7 +399,7 @@ _newMonoTerm(Time, TempChild, Num)
 		_originalMonoTerm(Time, Mono, Num),
 		_tempChildNum(TempLeft, TempChild, Num).
 
-_holds(Time, _fact(TempLeft, _nodeField(activechild, TempTerm)))
+_tempHolds(Time, _fact(TempLeft, _nodeField(activechild, TempTerm)))
 	:-	_ruleForTimeStep(Time, factorCommTerm),
 		_tempChildOnSide(tempResultRoot, TempLeft, left),
 		_newMonoTerm(Time, TempTerm, Num).
@@ -407,7 +407,7 @@ _activateTempNode(Time, TempTerm, mono)
 	:-	_ruleForTimeStep(Time, factorCommTerm),
 		_newMonoTerm(Time, TempTerm, Num).
 % set the new coeff and deg values
-_holds(Time, _fact(TempTerm, _nodeField(coeff, NewCoeff)))
+_tempHolds(Time, _fact(TempTerm, _nodeField(coeff, NewCoeff)))
 	:-	_ruleForTimeStep(Time, factorCommTerm),
 		_originalMonoTerm(Time, Mono, Num),
 		_newMonoTerm(Time, TempTerm, Num),
@@ -415,7 +415,7 @@ _holds(Time, _fact(TempTerm, _nodeField(coeff, NewCoeff)))
 		_selectedCommonCoeff(Time, CommonCoeff),
 		_coeffFactorPairOf(CommonCoeff, NewCoeff, MonoCoeff).
 
-_holds(Time, _fact(TempTerm, _nodeField(degree, NewDeg)))
+_tempHolds(Time, _fact(TempTerm, _nodeField(degree, NewDeg)))
 	:-	_ruleForTimeStep(Time, factorCommTerm),
 		_originalMonoTerm(Time, Mono, Num),
 		_newMonoTerm(Time, TempTerm, Num),

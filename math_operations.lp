@@ -101,10 +101,10 @@ _monoOpDeg(Time, Dest, Deg, Side)
 % add two monomials
 _activateTempNode(Time, Dest, mono)
 	:-	_monoOp(Time, Dest, add).
-_holds(Time, _fact(Dest, _nodeField(degree, Deg)))
+_tempHolds(Time, _fact(Dest, _nodeField(degree, Deg)))
 	:-	_monoOp(Time, Dest, add),
 		_monoOpDeg(Time, Dest, Deg, left).
-_holds(Time, _fact(Dest, _nodeField(coeff, Sum)))
+_tempHolds(Time, _fact(Dest, _nodeField(coeff, Sum)))
 	:-	_monoOp(Time, Dest, add),
 		_monoOpCoeff(Time, Dest, FstCoeff, left),
 		_monoOpCoeff(Time, Dest, SndCoeff, right),
@@ -122,14 +122,14 @@ _coeffOverflow
 % multiply two monomials
 _activateTempNode(Time, Dest, mono)
 	:-	_monoOp(Time, Dest, mul).
-_holds(Time, _fact(Dest, _nodeField(degree, DegSum)))
+_tempHolds(Time, _fact(Dest, _nodeField(degree, DegSum)))
 	:-	_monoOp(Time, Dest, mul),
 		_monoOpDeg(Time, Dest, FstDeg, left),
 		_monoOpDeg(Time, Dest, SndDeg, right),
 		DegSum = FstDeg + SndDeg,
 		_degree(DegSum).
 
-_holds(Time, _fact(Dest, _nodeField(coeff, Prod)))
+_tempHolds(Time, _fact(Dest, _nodeField(coeff, Prod)))
 	:-	_monoOp(Time, Dest, mul),
 		_monoOpCoeff(Time, Dest, FstCoeff, left),
 		_monoOpCoeff(Time, Dest, SndCoeff, right),
