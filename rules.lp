@@ -54,20 +54,12 @@ _activateTempAndSetChildren(Time, tempRoot, div, 2)
 	:-	_ruleForTimeStep(Time, multFrac).
 _treeOp(Time, TempNumer, FstNumer, SndNumer, mul)
 	:-	_tempChildOnSide(tempRoot, TempNumer, left),
-		_numerOfOperand(Time, FstNumer, left),
-		_numerOfOperand(Time, SndNumer, right).
+		_operandNumer(Time, FstNumer, multFrac, left),
+		_operandNumer(Time, SndNumer, multFrac, right).
 _treeOp(Time, TempDenom, FstDenom, SndDenom, mul)
 	:-	_tempChildOnSide(tempRoot, TempDenom, right),
-		_denomOfOperand(Time, FstDenom, left),
-		_denomOfOperand(Time, SndDenom, right).
-
-% isolate the numerators and denominators
-_numerOfOperand(Time, Numer, Side)
-	:-	_operand(Time, Frac, multFrac, Side),
-		_numerOf(Time, Frac, Numer).
-_denomOfOperand(Time, Numer, Side)
-	:-	_operand(Time, Frac, multFrac, Side),
-		_denomOf(Time, Frac, Numer).
+		_operandDenom(Time, FstDenom, multFrac, left),
+		_operandDenom(Time, SndDenom, multFrac, right).
 
 _writeBinaryOp(Time)
 	:-	_ruleForTimeStep(Time, multFrac).
