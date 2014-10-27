@@ -297,13 +297,23 @@ _deepCopyChildren(Time, Copy, Orig)
 _clearNodeDeleteDescendants(Time, Copy)
 		:-	_deepCopy(Time, Copy, Orig),
 			_node(Copy).	% NOTE: temp nodes don't have to be cleared
+	
 % copying attributes
+		% from regular node  to regular node
 _introduce(Time, _fact(Copy, NodeFact))
 		:-	_copyAttributes(Time, Copy, Original),
 			_node(Copy),
 			_holds(Time, _fact(Original, _nodeField(Field, Value))),
 			_simpleField(Field),
 			NodeFact = _nodeField(Field, Value).
+		% from reg node to temp node
+_tempHolds(Time, _fact(Copy, NodeFact))	
+		:-	_copyAttributes(Time, Copy, Original),
+			_tempNode(Copy),
+			_holds(Time, _fact(Original, _nodeField(Field, Value))),
+			_simpleField(Field),
+			NodeFact = _nodeField(Field, Value).
+		% from temp node to reg node
 _introduce(Time, _fact(Copy, NodeFact))
 		:-	_copyAttributes(Time, Copy, Original),
 			_node(Copy),
@@ -311,75 +321,74 @@ _introduce(Time, _fact(Copy, NodeFact))
 			_simpleField(Field),
 			NodeFact = _nodeField(Field, Value).
 % deep copying children
-_deepCopy(Time, CopyChild, OrigChild)
-		:-	_deepCopyChildren(Time, Copy, Original),
-			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
-			_childNum(Original, OrigChild, ChildNum),
-			_childNum(Copy, CopyChild, ChildNum).
-_deepCopy(Time, CopyChild, OrigChild)
-		:-	_deepCopyChildren(Time, Copy, Original),
-			_tempHolds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
-			_childNum(Original, OrigChild, ChildNum),
-			_childNum(Copy, CopyChild, ChildNum).
+		% from reg node to reg node
 _introduce(Time, Copy, activechild, CopyChild)
 		:-	_deepCopyChildren(Time, Copy, Original),
+			_node(Original),
 			_node(Copy),
 			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
 			_childNum(Original, OrigChild, ChildNum),
 			_childNum(Copy, CopyChild, ChildNum).
-_introduce(Time, Copy, activechild, CopyChild)
-		:-	_deepCopyChildren(Time, Copy, Original),
-			_node(Copy),
-			_tempHolds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
-			_childNum(Original, OrigChild, ChildNum),
-			_childNum(Copy, CopyChild, ChildNum).
-
-% deep copying children of temp nodes
 _deepCopy(Time, CopyChild, OrigChild)
 		:-	_deepCopyChildren(Time, Copy, Original),
-			_tempHolds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
-			_tempChildNum(Original, OrigChild, ChildNum),
-			_childNum(Copy, CopyChild, ChildNum).
-_introduce(Time, Copy, activechild, CopyChild)
-		:-	_deepCopyChildren(Time, Copy, Original),
+			_node(Original),
 			_node(Copy),
-			_tempHolds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
-			_tempChildNum(Original, OrigChild, ChildNum),
+			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
+			_childNum(Original, OrigChild, ChildNum),
 			_childNum(Copy, CopyChild, ChildNum).
-
-% if copying into a tempNode, use tempHolds instead we want copy to exist during current 'Time'
-_tempHolds(Time, _fact(Copy, NodeFact))	
-		:-	_copyAttributes(Time, Copy, Original),
-			_tempNode(Copy),
-			_holds(Time, _fact(Original, _nodeField(Field, Value))),
-			_simpleField(Field),
-			NodeFact = _nodeField(Field, Value).
-% TODO: this is needed to copy from regular node to a temp node. Try simplifying all of this copying code!!!
+		% from reg node to temp node
 _tempHolds(Time, _fact(Copy, _nodeField(activechild, CopyChild)))
 		:-	_deepCopyChildren(Time, Copy, Original),
+			_node(Original),
 			_tempNode(Copy),
 			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
 			_childNum(Original, OrigChild, ChildNum),
 			_tempChildNum(Copy, CopyChild, ChildNum).
-_deepCopy(Time, CopyChild, OrigChild) % NOTE: necessary for copying from regular to tempNode
+_deepCopy(Time, CopyChild, OrigChild) 
 		:-	_deepCopyChildren(Time, Copy, Original),
+			_node(Original),
+			_tempNode(Copy),
 			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
 			_childNum(Original, OrigChild, ChildNum),
 			_tempChildNum(Copy, CopyChild, ChildNum).
+		% from temp node to reg node
+_introduce(Time, Copy, activechild, CopyChild)
+		:-	_deepCopyChildren(Time, Copy, Original),
+			_tempNode(Original),
+			_node(Copy),
+			_tempHolds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
+			_tempChildNum(Original, OrigChild, ChildNum),
+			_childNum(Copy, CopyChild, ChildNum).
+_deepCopy(Time, CopyChild, OrigChild)
+		:-	_deepCopyChildren(Time, Copy, Original),
+			_tempNode(Original),
+			_node(Copy),
+			_tempHolds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
+			_tempChildNum(Original, OrigChild, ChildNum),
+			_childNum(Copy, CopyChild, ChildNum).
+
 
 % detecting insufficient nodes: 
-% TODO: copying code has gotten too complex, simplify it
 _insufficientNodesError % copying from tempnode to regular node
 		:-	_deepCopyChildren(Time, Copy, Original),
+			_tempNode(Original), _node(Copy),
 			_tempHolds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
 			_tempChildNum(Original, OrigChild, ChildNum),
 			_maxNumChildren(Copy, MaxNumKids),
 			ChildNum > MaxNumKids.
-_insufficientNodesError	% copying from original node to temp node 
+_insufficientNodesError	% copying from regular node to temp node 
 		:-	_deepCopyChildren(Time, Copy, Original),
+			_node(Original), _tempNode(Copy),
 			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
 			_childNum(Original, OrigChild, ChildNum),
 			_maxNumTempChildren(Copy, MaxNumTempKids),
+			ChildNum > MaxNumTempKids.
+_insufficientNodesError	% copying from regular node to regular node 
+		:-	_deepCopyChildren(Time, Copy, Original),
+			_node(Original), _node(Copy),
+			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
+			_childNum(Original, OrigChild, ChildNum),
+			_maxNumChildren(Copy, MaxNumTempKids),
 			ChildNum > MaxNumTempKids.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TEMPNODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: predicates for temp Nodes are different to make clear when we're
