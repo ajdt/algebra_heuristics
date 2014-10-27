@@ -44,7 +44,7 @@ _deleteTerm(Time, RightOper)
 _deleteTerm(Time, LeftOper)
 	:-	_writeBinaryLeft(Time, LeftOper),
 		not _setResultTo(Time, LeftOper).
-_deepCopy(Time, Root, tempRoot)
+_deepCopy(Time, Root, tempResultRoot)
 	:-	_setResultTo(Time, Root).
 
 
@@ -154,7 +154,7 @@ _degOverflow
 % TODO: not sure if this will need to be generalized 
 
 % define the left and right temp roots
-_tempEqnRoot(tempRoot;tempRightRoot).	
+_tempEqnRoot(tempLeftRoot;tempRightRoot).	
 
 % NOTE: eqnMonoOps are operations where a new mono is introduced across an equation
 % NOTE: Op should be one of: add, mul, div

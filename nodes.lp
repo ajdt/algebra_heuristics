@@ -25,8 +25,9 @@ _maxChildrenAtDepth(4, 2).
 % define left and right sides of eqn 
 #const rightSide		= _id(1,2).	
 #const leftSide 		= _id(1,1).
-#const tempRoot			= _temp(_id(1,1)).
+#const tempLeftRoot		= _temp(_id(1,1)).
 #const tempRightRoot	= _temp(_id(1,2)).
+#const tempResultRoot	= tempLeftRoot.		% convention: operation results are rooted on tempLeftRoot
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DECLARING NODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: _id(...) should not be referenced outside of this code!!
