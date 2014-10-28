@@ -170,20 +170,20 @@ _activateTempAndSetChildren(Time, TempRoot, Op, 2)
 _deepCopy(Time, LeftChild, Root)
 	:-	_eqnMonoOp(Time, Op),
 		_rootNode(Root),
-		_matchingTempNode(Root, TempRoot),
-		_tempChildOnSide(TempRoot, LeftChild, left).
+		MatchingTempRoot = _temp(Root), 
+		_tempChildOnSide(MatchingTempRoot, LeftChild, left).
 	
 % set the other child to a monomial
 _activateTempNode(Time, RightChild, mono)
 	:-	_eqnMonoOp(Time, Op),
 		_rootNode(Root),
-		_matchingTempNode(Root, TempRoot),
-		_tempChildOnSide(TempRoot, RightChild, right).
+		MatchingTempRoot = _temp(Root), 
+		_tempChildOnSide(MatchingTempRoot, RightChild, right).
 
 % NOTE: if necessary we can add coeff/deg separately to decrease grounding
 _addMonomToNode(Time, RightChild, Deg, Coeff)
 	:-	_eqnMonoOp(Time, Coeff, Deg, Op),
 		_rootNode(Root),
-		_matchingTempNode(Root, TempRoot),
-		_tempChildOnSide(TempRoot, RightChild, right).
+		MatchingTempRoot = _temp(Root), 
+		_tempChildOnSide(MatchingTempRoot, RightChild, right).
 		

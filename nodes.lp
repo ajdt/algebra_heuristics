@@ -72,28 +72,21 @@ _childOnSide(Node, Child, left)
 _childOnSide(Node, Child, right)
 	:-	_childNum(Node, Child, 2).
 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NODE PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % CONSTRAINT: enforcing the valid child constraint
 :- _holds(Time, _fact(Parent, _nodeField(activechild, Child))),
 	_node(Parent), _node(Child),
 	not _validChildOf(Parent, Child).
-
-%  types of nodeField fields
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NODE PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  types of nodeField's 
 _type(div;mul;add;mono).
 _commutatitve(mul;add).
 _pointerField(activechild).
-% for lack of a better name, simple facts are safe to make shallow copies of
-_simpleField(type;degree;coeff;active). 
-
-% derived node properties: don't need to be updated, but rather can be 
-% obtained from regular holds() predicates
+_simpleField(type;degree;coeff;active).  % these fields are safe to make shallow copies of
 
 					%%% Aliases %%%
-% These are 'derived' fluents from the holds(..) fluents.
-% Outside code should mostly reference these aliases so
-% changes to node representation can be made easily.
+% These fluents alias expression tree fluents wrapped in holds() predicates
+% that way holds(...) and tree representation can be changed more easily
+
 % node type
 _isActive(Time, Node)
 		:-	_holds(Time, _fact(Node, _nodeField(active, yes))),
@@ -114,51 +107,6 @@ _isOper(Time, Node)
 		:-	_isActive(Time, Node),
 			_hasType(Time, Node, Type),
 			Type != mono.
-
-_parentType(Time, Child, Type)
-		:-	_activeChild(Time, Parent, Child),
-			_hasType(Time, Parent, Type).
-
-_activeChild(Time, Parent, Child)
-		:-	_isActive(Time, Parent),
-			_isActive(Time, Child),
-			_validChildOf(Parent, Child).
-
-_siblings(Time, FstChild, SndChild)
-		:-	_activeChild(Time, Parent, FstChild),
-			_activeChild(Time, Parent, SndChild),
-			FstChild != SndChild.
-_swappableTerms(Time, Fst, Snd)
-		:-	_siblings(Time, Fst, Snd),
-			_parentType(Time, Fst, Type),
-			_commutatitve(Type).
-
-% nodes equal to zero
-_isOne(Time, Node)
-	:-	_isMono(Time, Node),
-		_coeffOf(Time, Node, 1),
-		_degOf(Time, Node, 0).
-
-_isZero(Time, Node)
-		:-	_coeffOf(Time, Node, 0).
-_reducibleToZero(Time, Node)
-		:-	_isZero(Time, Node).
-_reducibleToZero(Time, Node)
-		:-	_isMul(Time, Node),
-			_activeChild(Time, Node, Child),
-			_reducibleToZero(Time, Child).
-_reducibleToZero(Time, Node)
-		:-	_isOper(Time, Node),
-			_everyChildReducesToZero(Time, Node).
-_everyChildReducesToZero(Time, Node)
-		:-	_isOper(Time, Node),
-			not _hasNonZeroChild(Time, Node).
-_hasNonZeroChild(Time, Node)
-		:-	_isOper(Time, Node),
-			_activeChild(Time, Node, Child),
-			not _reducibleToZero(Time, Child).
-					%%% node fields %%%
-% NOTE: monomials store degree and coeff info separately, to limit groundings when copying nodeFields
 _degOf(Time, Node, Deg)
 		:-	_holds(Time, _fact(Node, _nodeField(degree, Deg))),
 			_node(Node).
@@ -166,19 +114,15 @@ _coeffOf(Time, Node, Coeff)
 		:-	_holds(Time, _fact(Node, _nodeField(coeff, Coeff))),
 			_node(Node).
 
-% NOTE: used for fraction cancel rule, not much else
-_factorOf(Time, Node, Child)
-	:-	_isMul(Time, Node),
-		_activeChild(Time, Node, Child).
-_factorOf(Time, Node, Node)
-	:-	_isActive(Time, Node),
-		not _isMul(Time, Node).
-_haveCommonFactors(Time, FstNode, SndNode)
-	:-	_siblings(Time, FstNode, SndNode),
-		_factorOf(Time, FstNode, FstFactor),
-		_factorOf(Time, SndNode, SndFactor),
-		_equal(Time, FstFactor, SndFactor).
-
+					%%% Derived Properties %%%
+% Useful, secondary properties of tree nodes.
+% Derived from holds() predicates or their aliases
+_isOne(Time, Node)
+	:-	_isMono(Time, Node),
+		_coeffOf(Time, Node, 1),
+		_degOf(Time, Node, 0).
+_isZero(Time, Node)
+		:-	_coeffOf(Time, Node, 0).
 % node fields
 _numerOf(Time, Parent, Child)
 		:-	_isDiv(Time, Parent),
@@ -195,6 +139,61 @@ _holds(Time, _fact(Parent, _nodeField(numer, Child)))
 
 _holds(Time, _fact(Parent, _nodeField(denom, Child)))
 		:-	_denomOf(Time, Parent, Child).
+
+					%%% Properties Derived From Tree Structure %%%
+_parentType(Time, Child, Type)
+		:-	_activeChild(Time, Parent, Child),
+			_hasType(Time, Parent, Type).
+
+_activeChild(Time, Parent, Child)
+		:-	_isActive(Time, Parent),
+			_isActive(Time, Child),
+			_validChildOf(Parent, Child).
+
+_siblings(Time, FstChild, SndChild)
+		:-	_activeChild(Time, Parent, FstChild),
+			_activeChild(Time, Parent, SndChild),
+			FstChild != SndChild.
+
+_swappableTerms(Time, Fst, Snd)
+		:-	_siblings(Time, Fst, Snd),
+			_parentType(Time, Fst, Type),
+			_commutatitve(Type).
+
+% NOTE: indicates that a subtree obviously reduces to zero
+_reducibleToZero(Time, Node)
+		:-	_isZero(Time, Node).
+_reducibleToZero(Time, Node)
+		:-	_isMul(Time, Node),
+			_activeChild(Time, Node, Child),
+			_reducibleToZero(Time, Child).
+_reducibleToZero(Time, Node)
+		:-	_isOper(Time, Node),
+			_everyChildReducesToZero(Time, Node).
+_everyChildReducesToZero(Time, Node)
+		:-	_isOper(Time, Node),
+			not _hasNonZeroChild(Time, Node).
+_hasNonZeroChild(Time, Node)
+		:-	_isOper(Time, Node),
+			_activeChild(Time, Node, Child),
+			not _reducibleToZero(Time, Child).
+
+% NOTE: A factor (for a node) is a subtree that divides the node with no remainder.
+% if node is a multiplication op, then all it's children are factors. Otherwise,
+% we consider the node its own factor.
+% Mostly, used for fraction cancel rule.
+_factorOf(Time, Node, Child)
+	:-	_isMul(Time, Node),
+		_activeChild(Time, Node, Child).
+_factorOf(Time, Node, Node)
+	:-	_isActive(Time, Node),
+		not _isMul(Time, Node).
+_haveCommonFactors(Time, FstNode, SndNode)
+	:-	_siblings(Time, FstNode, SndNode),
+		_factorOf(Time, FstNode, FstFactor),
+		_factorOf(Time, SndNode, SndFactor),
+		_equal(Time, FstFactor, SndFactor).
+
 
 _hasTwoTerms(Time, Node)
 		:-	_validTime(Time),
@@ -226,7 +225,7 @@ _applyNodeOpRecursive(Time, Child, Op)
 			_activeChild(Time, Node, Child).
 
 % applying the operations
-% NOTE: won't delete any nodes in the subtree rooted at 'Node'
+% NOTE: clearing won't delete any nodes in the subtree rooted at 'Node'
 _remove(Time, _fact(Node, Info))			% clearing a node
 		:-	_applyNodeOp(Time, Node, clear),
 			_holds(Time, _fact(Node, Info)),
@@ -251,11 +250,12 @@ _applyNodeOp(Time, Node, clear)
 _applyNodeOpRecursive(Time, Child, delete)
 		:-	_clearNodeDeleteDescendants(Time, RootNode),
 			_activeChild(Time, RootNode, Child).
-%% remove a subtree including pointers to it
+			%%% remove a subtree including pointers to it
 % cancelTerm -- used to remove terms cancelled via division operation, may update parent
-% deleteTerm -- delete a subtree
-% NOTE: three different ways to cancelTerm depending on context
+% deleteTerm -- just deletes a subtree
 
+% NOTE: three different ways to cancelTerm depending on context
+% NOTE: if parent has more than two children, we assume that @ least two children will
 _setToOne(Time, Node)	% term is numer or denom of a fraction
 		:-	_cancelTerm(Time, Node),
 			_parentType(Time, Node, div).
@@ -267,27 +267,22 @@ _replaceParent(Time, Sibling) 	% term is one of two children, replace parent wit
 			_siblings(Time, Node, Sibling),
 			not _cancelTerm(Time, Sibling),	% ensure the other child isn't also cancelled
 			Sibling != Node.
-% NOTE: if parent has more than two children, we assume that @ least two children will
 % remain after current time step
 _deleteTerm(Time, Term)
 		:-	_cancelTerm(Time, Term).
 
+% deleteTerm
 _clearNodeDeleteDescendants(Time, Node)
 		:-	_deleteTerm(Time, Node).
-_removePointersToNode(Time, Node)
+_removeReferencesToNode(Time, Node)
 		:-	_deleteTerm(Time, Node).
 		
 _remove(Time, _fact(Parent, _nodeField(activechild, Node)))
-		:-	_removePointersToNode(Time, Node),
+		:-	_removeReferencesToNode(Time, Node),
 			_activeChild(Time, Parent, Node).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COPYING NODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: all copying is deep copying
-
-% replace parent with one of its children
-_deepCopy(Time, Parent, Node)
-		:-	_replaceParent(Time, Node),
-			_activeChild(Time, Parent, Node).
 
 % deep copying means copying all attributes and deep copying children
 _copyAttributes(Time, Copy, Orig)
@@ -390,11 +385,16 @@ _insufficientNodesError	% copying from regular node to regular node
 			_childNum(Original, OrigChild, ChildNum),
 			_maxNumChildren(Copy, MaxNumTempKids),
 			ChildNum > MaxNumTempKids.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TEMPNODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% NOTE: predicates for temp Nodes are different to make clear when we're
-% talking about temp nodes.
-_matchingTempNode(Node, _temp(Node))
-	:-	_node(Node).
+
+% MISC Code
+% replace parent with one of its children
+_deepCopy(Time, Parent, Node)
+		:-	_replaceParent(Time, Node),
+			_activeChild(Time, Parent, Node).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DEFINING TEMPNODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTE: predicates for temp Nodes are different to avoid integrity 
+% constraints being applied to tempNodes
 _tempNode(_temp(Node))
 		:-	_node(Node).
 _tempNodeDepth(_temp(Node), Depth)	% TODO: may not be needed
