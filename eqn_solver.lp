@@ -80,9 +80,11 @@ _introduce(Time, Node, Field, NewValue)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Selecting Rules %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % for each time step we can perform at most one applicable action
-0 { _performRule(Time, Rule)	:	_applicable(Time, Rule) } 1
+% TODO: modify to select heuristics based on precedence 
+0 { _selectedHeuristic(Time, HeuristicInstance)	:	_applicableHeuristic(Time, HeuristicInstance) } 1
 		:-	_time(Step, Stream),
 			Time = _time(Step, Stream),
+			not _multiStepHeuristicNotFinished(Time),
 			not _stopTime(Time).
 
 % action name performed at particular step

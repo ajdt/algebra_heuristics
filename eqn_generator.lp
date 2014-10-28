@@ -11,6 +11,7 @@
 #include "polynomial.lp".
 #include "eqn_solver.lp".
 #include "rules.lp".
+#include "heuristics.lp".
 #include "math_operations.lp".
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM GENERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
