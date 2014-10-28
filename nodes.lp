@@ -133,13 +133,6 @@ _denomOf(Time, Parent, Child)
 			_activeChild(Time, Parent, Child),
 			_childNum(Parent, Child, 2).
 
-% TODO: come up with more permanent solution for numer/denom stuff
-_holds(Time, _fact(Parent, _nodeField(numer, Child)))
-		:-	_numerOf(Time, Parent, Child).
-
-_holds(Time, _fact(Parent, _nodeField(denom, Child)))
-		:-	_denomOf(Time, Parent, Child).
-
 					%%% Properties Derived From Tree Structure %%%
 _parentType(Time, Child, Type)
 		:-	_activeChild(Time, Parent, Child),
