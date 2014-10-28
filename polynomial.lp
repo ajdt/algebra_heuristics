@@ -45,13 +45,13 @@ _hasTermWithDegSmallerThan(Time, Poly, FstDeg)
 		FstDeg > SndDeg.
 
 % a standard polynomial doesn't have multiple terms of the same degree
+_isStandardPoly(Time, Poly)
+	:-	_isPolynomial(Time, Poly),
+		not _notStandardPoly(Time, Poly).
 _notStandardPoly(Time, Poly)
 	:-	_isPolynomial(Time, Poly),
 		_polyHasTermWithDeg(Time, Poly, Deg),
 		not _hasSingleTermWithDeg(Time, Poly, Deg).
-_isStandardPoly(Time, Poly)
-	:-	_isPolynomial(Time, Poly),
-		not _notStandardPoly(Time, Poly).
 
 % access coeff/degree pairs of monomials at the polynomial level
 _monoTermOfPoly(Time, Poly, Deg, Coeff)

@@ -12,11 +12,6 @@
 #const	maxInitialDeg	=	2.
 #const	maxDeg			=	2*maxInitialDeg.
 
-#const	maxInitialSquareCoeff	=	3.
-#const	maxInitialLinearCoeff	=	maxInitialCoeff.
-#const	maxInitialConstCoeff	=	maxInitialCoeff.
-
-
 % expression tree parameters
 #const maxChildren	=	4.	% limit on children of operator nodes
 #const maxDepth		=	3.	% limits number of layers used during generation
@@ -24,7 +19,6 @@
 % solver params
 #const maxSteps = 1.
 #const maxNumStreams	= 1.
-#const minNumStreams	= 1.	% min number of distinct solutions problem must have
 
 
 % problem feature constraints 
