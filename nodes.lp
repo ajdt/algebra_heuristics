@@ -457,7 +457,9 @@ _tempHolds(Time, _fact(Temp, _nodeField(coeff, Coeff)))
 		_tempNode(Temp),
 		_degree(Deg),
 		_coeff(Coeff).
-	
+_activateTempNode(Time, Temp, mono)
+	:-	_setTempNodeToMono(Time, Temp, Deg, Coeff).
+
 %%% CONSTRAINT: if we run out of nodes then fail
 :- _insufficientNodesError.
 %%% CONSTRAINT: for some reason _hasType was not being generated for all nodes

@@ -173,13 +173,6 @@ _deepCopy(Time, LeftChild, Root)
 		MatchingTempRoot = _temp(Root), 
 		_tempChildOnSide(MatchingTempRoot, LeftChild, left).
 	
-% set the other child to a monomial
-_activateTempNode(Time, RightChild, mono)
-	:-	_eqnMonoOp(Time, Op),
-		_rootNode(Root),
-		MatchingTempRoot = _temp(Root), 
-		_tempChildOnSide(MatchingTempRoot, RightChild, right).
-
 % NOTE: if necessary we can add coeff/deg separately to decrease grounding
 _setTempNodeToMono(Time, RightChild, Deg, Coeff)
 	:-	_eqnMonoOp(Time, Coeff, Deg, Op),

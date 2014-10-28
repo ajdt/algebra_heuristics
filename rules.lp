@@ -342,9 +342,6 @@ _applicable(Time, _rule(factorMonom, _operands(Mono)))
 % form product of monomials (careful with code reuse here!!)
 _activateTempAndSetChildren(Time, tempResultRoot, mul, 2)
 	:-	_ruleForTimeStep(Time, factorMonom).
-_activateTempNode(Time, Child, mono)
-	:-	_ruleForTimeStep(Time, factorMonom),
-		_tempChildOnSide(tempResultRoot, Child, Side).
 _setTempNodeToMono(Time, LeftChild, FstDeg, FstCoeff)
 	:-	_ruleForTimeStep(Time, factorMonom),
 		_tempChildOnSide(tempResultRoot, LeftChild, left),
@@ -378,9 +375,6 @@ _activateTempAndSetChildren(Time, tempResultRoot, mul, 2)
 	:-	_ruleForTimeStep(Time, factorCommTerm).
 
 % save monomial that we factored out
-_activateTempNode(Time, TempRight, mono)
-	:-	_ruleForTimeStep(Time, factorCommTerm),
-		_tempChildOnSide(tempResultRoot, TempRight, right).
 _setTempNodeToMono(Time, TempRight, Deg, Coeff)
 	:-	_ruleForTimeStep(Time, factorCommTerm),
 		_tempChildOnSide(tempResultRoot, TempRight, right),
