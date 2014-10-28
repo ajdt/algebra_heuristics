@@ -1,13 +1,19 @@
 % Armando Diaz Tolentino <ajdt@cs.washington.edu> 
 % 
-% This file defines monomials and contains useful
-% predicates relating to polynomials
+% This file defines predicates specific to monomials and polynomials
 %
 
 _coeff(-1*maxCoeff..maxCoeff).
 _degree(0..maxDeg).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Polynomial Tree Structure %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+_isPolynomial(Time, Node)
+	:-	_isAdd(Time, Node),
+		not _hasNestedExpression(Time, Node).
+_hasNestedExpression(Time, Node)
+	:-	_activeChild(Time, Node, Child),
+		not _isMono(Time, Child).
+
 _isXTerm(Time, Node)
 	:-	_isMono(Time, Node),
 		_coeffOf(Time, Node, 1),
@@ -20,13 +26,6 @@ _hasXTerm(Time, Poly)
 _isConstant(Time, Node)
 	:-	_isMono(Time, Node),
 		_degOf(Time, Node, 0).
-
-_isPolynomial(Time, Node)
-	:-	_isAdd(Time, Node),
-		not _hasNestedExpression(Time, Node).
-_hasNestedExpression(Time, Node)
-	:-	_activeChild(Time, Node, Child),
-		not _isMono(Time, Child).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Polynomial Properties %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _polyHasTermWithDeg(Time, Poly, Deg)
@@ -45,6 +44,7 @@ _hasTermWithDegSmallerThan(Time, Poly, FstDeg)
 		_polyHasTermWithDeg(Time, Poly, SndDeg),
 		FstDeg > SndDeg.
 
+% a standard polynomial doesn't have multiple terms of the same degree
 _notStandardPoly(Time, Poly)
 	:-	_isPolynomial(Time, Poly),
 		_polyHasTermWithDeg(Time, Poly, Deg),
@@ -53,12 +53,21 @@ _isStandardPoly(Time, Poly)
 	:-	_isPolynomial(Time, Poly),
 		not _notStandardPoly(Time, Poly).
 
+% access coeff/degree pairs of monomials at the polynomial level
 _monoTermOfPoly(Time, Poly, Deg, Coeff)
 	:-	_isPolynomial(Time, Poly),
 		_activeChild(Time, Poly, Child),
 		_degOf(Time, Child, Deg),
 		_coeffOf(Time, Child, Coeff).
+
 % is factorable
+_isFactorable(Time, Poly) % poly has form x^2 + b*x + c
+	:-	_isPolynomial(Time, Poly),
+		_isStandardPoly(Time, Poly),
+		_monoTermOfPoly(Time, Poly, 2, 1),	
+		_monoTermOfPoly(Time, Poly, 1, LinearCoeff),
+		_monoTermOfPoly(Time, Poly, 0, ConstCoeff),
+		_factorable(LinearCoeff, ConstCoeff).
 _factors(Fst, Snd, Sum, Prod)
 	:-	_coeff(Fst),
 		_coeff(Snd),
@@ -69,13 +78,6 @@ _factors(Fst, Snd, Sum, Prod)
 		_coeff(Prod).
 _factorable(Sum, Prod)
 	:- _factors(Fst, Snd, Sum, Prod).
-_isFactorable(Time, Poly) % poly has form x^2 + b*x + c
-	:-	_isPolynomial(Time, Poly),
-		_isStandardPoly(Time, Poly),
-		_monoTermOfPoly(Time, Poly, 2, 1),	
-		_monoTermOfPoly(Time, Poly, 1, LinearCoeff),
-		_monoTermOfPoly(Time, Poly, 0, ConstCoeff),
-		_factorable(LinearCoeff, ConstCoeff).
 
 % polynomial forms
 _isQuadratic(Time, Poly)
@@ -87,7 +89,7 @@ _isLinear(Time, Poly)
 		_polyHasTermWithDeg(Time, Poly, 1),
 		not _hasTermWithDegLargerThan(Time, Poly, 1).
 
-% extracting a common term
+			%%% extracting a common term from a polynomial
 _hasCommonDeg(Time, Poly)
 	:-	_hasCommonDeg(Time, Poly, Deg).
 
