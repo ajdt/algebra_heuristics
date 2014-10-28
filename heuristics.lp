@@ -19,8 +19,9 @@
 _heuristic(combineLikeTerms, 1, _applicableRule(addMonom)).
 
 % action if rule applies
-_performRule(Time, RuleToApply)
-	:-	_selectedHeuristic(Time, _heuristicInstance(combineLikeTerms, RuleToApply)).
+1 { _performRule(Time, _rule(RuleName, Operands) ) :  _applicable(Time, _rule(RuleName, Operands))} 1
+	:-	_selectedHeuristic(Time, HeuristicName),
+		_heuristic(HeuristicName, Priority, _applicableRule(RuleName)).
 
 % TODO: change so rule to apply is decoupled from heuristic to use. Create isApplicable() predicate for heuristics,
 % use anywhere full heuristic instance isn't needed 
@@ -28,7 +29,7 @@ _performRule(Time, RuleToApply)
 % if a heuristic must run for multiple steps it must generate _multiStepHeuristicNotFinished(Time) for each such time step
 
 % basic heuristics only have conditions that a rule apply
-_applicableHeuristic(Time, _heuristicInstance(HeuristicName, RuleToApply))
+_applicableHeuristic(Time, HeuristicName)
 	:-	_heuristic(HeuristicName, Priority, _applicableRule(RuleName)),
 		_applicable(Time, _rule(RuleName, Operands)),
 		RuleToApply = _rule(RuleName, Operands).

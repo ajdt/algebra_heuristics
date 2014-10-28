@@ -81,11 +81,19 @@ _introduce(Time, Node, Field, NewValue)
 
 % for each time step we can perform at most one applicable action
 % TODO: modify to select heuristics based on precedence 
-0 { _selectedHeuristic(Time, HeuristicInstance)	:	_applicableHeuristic(Time, HeuristicInstance) } 1
+0 { _selectedHeuristic(Time, HeuristicName)	:	_applicableHeuristic(Time, HeuristicName) } 1
 		:-	_time(Step, Stream),
 			Time = _time(Step, Stream),
 			not _multiStepHeuristicNotFinished(Time),
 			not _stopTime(Time).
+
+% maximize selected heuristic
+_priorityOfSelectedHeuristic(Time, Priority)
+		:-	_selectedHeuristic(Time, HeuristicName),
+			_heuristic(HeuristicName, Priority, Condition).
+
+% not sure if this is best way to determine selected heuristic
+#minimize { Priority@1, _validTime(Time) :  _priorityOfSelectedHeuristic(Time, Priority) }.
 
 % action name performed at particular step
 _ruleForTimeStep(Time, RuleName)
