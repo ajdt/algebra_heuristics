@@ -181,7 +181,7 @@ _activateTempNode(Time, RightChild, mono)
 		_tempChildOnSide(MatchingTempRoot, RightChild, right).
 
 % NOTE: if necessary we can add coeff/deg separately to decrease grounding
-_addMonomToNode(Time, RightChild, Deg, Coeff)
+_setTempNodeToMono(Time, RightChild, Deg, Coeff)
 	:-	_eqnMonoOp(Time, Coeff, Deg, Op),
 		_rootNode(Root),
 		MatchingTempRoot = _temp(Root), 

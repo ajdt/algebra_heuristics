@@ -345,12 +345,12 @@ _activateTempAndSetChildren(Time, tempResultRoot, mul, 2)
 _activateTempNode(Time, Child, mono)
 	:-	_ruleForTimeStep(Time, factorMonom),
 		_tempChildOnSide(tempResultRoot, Child, Side).
-_addMonomToNode(Time, LeftChild, FstDeg, FstCoeff)
+_setTempNodeToMono(Time, LeftChild, FstDeg, FstCoeff)
 	:-	_ruleForTimeStep(Time, factorMonom),
 		_tempChildOnSide(tempResultRoot, LeftChild, left),
 		_selectedCoeffFactors(Time, FstCoeff, SndCoeff),
 		_selectedDegDecomposition(Time, FstDeg, SndDeg).
-_addMonomToNode(Time, RightChild, SndDeg, SndCoeff)
+_setTempNodeToMono(Time, RightChild, SndDeg, SndCoeff)
 	:-	_ruleForTimeStep(Time, factorMonom),
 		_tempChildOnSide(tempResultRoot, RightChild, right),
 		_selectedCoeffFactors(Time, FstCoeff, SndCoeff),
@@ -381,7 +381,7 @@ _activateTempAndSetChildren(Time, tempResultRoot, mul, 2)
 _activateTempNode(Time, TempRight, mono)
 	:-	_ruleForTimeStep(Time, factorCommTerm),
 		_tempChildOnSide(tempResultRoot, TempRight, right).
-_addMonomToNode(Time, TempRight, Deg, Coeff)
+_setTempNodeToMono(Time, TempRight, Deg, Coeff)
 	:-	_ruleForTimeStep(Time, factorCommTerm),
 		_tempChildOnSide(tempResultRoot, TempRight, right),
 		_selectedCommonDeg(Time, Deg),

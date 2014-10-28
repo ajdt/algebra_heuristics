@@ -397,28 +397,21 @@ _deepCopy(Time, Parent, Node)
 % constraints being applied to tempNodes
 _tempNode(_temp(Node))
 		:-	_node(Node).
-_tempNodeDepth(_temp(Node), Depth)	% TODO: may not be needed
-		:-	_nodeDepth(Node, Depth).
-_numberOfTempNode(_temp(Node), Number) % TODO: may not be needed
-		:-	_numberOfNode(Node, Number).
-% number of children a node may have (varies by node depth)
-_maxNumTempChildren(_temp(Node), NumChildren)
-		:-	_maxNumChildren(Node, NumChildren).
-_validNumTempChildren(TempNode, Num)
-		:-	_maxNumTempChildren(TempNode, NumChildren),
-			Num = 2..NumChildren.
 
-_tempChildNum(_temp(Node), _temp(Child), ChildNum)
+% create required predicates for temp nodes
+_tempChildNum(_temp(Node), _temp(Child), ChildNum)	% parent, child, childnum
 		:-	_childNum(Node, Child, ChildNum).
 _tempChildOnSide(Temp, Child, left)
 	:-	_tempChildNum(Temp, Child, 1).
 _tempChildOnSide(Temp, Child, right)
 	:-	_tempChildNum(Temp, Child, 2).
-
-_validTempChildOf(_temp(Parent), _temp(Child))
+_validTempChildOf(_temp(Parent), _temp(Child))		% valid children
 		:-	_childNum(Parent, Child, ChildNum).
+_maxNumTempChildren(TempNode, NumChildren)			% max number of children
+		:-	_maxNumChildren(Node, NumChildren), TempNode = _temp(Node).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SETTING TEMP NODE PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% _tempHolds wraps fluents for temp nodes so they aren't persistent between time steps unlike _holds()
 _activateTempNode(Time, Temp, Type)
 		:-	_activateTempAndSetChildren(Time, Temp, Type, NumChildren),
 			_tempNode(Temp).
@@ -445,13 +438,7 @@ _insufficientNodesError
 			_maxNumTempChildren(Temp, MaxNumChildren),
 			NumChildren > MaxNumChildren.
 
-% fail if more children are requested  than are available
-_insufficientNodesError
-		:-	_setTempChildren(Time, Temp, NumChildren),
-			_tempNode(Temp),
-			not _validNumTempChildren(Temp, NumChildren).
-
-% setting to binomial
+				%%% set temp Node to first degree binomial (x + c)
 _activateTempAndSetChildren(Time, TempNode, add, 2)
 	:-	_setToBinomial(Time, TempNode, Factor).
 
@@ -459,26 +446,26 @@ _activateTempNode(Time, Child, mono)
 	:-	_setToBinomial(Time, TempNode, Factor),
 		_tempChildOnSide(TempNode, Child, Side).
 
-_addMonomToNode(Time, LeftChild, 1, 1)	% time, node, degree, coeff
+_setTempNodeToMono(Time, LeftChild, 1, 1)	% time, node, degree, coeff
 	:-	_setToBinomial(Time, TempNode, Factor),
 		_tempChildOnSide(TempNode, LeftChild, left).
-_addMonomToNode(Time, RightChild, 0, Factor)
+_setTempNodeToMono(Time, RightChild, 0, Factor)
 	:-	_setToBinomial(Time, TempNode, Factor),
 		_tempChildOnSide(TempNode, RightChild, right).
 
-% adding monomial to temp node
+				%%% adding monomial to temp node
 _tempHolds(Time, _fact(Temp, _nodeField(degree, Deg)))
-	:-	_addMonomToNode(Time, Temp, Deg, Coeff),
+	:-	_setTempNodeToMono(Time, Temp, Deg, Coeff),
 		_tempNode(Temp),
 		_degree(Deg),
 		_coeff(Coeff).
 _tempHolds(Time, _fact(Temp, _nodeField(coeff, Coeff)))
-	:-	_addMonomToNode(Time, Temp, Deg, Coeff),
+	:-	_setTempNodeToMono(Time, Temp, Deg, Coeff),
 		_tempNode(Temp),
 		_degree(Deg),
 		_coeff(Coeff).
+	
 %%% CONSTRAINT: if we run out of nodes then fail
 :- _insufficientNodesError.
-
 %%% CONSTRAINT: for some reason _hasType was not being generated for all nodes
 :-	_holds(Time, _fact(Node, _nodeField(type, Type))), not _hasType(Time, Node, Type), _node(Node).
