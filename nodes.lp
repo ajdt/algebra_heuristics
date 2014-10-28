@@ -132,6 +132,11 @@ _denomOf(Time, Parent, Child)
 		:-	_isDiv(Time, Parent),
 			_activeChild(Time, Parent, Child),
 			_childNum(Parent, Child, 2).
+%% NOTE: need these numer/denom fields for visualizer
+_holds(Time, _fact(Parent, _nodeField(numer, Child)))
+		:-	_numerOf(Time, Parent, Child).
+_holds(Time, _fact(Parent, _nodeField(denom, Child)))
+		:-	_denomOf(Time, Parent, Child).
 
 					%%% Properties Derived From Tree Structure %%%
 _parentType(Time, Child, Type)
