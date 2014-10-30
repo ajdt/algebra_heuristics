@@ -75,4 +75,13 @@ _heuristic(Name, Priority, Rule)
 
 _heuristicToApplyRule(combineLikeTerms, 1, addMonom). 
 
-:- not _selectedHeuristic(_time(0,1), combineLikeTerms).
+_heuristic(factorSimpleQuad, 1, stdQuadSetToZero).
+_heuristicAction(factorSimpleQuad, factor).
+
+_applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))
+	:-	_isZero(Time, rightSide),
+	_applicable(Time, _rule(factor, _operands(leftSide))).
+
+:- not _selectedHeuristic(_time(0,1), factorSimpleQuad).
+
+
