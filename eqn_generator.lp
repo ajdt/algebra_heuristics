@@ -12,6 +12,7 @@
 #include "eqn_solver.lp".
 #include "rules.lp".
 #include "math_operations.lp".
+#include "heuristics.lp".
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM GENERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % every root node (see node.lp) is active initially

@@ -80,7 +80,7 @@ _introduce(Time, Node, Field, NewValue)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Selecting Rules %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % for each time step we can perform at most one applicable action
-0 { _selecedHeuristic(Time, HeuristicName)	:	_applicableHeuristic(Time, HeuristicName) } 1
+0 { _selectedHeuristic(Time, HeuristicName)	:	_applicableHeuristic(Time, HeuristicName) } 1
 		:-	_time(Step, Stream),
 			Time = _time(Step, Stream),
 			not _previousHeuristicNotFinished(Time),
