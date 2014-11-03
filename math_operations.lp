@@ -179,4 +179,12 @@ _setTempNodeToMono(Time, RightChild, Deg, Coeff)
 		_rootNode(Root),
 		MatchingTempRoot = _temp(Root), 
 		_tempChildOnSide(MatchingTempRoot, RightChild, right).
-		
+
+_eqnMonoOp(Time, add),
+_inactiveChild(Time, SideOfEqn, Child),
+_rootNode(SideOfEqn).
+
+_inactiveChild(Time, Node, Child)
+	:-	_validChild(Node, Child),
+		_validTime(Time),
+		not _activeChild(Time, Node, Child).
