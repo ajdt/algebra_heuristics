@@ -24,3 +24,7 @@
 % problem feature constraints 
 :- _coeffOverflow.
 :- _degOverflow.
+
+% allow/disallow specific operators in initial expression.
+% by default all types are allowed. To disallow a type use _disallowedType(Type)
+%%_disallowedType(neg).%%
