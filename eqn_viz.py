@@ -56,7 +56,7 @@ deg_coeff_parser		=	wrapInKeyValueAndFact(word_number_parser)
 child_parser 			= 	wrapInKeyValueAndFact(word_node_parser)
 
 all_parsers 	=	[ type_parser, child_parser, deg_coeff_parser, action_parser]
-op_symbols 		= 	{'add' : '+' , 'div' : '/' , 'mul' : '*' }
+op_symbols 		= 	{'add' : '+' , 'div' : '/' , 'mul' : '*' , 'neg' : '-'}
 
 
 class StepParser:
@@ -126,6 +126,9 @@ class StepParser:
 			denom = self.denom_of[root_node]
 			oper_symbol	= op_symbols[self.node_types[root_node]]
 			return '(' + self.makeEqnString(numer) + oper_symbol + self.makeEqnString(denom) + ')'
+		elif self.node_types[root_node] == 'neg':
+			child_str = self.makeEqnString(self.node_children[root_node][0])
+			return '-'  + child_str 
 		else: # root_node is an add or mul node
 			child_strings = []
 			# compose a string representation of every child first

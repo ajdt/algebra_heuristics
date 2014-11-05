@@ -540,4 +540,4 @@ _deepCopy(Time, SndTerm, FstTerm)
 		_siblings(Time, FstTerm, SndTerm).
 
 %%:- not _ruleForTimeStep(_time(0,1), addZero).%%
-
+:- not _hasType(initially, leftSide, neg).

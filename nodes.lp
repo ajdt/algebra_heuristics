@@ -78,8 +78,9 @@ _childOnSide(Node, Child, right)
 	not _validChildOf(Parent, Child).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NODE PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  types of nodeField's 
-_type(div;mul;add;mono).
+_type(div;mul;add;mono;neg).
 _commutatitve(mul;add).
+_unary(neg).
 _pointerField(activechild).
 _simpleField(type;degree;coeff;active).  % these fields are safe to make shallow copies of
 
