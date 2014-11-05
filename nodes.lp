@@ -102,6 +102,8 @@ _isMul(Time, Node)
 		:-	_hasType(Time, Node, mul).
 _isAdd(Time, Node)
 		:-	_hasType(Time, Node, add).
+_isNeg(Time, Node)
+		:-	_hasType(Time, Node, neg).
 _isMono(Time, Node)
 		:-	_hasType(Time, Node, mono).
 _isOper(Time, Node)

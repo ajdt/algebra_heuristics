@@ -539,5 +539,19 @@ _deepCopy(Time, SndTerm, FstTerm)
 		_operand(Time, SndTerm, swapTerms, right),
 		_siblings(Time, FstTerm, SndTerm).
 
-%%:- not _ruleForTimeStep(_time(0,1), addZero).%%
+%================================================================================
+% cancelNegatives: -(-A) --> A
+%================================================================================
+_applicable(Time, _rule(cancelNegatives, _operands(Parent, Child)))
+	:-	_activeChild(Time, Parent, Child),
+		_isNeg(Time, Parent),
+		_isNeg(Time, Child).
+
+_deepCopy(Time, GrandParent, GrandChild)
+	:-	_operand(Time, GrandParent, cancelNegatives, left),
+		_operand(Time, Parent, cancelNegatives, right),
+		_activeChild(Time, Parent, GrandChild).
+
+	
+:- not _ruleForTimeStep(_time(0,1), cancelNegatives).
 %%:- not _hasType(initially, leftSide, neg).%%
