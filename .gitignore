@@ -1,6 +1,5 @@
 # compiled files
 *.pyc
-*.sh
 *.swp
 throwaway_code/*
 *.log

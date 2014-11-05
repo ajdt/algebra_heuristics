@@ -265,9 +265,34 @@ _replaceParent(Time, Sibling) 	% term is one of two children, replace parent wit
 			_siblings(Time, Node, Sibling),
 			not _cancelTerm(Time, Sibling),	% ensure the other child isn't also cancelled
 			Sibling != Node.
-% remain after current time step
-_deleteTerm(Time, Term)
-		:-	_cancelTerm(Time, Term).
+
+%% shifting down terms
+%%	NOTE: we want to maintain the invariant that if a node has k children, then they
+%% 			occupy children numbered 1..k. 
+%%			So if we delete a child for a node with 3 or more children, we shift down 
+%%			all other siblings and delete the node at the end
+_shiftDownTerms(Time, Node)
+		:-	_cancelTerm(Time, Node),
+			not _parentType(Time, Node, div),
+			not _parentHasTwoChildren(Time, Node).	% XXX: assumes parent has 3 or more children
+_shiftAdjacentTermDown(Time, Node, AdjacentSibling)
+		:-	_shiftDownTerms(Time, Node),
+			_childNum(Parent, Node, Num),
+			_childNum(Parent, AdjacentSibling, Num+1),
+			_isActive(Time, AdjacentSibling).
+_deepCopy(Time, Node, Adjacent)
+		:-	_shiftAdjacentTermDown(Time, Node, Adjacent).
+_shiftDownTerms(Time, Adjacent)
+		:-	_shiftAdjacentTermDown(Time, Node, Adjacent).
+_deleteTerm(Time, Node)								% last active node is the only one we delete
+		:-	_shiftDownTerms(Time, Node),
+			_childNum(Parent, Node, Num),
+			_childNum(Parent, AdjacentSibling, Num+1),
+			not _isActive(Time, AdjacentSibling).
+_deleteTerm(Time, Node)								% second case, we are already deleting the last node
+		:-	_shiftDownTerms(Time, Node),
+			_childNum(Parent, Node, Num),
+			_maxNumChildren(Parent, Num).
 
 % deleteTerm
 _clearNodeDeleteDescendants(Time, Node)

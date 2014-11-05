@@ -46,6 +46,7 @@ _setToOne(Time, Fraction)
 _applicable(Time, _rule(multFrac, _operands(LeftFrac, RightFrac)))
 	:-	_isDiv(Time, LeftFrac),
 		_isDiv(Time, RightFrac),
+		LeftFrac < RightFrac,
 		_siblings(Time, LeftFrac, RightFrac),
 		_parentType(Time, LeftFrac, mul).
 
@@ -119,7 +120,7 @@ _applicable(Time, _rule(addMonom, _operands(LeftMono, RightMono)))
 		_equalDegs(Time, LeftMono, RightMono),
 		_isMono(Time, LeftMono),
 		_isMono(Time, RightMono),
-		LeftMono != RightMono,
+		LeftMono < RightMono,
 		_parentType(Time, LeftMono, add).
 
 _monoOp(Time, tempResultRoot, LeftMono, RightMono, add)
@@ -136,7 +137,7 @@ _applicable(Time, _rule(monoMult, _operands(LeftMono, RightMono)))
 	:-	_siblings(Time, LeftMono, RightMono),
 		_isMono(Time, LeftMono),
 		_isMono(Time, RightMono),
-		LeftMono != RightMono,
+		LeftMono < RightMono,
 		_parentType(Time, LeftMono, mul).
  
 _monoOp(Time, tempResultRoot, LeftMono, RightMono, mul)
@@ -211,6 +212,7 @@ _setResultTo(Time, Poly)
 _applicable(Time, _rule(addSameFrac, _operands(Fst, Snd)))
 	:-	_siblings(Time, Fst, Snd),
 		_sameDenom(Time, Fst, Snd),
+		Fst < Snd,
 		_parentType(Time, Fst, add).
 
 % set root to a fraction
@@ -239,6 +241,7 @@ _applicable(Time, _rule(addDiffFrac, _operands(Fst, Snd)))
 	:-	_siblings(Time, Fst, Snd),
 		_isDiv(Time, Fst),
 		_isDiv(Time, Snd),
+		Fst < Snd, 
 		_parentType(Time, Fst, add).
 
 % set root to a fraction
@@ -277,6 +280,7 @@ _writeBinaryOp(Time)
 _applicable(Time, _rule(distribute, _operands(PlusTerm, DistribTerm)))
 	:-	_siblings(Time, PlusTerm, DistribTerm),
 		_parentType(Time, PlusTerm, mul),
+		PlusTerm < DistribTerm, % TODO: this is necessary, but prevents distribute if C occurs before (a+b) term
 		_isAdd(Time, PlusTerm).
 
 % every term in original plus node, is multiplied by distributed term
@@ -535,5 +539,5 @@ _deepCopy(Time, SndTerm, FstTerm)
 		_operand(Time, SndTerm, swapTerms, right),
 		_siblings(Time, FstTerm, SndTerm).
 
-%%:- not _ruleForTimeStep(_time(0,1), swapTerms).%%
+%%:- not _ruleForTimeStep(_time(0,1), addZero).%%
 

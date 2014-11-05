@@ -21,6 +21,7 @@ _introduce(Time, Node, degree, 0)
 
 % XXX: assumes each time step we're setting only using setResultTo(...) at most once
 % NOTE: 2-ary version ignore RightPoly to limit grounding size; still works correctly
+% XXX: assumes LeftOper < RightOper. Ensure this is the case.
 
 % isolate the "left/right" operands
 _writeBinaryLeft(Time, LeftOper)
@@ -39,11 +40,9 @@ _setResultTo(Time, LeftOper)
 		_activeChild(Time, Root, LeftOper).
 
 % cancel unneeded terms
-_deleteTerm(Time, RightOper)
+_shiftDownTerms(Time, RightOper)
 	:-	_writeBinaryRight(Time, RightOper).
-_deleteTerm(Time, LeftOper)
-	:-	_writeBinaryLeft(Time, LeftOper),
-		not _setResultTo(Time, LeftOper).
+% NOTE: don't need to explicitly delete leftOper b/c deepCopy will remove all children of Root
 _deepCopy(Time, Root, tempResultRoot)
 	:-	_setResultTo(Time, Root).
 
@@ -179,12 +178,3 @@ _setTempNodeToMono(Time, RightChild, Deg, Coeff)
 		_rootNode(Root),
 		MatchingTempRoot = _temp(Root), 
 		_tempChildOnSide(MatchingTempRoot, RightChild, right).
-
-_eqnMonoOp(Time, add),
-_inactiveChild(Time, SideOfEqn, Child),
-_rootNode(SideOfEqn).
-
-_inactiveChild(Time, Node, Child)
-	:-	_validChild(Node, Child),
-		_validTime(Time),
-		not _activeChild(Time, Node, Child).
