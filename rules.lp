@@ -561,22 +561,33 @@ _deepCopy(Time, GrandParent, GrandChild)
 		%%_parentType(Time, Node, neg),%%
 		%%_activeChild(Time, Node, Child).%%
 _applicable(Time, _rule(percolateNeg, _operands(Node, Node)))
-	:-	_hasType(Time, Node, Type),
-		_addOrMono(Type),
+	:-	_addOrMono(Time, Node),
 		_isMono(Time, Node),
 		_parentType(Time, Node, neg).
 
 % mono case:
 _negateNode(Time, tempResultRoot, RootNode)
 	:-	_operand(Time, RootNode, percolateNeg, left),
-		_operand(Time, RootNode, percolateNeg, right),
-		_isMono(Time, RootNode).
-% negating nodes
+		_addOrMono(Time, RootNode).
+
+			%%% negating nodes
+% mono case
 _setTempNodeToMono(Time, Temp, Deg, Coeff*-1)
 	:-	_negateNode(Time, Temp, Node),
 		_isMono(Time, Node),
 		_coeffOf(Time, Node, Coeff),
 		_degOf(Time, Node, Deg).
+% add case
+_copyAttributes(Time, Temp, Node)
+	:-	_negateNode(Time, Temp, Node).
+_copyChildStructure(Time, Temp, Node)
+	:-	_negateNode(Time, Temp, Node).
+
+_negateNode(Time, TempChild, Child)
+	:-	_negateNode(Time, Temp, Node),
+		_activeChild(Time, Node, Child),
+		_childNum(Node, Child, Num),
+		_tempChildNum(Temp, TempChild, Num).
 
 % save the result
 _setResultTo(Time, Parent)
