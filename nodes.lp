@@ -81,6 +81,10 @@ _childOnSide(Node, Child, right)
 _type(div;mul;add;mono;neg).
 _commutatitve(mul;add).
 _unary(neg).
+
+_mulOrDiv(mul;div).	% used to simulate an OR condition on node type
+_addOrMono(mono;add).
+
 _pointerField(activechild).
 _simpleField(type;degree;coeff;active).  % these fields are safe to make shallow copies of
 

@@ -552,6 +552,18 @@ _deepCopy(Time, GrandParent, GrandChild)
 		_operand(Time, Parent, cancelNegatives, right),
 		_activeChild(Time, Parent, GrandChild).
 
-	
-:- not _ruleForTimeStep(_time(0,1), cancelNegatives).
+%================================================================================
+% percolateNeg: -(a + b) --> -a - b         -(a*b*c) --> -a*b*c
+%================================================================================
+_applicable(Time, _rule(percolateNeg, _operands(Node, Child)))
+	:-	_hasType(Time, Node, Type),
+		_mulOrDiv(Type),
+		_parentType(Time, Node, neg),
+		_activeChild(Time, Node, Child).
+_applicable(Time, _rule(percolateNeg, _operands(Node, Node)))
+	:-	_hasType(Time, Node, Type),
+		_addOrMono(Type),
+		_parentType(Time, Node, neg).
+
+:- not _ruleForTimeStep(_time(0,1), percolateNeg).
 %%:- not _hasType(initially, leftSide, neg).%%
