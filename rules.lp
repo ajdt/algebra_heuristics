@@ -562,7 +562,7 @@ _deepCopy(Time, GrandParent, GrandChild)
 		%%_activeChild(Time, Node, Child).%%
 _applicable(Time, _rule(percolateNeg, _operands(Node, Node)))
 	:-	_addOrMono(Time, Node),
-		_isMono(Time, Node),
+		_isPolynomial(Time, Node),
 		_parentType(Time, Node, neg).
 
 % mono case:
@@ -585,6 +585,13 @@ _copyChildStructure(Time, Temp, Node)
 
 _negateNode(Time, TempChild, Child)
 	:-	_negateNode(Time, Temp, Node),
+		_activeChild(Time, Node, Child),
+		_childNum(Node, Child, Num),
+		_tempChildNum(Temp, TempChild, Num).
+% XXX: temp move elsewhere
+% TODO: introduce setChild/3 predicate and use in setTempChildren predicate too
+_tempHolds(Time, _fact(Temp, _nodeField(activechild, TempChild)))
+	:-	_copyChildStructure(Time, Temp, Node),
 		_activeChild(Time, Node, Child),
 		_childNum(Node, Child, Num),
 		_tempChildNum(Temp, TempChild, Num).
