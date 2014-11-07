@@ -94,8 +94,7 @@ _isActive(Time, Node)
 		:-	_holds(Time, _fact(Node, _nodeField(active, yes))),
 			_node(Node).
 _hasType(Time, Node, Type)
-		:-	_holds(Time, _fact(Node, _nodeField(type, Type))),
-			_node(Node).
+		:-	_holds(Time, _fact(Node, _nodeField(type, Type))).
 
 _isDiv(Time, Node)
 		:-	_hasType(Time, Node, div).
@@ -503,4 +502,6 @@ _activateTempNode(Time, Temp, mono)
 %%% CONSTRAINT: if we run out of nodes then fail
 :- _insufficientNodesError.
 %%% CONSTRAINT: for some reason _hasType was not being generated for all nodes
-:-	_holds(Time, _fact(Node, _nodeField(type, Type))), not _hasType(Time, Node, Type), _node(Node).
+_hasNoType(Time, Node)
+	:-	_holds(Time, _fact(Node, _nodeField(type, Type))), not _hasType(Time, Node, Type), _node(Node).
+:-	_hasNoType(Time, Node).

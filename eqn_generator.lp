@@ -32,11 +32,11 @@ _holds(initially, _fact(Node, _nodeField(active,yes)))
 1 { _numChildren(initially, Node,  Num) : _childCount(Num), Num <=  MaxNumChildren} 1	
 		:-	_isOper(initially, Node),
 			not _isDiv(initially, Node),
-			_hasType(initially, Node, Type), Type != neg,
+			not _isNeg(initially, Node),
 			_maxNumChildren(Node, MaxNumChildren).
 
 _numChildren(initially, Node, 1)
-		:-	_hasType(initially, Node, neg).
+		:-	_isNeg(initially, Node).
 _numChildren(initially, Node, 2)						
 		:-	_isDiv(initially, Node).
 
@@ -81,7 +81,7 @@ _monoHasChildren(Time, Mono)
 
 :- _monoHasChildren(Time, Mono).
 
-% unary operations (just neg really), must have exactly one child at all times
+% CONSTRAINT: unary operations (just neg really), must have exactly one child at all times
 :-	_unary(Oper),
 	_hasType(Time, Node, Oper),
 	2 { _activeChild(Time, Node, Child) : _validChildOf(Node, Child) }.
