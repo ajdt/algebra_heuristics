@@ -562,7 +562,9 @@ _deepCopy(Time, GrandParent, GrandChild)
 		%%_activeChild(Time, Node, Child).%%
 _applicable(Time, _rule(percolateNeg, _operands(Node, Node)))
 	:-	_addOrMono(Time, Node),
-		_isPolynomial(Time, Node),
+		_isMono(Time, Node),
+		%%not _isPolynomial(Time, Node),%%
+		%%not _isMono(Time, Node),%%
 		_parentType(Time, Node, neg).
 
 % mono case:
@@ -572,35 +574,16 @@ _negateNode(Time, tempResultRoot, RootNode)
 
 			%%% negating nodes
 % mono case
-_setTempNodeToMono(Time, Temp, Deg, Coeff*-1)
-	:-	_negateNode(Time, Temp, Node),
-		_isMono(Time, Node),
-		_coeffOf(Time, Node, Coeff),
-		_degOf(Time, Node, Deg).
-% add case
-_copyAttributes(Time, Temp, Node)
-	:-	_negateNode(Time, Temp, Node).
-_copyChildStructure(Time, Temp, Node)
-	:-	_negateNode(Time, Temp, Node).
-
-_negateNode(Time, TempChild, Child)
-	:-	_negateNode(Time, Temp, Node),
-		_activeChild(Time, Node, Child),
-		_childNum(Node, Child, Num),
-		_tempChildNum(Temp, TempChild, Num).
-% XXX: temp move elsewhere
-% TODO: introduce setChild/3 predicate and use in setTempChildren predicate too
-_tempHolds(Time, _fact(Temp, _nodeField(activechild, TempChild)))
-	:-	_copyChildStructure(Time, Temp, Node),
-		_activeChild(Time, Node, Child),
-		_childNum(Node, Child, Num),
-		_tempChildNum(Temp, TempChild, Num).
+_setTempNodeToMono(Time, tempResultRoot, Deg, Coeff*-1)
+	:-	_operand(Time, RootNode, percolateNeg, left),
+		_isMono(Time, RootNode),
+		_coeffOf(Time, RootNode, Coeff),
+		_degOf(Time, RootNode, Deg).
+% add operator case
 
 % save the result
 _setResultTo(Time, Parent)
 	:-	_operand(Time, RootNode, percolateNeg, left),
 		_activeChild(Time, Parent, RootNode).
 
-% determine if temp Node is same as 
 :- not _ruleForTimeStep(_time(0,1), percolateNeg).
-%%:- not _hasType(initially, leftSide, neg).%%
