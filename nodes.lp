@@ -348,9 +348,11 @@ _introduce(Time, _fact(Copy, NodeFact))
 			_simpleField(Field),
 			NodeFact = _nodeField(Field, Value).
 % deep copying children
+_copyChildPtrStructure(Time, Copy, Orig)	% setup corresp parent/child pointers for Copy node
+	:-	_deepCopyChildren(Time, Copy, Orig).
 		% from reg node to reg node
 _introduce(Time, Copy, activechild, CopyChild)
-		:-	_deepCopyChildren(Time, Copy, Original),
+		:-	_copyChildPtrStructure(Time, Copy, Original),
 			_node(Original),
 			_node(Copy),
 			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
@@ -365,7 +367,7 @@ _deepCopy(Time, CopyChild, OrigChild)
 			_childNum(Copy, CopyChild, ChildNum).
 		% from reg node to temp node
 _tempHolds(Time, _fact(Copy, _nodeField(activechild, CopyChild)))
-		:-	_deepCopyChildren(Time, Copy, Original),
+		:-	_copyChildPtrStructure(Time, Copy, Original),
 			_node(Original),
 			_tempNode(Copy),
 			_holds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
@@ -380,7 +382,7 @@ _deepCopy(Time, CopyChild, OrigChild)
 			_tempChildNum(Copy, CopyChild, ChildNum).
 		% from temp node to reg node
 _introduce(Time, Copy, activechild, CopyChild)
-		:-	_deepCopyChildren(Time, Copy, Original),
+		:-	_copyChildPtrStructure(Time, Copy, Original),
 			_tempNode(Original),
 			_node(Copy),
 			_tempHolds(Time, _fact(Original, _nodeField(activechild, OrigChild))),
