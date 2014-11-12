@@ -555,22 +555,13 @@ _deepCopy(Time, GrandParent, GrandChild)
 %================================================================================
 % percolateNeg: -(a + b) --> -a - b         -(a*b*c) --> -a*b*c
 %================================================================================
-%%_applicable(Time, _rule(percolateNeg, _operands(Node, Child)))%%
-	%%:-	_hasType(Time, Node, Type),%%
-		%%_mulOrDiv(Type),%%
-		%%_parentType(Time, Node, neg),%%
-		%%_activeChild(Time, Node, Child).%%
+_applicable(Time, _rule(percolateNeg, _operands(Node, Child)))
+	:-	_mulOrDiv(Time, Node),
+		_parentType(Time, Node, neg),
+		_activeChild(Time, Node, Child).
 _applicable(Time, _rule(percolateNeg, _operands(Node, Node)))
 	:-	_addOrMono(Time, Node),
-		_isAdd(Time, Node),
-		%%not _isPolynomial(Time, Node),%%
-		%%not _isMono(Time, Node),%%
 		_parentType(Time, Node, neg).
-
-% mono case:
-_negateNode(Time, tempResultRoot, RootNode)
-	:-	_operand(Time, RootNode, percolateNeg, left),
-		_addOrMono(Time, RootNode).
 
 			%%% negating nodes
 % mono case
@@ -583,6 +574,11 @@ _setTempNodeToMono(Time, tempResultRoot, Deg, Coeff*-1)
 _treeOp(Time, tempResultRoot, RootNode, RootNode, negateChildren)
 	:-	_operand(Time, RootNode, percolateNeg, left),
 		_isAdd(Time, RootNode).
+% div or mul case
+_treeOp(Time, tempResultRoot, RootNode, Child, negateSingleChild)
+	:-	_operand(Time, RootNode, percolateNeg, left),
+		_operand(Time, Child, percolateNeg, right),
+		_mulOrDiv(Time, RootNode).
 
 % save the result
 _setResultTo(Time, Parent)
