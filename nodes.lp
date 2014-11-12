@@ -218,6 +218,13 @@ _sameDenom(Time, FstFrac, SndFrac)
 		_denomOf(Time, SndFrac, SndDenom),
 		_equal(Time, FstDenom, SndDenom).
 
+% counting number of children
+% XXX: requires that we 'slide' down siblings of a deleted node, to work correctly
+_numActiveChildren(Time, Node, Num)
+	:-	_activeChild(Time, Node, FstChild),
+		_childNum(Node, FstChild, Num),
+		_childNum(Node, SndChild, Num+1),
+		not _isActive(Time, SndChild).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CHANGING NODE PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _update(Time, Node, type, Oper)
 		:-	_setNodeType(Time, Node, Oper).
