@@ -472,6 +472,12 @@ _insufficientNodesError
 			_maxNumTempChildren(Temp, MaxNumChildren),
 			NumChildren > MaxNumChildren.
 
+% helpers for copying
+_copyAttributes(Time, Copy, Orig)
+	:-	_copyAttribAndChildPtrStructure(Time, Copy, Orig).
+_copyChildPtrStructure(Time, Copy, Orig)
+	:-	_copyAttribAndChildPtrStructure(Time, Copy, Orig).
+
 				%%% set temp Node to first degree binomial (x + c)
 _activateTempAndSetChildren(Time, TempNode, add, 2)
 	:-	_setToBinomial(Time, TempNode, Factor).

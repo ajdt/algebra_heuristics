@@ -80,26 +80,17 @@ _deepCopy(Time, TempChild, Node)
 		Side != OtherSide. % ensure 'left' child gets copied to 'right' and vice versa
 
 % negate children. Copy root node, and set child ptrs, but don't copy child subtrees
-_copyAttributes(Time, Dest, RootNode)
+_copyAttribAndChildPtrStructure(Time, Dest, RootNode)
 	:-	_treeOp(Time, Dest, RootNode, RootNode, negateChildren).
-_activateChild(Time, Dest, ChildNum)
-	:-	_treeOp(Time, Dest, RootNode, RootNode, negateChildren),
-		_activeChild(Time, RootNode, Child),
-		_childNum(RootNode, Child, ChildNum).
 _treeOp(Time, TempChild, Child, Child, negate)
 	:-	_treeOp(Time, Dest, RootNode, RootNode, negateChildren),
 		_activeChild(Time, RootNode, Child),
 		_childNum(RootNode, Child, ChildNum),
 		_tempChildNum(Dest, TempChild, ChildNum).
 % negate single child
-_copyAttributes(Time, Dest, RootNode)
+_copyAttribAndChildPtrStructure(Time, Dest, RootNode)
 	:-	_treeOp(Time, Dest, RootNode, left),
 		_treeOp(Time, Dest, negateSingleChild).
-_activateChild(Time, Dest, ChildNum)
-	:-	_treeOp(Time, Dest, RootNode, left),
-		_treeOp(Time, Dest, negateSingleChild),
-		_activeChild(Time, RootNode, Child),
-		_childNum(RootNode, Child, ChildNum).
 _deepCopy(Time, TempChild, Child)	% deepCopy all children that aren't negated
 	:-	_treeOp(Time, Dest, RootNode, left),
 		_treeOp(Time, Dest, negateSingleChild),
