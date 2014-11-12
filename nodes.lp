@@ -225,6 +225,10 @@ _numActiveChildren(Time, Node, Num)
 		_childNum(Node, FstChild, Num),
 		_childNum(Node, SndChild, Num+1),
 		not _isActive(Time, SndChild).
+_numActiveChildren(Time, Node, Num)
+	:-	_activeChild(Time, Node, FstChild),
+		_childNum(Node, FstChild, Num),
+		_maxNumChildren(Node, Num).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CHANGING NODE PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _update(Time, Node, type, Oper)
 		:-	_setNodeType(Time, Node, Oper).

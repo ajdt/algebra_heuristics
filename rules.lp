@@ -585,4 +585,17 @@ _setResultTo(Time, Parent)
 	:-	_operand(Time, RootNode, percolateNeg, left),
 		_activeChild(Time, Parent, RootNode).
 
-:- not _ruleForTimeStep(_time(0,1), percolateNeg).
+%================================================================================
+% ungroup: a+ (b+c) +d  --> a + b + c + d
+%================================================================================
+% NOTE: because of tree definitions, will likely only apply at depth = 1
+_applicable(Time, _rule(ungroup, _operands(Node, Child)))
+	:-	_isAdd(Time, Node),
+		_activeChild(Time, Node, Child),
+		_isAdd(Time, Child),
+		_numActiveChildren(Time, Node, NumChildren),
+		_numActiveChildren(Time, Child, NumGrandChildren),
+		_maxNumChildren(Node, MaxNumChildren),
+		MaxNumChildren >= NumChildren + NumGrandChildren - 1.
+
+:- not _ruleForTimeStep(_time(0,1), ungroup).
