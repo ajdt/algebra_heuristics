@@ -222,6 +222,18 @@ _sameDenom(Time, FstFrac, SndFrac)
 _update(Time, Node, type, Oper)
 		:-	_setNodeType(Time, Node, Oper).
 
+% set node to monomial
+_clearNodeDeleteDescendants(Time, Node)
+	:-	_setToMono(Time, Node, Deg, Coeff).
+_setNodeType(Time, Node, mono)
+	:-	_setToMono(Time, Node, Deg, Coeff),
+		_coeff(Coeff), _degree(Deg).
+_introduce(Time, Node, coeff, Coeff)
+	:-	_setToMono(Time, Node, Deg, Coeff),
+		_coeff(Coeff), _degree(Deg).
+_introduce(Time, Node, degree, Deg)
+	:-	_setToMono(Time, Node, Deg, Coeff),
+		_coeff(Coeff), _degree(Deg).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SUBTREE OPERATIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _nodeOper(delete;deallocate;clear).
 
@@ -266,6 +278,9 @@ _applyNodeOpRecursive(Time, Child, delete)
 _setToOne(Time, Node)	% term is numer or denom of a fraction
 		:-	_cancelTerm(Time, Node),
 			_parentType(Time, Node, div).
+_setToNegOne(Time, Node)	% term is negated, so we still have a -1 term
+		:-	_cancelTerm(Time, Node),
+			_parentType(Time, Node, neg).
 
 _replaceParent(Time, Sibling) 	% term is one of two children, replace parent with other child
 		:-	_cancelTerm(Time, Node),
