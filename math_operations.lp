@@ -79,6 +79,42 @@ _deepCopy(Time, TempChild, Node)
 		_tempChildOnSide(Temp, TempChild, OtherSide),
 		Side != OtherSide. % ensure 'left' child gets copied to 'right' and vice versa
 
+% negate children. Copy root node, and set child ptrs, but don't copy child subtrees
+_copyAttributes(Time, Dest, RootNode)
+	:-	_treeOp(Time, Dest, RootNode, RootNode, negateChildren).
+_activateChild(Time, Dest, ChildNum)
+	:-	_treeOp(Time, Dest, RootNode, RootNode, negateChildren),
+		_activeChild(Time, RootNode, Child),
+		_childNum(RootNode, Child, ChildNum).
+_treeOp(Time, TempChild, Child, Child, negate)
+	:-	_treeOp(Time, Dest, RootNode, RootNode, negateChildren),
+		_activeChild(Time, RootNode, Child),
+		_childNum(RootNode, Child, ChildNum),
+		_tempChildNum(Dest, TempChild, ChildNum).
+% negate a single node
+_activateTempNode(Time, Dest, neg)
+	:-	_treeOp(Time, Dest, negate).
+_activateChild(Time, Dest, TempChild)
+	:-	_treeOp(Time, Dest, Node, Node, negate),
+		_tempChildNum(Dest, TempChild, 1).
+_deepCopy(Time, TempChild, Node)
+	:-	_treeOp(Time, Dest, Node, Node, negate),
+		_tempChildNum(Dest, TempChild, 1).
+
+% TODO: integrate this with existing temp operations code
+_tempHolds(Time, _fact(Temp, _nodeField(active, yes)))
+	:-	_activateTempNodeOnly(Time, Temp).
+_activateTempNodeOnly(Time, TempChild)
+	:-	_activateChild(Time, TempParent, TempChild),
+		_validTempChildOf(TempParent, TempChild).
+_tempHolds(Time, _fact(TempParent, _nodeField(activechild, TempChild)))
+	:-	_activateChild(Time, TempParent, TempChild),
+		_validTempChildOf(TempParent, TempChild).
+_activateChild(Time, TempParent, TempChild)
+	:-	_activateChild(Time, TempParent, ChildNum),
+		_tempChildNum(TempParent, TempChild, ChildNum).
+	
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% mono  operations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _monoOp(Time, Dest, Left, left)
 	:-	_monoOp(Time, Dest, Left, Right, Op).

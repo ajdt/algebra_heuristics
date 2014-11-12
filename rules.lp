@@ -562,7 +562,7 @@ _deepCopy(Time, GrandParent, GrandChild)
 		%%_activeChild(Time, Node, Child).%%
 _applicable(Time, _rule(percolateNeg, _operands(Node, Node)))
 	:-	_addOrMono(Time, Node),
-		_isMono(Time, Node),
+		_isAdd(Time, Node),
 		%%not _isPolynomial(Time, Node),%%
 		%%not _isMono(Time, Node),%%
 		_parentType(Time, Node, neg).
@@ -580,6 +580,9 @@ _setTempNodeToMono(Time, tempResultRoot, Deg, Coeff*-1)
 		_coeffOf(Time, RootNode, Coeff),
 		_degOf(Time, RootNode, Deg).
 % add operator case
+_treeOp(Time, tempResultRoot, RootNode, RootNode, negateChildren)
+	:-	_operand(Time, RootNode, percolateNeg, left),
+		_isAdd(Time, RootNode).
 
 % save the result
 _setResultTo(Time, Parent)
