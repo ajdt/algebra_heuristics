@@ -91,6 +91,28 @@ _treeOp(Time, TempChild, Child, Child, negate)
 		_activeChild(Time, RootNode, Child),
 		_childNum(RootNode, Child, ChildNum),
 		_tempChildNum(Dest, TempChild, ChildNum).
+% negate single child
+_copyAttributes(Time, Dest, RootNode)
+	:-	_treeOp(Time, Dest, RootNode, left),
+		_treeOp(Time, Dest, negateSingleChild).
+_activateChild(Time, Dest, ChildNum)
+	:-	_treeOp(Time, Dest, RootNode, left),
+		_treeOp(Time, Dest, negateSingleChild),
+		_activeChild(Time, RootNode, Child),
+		_childNum(RootNode, Child, ChildNum).
+_deepCopy(Time, TempChild, Child)	% deepCopy all children that aren't negated
+	:-	_treeOp(Time, Dest, RootNode, left),
+		_treeOp(Time, Dest, negateSingleChild),
+		_treeOp(Time, Dest, NegatedNode, right),
+		_activeChild(Time, RootNode, Child), Child != NegatedNode,
+		_childNum(RootNode, Child, ChildNum),
+		_tempChildNum(Dest, TempChild, ChildNum).
+_treeOp(Time, TempChild, NegatedNode, NegatedNode, negate)	% negate the child indicated by operation
+	:-	_treeOp(Time, Dest, RootNode, left),
+		_treeOp(Time, Dest, negateSingleChild),
+		_treeOp(Time, Dest, NegatedNode, right),
+		_childNum(RootNode, NegatedNode, ChildNum),
+		_tempChildNum(Dest, TempChild, ChildNum).
 % negate a single node
 _activateTempNode(Time, Dest, neg)
 	:-	_treeOp(Time, Dest, negate).
@@ -102,6 +124,8 @@ _deepCopy(Time, TempChild, Node)
 		_tempChildNum(Dest, TempChild, 1).
 
 % TODO: integrate this with existing temp operations code
+% TODO: create code for copying child structure (i.e. replicate child pointers, but don't do deepCopy just yet)
+% this would simplify the above too
 _tempHolds(Time, _fact(Temp, _nodeField(active, yes)))
 	:-	_activateTempNodeOnly(Time, Temp).
 _activateTempNodeOnly(Time, TempChild)
