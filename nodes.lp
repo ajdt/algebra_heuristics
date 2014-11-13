@@ -148,6 +148,17 @@ _holds(Time, _fact(Parent, _nodeField(denom, Child)))
 		:-	_denomOf(Time, Parent, Child).
 
 					%%% Properties Derived From Tree Structure %%%
+% NOTE: a nested grouping: is an operator node nested inside another of the same type that can be ungrouped
+% as in (x+b)+c --> x + b + c
+_nestedGrouping(Time, Child)
+		:-	_activeChild(Time, Parent, Child),
+			_isAdd(Time, Parent),
+			_isAdd(Time, Child).
+_nestedGrouping(Time, Child)
+		:-	_activeChild(Time, Parent, Child),
+			_isMul(Time, Parent),
+			_isMul(Time, Child).
+
 _parentType(Time, Child, Type)
 		:-	_activeChild(Time, Parent, Child),
 			_hasType(Time, Parent, Type).

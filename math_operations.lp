@@ -122,7 +122,7 @@ _activateChild(Time, TempParent, TempChild)
 _copyAttributes(Time, Dest, RootNode)
 	:-	_treeOp(Time, Dest, ungroup),
 		_treeOp(Time, Dest, RootNode, left).
-_newTotalChildrenren(Time, NumChildren+NumGrandChildren - 1)
+_newTotalChildren(Time, NumChildren+NumGrandChildren - 1)
 	:-	_treeOp(Time, Dest, ungroup),
 		_treeOp(Time, Dest, RootNode, left),
 		_treeOp(Time, Dest, NestedNode, right),
@@ -133,10 +133,10 @@ _childNumOfNestedNode(Time, Num)
 		_treeOp(Time, Dest, RootNode, left),
 		_treeOp(Time, Dest, NestedNode, right),
 		_childNum(RootNode, NestedNode, Num).
-_activateChild(Time, Dest, Child)
+_activateChild(Time, Dest, Num)
 	:-	_treeOp(Time, Dest, ungroup),
 		_treeOp(Time, Dest, RootNode, left),
-		_newTotalChildrenren(Time, NewNumKids),
+		_newTotalChildren(Time, NewNumKids),
 		_childNum(RootNode, Child, Num),
 		Num <= NewNumKids.
 % copy children that are unaffected
@@ -146,7 +146,7 @@ _deepCopy(Time, TempChild, Child)
 		_childNumOfNestedNode(Time, NestedNum),
 		_activeChild(Time, RootNode, Child),
 		_childNum(RootNode, Child, Num),
-		_tempChildNum(Time, Dest, TempChild, Num),
+		_tempChildNum(Dest, TempChild, Num),
 		Num < NestedNum.
 % copy new children from nested node
 _deepCopy(Time, TempChild, Child)

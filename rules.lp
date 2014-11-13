@@ -591,9 +591,8 @@ _setResultTo(Time, Parent)
 % NOTE: because of tree definitions, will likely only apply at depth = 1
 % TODO: generalize to work for add or mul situations
 _applicable(Time, _rule(ungroup, _operands(Node, Child)))
-	:-	_isAdd(Time, Node),
+	:-	_nestedGrouping(Time, Child),
 		_activeChild(Time, Node, Child),
-		_isAdd(Time, Child),
 		_numActiveChildren(Time, Node, NumChildren),
 		_numActiveChildren(Time, Child, NumGrandChildren),
 		_maxNumChildren(Node, MaxNumChildren),
