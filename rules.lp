@@ -589,6 +589,7 @@ _setResultTo(Time, Parent)
 % ungroup: a+ (b+c) +d  --> a + b + c + d
 %================================================================================
 % NOTE: because of tree definitions, will likely only apply at depth = 1
+% TODO: generalize to work for add or mul situations
 _applicable(Time, _rule(ungroup, _operands(Node, Child)))
 	:-	_isAdd(Time, Node),
 		_activeChild(Time, Node, Child),
@@ -597,5 +598,12 @@ _applicable(Time, _rule(ungroup, _operands(Node, Child)))
 		_numActiveChildren(Time, Child, NumGrandChildren),
 		_maxNumChildren(Node, MaxNumChildren),
 		MaxNumChildren >= NumChildren + NumGrandChildren - 1.
+
+_treeOp(Time, tempResultRoot, RootNode, NestedNode, ungroup)
+	:-	_operand(Time, RootNode, ungroup, left),
+		_operand(Time, NestedNode, ungroup, right).
+
+_setResultTo(Time, RootNode)
+	:-	_operand(Time, RootNode, ungroup, left).
 
 :- not _ruleForTimeStep(_time(0,1), ungroup).

@@ -116,7 +116,59 @@ _tempHolds(Time, _fact(TempParent, _nodeField(activechild, TempChild)))
 _activateChild(Time, TempParent, TempChild)
 	:-	_activateChild(Time, TempParent, ChildNum),
 		_tempChildNum(TempParent, TempChild, ChildNum).
-	
+
+	%%% ungroup nested mul or add trees
+% copy over parent, and allocate new nodes for original children plus new children
+_copyAttributes(Time, Dest, RootNode)
+	:-	_treeOp(Time, Dest, ungroup),
+		_treeOp(Time, Dest, RootNode, left).
+_newTotalChildrenren(Time, NumChildren+NumGrandChildren - 1)
+	:-	_treeOp(Time, Dest, ungroup),
+		_treeOp(Time, Dest, RootNode, left),
+		_treeOp(Time, Dest, NestedNode, right),
+		_numActiveChildren(Time, RootNode, NumChildren),
+		_numActiveChildren(Time, NestedNode, NumGrandChildren).
+_childNumOfNestedNode(Time, Num)
+	:-	_treeOp(Time, Dest, ungroup),
+		_treeOp(Time, Dest, RootNode, left),
+		_treeOp(Time, Dest, NestedNode, right),
+		_childNum(RootNode, NestedNode, Num).
+_activateChild(Time, Dest, Child)
+	:-	_treeOp(Time, Dest, ungroup),
+		_treeOp(Time, Dest, RootNode, left),
+		_newTotalChildrenren(Time, NewNumKids),
+		_childNum(RootNode, Child, Num),
+		Num <= NewNumKids.
+% copy children that are unaffected
+_deepCopy(Time, TempChild, Child)
+	:-	_treeOp(Time, Dest, ungroup),
+		_treeOp(Time, Dest, RootNode, left),
+		_childNumOfNestedNode(Time, NestedNum),
+		_activeChild(Time, RootNode, Child),
+		_childNum(RootNode, Child, Num),
+		_tempChildNum(Time, Dest, TempChild, Num),
+		Num < NestedNum.
+% copy new children from nested node
+_deepCopy(Time, TempChild, Child)
+	:-	_treeOp(Time, Dest, ungroup),
+		_treeOp(Time, Dest, NestedNode, right),
+		_activeChild(Time, NestedNode, Child),
+		_childNum(NestedNode, Child, Num),
+		_childNumOfNestedNode(Time, NestedNum),
+		NewNum = Num + NestedNum - 1,
+		_tempChildNum(Dest, TempChild, NewNum).
+% copy remaining children
+_deepCopy(Time, TempChild, Child)
+	:-	_treeOp(Time, Dest, ungroup),
+		_treeOp(Time, Dest, RootNode, left),
+		_treeOp(Time, Dest, NestedNode, right),
+		_childNumOfNestedNode(Time, NestedNodeNum),
+		_activeChild(Time, RootNode, Child),
+		_childNum(RootNode, Child, Num),
+		Num > NestedNodeNum,
+		_numActiveChildren(Time, NestedNode, NumNewChildren),
+		NewNum = Num + NumNewChildren - 1,
+		_tempChildNum(Dest, TempChild, NewNum).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% mono  operations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _monoOp(Time, Dest, Left, left)
