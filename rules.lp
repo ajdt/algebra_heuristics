@@ -614,4 +614,7 @@ _applicable(Time, _rule(cancelSumTerm, _operands(LeftChild, RightChild)))
 		_activeChild(Time, leftSide, LeftChild),
 		_activeChild(Time, rightSide, RightChild),
 		_equal(Time, LeftChild, RightChild).
-:- not _ruleForTimeStep(_time(0,1), cancelSumTerm).
+_cancelTerm(Time, Node)
+	:-	_operand(Time, Node, cancelSumTerm, Side).
+
+%%:- not _ruleForTimeStep(_time(0,1), cancelSumTerm).%%
