@@ -237,42 +237,42 @@ _writeBinaryOp(Time)
 %================================================================================
 % NOTE: requires max depth of allowable expression trees to be at least 4 
 % NOTE: also dependent on equal/3 predicate
-_applicable(Time, _rule(addDiffFrac, _operands(Fst, Snd)))
-	:-	_siblings(Time, Fst, Snd),
-		_isDiv(Time, Fst),
-		_isDiv(Time, Snd),
-		Fst < Snd, 
-		_parentType(Time, Fst, add).
+%%_applicable(Time, _rule(addDiffFrac, _operands(Fst, Snd)))%%
+	%%:-	_siblings(Time, Fst, Snd),%%
+		%%_isDiv(Time, Fst),%%
+		%%_isDiv(Time, Snd),%%
+		%%Fst < Snd, %%
+		%%_parentType(Time, Fst, add).%%
 
-% set root to a fraction
-_activateTempAndSetChildren(Time, tempResultRoot, div, 2)
-	:-	_ruleForTimeStep(Time, addDiffFrac).
+%%% set root to a fraction%%
+%%_activateTempAndSetChildren(Time, tempResultRoot, div, 2)%%
+	%%:-	_ruleForTimeStep(Time, addDiffFrac).%%
 
-% set numer to sum of products
-_activateTempAndSetChildren(Time, Numer, add, 2)
-	:-	_ruleForTimeStep(Time, addDiffFrac),
-		_tempChildNum(tempResultRoot, Numer, 1).
+%%% set numer to sum of products%%
+%%_activateTempAndSetChildren(Time, Numer, add, 2)%%
+	%%:-	_ruleForTimeStep(Time, addDiffFrac),%%
+		%%_tempChildNum(tempResultRoot, Numer, 1).%%
 
-_treeOp(Time, FstProd, FstNumer, SndDenom, mul)
-	:-	_tempChildNum(tempResultRoot, Numer, 1),
-		_tempChildNum(Numer, FstProd, 1),
-		_operandNumer(Time, FstNumer, addDiffFrac, left),
-		_operandDenom(Time, SndDenom, addDiffFrac, right).
+%%_treeOp(Time, FstProd, FstNumer, SndDenom, mul)%%
+	%%:-	_tempChildNum(tempResultRoot, Numer, 1),%%
+		%%_tempChildNum(Numer, FstProd, 1),%%
+		%%_operandNumer(Time, FstNumer, addDiffFrac, left),%%
+		%%_operandDenom(Time, SndDenom, addDiffFrac, right).%%
 
-_treeOp(Time, SndProd, SndNumer, FstDenom, mul)
-	:-	_tempChildNum(tempResultRoot, Numer, 1),
-		_tempChildNum(Numer, SndProd, 2),
-		_operandNumer(Time, SndNumer, addDiffFrac, right),
-		_operandDenom(Time, FstDenom, addDiffFrac, left).
+%%_treeOp(Time, SndProd, SndNumer, FstDenom, mul)%%
+	%%:-	_tempChildNum(tempResultRoot, Numer, 1),%%
+		%%_tempChildNum(Numer, SndProd, 2),%%
+		%%_operandNumer(Time, SndNumer, addDiffFrac, right),%%
+		%%_operandDenom(Time, FstDenom, addDiffFrac, left).%%
 
-% set denominator to product of two original numerators
-_treeOp(Time, RootDenom, FstDenom, SndDenom, mul)
-	:-	_tempChildNum(tempResultRoot, RootDenom, 2),
-		_operandDenom(Time, FstDenom, addDiffFrac, left),
-		_operandDenom(Time, SndDenom, addDiffFrac, right).
-% save result
-_writeBinaryOp(Time)
-	:-	_ruleForTimeStep(Time, addDiffFrac).
+%%% set denominator to product of two original numerators%%
+%%_treeOp(Time, RootDenom, FstDenom, SndDenom, mul)%%
+	%%:-	_tempChildNum(tempResultRoot, RootDenom, 2),%%
+		%%_operandDenom(Time, FstDenom, addDiffFrac, left),%%
+		%%_operandDenom(Time, SndDenom, addDiffFrac, right).%%
+%%% save result%%
+%%_writeBinaryOp(Time)%%
+	%%:-	_ruleForTimeStep(Time, addDiffFrac).%%
 
 %================================================================================
 % distribute (a + b) * C --> (a*C + b*C)
@@ -633,6 +633,10 @@ _setTempNodeToMono(Time, tempResultRoot, 0, 0)
 _writeBinaryOp(Time)
 	:-	_ruleForTimeStep(Time, addInverses).
 
+%================================================================================
+% subtractFromEqn: A = B  --> A - D = B - D
+%================================================================================
+_applicable(Time, _rule(subtractFromEqn, _operands(Node)))
+	:-	_isActive(Time, Node).
 
-
-:- not _ruleForTimeStep(_time(0,1), addInverses).
+:- not _ruleForTimeStep(_time(0,1), subtractFromEqn).
