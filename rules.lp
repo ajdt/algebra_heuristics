@@ -605,4 +605,13 @@ _treeOp(Time, tempResultRoot, RootNode, NestedNode, ungroup)
 _setResultTo(Time, RootNode)
 	:-	_operand(Time, RootNode, ungroup, left).
 
-:- not _ruleForTimeStep(_time(0,1), ungroup).
+%================================================================================
+% cancelSumTerm: A + B = A + C --> B = C
+%================================================================================
+_applicable(Time, _rule(cancelSumTerm, _operands(LeftChild, RightChild)))
+	:-	_isAdd(Time, leftSide),
+		_isAdd(Time, rightSide),
+		_activeChild(Time, leftSide, LeftChild),
+		_activeChild(Time, rightSide, RightChild),
+		_equal(Time, LeftChild, RightChild).
+:- not _ruleForTimeStep(_time(0,1), cancelSumTerm).
