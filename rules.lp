@@ -26,6 +26,11 @@ _writeBinaryOp(Time, Fst, Snd)
 	:-	_operand(Time, Fst, Operation, left),
 		_operand(Time, Snd, Operation, right),
 		_writeBinaryOp(Time).
+% saving the results of an Equation-wide operation
+_deepCopy(Time, RootNode, TempRoot)
+	:-	_saveEqnResult(Time),	% output saveEqnResult/1 to save equation-wide operation
+		_rootNode(RootNode),
+		TempRoot = _temp(RootNode) .
 
 
 %================================================================================
@@ -494,9 +499,7 @@ _eqnMonoOp(Time, Coeff, Deg, add)
 		_selectedCoeff(Time, Coeff).
 
 % save the results
-_deepCopy(Time, leftSide, tempResultRoot)
-	:-	_ruleForTimeStep(Time, addMonoToEqn).
-_deepCopy(Time, rightSide, tempRightRoot)
+_saveEqnResult(Time)
 	:-	_ruleForTimeStep(Time, addMonoToEqn).
 
 %================================================================================
@@ -642,9 +645,7 @@ _applicable(Time, _rule(subtractFromEqn, _operands(Node)))
 _eqnOp(Time, Operand, sub)
 	:-	_operand(Time, Operand, subtractFromEqn, left).
 % save the results
-_deepCopy(Time, leftSide, tempLeftRoot)
-	:-	_ruleForTimeStep(Time, subtractFromEqn).
-_deepCopy(Time, rightSide, tempRightRoot)
+_saveEqnResult(Time)
 	:-	_ruleForTimeStep(Time, subtractFromEqn).
 
 :- not _ruleForTimeStep(_time(0,1), subtractFromEqn).
