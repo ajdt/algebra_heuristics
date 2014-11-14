@@ -617,4 +617,22 @@ _applicable(Time, _rule(cancelSumTerm, _operands(LeftChild, RightChild)))
 _cancelTerm(Time, Node)
 	:-	_operand(Time, Node, cancelSumTerm, Side).
 
-%%:- not _ruleForTimeStep(_time(0,1), cancelSumTerm).%%
+%================================================================================
+% addInverses: A + -A --> 0 
+%================================================================================
+_applicable(Time, _rule(addInverses, _operands(SndSibling, FstSibling)))
+	:-	_siblings(Time, FstSibling, SndSibling),
+		_parentType(Time, FstSibling, add),
+		_isNeg(Time, SndSibling),
+		_activeChild(Time, SndSibling, Child),
+		_equal(Time, FstSibling, Child).
+
+% we know the result is zero, writeBinaryOp handles the rewrite 
+_setTempNodeToMono(Time, tempResultRoot, 0, 0)	
+	:-	_ruleForTimeStep(Time, addInverses).
+_writeBinaryOp(Time)
+	:-	_ruleForTimeStep(Time, addInverses).
+
+
+
+:- not _ruleForTimeStep(_time(0,1), addInverses).
