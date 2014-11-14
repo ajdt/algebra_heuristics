@@ -639,4 +639,12 @@ _writeBinaryOp(Time)
 _applicable(Time, _rule(subtractFromEqn, _operands(Node)))
 	:-	_isActive(Time, Node).
 
+_eqnOp(Time, Operand, sub)
+	:-	_operand(Time, Operand, subtractFromEqn, left).
+% save the results
+_deepCopy(Time, leftSide, tempLeftRoot)
+	:-	_ruleForTimeStep(Time, subtractFromEqn).
+_deepCopy(Time, rightSide, tempRightRoot)
+	:-	_ruleForTimeStep(Time, subtractFromEqn).
+
 :- not _ruleForTimeStep(_time(0,1), subtractFromEqn).

@@ -269,3 +269,26 @@ _setTempNodeToMono(Time, RightChild, Deg, Coeff)
 		_rootNode(Root),
 		MatchingTempRoot = _temp(Root), 
 		_tempChildOnSide(MatchingTempRoot, RightChild, right).
+
+% eqnOps
+_activateTempAndSetChildren(Time, Temp, add, 2)
+	:-	_eqnOp(Time, Operand, sub),
+		_rootNode(RootNode),
+		Temp = _temp(RootNode).
+_deepCopy(Time, TempChild, RootNode)
+	:-	_eqnOp(Time, Operand, sub),
+		_rootNode(RootNode),
+		Temp = _temp(RootNode),
+		_tempChildNum(Temp, TempChild, 1).
+_negOfOperand(Time, TempSecondChild)
+	:-	_eqnOp(Time, Operand, sub),
+		_tempEqnRoot(TempEqnRoot),
+		_tempChildNum(TempEqnRoot, TempSecondChild, 2).
+_activateTempAndSetChildren(Time, TempNode, neg, 1)
+	:-	_negOfOperand(Time, TempNode).
+_deepCopy(Time, TempChild, Operand)
+	:-	_eqnOp(Time, Operand, sub),
+		_negOfOperand(Time, TempNode),
+		_tempChildNum(TempNode, TempChild, 1).
+		
+
