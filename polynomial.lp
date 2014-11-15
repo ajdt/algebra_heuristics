@@ -155,14 +155,20 @@ _equal(Time, FstMono, SndMono)
 _equal(Time, FstNode, SndNode)
 	:-	_correspChildrenAreEqual(Time, FstNode, SndNode),
 		_hasType(Time, FstNode, Type),
-		_hasType(Time, SndNode, Type).
+		_hasType(Time, SndNode, Type),
+		Time != initially,
+		Type != mono.	% mono equality is handled separately
 _correspChildrenAreEqual(Time, FstNode, SndNode)
 	:-	_isOper(Time, FstNode),
 		_isOper(Time, SndNode),
+		Time != initially,
+		FstNode != SndNode,
 		not _haveUnequalChildren(Time, FstNode, SndNode).
 _haveUnequalChildren(Time, FstNode, SndNode)	% found a corresponding pair that is unequal
 	:-	_isActive(Time, FstNode),
 		_isActive(Time, SndNode),
+		FstNode != SndNode,
+		Time != initially,
 		_numActiveChildren(Time, FstNode, TotalChildren),
 		_childNum(FstNode, FstChild, Num),
 		_childNum(SndNode, SndChild, Num),
@@ -171,6 +177,8 @@ _haveUnequalChildren(Time, FstNode, SndNode)	% found a corresponding pair that i
 _haveUnequalChildren(Time, FstNode, SndNode)	% if two nodes have an unequal number of children
 	:-	_isActive(Time, FstNode),				% then they're automatically unequal
 		_isActive(Time, SndNode),
+		FstNode != SndNode,
+		Time != initially,
 		_numActiveChildren(Time, FstNode, FstTotalChildren),
 		_numActiveChildren(Time, SndNode, SndTotalChildren),
 		FstTotalChildren != SndTotalChildren.
