@@ -659,5 +659,13 @@ _eqnOp(Time, Operand, mul)
 _saveEqnResult(Time)
 	:-	_ruleForTimeStep(Time, mulEqn).
 
-:- not _ruleForTimeStep(_time(0,1), mulEqn).
+%================================================================================
+% divEqnByConst: A = B  --> A / d = B / d
+%================================================================================
+_applicable(Time, _rule(divEqnByConst, _operands(Coeff)))
+	:-	_coeff(Coeff),
+		_validTime(Time).
+_eqnOp(Time, Coeff, divConst)
+	:-	_operand(Time, Coeff, divEqnByConst, left).
+:- not _ruleForTimeStep(_time(0,1), divEqnByConst).
 
