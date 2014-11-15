@@ -58,6 +58,39 @@ _deepCopy(Time, TempChild, Node)
 		_treeOp(Time, Temp, Node, Side),
 		_tempChildOnSide(Temp, TempChild, Side).
 
+	%%% append treeOps
+% NOTE: An append tree Op tries to create a result that appends 'right' node to 'left' node
+% 	if possible. Otherwise, it reverts to a typical treeOp.
+_appendable(Time, Dest)
+	:-	_treeOp(Time, Dest, append(Oper)),
+		_treeOp(Time, Dest, Left, left),
+		_hasType(Time, Left, Oper),
+		_numActiveChildren(Time, Left, NumActive),
+		_maxNumChildren(Left, MaxChildren),
+		NumActive < MaxChildren.
+
+% if not appendable, then just do the regular treeOp
+_treeOp(Time, Dest, Oper)	% we've already unpacked the operands so it's enough to declare this
+	:-	_treeOp(Time, Dest, append(Oper)),
+		not _appendable(Time, Dest).
+% handle the append
+_deepCopy(Time, Dest, Left)
+	:-	_appendable(Time, Dest),
+		_treeOp(Time, Dest, append(Oper)),
+		_treeOp(Time, Dest, Left, left).
+_appendedChild(Time, Dest, NewChild)
+	:-	_appendable(Time, Dest),
+		_treeOp(Time, Dest, append(Oper)),
+		_treeOp(Time, Dest, Left, left),
+		_numActiveChildren(Time, Left, Num),
+		_tempChildNum(Dest, NewChild, Num+1).
+_activateChild(Time, Dest, NewChild)
+	:-	_appendedChild(Time, Dest, NewChild).
+_deepCopy(Time, NewChild, Right)
+	:-	_appendedChild(Time, Dest, NewChild),
+		_treeOp(Time, Dest, append(Oper)),
+		_treeOp(Time, Dest, Right, right).
+
 % set to fraction, deep copy
 _activateTempAndSetChildren(Time, Temp, div, 2)
 	:-	_treeOp(Time, Temp, reciprocal).
@@ -294,4 +327,8 @@ _treeOp(Time, TempSecondChild, Operand, Operand, negate)
 		_tempEqnRoot(TempEqnRoot),
 		_tempChildNum(TempEqnRoot, TempSecondChild, 2).
 		
-
+		%%% multiply eqn by operand
+_treeOp(Time, Temp, RootNode, Operand, append(mul))
+	:-	_eqnOp(Time, Operand, mul),
+		_rootNode(RootNode),
+		Temp = _temp(RootNode).
