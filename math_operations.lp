@@ -271,24 +271,27 @@ _setTempNodeToMono(Time, RightChild, Deg, Coeff)
 		_tempChildOnSide(MatchingTempRoot, RightChild, right).
 
 % eqnOps
+% NOTE: eqnOp(Time, Operand, Operation)
+%	Operation -- a binary operation applied to each side of equation
+%	Operand	-- left/right side is one operand, this is the other
+
+		%%% subtract a node from both sides of eqn
+% set new root to sum
 _activateTempAndSetChildren(Time, Temp, add, 2)
 	:-	_eqnOp(Time, Operand, sub),
 		_rootNode(RootNode),
 		Temp = _temp(RootNode).
+% copy original left/right sides of eqn
 _deepCopy(Time, TempChild, RootNode)
 	:-	_eqnOp(Time, Operand, sub),
 		_rootNode(RootNode),
 		Temp = _temp(RootNode),
 		_tempChildNum(Temp, TempChild, 1).
-_negOfOperand(Time, TempSecondChild)
+
+% other child of new root node is the negation of subtracted operand
+_treeOp(Time, TempSecondChild, Operand, Operand, negate)
 	:-	_eqnOp(Time, Operand, sub),
 		_tempEqnRoot(TempEqnRoot),
 		_tempChildNum(TempEqnRoot, TempSecondChild, 2).
-_activateTempAndSetChildren(Time, TempNode, neg, 1)
-	:-	_negOfOperand(Time, TempNode).
-_deepCopy(Time, TempChild, Operand)
-	:-	_eqnOp(Time, Operand, sub),
-		_negOfOperand(Time, TempNode),
-		_tempChildNum(TempNode, TempChild, 1).
 		
 
