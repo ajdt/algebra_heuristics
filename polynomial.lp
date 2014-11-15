@@ -124,14 +124,6 @@ _polyHasTermWithCoeff(Time, Poly, Coeff)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Equality %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-_equalCoeffs(Time, FstMono, SndMono)
-	:-	_coeffOf(Time, FstMono, Coeff),
-		_coeffOf(Time, SndMono, Coeff),
-		_node(FstMono),	% we don't care about equality among temp nodes
-		_node(SndMono),
-		Time != initially,	% don't care about equality initially either
-		FstMono != SndMono.
-
 _equalDegs(Time, FstMono, SndMono)
 	:-	_degOf(Time, FstMono, Deg),
 		_degOf(Time, SndMono, Deg),
@@ -140,8 +132,9 @@ _equalDegs(Time, FstMono, SndMono)
 		Time != initially,
 		FstMono != SndMono.
 _equal(Time, FstMono, SndMono)
-	:-	_equalCoeffs(Time, FstMono, SndMono),
-		_equalDegs(Time, FstMono, SndMono),
+	:-	_equalDegs(Time, FstMono, SndMono),
+		_coeffOf(Time, FstMono, Coeff),
+		_coeffOf(Time, SndMono, Coeff),
 		_node(FstMono),
 		_node(SndMono),
 		Time != initially,
