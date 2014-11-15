@@ -648,4 +648,11 @@ _eqnOp(Time, Operand, sub)
 _saveEqnResult(Time)
 	:-	_ruleForTimeStep(Time, subtractFromEqn).
 
-:- not _ruleForTimeStep(_time(0,1), subtractFromEqn).
+%================================================================================
+% MulEqn: A = B  --> A * D = B * D
+%================================================================================
+_applicable(Time, _rule(mulEqn, _operands(Node)))
+	:-	_isActive(Time, Node).
+
+:- not _ruleForTimeStep(_time(0,1), mulEqn).
+
