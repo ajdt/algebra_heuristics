@@ -1,5 +1,5 @@
-# missing addDiffFrac 
-RULENAMES=(addMonoToEqn addMonom addSameFrac addZero distribute divByOne divIdent factor factorCommTerm factorMonom fracCancel fracDiv monoMult multByZero multEqnWithMono multFrac multIdentity multNumerAndDenom numerSimp swapTerms)
+# missing addDiffFrac multEqnWithMono 
+RULENAMES=(addMonoToEqn addSameFrac addZero distribute divByOne divIdent factor factorCommTerm factorMonom fracCancel fracDiv monoMult multByZero addMonom multFrac multIdentity multNumerAndDenom numerSimp swapTerms)
 RESULTFILE=results.txt
 
 rm -f $RESULTFILE

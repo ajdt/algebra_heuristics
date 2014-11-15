@@ -30,11 +30,12 @@ Test should perform numerSimp rule:
         :- not _ruleForTimeStep(_time(0,1), numerSimp).
     Expect: SAT
 
-Test should perform addMonom rule:
-    Modules: generator
-    Program: |
-        :- not _ruleForTimeStep(_time(0,1), addMonom).
-    Expect: SAT
+# NOTE: I've disabled the rule for this test
+#Test should perform addMonom rule:
+    #Modules: generator
+    #Program: |
+        #:- not _ruleForTimeStep(_time(0,1), addMonom).
+    #Expect: SAT
 
 Test should perform monoMult rule:
     Modules: generator

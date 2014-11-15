@@ -684,5 +684,5 @@ _eqnOp(Time, Operand, add)
 _saveEqnResult(Time)
 	:-	_ruleForTimeStep(Time, addEqn).
 
-:- not _ruleForTimeStep(_time(0,1), addMonom).
+%%:- not _ruleForTimeStep(_time(0,1), addMonom).%%
 
