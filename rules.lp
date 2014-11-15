@@ -667,5 +667,9 @@ _applicable(Time, _rule(divEqnByConst, _operands(Coeff)))
 		_validTime(Time).
 _eqnOp(Time, Coeff, divConst)
 	:-	_operand(Time, Coeff, divEqnByConst, left).
+% save the results
+_saveEqnResult(Time)
+	:-	_ruleForTimeStep(Time, divEqnByConst).
+
 :- not _ruleForTimeStep(_time(0,1), divEqnByConst).
 

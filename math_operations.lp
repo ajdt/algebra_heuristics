@@ -332,3 +332,18 @@ _treeOp(Time, Temp, RootNode, Operand, append(mul))
 	:-	_eqnOp(Time, Operand, mul),
 		_rootNode(RootNode),
 		Temp = _temp(RootNode).
+		%%% divide eqn by const
+_activateTempAndSetChildren(Time, Temp, div, 2) % new left(right) side is fraction
+	:-	_eqnOp(Time, Const, divConst),
+		_rootNode(RootNode),
+		Temp = _temp(RootNode).
+_deepCopy(Time, TempChild, RootNode)	% numerator is left(right) side
+	:-	_eqnOp(Time, Const, divConst),
+		_rootNode(RootNode),
+		Temp = _temp(RootNode),
+		_tempChildNum(Temp, TempChild, 1).
+_setTempNodeToMono(Time, TempChild, 0, Const)	% denom is constant
+	:-	_eqnOp(Time, Const, divConst),
+		_rootNode(RootNode),
+		Temp = _temp(RootNode),
+		_tempChildNum(Temp, TempChild, 2).
