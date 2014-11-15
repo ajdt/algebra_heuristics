@@ -332,6 +332,11 @@ _treeOp(Time, Temp, RootNode, Operand, append(mul))
 	:-	_eqnOp(Time, Operand, mul),
 		_rootNode(RootNode),
 		Temp = _temp(RootNode).
+		%%% add operand to eqn 
+_treeOp(Time, Temp, RootNode, Operand, append(add))
+	:-	_eqnOp(Time, Operand, add),
+		_rootNode(RootNode),
+		Temp = _temp(RootNode).
 		%%% divide eqn by const
 _activateTempAndSetChildren(Time, Temp, div, 2) % new left(right) side is fraction
 	:-	_eqnOp(Time, Const, divConst),

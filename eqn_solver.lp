@@ -98,6 +98,9 @@ _ruleForTimeStep(Time, RuleName)
 _solved(Time)	% solved if x = constant
 	:-	_isXTerm(Time, leftSide),
 		_isConstant(Time, rightSide).
+_solved(Time)	% solved if x = rational constant
+	:-	_isXTerm(Time, leftSide),
+		_isRational(Time, rightSide).
 
 _solved(Time)	% solved if (x+c_1) * (x + c_2) ... = 0 
 	:-	_isProductOfLinearBinomials(Time, leftSide),

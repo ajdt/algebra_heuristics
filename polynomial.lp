@@ -174,4 +174,12 @@ _haveUnequalChildren(Time, FstNode, SndNode)	% if two nodes have an unequal numb
 		_numActiveChildren(Time, FstNode, FstTotalChildren),
 		_numActiveChildren(Time, SndNode, SndTotalChildren),
 		FstTotalChildren != SndTotalChildren.
-
+%%% Rational Numbers
+% NOTE: rational numbers must be represented as fractions, a rational number cannot be 
+%	represented in a single node like integer constants can be.
+_isRational(Time, Node)
+	:-	_isDiv(Time, Node),
+		_numerOf(Time, Node, Numer),
+		_denomOf(Time, Node, Denom),
+		_isConstant(Time, Numer),
+		_isConstant(Time, Denom).

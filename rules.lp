@@ -673,5 +673,16 @@ _eqnOp(Time, Coeff, divConst)
 _saveEqnResult(Time)
 	:-	_ruleForTimeStep(Time, divEqnByConst).
 
-:- not _ruleForTimeStep(_time(0,1), divEqnByConst).
+%================================================================================
+% addEqn: A = B  --> A + D = B + D
+%================================================================================
+_applicable(Time, _rule(addEqn, _operands(Node)))
+	:-	_isActive(Time, Node).
+_eqnOp(Time, Operand, add)
+	:-	_operand(Time, Operand, addEqn, left).
+% save the results
+_saveEqnResult(Time)
+	:-	_ruleForTimeStep(Time, addEqn).
+
+:- not _ruleForTimeStep(_time(0,1), addEqn).
 
