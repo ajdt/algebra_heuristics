@@ -117,14 +117,14 @@ _setResultTo(Time, leftSide)
 %================================================================================
 % addMonom: a*x^b + c*x^b ----> (a+c)*x^b
 %================================================================================
-% TODO: contains as a special case:		addIdentity: a*x^b + 0 ----> a*x^b 
-% is this problematic?
 
 _applicable(Time, _rule(addMonom, _operands(LeftMono, RightMono)))
 	:-	_siblings(Time, LeftMono, RightMono),
 		_equalDegs(Time, LeftMono, RightMono),
 		_isMono(Time, LeftMono),
 		_isMono(Time, RightMono),
+		not _isZero(Time, LeftMono),	% if either mono is zero, then addZero rule is used instead
+		not _isZero(Time, RightMono),
 		LeftMono < RightMono,
 		_parentType(Time, LeftMono, add).
 
@@ -684,5 +684,5 @@ _eqnOp(Time, Operand, add)
 _saveEqnResult(Time)
 	:-	_ruleForTimeStep(Time, addEqn).
 
-:- not _ruleForTimeStep(_time(0,1), addEqn).
+:- not _ruleForTimeStep(_time(0,1), addMonom).
 
