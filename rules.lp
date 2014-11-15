@@ -505,25 +505,27 @@ _saveEqnResult(Time)
 %================================================================================
 % multEqnWithMono:	A = B --> A * e = B * e
 %================================================================================
-_applicable(Time, _rule(multEqnWithMono, _operands(leftSide, rightSide)))
-	:-	_validTime(Time).	
+% NOTE: commented out b/c this rule seems redundant now that we can multiply by any
+% existing subtree. Not clear that we would ever want to multiply by an arbitrary mono
+%%_applicable(Time, _rule(multEqnWithMono, _operands(leftSide, rightSide)))%%
+	%%:-	_validTime(Time).	%%
 
-% select an arbitrary degree and coefficient
-1 { _selectedDeg(Time, Deg) : _degree(Deg) } 1
-	:-	_ruleForTimeStep(Time, multEqnWithMono).
-1 { _selectedCoeff(Time, Coeff) : _coeff(Coeff) } 1
-	:-	_ruleForTimeStep(Time, multEqnWithMono).
+%%% select an arbitrary degree and coefficient%%
+%%1 { _selectedDeg(Time, Deg) : _degree(Deg) } 1%%
+	%%:-	_ruleForTimeStep(Time, multEqnWithMono).%%
+%%1 { _selectedCoeff(Time, Coeff) : _coeff(Coeff) } 1%%
+	%%:-	_ruleForTimeStep(Time, multEqnWithMono).%%
 
-_eqnMonoOp(Time, Coeff, Deg, mul)
-	:-	_ruleForTimeStep(Time, multEqnWithMono),
-		_selectedDeg(Time, Deg),
-		_selectedCoeff(Time, Coeff).
+%%_eqnMonoOp(Time, Coeff, Deg, mul)%%
+	%%:-	_ruleForTimeStep(Time, multEqnWithMono),%%
+		%%_selectedDeg(Time, Deg),%%
+		%%_selectedCoeff(Time, Coeff).%%
 
-% save the results
-_deepCopy(Time, leftSide, tempResultRoot)
-	:-	_ruleForTimeStep(Time, multEqnWithMono).
-_deepCopy(Time, rightSide, tempRightRoot)
-	:-	_ruleForTimeStep(Time, multEqnWithMono).
+%%% save the results%%
+%%_deepCopy(Time, leftSide, tempResultRoot)%%
+	%%:-	_ruleForTimeStep(Time, multEqnWithMono).%%
+%%_deepCopy(Time, rightSide, tempRightRoot)%%
+	%%:-	_ruleForTimeStep(Time, multEqnWithMono).%%
 
 %================================================================================
 % swapTerms: A*B --> B*A, or A+B --> B*A	
