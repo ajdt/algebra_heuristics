@@ -653,6 +653,11 @@ _saveEqnResult(Time)
 %================================================================================
 _applicable(Time, _rule(mulEqn, _operands(Node)))
 	:-	_isActive(Time, Node).
+_eqnOp(Time, Operand, mul)
+	:-	_operand(Time, Operand, mulEqn, left).
+% save the results
+%%_saveEqnResult(Time)%%
+	%%:-	_ruleForTimeStep(Time, mulEqn).%%
 
 :- not _ruleForTimeStep(_time(0,1), mulEqn).
 
