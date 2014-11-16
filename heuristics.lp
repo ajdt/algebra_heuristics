@@ -85,6 +85,8 @@ _heuristic(Name, Priority, Rule)
 % combine monomials
 _heuristicToApplyRule(combineLikeTerms, 1, addMonom). 
 _heuristicToApplyRule(additiveIdentity, 1, addZero). 
+_heuristicToApplyRule(addInverses, 1, addInverses). 
+_heuristicToApplyRule(cancelNeg, 2, cancelNegatives). 
 
 % 
 _heuristic(factorSimpleQuad, 1, stdQuadSetToZero).
@@ -94,5 +96,5 @@ _applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))
 	:-	_isZero(Time, rightSide),
 	_applicable(Time, _rule(factor, _operands(leftSide))).
 
-:- not _selectedHeuristic(_time(0,1), additiveIdentity).
+:- not _selectedHeuristic(_time(0,1), addInverses).
 
