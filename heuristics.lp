@@ -83,10 +83,14 @@ _heuristic(Name, Priority, Rule)
 
 % NOTE: I've reserved priority = 0 for testing purposes. O.W. highest priority is 1 
 % combine monomials
-_heuristicToApplyRule(combineLikeTerms, 1, addMonom). 
-_heuristicToApplyRule(additiveIdentity, 1, addZero). 
 _heuristicToApplyRule(addInverses, 1, addInverses). 
+_heuristicToApplyRule(ignoreDenom, 1, numerSimp). 
+_heuristicToApplyRule(cancelCommTerms, 1, fracCancel). 
+
 _heuristicToApplyRule(cancelNeg, 2, cancelNegatives). 
+_heuristicToApplyRule(combineLikeTerms, 2, addMonom). 
+_heuristicToApplyRule(additiveIdentity, 2, addZero). 
+
 
 % 
 _heuristic(factorSimpleQuad, 1, stdQuadSetToZero).
@@ -96,5 +100,5 @@ _applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))
 	:-	_isZero(Time, rightSide),
 	_applicable(Time, _rule(factor, _operands(leftSide))).
 
-:- not _selectedHeuristic(_time(0,1), addInverses).
+:- not _selectedHeuristic(_time(0,1), cancelCommTerms).
 
