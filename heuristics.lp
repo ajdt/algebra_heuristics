@@ -83,14 +83,21 @@ _heuristic(Name, Priority, Rule)
 
 % NOTE: I've reserved priority = 0 for testing purposes. O.W. highest priority is 1 
 % combine monomials
+%%_heuristicToApplyRule(cancelAcrossEqn, 1, cancelSumTerm). %%
 _heuristicToApplyRule(addInverses, 1, addInverses). 
 _heuristicToApplyRule(ignoreDenom, 1, numerSimp). 
 _heuristicToApplyRule(cancelCommTerms, 1, fracCancel). 
+_heuristicToApplyRule(cancelNeg, 1, cancelNegatives). 
 
-_heuristicToApplyRule(cancelNeg, 2, cancelNegatives). 
 _heuristicToApplyRule(combineLikeTerms, 2, addMonom). 
 _heuristicToApplyRule(additiveIdentity, 2, addZero). 
+_heuristicToApplyRule(addFractions, 2, addSameFrac). 
+_heuristicToApplyRule(divIdent, 2, divByOne). 
+_heuristicToApplyRule(multiplyByZero, 2, multByZero). 
+_heuristicToApplyRule(multiplyByOne, 2, multIdentity). 
 
+_heuristicToApplyRule(applyDistribute, 3, distribute). 
+_heuristicToApplyRule(multiplyMonoms, 3, monoMult). 
 
 % 
 _heuristic(factorSimpleQuad, 1, stdQuadSetToZero).
@@ -100,5 +107,10 @@ _applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))
 	:-	_isZero(Time, rightSide),
 	_applicable(Time, _rule(factor, _operands(leftSide))).
 
-:- not _selectedHeuristic(_time(0,1), cancelCommTerms).
+%%:- not _selectedHeuristic(_time(0,1), factorSimpleQuad).%%
+%%:- not _isZero(_time(0,1), rightSide).%%
+%%:- not _applicable(_time(0,1), _rule(factor, _operands(leftSide))).%%
+	%%:-	_isPolynomial(Time, Node),%%
+		%%_isQuadratic(Time, Node),%%
+		%%_isFactorable(Time, Node).%%
 
