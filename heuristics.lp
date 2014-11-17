@@ -119,7 +119,7 @@ _heuristicToApplyRule(multiplyMonoms, 3, monoMult).
 		%%_isFactorable(Time, Node).%%
 
 		%% isolate variables to lhs
-_heuristic(isolateVars, 1, rhsHasVariable).
+_heuristic(isolateVars, 3, rhsHasVariable).
 _heuristicAction(isolateVars, subtractFromEqn).
 
 _applicable(Time, _condition(rhsHasVariable, _operands(Child)))
@@ -140,7 +140,7 @@ _sideOf(Child, Side)
 		_sideOf(Parent, Side).
 
 		%% move constants to rhs if eqn is linear
-_heuristic(isolateConst, 1, lhsHasConst).
+_heuristic(isolateConst, 3, lhsHasConst).
 _heuristicAction(isolateConst, subtractFromEqn).
 
 _applicable(Time, _condition(lhsHasConst, _operands(Child)))
@@ -151,9 +151,16 @@ _applicable(Time, _condition(lhsHasConst, _operands(Child)))
 	
 _hasSuperlinearTerms(Time)
 	:- _degOf(Time, Node, Deg),  Deg >= 2.
-% set lhs to zero
 
-:- not _selectedHeuristic(_time(0,1), isolateConst).
+		%% set lhs to zero if eqn has super-linear terms
+		% NOTE: this only subtracts rhs from both sides: other heuristics must simplify
+_heuristic(setRHSZero, 3, rhsIsNotZero).
+_heuristicAction(setRHSZero, subtractFromEqn).
+_applicable(Time, _condition(rhsIsNotZero, _operands(rightSide)))
+	:-	_hasSuperlinearTerms(Time),
+		not _isZero(Time, rightSide).
+
+:- not _selectedHeuristic(_time(0,1), setRHSZero).
 
 % TODO: fix this bug
 %%:- not _numActiveChildren(_time(0,1), leftSide, 3).%%
