@@ -103,21 +103,6 @@ _heuristicToApplyRule(substitute, 3, decreaseDeg).
 %%%================================================================================
 %%%					Condition Heuristics
 %%%================================================================================
-		%% factor quadratic to solve eqn
-		% TODO: fix this
-%%_heuristic(factorSimpleQuad, 1, stdQuadSetToZero).%%
-%%_heuristicAction(factorSimpleQuad, factor).%%
-
-%%_applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))%%
-	%%:-	_isZero(Time, rightSide),%%
-	%%_applicable(Time, _rule(factor, _operands(leftSide))).%%
-
-%%:- not _selectedHeuristic(_time(0,1), factorSimpleQuad).%%
-%%:- not _isZero(_time(0,1), rightSide).%%
-%%:- not _applicable(_time(0,1), _rule(factor, _operands(leftSide))).%%
-	%%:-	_isPolynomial(Time, Node),%%
-		%%_isQuadratic(Time, Node),%%
-		%%_isFactorable(Time, Node).%%
 
 		%% isolate variables to lhs
 _heuristic(isolateVars, 3, rhsHasVariable).
@@ -161,8 +146,16 @@ _applicable(Time, _condition(rhsIsNotZero, _operands(rightSide)))
 	:-	_hasSuperlinearTerms(Time),
 		not _isZero(Time, rightSide).
 
-%%:- not _selectedHeuristic(_time(0,1), substitute).%%
+		%% factor quadratic to solve eqn
+_heuristic(factorSimpleQuad, 1, stdQuadSetToZero).
+_heuristicAction(factorSimpleQuad, factor).
+
+_applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))
+	:-	_isZero(Time, rightSide),
+		_applicable(Time, _rule(factor, _operands(leftSide))).
+
+:- not _selectedHeuristic(_time(0,1), factorSimpleQuad).
 
 % TODO: fix this bug
-:- not _numActiveChildren(_time(0,1), leftSide, 3).
+%%:- not _numActiveChildren(_time(0,1), leftSide, 3).%%
 
