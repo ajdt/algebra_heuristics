@@ -160,7 +160,9 @@ _applicable(Time, _condition(rhsIsNotZero, _operands(rightSide)))
 	:-	_hasSuperlinearTerms(Time),
 		not _isZero(Time, rightSide).
 
-:- not _selectedHeuristic(_time(0,1), setRHSZero).
+_heuristicToApplyRule(substitute, 3, decreaseDeg). 
+:- not _selectedHeuristic(_time(0,1), substitute).
 
 % TODO: fix this bug
 %%:- not _numActiveChildren(_time(0,1), leftSide, 3).%%
+

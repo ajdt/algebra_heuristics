@@ -123,6 +123,20 @@ _polyHasTermWithCoeff(Time, Poly, Coeff)
 		_coeffOf(Time, Mono, Coeff).
 
 
+% equation-wide deg info
+_eqnHasDeg(Time, Deg)
+	:-	_degOf(Time, Node, Deg).
+_smallestDeg(Time, FstDeg)
+	:-	_eqnHasDeg(Time, FstDeg),
+		0 { _eqnHasDeg(Time, SndDeg) : _degree(SndDeg), SndDeg < FstDeg} 0.
+
+_degProduct(Prod, Fst, Snd) 
+	:-	_degree(Fst),
+		_degree(Snd),
+		Prod = Fst*Snd,
+		_degree(Prod).
+_degDivisbleBy(Prod, Fst)
+	:-	_degProduct(Prod, Fst, Snd).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Equality %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _equalDegs(Time, FstMono, SndMono)
 	:-	_degOf(Time, FstMono, Deg),

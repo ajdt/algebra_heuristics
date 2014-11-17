@@ -686,3 +686,23 @@ _saveEqnResult(Time)
 
 %%:- not _ruleForTimeStep(_time(0,1), addMonom).%%
 
+%================================================================================
+% decreaseDeg: x^4 + x^2= 0  --> x^2 + 1 = 0 (example)
+%================================================================================
+_applicable(Time, _rule(decreaseDeg, _operands(leftSide)))
+	:-	_validTime(Time),
+		not _xVarCannotBeSubstituted(Time).
+_update(Time, Node, degree, ResultDeg)
+	:-	_ruleForTimeStep(Time, decreaseDeg),
+		_smallestDeg(Time, DividingDeg),
+		_degOf(Time, Node, OrigDeg),
+		_degProduct(OrigDeg, DividingDeg, ResultDeg).
+
+_xVarCannotBeSubstituted(Time)
+	:-	_smallestDeg(Time, Deg),
+		Deg <= 1.
+_xVarCannotBeSubstituted(Time)
+	:-	_smallestDeg(Time, Deg),
+		_eqnHasDeg(Time, OtherDeg),
+		not _degDivisbleBy(OtherDeg, Deg).
+
