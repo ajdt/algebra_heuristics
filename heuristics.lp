@@ -50,24 +50,24 @@ _performRule(Time, _rule(RuleToApply, Oper))
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MULTI-STEP HEURISTICS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: this code may be removed later. It's possible all multistep heuristics
 % can be written as single step heuristics depending on how priorities are assigned
-_performHeuristicStep(Time, Name, 1)
-	:-	_selectedHeuristic(Time, Name),
-		_heuristicActionSequence(Name, Action, 1).
-_performHeuristicStep(NextTime, Name, NextStep)
-	:-	_performHeuristicStep(Time, Name, Step),
-		_nextTimeTick(Time, NextTime),
-		NextStep = Step+1.
+%%_performHeuristicStep(Time, Name, 1)%%
+	%%:-	_selectedHeuristic(Time, Name),%%
+		%%_heuristicActionSequence(Name, Action, 1).%%
+%%_performHeuristicStep(NextTime, Name, NextStep)%%
+	%%:-	_performHeuristicStep(Time, Name, Step),%%
+		%%_nextTimeTick(Time, NextTime),%%
+		%%NextStep = Step+1.%%
 
-% prevent other heuristics from being selected
-_previousHeuristicNotFinished(Time)
-	:-	_performHeuristicStep(Time, Name, StepNum),
-		StepNum > 1.	% at step 1, the current heuristic is selected, so don't generate predicate for step 1
+%%% prevent other heuristics from being selected%%
+%%_previousHeuristicNotFinished(Time)%%
+	%%:-	_performHeuristicStep(Time, Name, StepNum),%%
+		%%StepNum > 1.	% at step 1, the current heuristic is selected, so don't generate predicate for step 1%%
 
-_performRule(Time, _rule(RuleToApply, Oper))
-	:-	_performHeuristicStep(Time, Name, Step),
-		_heuristicActionSequence(Name, RuleToApply, Step),
-		_selectedHeurOperands(Time, Oper).
-% TODO: way to selectHeurOperands for next time step will depend on particular actions that are used
+%%_performRule(Time, _rule(RuleToApply, Oper))%%
+	%%:-	_performHeuristicStep(Time, Name, Step),%%
+		%%_heuristicActionSequence(Name, RuleToApply, Step),%%
+		%%_selectedHeurOperands(Time, Oper).%%
+%%% TODO: way to selectHeurOperands for next time step will depend on particular actions that are used%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% HEURISTICS THAT APPLY RULES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % To define a rule heuristic, simply define _heuristicToApplyRule/3 as below.
@@ -98,6 +98,7 @@ _heuristicToApplyRule(multiplyByOne, 2, multIdentity).
 
 _heuristicToApplyRule(applyDistribute, 3, distribute). 
 _heuristicToApplyRule(multiplyMonoms, 3, monoMult). 
+_heuristicToApplyRule(substitute, 3, decreaseDeg). 
 
 %%%================================================================================
 %%%					Condition Heuristics
@@ -160,9 +161,8 @@ _applicable(Time, _condition(rhsIsNotZero, _operands(rightSide)))
 	:-	_hasSuperlinearTerms(Time),
 		not _isZero(Time, rightSide).
 
-_heuristicToApplyRule(substitute, 3, decreaseDeg). 
-:- not _selectedHeuristic(_time(0,1), substitute).
+%%:- not _selectedHeuristic(_time(0,1), substitute).%%
 
 % TODO: fix this bug
-%%:- not _numActiveChildren(_time(0,1), leftSide, 3).%%
+:- not _numActiveChildren(_time(0,1), leftSide, 3).
 
