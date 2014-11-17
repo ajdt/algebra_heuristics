@@ -99,13 +99,17 @@ _heuristicToApplyRule(multiplyByOne, 2, multIdentity).
 _heuristicToApplyRule(applyDistribute, 3, distribute). 
 _heuristicToApplyRule(multiplyMonoms, 3, monoMult). 
 
-% 
-_heuristic(factorSimpleQuad, 1, stdQuadSetToZero).
-_heuristicAction(factorSimpleQuad, factor).
+%%%================================================================================
+%%%					Condition Heuristics
+%%%================================================================================
+		%% factor quadratic to solve eqn
+		% TODO: fix this
+%%_heuristic(factorSimpleQuad, 1, stdQuadSetToZero).%%
+%%_heuristicAction(factorSimpleQuad, factor).%%
 
-_applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))
-	:-	_isZero(Time, rightSide),
-	_applicable(Time, _rule(factor, _operands(leftSide))).
+%%_applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))%%
+	%%:-	_isZero(Time, rightSide),%%
+	%%_applicable(Time, _rule(factor, _operands(leftSide))).%%
 
 %%:- not _selectedHeuristic(_time(0,1), factorSimpleQuad).%%
 %%:- not _isZero(_time(0,1), rightSide).%%
@@ -114,3 +118,42 @@ _applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))
 		%%_isQuadratic(Time, Node),%%
 		%%_isFactorable(Time, Node).%%
 
+		%% isolate variables to lhs
+_heuristic(isolateVars, 1, rhsHasVariable).
+_heuristicAction(isolateVars, subtractFromEqn).
+
+_applicable(Time, _condition(rhsHasVariable, _operands(Child)))
+	:-	_isAdd(Time, rightSide),
+		_activeChild(Time, rightSide, Child),
+		_hasVariable(Time, Child).
+
+_hasVariable(Time, Node)
+	:- _degOf(Time, Node, Deg),
+		Deg > 0.
+_hasVariable(Time, Parent)
+	:-	_activeChild(Time, Parent, Child),
+		_hasVariable(Time, Child).
+
+_sideOf(leftSide,left;rightSide,right).
+_sideOf(Child, Side)
+	:-	_validChildOf(Parent, Child),
+		_sideOf(Parent, Side).
+
+		%% move constants to rhs if eqn is linear
+_heuristic(isolateConst, 1, lhsHasConst).
+_heuristicAction(isolateConst, subtractFromEqn).
+
+_applicable(Time, _condition(lhsHasConst, _operands(Child)))
+	:-	_hasSuperlinearTerms(Time),
+		_isAdd(Time, leftSide),
+		_activeChild(Time, leftSide, Child),
+		_isConstant(Time, Child). % TODO: update to move rationals also
+	
+_hasSuperlinearTerms(Time)
+	:- _degOf(Time, Node, Deg),  Deg >= 2.
+% set lhs to zero
+
+:- not _selectedHeuristic(_time(0,1), isolateConst).
+
+% TODO: fix this bug
+%%:- not _numActiveChildren(_time(0,1), leftSide, 3).%%
