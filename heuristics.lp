@@ -154,7 +154,8 @@ _applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))
 	:-	_isZero(Time, rightSide),
 		_applicable(Time, _rule(factor, _operands(leftSide))).
 
-:- not _selectedHeuristic(_time(0,1), factorSimpleQuad).
+_heuristicToApplyRule(multiplyWithFrac, 1, mulWithFrac). 
+:- not _selectedHeuristic(_time(0,1), multiplyWithFrac).
 
 % TODO: fix this bug
 %%:- not _numActiveChildren(_time(0,1), leftSide, 3).%%

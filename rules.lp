@@ -706,3 +706,27 @@ _xVarCannotBeSubstituted(Time)
 		_eqnHasDeg(Time, OtherDeg),
 		not _degDivisbleBy(OtherDeg, Deg).
 
+%================================================================================
+% mulWithFrac: (A/B) * D --> (A*D)/B
+%================================================================================
+_applicable(Time, _rule(mulWithFrac, _operands(Fraction, NotFraction)))
+	:-	_siblings(Time, Fraction, NotFraction),
+		_parentType(Time, Fraction, mul),
+		_isDiv(Time, Fraction),
+		not _isDiv(Time, NotFraction).
+_activateTempAndSetChildren(Time, tempResultRoot, div, 2)
+	:-	_ruleForTimeStep(Time, mulWithFrac).
+_treeOp(Time, FstChild, Numer, NotFraction, append(mul))
+	:-	_operand(Time, Fraction, mulWithFrac, left),
+		_numerOf(Time, Fraction, Numer),
+		_operand(Time, NotFraction, mulWithFrac, right),
+		_tempChildNum(tempResultRoot, FstChild, 1).
+_deepCopy(Time, SndChild, Denom)
+	:-	_operand(Time, Fraction, mulWithFrac, left),
+		_denomOf(Time, Fraction, Denom),
+		_tempChildNum(tempResultRoot, SndChild, 2).
+
+_writeBinaryOp(Time)
+	:-	_ruleForTimeStep(Time, mulWithFrac).
+
+
