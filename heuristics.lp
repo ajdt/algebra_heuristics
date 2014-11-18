@@ -99,6 +99,7 @@ _heuristicToApplyRule(multiplyByOne, 2, multIdentity).
 _heuristicToApplyRule(applyDistribute, 3, distribute). 
 _heuristicToApplyRule(multiplyMonoms, 3, monoMult). 
 _heuristicToApplyRule(substitute, 3, decreaseDeg). 
+_heuristicToApplyRule(multiplyWithFrac, 3, mulWithFrac). 
 
 %%%================================================================================
 %%%					Condition Heuristics
@@ -154,8 +155,7 @@ _applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))
 	:-	_isZero(Time, rightSide),
 		_applicable(Time, _rule(factor, _operands(leftSide))).
 
-_heuristicToApplyRule(multiplyWithFrac, 1, mulWithFrac). 
-:- not _selectedHeuristic(_time(0,1), multiplyWithFrac).
+:- not _selectedHeuristic(_time(0,1), factorSimpleQuad).
 
 % TODO: fix this bug
 %%:- not _numActiveChildren(_time(0,1), leftSide, 3).%%
