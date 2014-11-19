@@ -80,25 +80,26 @@ _introduce(Time, Node, Field, NewValue)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Selecting Rules %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % for each time step we can perform at most one applicable action
-0 { selectedHeuristic(Time, HeuristicName)	:	_applicableHeuristic(Time, HeuristicName) } 1
+0 { selectedHeuristic(Time, HeuristicName)	:	_applicableHeuristic(Time, HeuristicName),
+												_heuristicPriority(HeuristicName, Priority),
+												not _higherPriorityIsSelectable(Time, Priority)} 1
 		:-	_time(Step, Stream),
 			Time = _time(Step, Stream),
 			not _previousHeuristicNotFinished(Time),
 			not _stopTime(Time).
 
-% ensure we always choose the highest priority first
-%%:-	_priorityOfSelectedHeuristic(Time, SelectedPriority),%%
-	%%_priorityOfApplicableHeuristic(Time, OtherPriority),%%
-	%%OtherPriority < SelectedPriority.%%
+% predicates to ensure we always choose the highest priority first
+_heuristicPriority(Name, Priority)
+	:-	_heuristic(Name, Priority, Condition).
 
-_priorityOfSelectedHeuristic(Time, Priority)
-	:-	selectedHeuristic(Time, HeuristicName),
-		_heuristic(Heuristicname, Priority, Condition).
-%%_priorityOfApplicableHeuristic(Time, Priority)%%
-	%%:-	_applicableHeuristic(Time, HeuristicName),%%
-		%%_heuristic(Heuristicname, Priority, Condition).%%
+_applicablePriority(Time, Priority)
+	:-	_applicableHeuristic(Time, Name),
+		_heuristicPriority(Name, Priority).
 
-#minimize { Priority@1, _validTime(Time) : _priorityOfSelectedHeuristic(Time, Priority) } .
+_higherPriorityIsSelectable(Time, SndPriority)
+	:-	_applicablePriority(Time, FstPriority),
+		_applicablePriority(Time, SndPriority),
+		FstPriority < SndPriority.
 
 % action name performed at particular step
 % TODO: this may become unnecessary
