@@ -33,17 +33,17 @@ _applicableHeuristic(Time, Name)
 % while others only require that a particular rule be applicable 
 
 1 { _selectedHeurOperands(Time, Oper) : _applicable(Time, _condition(Trigger, Oper)) } 1
-	:-	_selectedHeuristic(Time, Name),
+	:-	selectedHeuristic(Time, Name),
 		_heuristic(Name, Priority, Trigger),
 		not _heuristicToApplyRule(Name, Priority, Trigger). 	% condition heuristic
 
 1 { _selectedHeurOperands(Time, Oper) : _applicable(Time, _rule(Trigger, Oper)) } 1
-	:-	_selectedHeuristic(Time, Name),
+	:-	selectedHeuristic(Time, Name),
 		_heuristicToApplyRule(Name, Priority, Trigger). 		% rule heuristic
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PERFORM THE SELECTED HEURISTIC %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _performRule(Time, _rule(RuleToApply, Oper))
-	:-	_selectedHeuristic(Time, Name),
+	:-	selectedHeuristic(Time, Name),
 		_selectedHeurOperands(Time, Oper),
 		_heuristicAction(Name, RuleToApply).
 
@@ -51,7 +51,7 @@ _performRule(Time, _rule(RuleToApply, Oper))
 % NOTE: this code may be removed later. It's possible all multistep heuristics
 % can be written as single step heuristics depending on how priorities are assigned
 %%_performHeuristicStep(Time, Name, 1)%%
-	%%:-	_selectedHeuristic(Time, Name),%%
+	%%:-	selectedHeuristic(Time, Name),%%
 		%%_heuristicActionSequence(Name, Action, 1).%%
 %%_performHeuristicStep(NextTime, Name, NextStep)%%
 	%%:-	_performHeuristicStep(Time, Name, Step),%%
@@ -155,7 +155,7 @@ _applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))
 	:-	_isZero(Time, rightSide),
 		_applicable(Time, _rule(factor, _operands(leftSide))).
 
-%%:- not _selectedHeuristic(_time(0,1), factorSimpleQuad).%%
+%%:- not selectedHeuristic(_time(0,1), factorSimpleQuad).%%
 
 
 %%%================================================================================

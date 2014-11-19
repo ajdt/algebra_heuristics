@@ -80,16 +80,23 @@ _introduce(Time, Node, Field, NewValue)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Selecting Rules %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % for each time step we can perform at most one applicable action
-0 { _selectedHeuristic(Time, HeuristicName)	:	_applicableHeuristic(Time, HeuristicName) } 1
+0 { selectedHeuristic(Time, HeuristicName)	:	_applicableHeuristic(Time, HeuristicName) } 1
 		:-	_time(Step, Stream),
 			Time = _time(Step, Stream),
 			not _previousHeuristicNotFinished(Time),
 			not _stopTime(Time).
 
-% select heuristic with highest priority
+% ensure we always choose the highest priority first
+%%:-	_priorityOfSelectedHeuristic(Time, SelectedPriority),%%
+	%%_priorityOfApplicableHeuristic(Time, OtherPriority),%%
+	%%OtherPriority < SelectedPriority.%%
+
 _priorityOfSelectedHeuristic(Time, Priority)
-	:-	_selectedHeuristic(Time, HeuristicName),
+	:-	selectedHeuristic(Time, HeuristicName),
 		_heuristic(Heuristicname, Priority, Condition).
+%%_priorityOfApplicableHeuristic(Time, Priority)%%
+	%%:-	_applicableHeuristic(Time, HeuristicName),%%
+		%%_heuristic(Heuristicname, Priority, Condition).%%
 
 #minimize { Priority@1, _validTime(Time) : _priorityOfSelectedHeuristic(Time, Priority) } .
 

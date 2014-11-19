@@ -18,7 +18,7 @@
 #const maxDepth		=	3.	% limits number of layers used during generation
 
 % solver params
-#const maxSteps = 1.
+#const maxSteps = 2.
 #const maxNumStreams	= 1.
 
 
