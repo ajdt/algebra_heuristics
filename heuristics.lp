@@ -92,7 +92,7 @@ _heuristicToApplyRule(cancelNeg, 1, cancelNegatives).
 _heuristicToApplyRule(combineLikeTerms, 2, addMonom). 
 _heuristicToApplyRule(additiveIdentity, 2, addZero). 
 _heuristicToApplyRule(addFractions, 2, addSameFrac). 
-_heuristicToApplyRule(divIdent, 2, divByOne). 
+_heuristicToApplyRule(divByOne, 2, divByOne). 
 _heuristicToApplyRule(multiplyByZero, 2, multByZero). 
 _heuristicToApplyRule(multiplyByOne, 2, multIdentity). 
 
@@ -155,7 +155,7 @@ _applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))
 	:-	_isZero(Time, rightSide),
 		_applicable(Time, _rule(factor, _operands(leftSide))).
 
-%%:- not selectedHeuristic(_time(0,1), factorSimpleQuad).%%
+:- not selectedHeuristic(_time(0,1), divIdent).
 
 
 %%%================================================================================

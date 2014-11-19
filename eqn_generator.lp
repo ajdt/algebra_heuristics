@@ -13,6 +13,7 @@
 #include "rules.lp".
 #include "math_operations.lp".
 #include "heuristics.lp".
+#include "rule_features.lp".
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM GENERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % every root node (see node.lp) is active initially
