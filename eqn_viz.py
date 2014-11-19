@@ -31,7 +31,7 @@ coeff			=	number_parser
 deg				=	number_parser
 poly_parser     =	number_parser
 time_parser		=	'time(' + Word(nums) + ',' + Word(nums) + ')'
-action_parser 	= 'actionForTimeStep(' +  time_parser + ',' + word_parser + ')'
+action_parser 	= 'selectedHeuristic(' +  time_parser + ',' + word_parser + ')'
 
 def composeParsers(left, middle, right):
 	return left + middle + right
