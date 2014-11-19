@@ -171,7 +171,7 @@ _ruleAlreadyHasHigherPriority(RuleName)
 	:-	_heuristicToApplyRule(HeurName, Priority, RuleName),
 		Priority < defaultRulePriority. 
 
-_heuristicToApplyRuleBlah(RuleName, defaultRulePriority, RuleName)
+_heuristicToApplyRule(RuleName, defaultRulePriority, RuleName)
 	:-	_rule(RuleName),
 		not _ruleAlreadyHasHigherPriority(RuleName).
 

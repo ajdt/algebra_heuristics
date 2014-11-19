@@ -30,7 +30,7 @@ _holds(initially, _fact(Node, _nodeField(active,yes)))
 			_nodeDepth(Node, maxDepth).
 
 % 2. assign number of children, for division node, num children must be 2
-1 { _numChildren(initially, Node,  Num) : _childCount(Num), Num <=  MaxNumChildren} 1	
+1 { _numChildren(initially, Node,  Num) : _childCount(Num), Num <=  MaxNumChildren, Num <= maxInitialChildren} 1	
 		:-	_isOper(initially, Node),
 			not _isDiv(initially, Node),
 			not _isNeg(initially, Node),
