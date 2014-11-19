@@ -14,6 +14,10 @@
 #include "math_operations.lp".
 #include "heuristics.lp".
 
+% problem feature constraints 
+:- _coeffOverflow.
+:- _degOverflow.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM GENERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % every root node (see node.lp) is active initially
 _holds(initially, _fact(Node, _nodeField(active,yes)))	

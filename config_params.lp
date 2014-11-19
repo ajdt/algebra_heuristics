@@ -18,13 +18,9 @@
 #const maxDepth		=	3.	% limits number of layers used during generation
 
 % solver params
-#const maxSteps = 1.
+#const maxSteps = 2.
 #const maxNumStreams	= 1.
 
-
-% problem feature constraints 
-:- _coeffOverflow.
-:- _degOverflow.
 
 % allow/disallow specific operators in initial expression.
 % by default all types are allowed. To disallow a type use _disallowedType(Type)
