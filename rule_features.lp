@@ -15,6 +15,7 @@ ruleFeature(divIdent, complexity, 3)
 	:-	_operandDenom(Time, Denom, divIdent, left),
 		 not _isNeg(Time, Denom),
 		 _isOper(Time, Denom).
+
 %================================================================================
 % addInverses: A + -A --> 0 
 %================================================================================
@@ -28,3 +29,28 @@ ruleFeature(addInverses, complexity, 1)
 ruleFeature(addInverses, complexity, 2)
 	:-	_operand(Time, Node, addInverses, right),
 		_isOper(Time, Node).
+
+%================================================================================
+% factorMonom:	ax^k  --> bx^m * cx^n 
+%================================================================================
+ruleFeature(factorMonom, degComplexity, 0)
+	:-	_selectedDegDecomposition(Time, Fst, Snd),
+		Fst == 0, Snd == 0.
+ruleFeature(factorMonom, degComplexity, 0)
+	:-	_selectedDegDecomposition(Time, Fst, Snd),
+		Fst == 0, Snd != 0.
+ruleFeature(factorMonom, degComplexity, 0)
+	:-	_selectedDegDecomposition(Time, Fst, Snd),
+		Fst != 0, Snd == 0.
+ruleFeature(factorMonom, degComplexity, 1)
+	:-	_selectedDegDecomposition(Time, Fst, Snd),
+		Fst != 0, Snd != 0.
+ruleFeature(factorMonom, coeffComplexity, 0)
+	:-	_selectedCoeffFactors(Time, FstFactor, SndFactor),
+		|SndFactor| == 1.
+ruleFeature(factorMonom, coeffComplexity, 0)
+	:-	_selectedCoeffFactors(Time, FstFactor, SndFactor),
+		|FstFactor| == 1.
+ruleFeature(factorMonom, coeffComplexity, 1)
+	:-	_selectedCoeffFactors(Time, FstFactor, SndFactor),
+		|FstFactor| != 1, |SndFactor| != 1.
