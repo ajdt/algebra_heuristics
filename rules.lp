@@ -729,4 +729,36 @@ _deepCopy(Time, SndChild, Denom)
 _writeBinaryOp(Time)
 	:-	_ruleForTimeStep(Time, mulWithFrac).
 
-
+%% Rules Listed: Used to generate default rule heuristics
+_rule(divIdent).
+_rule(multFrac).
+_rule(fracDiv).
+_rule(numerSimp).
+_rule(addMonom).
+_rule(monoMult).
+_rule(fracCancel).
+_rule(factor).
+_rule(addSameFrac).
+_rule(distribute).
+_rule(divByOne).
+_rule(addZero).
+_rule(factorMonom).
+_rule(factorCommTerm).
+_rule(multByZero).
+_rule(multIdentity).
+_rule(multNumerAndDenom).
+_rule(addMonoToEqn).
+_rule(multEqnWithMono).
+_rule(swapTerms).
+_rule(cancelNegatives).
+_rule(percolateNeg).
+_rule(percolateNeg).
+_rule(ungroup).
+_rule(cancelSumTerm).
+_rule(addInverses).
+_rule(subtractFromEqn).
+_rule(mulEqn).
+_rule(divEqnByConst).
+_rule(addEqn).
+_rule(decreaseDeg).
+_rule(mulWithFrac).

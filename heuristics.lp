@@ -155,7 +155,26 @@ _applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))
 	:-	_isZero(Time, rightSide),
 		_applicable(Time, _rule(factor, _operands(leftSide))).
 
-:- not _selectedHeuristic(_time(0,1), factorSimpleQuad).
+%%:- not _selectedHeuristic(_time(0,1), factorSimpleQuad).%%
+
+
+%%%================================================================================
+%%%					Misc Rule Heuristics
+%%%================================================================================
+% any rules not explicitly given higher priority are given the lowest priority possible
+% This repesents the idea that when we don't how to proceed, we try any rule that's
+% applicable
+
+#const defaultRulePriority = 5.
+
+_ruleAlreadyHasHigherPriority(RuleName) 
+	:-	_heuristicToApplyRule(HeurName, Priority, RuleName),
+		Priority < defaultRulePriority. 
+
+_heuristicToApplyRuleBlah(RuleName, defaultRulePriority, RuleName)
+	:-	_rule(RuleName),
+		not _ruleAlreadyHasHigherPriority(RuleName).
+
 
 % TODO: fix this bug
 %%:- not _numActiveChildren(_time(0,1), leftSide, 3).%%
