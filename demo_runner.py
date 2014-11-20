@@ -28,8 +28,8 @@ class DemoRunner:
 		heuristics = param_dict['ruleSeq']
 		heur_list = []
 		for heur in heuristics.split(' '):
-			heur_list.append(heur + '.')
-		return '\n'.join(heur_list)
+			heur_list.append(':- not _selectedHeuristic(' + heur + ').')
+		return '\n'.join(heur_list) + '\n'
 	def writeSolverConfigFile(self, param_dict, filename='config_params.lp'):
 		solver_file = open(filename, 'w')
 		other_args = DemoRunner.misc_params.keys()
