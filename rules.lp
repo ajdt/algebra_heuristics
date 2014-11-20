@@ -691,20 +691,28 @@ _saveEqnResult(Time)
 %================================================================================
 _applicable(Time, _rule(decreaseDeg, _operands(leftSide)))
 	:-	_validTime(Time),
-		not _xVarCannotBeSubstituted(Time).
+		not _xVarCannotBeSubstituted(Time),
+		_hasEqnNonConstantTerms(Time).
 _update(Time, Node, degree, ResultDeg)
 	:-	_ruleForTimeStep(Time, decreaseDeg),
-		_smallestDeg(Time, DividingDeg),
+		_smallestNonZeroDeg(Time, DividingDeg),
 		_degOf(Time, Node, OrigDeg),
+		OrigDeg != 0,
 		_degProduct(OrigDeg, DividingDeg, ResultDeg).
 
 _xVarCannotBeSubstituted(Time)
-	:-	_smallestDeg(Time, Deg),
+	:-	_smallestNonZeroDeg(Time, Deg),
 		Deg <= 1.
 _xVarCannotBeSubstituted(Time)
-	:-	_smallestDeg(Time, Deg),
-		_eqnHasDeg(Time, OtherDeg),
+	:-	_smallestNonZeroDeg(Time, Deg),
+		_eqnHasNonZeroDeg(Time, OtherDeg),
 		not _degDivisbleBy(OtherDeg, Deg).
+
+_hasEqnNonConstantTerms(Time)
+	:-	_degOf(Time, Node, Deg),
+		_coeffof(Time, Node, Coeff),
+		Coeff != 0,
+		Deg > 0.
 
 %================================================================================
 % mulWithFrac: (A/B) * D --> (A*D)/B

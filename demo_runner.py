@@ -28,8 +28,9 @@ class DemoRunner:
 			return ''
 		heuristics = param_dict['heurSeq']
 		heur_list = []
-		for heur in heuristics.split(' '):
-			heur_list.append(':- not _selectedHeuristic(' + heur + ').')
+		for step, heur in enumerate(heuristics.split(' ')):
+			time_step = '_time(' + str(step) + ',1)'
+			heur_list.append(':- not selectedHeuristic(' + time_step + ', ' + heur + ').')
 		return '\n'.join(heur_list) + '\n'
 
 	def writeSolverConfigFile(self, param_dict, filename='config_params.lp'):
@@ -61,7 +62,7 @@ class DemoRunner:
 		# create the run command
 		cmd_string = DemoRunner.BASE_COMMAND + ' ' + self.getClingoFlags(param_dict)
 		# run the process
-		print 'running command:' + cmd_string
+		#print 'running command:' + cmd_string
 		process = subprocess.Popen(cmd_string.split(), stdout=subprocess.PIPE)
 		output = process.communicate()[0]
 		self.parseGeneratedProblems(output)

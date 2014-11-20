@@ -124,10 +124,10 @@ _polyHasTermWithCoeff(Time, Poly, Coeff)
 
 
 % equation-wide deg info
-_eqnHasDeg(Time, Deg)
-	:-	_degOf(Time, Node, Deg).
-_smallestDeg(Time, FstDeg)
-	:-	_eqnHasDeg(Time, FstDeg),
+_eqnHasNonZeroDeg(Time, Deg)
+	:-	_degOf(Time, Node, Deg), Deg >  0.
+_smallestNonZeroDeg(Time, FstDeg)
+	:-	_eqnHasNonZeroDeg(Time, FstDeg),
 		0 { _eqnHasDeg(Time, SndDeg) : _degree(SndDeg), SndDeg < FstDeg} 0.
 
 _degProduct(Prod, Fst, Snd) 
