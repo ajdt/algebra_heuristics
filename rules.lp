@@ -710,7 +710,7 @@ _xVarCannotBeSubstituted(Time)
 
 _hasEqnNonConstantTerms(Time)
 	:-	_degOf(Time, Node, Deg),
-		_coeffof(Time, Node, Coeff),
+		_coeffOf(Time, Node, Coeff),
 		Coeff != 0,
 		Deg > 0.
 
