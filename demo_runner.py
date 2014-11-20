@@ -1,8 +1,9 @@
 from dag_gen import *
+import eqn_viz
 class DemoRunner:
 	"""Run clingo based on command line arguments"""
-	BASE_COMMAND = "clingo eqn_generator.lp "
-	misc_params = { 'ruleSeq' :  '', 'numSets': '1' }
+	BASE_COMMAND = "clingo eqn_generator.lp --outf=2"
+	misc_params = { 'heurSeq' :  '', 'numSets': '1' , 'clingo' : ''}
 	def __init__(self):
 		self.cmd_parser	=	self.initCmdParser()
 		self.args		=	self.cmd_parser.parse_args()
@@ -23,13 +24,14 @@ class DemoRunner:
 		return cmd_parser
 
 	def getHeuristicSequence(self, param_dict):
-		if not param_dict.has_key('ruleSeq'):
+		if not param_dict.has_key('heurSeq'):
 			return ''
-		heuristics = param_dict['ruleSeq']
+		heuristics = param_dict['heurSeq']
 		heur_list = []
 		for heur in heuristics.split(' '):
 			heur_list.append(':- not _selectedHeuristic(' + heur + ').')
 		return '\n'.join(heur_list) + '\n'
+
 	def writeSolverConfigFile(self, param_dict, filename='config_params.lp'):
 		solver_file = open(filename, 'w')
 		other_args = DemoRunner.misc_params.keys()
@@ -45,39 +47,42 @@ class DemoRunner:
 
 		solver_file.close()
 
-	def getFlagsToClingo(self):
-		return ' '
+	def getClingoFlags(self, param_dict):
+		flags = ''
+		if param_dict.has_key('numSets'):
+			flags += '-n ' + param_dict['numSets']
+		if param_dict.has_key('clingo'):
+			flags +=  ' ' + param_dict['clingo']
+		return flags
 	def runSolver(self):
 		# write the config file needed to run the program
 		param_dict = vars(self.args)
 		self.writeSolverConfigFile(param_dict)
 		# create the run command
-		cmd_string = DemoRunner.BASE_COMMAND + ' ' + self.getFlagsToClingo()
+		cmd_string = DemoRunner.BASE_COMMAND + ' ' + self.getClingoFlags(param_dict)
 		# run the process
 		print 'running command:' + cmd_string
-		#process = subprocess.Popen(cmd_string.split(), stdout=subprocess.PIPE)
-		#output = process.communicate()[0]
-		#print output
-		#self.parseGeneratedProblems(output)
+		process = subprocess.Popen(cmd_string.split(), stdout=subprocess.PIPE)
+		output = process.communicate()[0]
+		self.parseGeneratedProblems(output)
 		#print 'done :) '
 	def parseGeneratedProblems(self, json_output):
-		print json_output
-		#problems = eqn_viz.getAllSolnFromJSON(json_output)
-		#soln_parsers = []
-		#for prob in problems:
-			## for now taking only the first solution, hence subscript 1
-			#all_soln = eqn_viz.parseSolutions(prob['Value'])
-			#sample_soln = all_soln[1]
-			#print sample_soln.getSolutionString()
-			#print sample_soln.getActions()
-			#print '-'*10 + '\n'
-			#soln_parsers.append(sample_soln)
+		problems = eqn_viz.getAllSolnFromJSON(json_output)
+		soln_parsers = []
+		for prob in problems:
+			# for now taking only the first solution, hence subscript 1
+			all_soln = eqn_viz.parseSolutions(prob['Value'])
+			sample_soln = all_soln[1]
+			print sample_soln.getSolutionString()
+			print sample_soln.getActions()
+			print '-'*10 + '\n'
+			soln_parsers.append(sample_soln)
 		#self.graph = Graph(soln_parsers)
-		##print self.graph.getGraphEdges()
-		##print self.graph.nodes.keys()
-		## quick test to see that nodes are generated correctly
-		##for node_label in self.graph.nodes.keys():
-			##print node_label
+		#print self.graph.getGraphEdges()
+		#print self.graph.nodes.keys()
+		# quick test to see that nodes are generated correctly
+		#for node_label in self.graph.nodes.keys():
+			#print node_label
 
 
 if __name__ == "__main__":

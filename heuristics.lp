@@ -155,7 +155,7 @@ _applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))
 	:-	_isZero(Time, rightSide),
 		_applicable(Time, _rule(factor, _operands(leftSide))).
 
-:- not selectedHeuristic(_time(0,1), factorCommTerm).
+%%:- not selectedHeuristic(_time(0,1), factorCommTerm).%%
 
 
 %%%================================================================================

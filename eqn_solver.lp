@@ -208,3 +208,8 @@ _redundantStep(Fst)
 % used for projection
 usesRule(Time, Name)
 	:-	_ruleForTimeStep(Time, Name).
+
+% useful for 1-grams
+% TODO: reuse old n-grams code instead??
+_selectedHeuristic(Name)
+	:-	selectedHeuristic(Time, Name).
