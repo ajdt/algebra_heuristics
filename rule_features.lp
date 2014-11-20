@@ -54,3 +54,27 @@ ruleFeature(factorMonom, coeffComplexity, 0)
 ruleFeature(factorMonom, coeffComplexity, 1)
 	:-	_selectedCoeffFactors(Time, FstFactor, SndFactor),
 		|FstFactor| != 1, |SndFactor| != 1.
+%================================================================================
+% factorCommTerm:	(a*x^k + b*x^l ) --> (a*x^m + b*x^n ) * x^j
+%================================================================================
+ruleFeature(factorCommTerm, degComplexity, 0)
+	:-	_selectedCommonDeg(Time, Deg), Deg == 0.
+ruleFeature(factorCommTerm, degComplexity, 1)
+	:-	_selectedCommonDeg(Time, Deg), Deg == 1.
+ruleFeature(factorCommTerm, degComplexity, 2)
+	:-	_selectedCommonDeg(Time, Deg), Deg > 1.
+
+ruleFeature(factorCommTerm, coeffComplexity, 0)
+	:-	_selectedCommonCoeff(Time, Coeff), Coeff == 0.
+ruleFeature(factorCommTerm, coeffComplexity, 1)
+	:-	_selectedCommonCoeff(Time, Coeff), |Coeff| == 1.
+ruleFeature(factorCommTerm, coeffComplexity, 1)
+	:-	_selectedCommonCoeff(Time, Coeff), |Coeff| != 1, Coeff != 0.
+
+% size of expression we're factoring from
+ruleFeature(factorCommTerm, exprComplexity, 1)
+	:-	_operand(Time, Poly, factorCommTerm, left),
+		_numActiveChildren(Time, Poly, 2).
+ruleFeature(factorCommTerm, exprComplexity, 2)
+	:-	_operand(Time, Poly, factorCommTerm, left),
+		_numActiveChildren(Time, Poly, Num), Num > 2.
