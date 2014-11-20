@@ -25,6 +25,10 @@ class ClingoRunner:
 		solver_file = open(filename, 'w')
 		for (param, value) in param_dict.items():
 			solver_file.write('#const ' + param + ' = ' + value +'.\n')
+
+		# also write overflow constraints
+		solver_file.write(':- _coeffOverflow.\n')
+		solver_file.write(':- _degOverflow.\n')
 		solver_file.close()
 
 	def runSolver(self):
