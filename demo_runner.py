@@ -3,7 +3,7 @@ import eqn_viz
 class DemoRunner:
 	"""Run clingo based on command line arguments"""
 	BASE_COMMAND = "clingo eqn_generator.lp --outf=2"
-	misc_params = { 'heurSeq' :  '', 'numSets': '1' , 'clingo' : ''}
+	misc_params = { 'heurSeq' :  '', 'numSets': '1' , 'clingo' : '', 'random' : 'false'}
 	def __init__(self):
 		self.cmd_parser	=	self.initCmdParser()
 		self.args		=	self.cmd_parser.parse_args()
@@ -24,7 +24,7 @@ class DemoRunner:
 		return cmd_parser
 
 	def getHeuristicSequence(self, param_dict):
-		if not param_dict.has_key('heurSeq'):
+		if param_dict['heurSeq'] == '':
 			return ''
 		heuristics = param_dict['heurSeq']
 		heur_list = []
@@ -54,6 +54,8 @@ class DemoRunner:
 			flags += '-n ' + param_dict['numSets']
 		if param_dict.has_key('clingo'):
 			flags +=  ' ' + param_dict['clingo']
+		if param_dict.has_key('random') and param_dict['random'] == 'true':
+			flags +=  ' --sign-def=3 '
 		return flags
 	def runSolver(self):
 		# write the config file needed to run the program
