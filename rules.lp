@@ -692,7 +692,7 @@ _saveEqnResult(Time)
 _applicable(Time, _rule(decreaseDeg, _operands(leftSide)))
 	:-	_validTime(Time),
 		not _xVarCannotBeSubstituted(Time),
-		_hasEqnNonConstantTerms(Time).
+		_eqnHasNonConstantTerms(Time).
 _update(Time, Node, degree, ResultDeg)
 	:-	_ruleForTimeStep(Time, decreaseDeg),
 		_smallestNonZeroDeg(Time, DividingDeg),
@@ -708,7 +708,7 @@ _xVarCannotBeSubstituted(Time)
 		_eqnHasNonZeroDeg(Time, OtherDeg),
 		not _degDivisbleBy(OtherDeg, Deg).
 
-_hasEqnNonConstantTerms(Time)
+_eqnHasNonConstantTerms(Time)
 	:-	_degOf(Time, Node, Deg),
 		_coeffOf(Time, Node, Coeff),
 		Coeff != 0,

@@ -124,11 +124,14 @@ _polyHasTermWithCoeff(Time, Poly, Coeff)
 
 
 % equation-wide deg info
+% NOTE: we're interested in smallest non-zero degree to perform degree substitution
 _eqnHasNonZeroDeg(Time, Deg)
 	:-	_degOf(Time, Node, Deg), Deg >  0.
 _smallestNonZeroDeg(Time, FstDeg)
 	:-	_eqnHasNonZeroDeg(Time, FstDeg),
-		0 { _eqnHasDeg(Time, SndDeg) : _degree(SndDeg), SndDeg < FstDeg} 0.
+		0 { _eqnHasNonZeroDeg(Time, SndDeg) : _degree(SndDeg), SndDeg < FstDeg} 0.
+_smallestNonZeroDeg(Time, 1)	
+	:-	_eqnHasNonZeroDeg(Time, 1).
 
 _degProduct(Prod, Fst, Snd) 
 	:-	_degree(Fst),
