@@ -24,11 +24,12 @@ _holds(initially, _fact(Node, _nodeField(active,yes)))
 1 { _holds(initially, _fact(Node, _nodeField(type, Type))) : _type(Type), not _disallowedType(Type)} 1		
 		:-	_isActive(initially, Node),
 			_nodeDepth(Node, Depth), 
-			Depth < maxDepth.
+			Depth < maxInitialDepth.
 
  _holds(initially, _fact(Node, _nodeField(type, mono)))
 		:-	_isActive(initially, Node),
-			_nodeDepth(Node, maxDepth).
+			_nodeDepth(Node, Depth),
+			Depth >= maxInitialDepth.
 
 % 2. assign number of children, for division node, num children must be 2
 1 { _numChildren(initially, Node,  Num) : _childCount(Num), Num <=  MaxNumChildren, Num <= maxInitialChildren} 1	

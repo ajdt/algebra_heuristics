@@ -16,11 +16,12 @@
 #const maxChildren	=	4.	% limit on children of operator nodes
 #const maxInitialChildren	=	3. 	% limit on number of children a node can start with
 #const maxDepth		=	3.	% limits number of layers used during generation
+#const maxInitialDepth		=	2.	
 
 % solver params
 #const maxSteps = 1.
 #const maxNumStreams	= 1.
-k
+
 % problem feature constraints 
 :- _coeffOverflow.
 :- _degOverflow.
