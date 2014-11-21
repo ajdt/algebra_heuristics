@@ -188,6 +188,7 @@ class SolnParser(object):
 	"""
 	def __init__(self):
 		self.solution_steps = defaultdict(StepParser)
+		self.actions = []
 	def addPredicate(self, time, pred_array):
 		step = time[0]
 		self.solution_steps[step].addPredicate(pred_array)
@@ -199,11 +200,14 @@ class SolnParser(object):
 		
 	def addActionPred(self, step, action_name):
 		self.solution_steps[step].addActionPred(action_name)
+		self.actions.append(action_name)
 	def addOperands(self, time, operands):
 		step = time[0]
 		self.solution_steps[step].addOperands(operands)
 	def getProblem(self):
 		return self.solution_steps[0].getStepString()
+	def getActions(self):
+		return list(self.actions)
 def findParserMatchingPredicate(predicate, parser_list=all_parsers):
 	""" if any parser successfully parses the predicate, return tokens and the parser"""
 	for parser in parser_list:

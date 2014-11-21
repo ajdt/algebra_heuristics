@@ -48,7 +48,6 @@ class ClingoRunner:
 			all_soln = eqn_viz.parseSolutions(prob['Value'])
 			sample_soln = all_soln[1]
 			print sample_soln.getSolutionString()
-			print sample_soln.getActions()
 			print '-'*10 + '\n'
 			soln_parsers.append(sample_soln)
 		self.graph = Graph(soln_parsers)
@@ -66,13 +65,11 @@ class Node(object):
 		super(Node, self).__init__()
 		self.soln_parser = soln_parser
 		self.label = self.makeLabel()
-		self.actions = self.soln_parser.getActions().values()
+		self.actions = self.soln_parser.getActions()
 		self.n_gram_dict = {}
 		self.initNGrams()
 	def makeLabel(self):
-		actions_dict = self.soln_parser.getActions()
-		sorted_kv_pairs = sorted(actions_dict.items())
-		actions = [ action for step, action in sorted_kv_pairs]
+		actions = self.soln_parser.getActions()
 		return ':'.join(actions)
 	def getProblem(self):
 		return self.soln_parser.solution_steps[0].getStepString()
