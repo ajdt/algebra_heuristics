@@ -3,7 +3,7 @@ import eqn_viz
 class DemoRunner:
 	"""Run clingo based on command line arguments"""
 	BASE_COMMAND = "clingo eqn_generator.lp --outf=2"
-	misc_params = { 'heurSeq' :  '', 'numSets': '1' , 'clingo' : '', 'random' : 'false'}
+	misc_params = { 'heurSeq' :  '', 'numSets': '1' , 'clingo' : '', 'random' : 'false', 'featuresFile' : 'None'}
 	def __init__(self):
 		self.cmd_parser	=	self.initCmdParser()
 		self.args		=	self.cmd_parser.parse_args()
@@ -33,6 +33,17 @@ class DemoRunner:
 			heur_list.append(':- not selectedHeuristic(' + time_step + ', ' + heur + ').')
 		return '\n'.join(heur_list) + '\n'
 
+	def getRequiredFeatures(self, param_dict):
+		if param_dict['featuresFile'] == 'None':
+			return ''
+		req_file = open(param_dict['featuresFile'], 'r')
+		requirements_str = ''
+		for line in req_file:
+			rule, feature, value = line.split()
+			requirements_str += ':- not ruleFeature('+rule+',' + feature +',' + value +').'
+		return requirements_str
+
+
 	def writeSolverConfigFile(self, param_dict, filename='config_params.lp'):
 		solver_file = open(filename, 'w')
 		other_args = DemoRunner.misc_params.keys()
@@ -45,6 +56,7 @@ class DemoRunner:
 		solver_file.write(':- _coeffOverflow.\n')
 		solver_file.write(':- _degOverflow.\n')
 		solver_file.write(self.getHeuristicSequence(param_dict))
+		solver_file.write(self.getRequiredFeatures(param_dict))
 
 		solver_file.close()
 
@@ -77,7 +89,6 @@ class DemoRunner:
 			all_soln = eqn_viz.parseSolutions(prob['Value'])
 			sample_soln = all_soln[1]
 			print sample_soln.getSolutionString()
-			print sample_soln.getActions()
 			print '-'*10 + '\n'
 			soln_parsers.append(sample_soln)
 		#self.graph = Graph(soln_parsers)

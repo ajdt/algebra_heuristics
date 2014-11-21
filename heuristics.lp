@@ -179,6 +179,6 @@ _heuristicToApplyRule(RuleName, defaultRulePriority, RuleName)
 %%:- not _numActiveChildren(_time(0,1), leftSide, 3).%%
 
 %%:- not _numActiveChildren(_time(0,1), leftSide, 3).%%
-:- not selectedHeuristic(_time(0,1), substitute).
-:- not selectedHeuristic(_time(1,1), factorSimpleQuad).
+%%:- not selectedHeuristic(_time(0,1), substitute).%%
+%%:- not selectedHeuristic(_time(1,1), factorSimpleQuad).%%
 %%:-	not _isPolynomial(_time(0,1), leftSide).%%
