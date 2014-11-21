@@ -32,6 +32,9 @@ deg				=	number_parser
 poly_parser     =	number_parser
 time_parser		=	'time(' + Word(nums) + ',' + Word(nums) + ')'
 action_parser 	= 'selectedHeuristic(' +  time_parser + ',' + word_parser + ')'
+#_selectedHeurOperands(_time(0,1),_operands(_id(1,1)))
+binary_operand_parser	= 'selectedHeurOperands(' + time_parser + ',' + 'operands(' + node_parser + ',' + node_parser + ')' + ')'
+unary_operand_parser	= 'selectedHeurOperands(' + time_parser + ',' + 'operands('  + node_parser + ')' + ')'
 
 def composeParsers(left, middle, right):
 	return left + middle + right
@@ -55,7 +58,7 @@ type_parser				=	wrapInKeyValueAndFact(word_word_parser)
 deg_coeff_parser		=	wrapInKeyValueAndFact(word_number_parser)
 child_parser 			= 	wrapInKeyValueAndFact(word_node_parser)
 
-all_parsers 	=	[ type_parser, child_parser, deg_coeff_parser, action_parser]
+all_parsers 	=	[ type_parser, child_parser, deg_coeff_parser, action_parser, binary_operand_parser, unary_operand_parser]
 op_symbols 		= 	{'add' : '+' , 'div' : '/' , 'mul' : '*' , 'neg' : '-'}
 
 
@@ -69,6 +72,8 @@ class StepParser:
 		self.node_children					= defaultdict(list)
 		self.numer_of						= {}
 		self.denom_of						= {}
+		self.operands						= [] 
+		self.action 						= None
 	def parseStepInfo(self, tokens):
 		""" given a set of tokens return the node, field and value fields in the token array"""
 		# peel fact() predicate first
@@ -115,7 +120,17 @@ class StepParser:
 			if right[0] == '(':
 				right = right[1:-1]
 			string = left + '=' + right 
-		return string
+		# get action name and operands
+		action_str = ''
+		operand_str = ''
+		if self.action != None:
+			action_str += '\t\theur: ' + self.action 
+		# display operands too
+		for op in self.operands:
+			operand_str = [ 'op: ' + self.makeEqnString(oper) for oper in self.operands ]# TODO: just keep as a list
+			operand_str = '\t' + ', '.join(operand_str)
+
+		return string + action_str + operand_str
 		
 	def makeEqnString(self, root_node):
 		if self.node_types[root_node] == 'mono':
@@ -151,6 +166,10 @@ class StepParser:
 			return coeff + 'x'
 		else:
 			return  coeff + 'x^' + deg
+	def addOperands(self, operands):
+		self.operands = operands
+	def addActionPred(self, action_name):
+		self.action = action_name
 
 		
 def peelHolds(tokens):
@@ -169,7 +188,6 @@ class SolnParser(object):
 	"""
 	def __init__(self):
 		self.solution_steps = defaultdict(StepParser)
-		self.actions = dict()
 	def addPredicate(self, time, pred_array):
 		step = time[0]
 		self.solution_steps[step].addPredicate(pred_array)
@@ -180,9 +198,10 @@ class SolnParser(object):
 		return '\n'.join(all_steps) 
 		
 	def addActionPred(self, step, action_name):
-		self.actions[step] = action_name
-	def getActions(self):
-		return self.actions
+		self.solution_steps[step].addActionPred(action_name)
+	def addOperands(self, time, operands):
+		step = time[0]
+		self.solution_steps[step].addOperands(operands)
 	def getProblem(self):
 		return self.solution_steps[0].getStepString()
 def findParserMatchingPredicate(predicate, parser_list=all_parsers):
@@ -200,7 +219,18 @@ def parseSolutions(predicates_list, soln_parser=SolnParser):
 	all_solutions = defaultdict(soln_parser)
 	for predicate in predicates_list:
 		parser, tokens	= findParserMatchingPredicate(predicate)
-		if parser != None and parser != action_parser:
+		if parser == binary_operand_parser:
+			time, remaining_tokens = peelHolds(tokens)
+			soln_num = time[1]
+			fst_oper = ''.join(remaining_tokens[1:6])
+			snd_oper = ''.join(remaining_tokens[7:-1])
+			all_solutions[soln_num].addOperands(time, [fst_oper, snd_oper])
+		elif parser == unary_operand_parser:
+			time, remaining_tokens = peelHolds(tokens)
+			soln_num = time[1]
+			operand = ''.join(remaining_tokens[1:-1])
+			all_solutions[soln_num].addOperands(time, [operand])
+		elif parser != None and parser != action_parser:
 			# parsing was successful
 			time, remaining_tokens = peelHolds(tokens)
 			soln_num = time[1]		# time is a tuple (step, soln_number)
