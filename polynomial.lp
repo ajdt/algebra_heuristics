@@ -27,7 +27,35 @@ _isConstant(Time, Node)
 	:-	_isMono(Time, Node),
 		_degOf(Time, Node, 0).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Zero Coeff Constraint %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% NOTE: to avoid redundancies, if a node has coeff==0, it must have deg = 0
+_hasZeroDeg(Time, Node)
+	:-	_degOf(Time, Node, 0).
+
+%%% CONSTRAINT: a zero monomial should have deg == 0 as well
+:-	_coeffOf(Time, Node, 0),
+	not _hasZeroDeg(Time, Node).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Polynomial Properties %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% CONSTRAINT: ensure polynomials are in descending order
+:-	_validTime(Time), _monosOutOfOrder(Time).
+_monoSiblings(Time, Fst, Snd)
+	:-	_siblings(Time, Fst, Snd),
+		Fst < Snd,
+		_isMono(Time, Fst),
+		_isMono(Time, Snd).
+_monosOutOfOrder(Time)
+	:-	_monoSiblings(Time, Fst, Snd),
+		_degOf(Time, Fst, FstDeg),
+		_degOf(Time, Snd, SndDeg),
+		FstDeg < SndDeg.
+_monosOutOfOrder(Time)
+	:-	_monoSiblings(Time, Fst, Snd),
+		_degOf(Time, Fst, SameDeg),
+		_degOf(Time, Snd, SameDeg),
+		_coeffOf(Time, Fst, FstCoeff),
+		_coeffOf(Time, Snd, SndCoeff),
+		SndCoeff > FstCoeff.
+
 _polyHasTermWithDeg(Time, Poly, Deg)
 	:-	_isPolynomial(Time, Poly),
 		_activeChild(Time, Poly, Child),
