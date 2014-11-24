@@ -10,6 +10,7 @@
 #		
 #		expects output from stdin, pipe clingo output to this program
 
+import argparse
 import sys
 import json
 import re
@@ -109,7 +110,7 @@ class StepParser:
 			poly, deg, coeff = (node, field, value)
 			self.monoms_of_polys[poly].append((deg, coeff))
 
-	def getStepString(self, as_latex=False):
+	def getStepString(self, as_latex=False, json_output=False):
 		left	= self.makeEqnString('id(1,1)')
 		right	= self.makeEqnString('id(1,2)')
 		if as_latex:
@@ -120,15 +121,19 @@ class StepParser:
 			if right[0] == '(':
 				right = right[1:-1]
 			string = left + '=' + right 
-		# get action name and operands
-		action_str = ''
-		operand_str = ''
-		if self.action != None:
-			action_str += '\t\theur: ' + self.action 
-		# display operands too
-		for op in self.operands:
-			operand_str = [ 'op: ' + self.makeEqnString(oper) for oper in self.operands ]# TODO: just keep as a list
-			operand_str = '\t' + ', '.join(operand_str)
+
+		if json_output:
+			return json.dumps({ 'eqn' : string , 'operands' : self.operands, 'heuristic' : self.action })
+		else:
+			# get action name and operands
+			action_str = ''
+			operand_str = ''
+			if self.action != None:
+				action_str += '\t\theur: ' + self.action 
+			# display operands too
+			for op in self.operands:
+				operand_str = [ 'op: ' + self.makeEqnString(oper) for oper in self.operands ]# TODO: just keep as a list
+				operand_str = '\t' + ', '.join(operand_str)
 
 		return string + action_str + operand_str
 		
@@ -192,11 +197,17 @@ class SolnParser(object):
 	def addPredicate(self, time, pred_array):
 		step = time[0]
 		self.solution_steps[step].addPredicate(pred_array)
-	def getSolutionString(self, as_latex=False):
+	def getSolutionString(self, as_latex=False, json_output=False):
 		all_steps = []
-		for solve_step in sorted(self.solution_steps.keys()):
-			all_steps.append( str(solve_step) + ': ' + self.solution_steps[solve_step].getStepString())
-		return '\n'.join(all_steps) 
+		if json_output:
+			all_steps = {}
+			for solve_step in sorted(self.solution_steps.keys()):
+				all_steps[str(solve_step)] = self.solution_steps[solve_step].getStepString(as_latex, json_output)
+			return json.dumps(all_steps)
+		else:
+			for solve_step in sorted(self.solution_steps.keys()):
+				all_steps.append( str(solve_step) + ': ' + self.solution_steps[solve_step].getStepString())
+			return '\n'.join(all_steps) 
 		
 	def addActionPred(self, step, action_name):
 		self.solution_steps[step].addActionPred(action_name)
@@ -246,26 +257,35 @@ def parseSolutions(predicates_list, soln_parser=SolnParser):
 			all_solutions[soln_num].addActionPred(time, action_name)
 	return all_solutions
 
-def parseSolutionsAndGetStrings(predicates_list):
+def parseSolutionsAndGetStrings(predicates_list, json_output=False):
 	all_solutions = parseSolutions(predicates_list)
-	return [soln.getSolutionString() + '\n\n' for soln in all_solutions.values() ]
+	return [soln.getSolutionString(as_latex=False, json_output=json_output) for soln in all_solutions.values() ]
 
-def printProbsAndSolutions(all_prob):
+def printProbsAndSolutions(all_prob, json_output=False):
 	""" parse each generated problem, and display all solutions found for each problem"""
 	for problem in all_prob:
-		print ''.join(parseSolutionsAndGetStrings(problem['Value']))
-		print 30*"-"
+		print '\n\n'.join(parseSolutionsAndGetStrings(problem['Value'], json_output))
+		if not json_output:
+			print 30*"-"
 def getAllSolnFromJSON(json_output):
 	sanitized_json = json_output.replace('_', '')
 	decoded = json.loads(sanitized_json)
 	all_soln = decoded['Call'][0]['Witnesses']
 	return all_soln
 
-def main():
+def main(cmd_line_args):
 	""" read solutions in json format from stdin"""
 	clasp_output = ''.join(sys.stdin.xreadlines())
 	all_soln = getAllSolnFromJSON(clasp_output)
-	printProbsAndSolutions(all_soln)
+	if vars(cmd_line_args)['json_output'] == 'true':
+		printProbsAndSolutions(all_soln, json_output=True)
+	else:
+		printProbsAndSolutions(all_soln)
+
+def getCmdLineArgs():
+	cmd_parser = argparse.ArgumentParser(description='Visualizer for ASP code')
+	cmd_parser.add_argument('--json_output', default=False, required=False)
+	return cmd_parser.parse_args()
 
 if __name__ == "__main__":
-	main()
+	main( getCmdLineArgs() )
