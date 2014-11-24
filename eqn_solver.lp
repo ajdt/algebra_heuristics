@@ -80,7 +80,7 @@ _introduce(Time, Node, Field, NewValue)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Selecting Rules %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % for each time step we can perform at most one applicable action
-0 { selectedHeuristic(Time, HeuristicName)	:	_applicableHeuristic(Time, HeuristicName),
+0 { _selectedHeuristic(Time, HeuristicName)	:	_applicableHeuristic(Time, HeuristicName),
 												_heuristicPriority(HeuristicName, Priority),
 												not _higherPriorityIsSelectable(Time, Priority)} 1
 		:-	_time(Step, Stream),
@@ -211,12 +211,12 @@ usesRule(Time, Name)
 
 % useful for 1-grams
 % TODO: reuse old n-grams code instead??
-_selectedHeuristic(Name)
-	:-	selectedHeuristic(Time, Name).
+selectedHeuristic(Name)
+	:-	_selectedHeuristic(Time, Name).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Ensure Each Step Has Rule Application %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _stepUsesHeuristic(Time)
-	:-	selectedHeuristic(Time, Name).
+	:-	_selectedHeuristic(Time, Name).
 %%% CONSTRAINT: step without heuristic
 :-	_validTime(Time),
 	not _stopTime(Time),

@@ -33,17 +33,17 @@ _applicableHeuristic(Time, Name)
 % while others only require that a particular rule be applicable 
 
 1 { _selectedHeurOperands(Time, Oper) : _applicable(Time, _condition(Trigger, Oper)) } 1
-	:-	selectedHeuristic(Time, Name),
+	:-	_selectedHeuristic(Time, Name),
 		_heuristic(Name, Priority, Trigger),
 		not _heuristicToApplyRule(Name, Priority, Trigger). 	% condition heuristic
 
 1 { _selectedHeurOperands(Time, Oper) : _applicable(Time, _rule(Trigger, Oper)) } 1
-	:-	selectedHeuristic(Time, Name),
+	:-	_selectedHeuristic(Time, Name),
 		_heuristicToApplyRule(Name, Priority, Trigger). 		% rule heuristic
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PERFORM THE SELECTED HEURISTIC %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _performRule(Time, _rule(RuleToApply, Oper))
-	:-	selectedHeuristic(Time, Name),
+	:-	_selectedHeuristic(Time, Name),
 		_selectedHeurOperands(Time, Oper),
 		_heuristicAction(Name, RuleToApply).
 
@@ -51,7 +51,7 @@ _performRule(Time, _rule(RuleToApply, Oper))
 % NOTE: this code may be removed later. It's possible all multistep heuristics
 % can be written as single step heuristics depending on how priorities are assigned
 %%_performHeuristicStep(Time, Name, 1)%%
-	%%:-	selectedHeuristic(Time, Name),%%
+	%%:-	_selectedHeuristic(Time, Name),%%
 		%%_heuristicActionSequence(Name, Action, 1).%%
 %%_performHeuristicStep(NextTime, Name, NextStep)%%
 	%%:-	_performHeuristicStep(Time, Name, Step),%%
@@ -83,7 +83,7 @@ _heuristic(Name, Priority, Rule)
 
 % NOTE: I've reserved priority = 0 for testing purposes. O.W. highest priority is 1 
 % combine monomials
-%%_heuristicToApplyRule(cancelAcrossEqn, 1, cancelSumTerm). %%
+_heuristicToApplyRule(cancelAcrossEqn, 1, cancelSumTerm). 
 _heuristicToApplyRule(addInverses, 1, addInverses). 
 _heuristicToApplyRule(ignoreDenom, 1, numerSimp). 
 _heuristicToApplyRule(cancelCommTerms, 1, fracCancel). 
@@ -179,6 +179,6 @@ _heuristicToApplyRule(RuleName, defaultRulePriority, RuleName)
 %%:- not _numActiveChildren(_time(0,1), leftSide, 3).%%
 
 %%:- not _numActiveChildren(_time(0,1), leftSide, 3).%%
-%%:- not selectedHeuristic(_time(0,1), substitute).%%
-%%:- not selectedHeuristic(_time(1,1), factorSimpleQuad).%%
+%%:- not _selectedHeuristic(_time(0,1), cancelAcrossEqn).%%
+%%:- not _selectedHeuristic(_time(1,1), factorSimpleQuad).%%
 %%:-	not _isPolynomial(_time(0,1), leftSide).%%
