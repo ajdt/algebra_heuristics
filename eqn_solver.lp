@@ -190,8 +190,8 @@ _unequalTimeSteps(Fst, Snd)
 		_holds(Fst, Fluent),
 		not _holds(Snd, Fluent).
 _redundantStep(Fst)
-	:-	_stepHasRuleApplication(Fst),
-		_stepHasRuleApplication(Snd),
+	:-	_validTime(Fst),
+		_validTime(Snd),
 		Fst != Snd,
 		_sameTimeStream(Fst, Snd),
 		not _unequalTimeSteps(Fst, Snd).
