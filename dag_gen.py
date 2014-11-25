@@ -95,7 +95,7 @@ class Node(object):
 		actions = sorted(self.soln_parser.getActions())
 		return ':'.join(actions)
 	def getProblem(self):
-		return self.soln_parser.solution_steps[0].getStepString()
+		return self.soln_parser.solution_steps[0].getEqnString()
 	def getLabel(self):
 		return self.label
 	def getSolution(self):

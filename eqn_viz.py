@@ -110,20 +110,26 @@ class StepParser:
 			poly, deg, coeff = (node, field, value)
 			self.monoms_of_polys[poly].append((deg, coeff))
 
-	def getStepString(self, as_latex=False, json_output=False):
+	def getEqnString(self, as_latex=False, json_output=False):
 		left	= self.makeEqnString('id(1,1)')
 		right	= self.makeEqnString('id(1,2)')
 		if as_latex:
-			string =  '$$' + sp.latex( sp.sympify(left, evaluate=False)) + '=' + sp.latex( sp.sympify(right, evaluate=False)) + '$$'
+			left_latex	= sp.latex( sp.sympify(left, evaluate=False))
+			right_latex	= sp.latex( sp.sympify(right, evaluate=False))
+			string =  '$$' + left_latex + '=' + right_latex + '$$'
 		else:
 			if left[0] == '(':# NOTE: slicing to avoid outermost parens
 				left = left[1:-1]
 			if right[0] == '(':
 				right = right[1:-1]
-			string = left + '=' + right 
+			string = left + '=' + right
+		return string
 
+	# getStepString will output both the eqn for a given step as well as operands and heuristic applied
+	def getStepString(self, as_latex=False, json_output=False):
+		eqn_string = self.getEqnString(as_latex, json_output)
 		if json_output:
-			return json.dumps({ 'eqn' : string , 'operands' : self.operands, 'heuristic' : self.action })
+			return json.dumps({ 'eqn' : eqn_string , 'operands' : self.operands, 'heuristic' : self.action })
 		else:
 			# get action name and operands
 			action_str = ''
@@ -135,7 +141,7 @@ class StepParser:
 				operand_str = [ 'op: ' + self.makeEqnString(oper) for oper in self.operands ]# TODO: just keep as a list
 				operand_str = '\t' + ', '.join(operand_str)
 
-		return string + action_str + operand_str
+		return eqn_string + action_str + operand_str
 		
 	def makeEqnString(self, root_node):
 		if self.node_types[root_node] == 'mono':
