@@ -7,6 +7,8 @@ class ClingoRunner:
 	"""Run clingo based on command line arguments"""
 	BASH_COMMAND = "clingo eqn_generator.lp --project -n 0 --outf=2 "
 	TEST_COMMAND = "cat three_steps_output" # used for testing, for faster turnaround
+
+	BOOLEAN_FLAGS = ['iterative', 'json']
 	def __init__(self):
 		self.cmd_parser	=	self.initCmdParser()
 		self.args		=	self.cmd_parser.parse_args()
@@ -19,12 +21,17 @@ class ClingoRunner:
 			param, default_value = line.split()
 			cmd_parser.add_argument('--'+param, default=default_value, required=False)
 		param_file.close()
+
+		# add optional flags
+		for flag in ClingoRunner.BOOLEAN_FLAGS:
+			cmd_parser.add_argument('--' + flag, action='store_true')
 		return cmd_parser
 
 	def writeSolverConfigFile(self, param_dict, filename='config_params.lp'):
 		solver_file = open(filename, 'w')
 		for (param, value) in param_dict.items():
-			solver_file.write('#const ' + param + ' = ' + value +'.\n')
+			if param not in ClingoRunner.BOOLEAN_FLAGS:
+				solver_file.write('#const ' + param + ' = ' + value +'.\n')
 
 		# also write overflow constraints
 		solver_file.write(':- _coeffOverflow.\n')
@@ -34,29 +41,45 @@ class ClingoRunner:
 	def runSolver(self):
 		# write the config file needed to run the program
 		param_dict = vars(self.args)
-		self.writeSolverConfigFile(param_dict)
-		# run the process
-		process = subprocess.Popen(ClingoRunner.BASH_COMMAND.split(), stdout=subprocess.PIPE)
-		output = process.communicate()[0]
-		self.parseGeneratedProblems(output)
-		print 'done :) '
-	def parseGeneratedProblems(self, json_output):
-		problems = eqn_viz.getAllSolnFromJSON(json_output)
+		if param_dict.has_key('iterative'):
+			generated = self.iterativeDeepeningGeneration(param_dict)
+		else:
+			generated = self.computeAnsSets(param_dict)
+
+		self.displayAnsSets(generated)
+
+	def displayAnsSets(self, ans_sets):
+		# display
 		soln_parsers = []
-		for prob in problems:
+		for prob in ans_sets:
 			# for now taking only the first solution, hence subscript 1
 			all_soln = eqn_viz.parseSolutions(prob['Value'])
 			sample_soln = all_soln[1]
 			print sample_soln.getSolutionString()
 			print '-'*10 + '\n'
 			soln_parsers.append(sample_soln)
+
+		# create graph
 		self.graph = Graph(soln_parsers)
 		#print self.graph.getGraphEdges()
 		#print self.graph.nodes.keys()
-		# quick test to see that nodes are generated correctly
-		#for node_label in self.graph.nodes.keys():
-			#print node_label
 
+	def iterativeDeepeningGeneration(self, param_dict):
+		output = []
+		for num_steps in range(1, int(param_dict['maxSteps']) + 1):
+			param_dict['maxSteps'] = str(num_steps)
+			output += (self.computeAnsSets(param_dict))
+		return output
+
+	def computeAnsSets(self, param_dict):
+		self.writeSolverConfigFile(param_dict)
+		# run the process
+		process = subprocess.Popen(ClingoRunner.BASH_COMMAND.split(), stdout=subprocess.PIPE)
+		output = process.communicate()[0]
+		return self.parseGeneratedProblems(output)
+
+	def parseGeneratedProblems(self, json_output):
+		return eqn_viz.getAllSolnFromJSON(json_output)
 
 
 
@@ -65,11 +88,11 @@ class Node(object):
 		super(Node, self).__init__()
 		self.soln_parser = soln_parser
 		self.label = self.makeLabel()
-		self.actions = self.soln_parser.getActions()
+		self.actions = sorted(self.soln_parser.getActions()) # sort actions so they're in some canonical order
 		self.n_gram_dict = {}
 		self.initNGrams()
 	def makeLabel(self):
-		actions = self.soln_parser.getActions()
+		actions = sorted(self.soln_parser.getActions())
 		return ':'.join(actions)
 	def getProblem(self):
 		return self.soln_parser.solution_steps[0].getStepString()
@@ -108,15 +131,14 @@ class Graph(object):
 		self.nodes[new_node.getLabel()] = new_node
 	def formGraphEdges(self):
 		for node in self.nodes.values():
-			self.addEdgesForNode(node)
-	def addEdgesForNode(self, node):
-		for n_gram_list in node.n_gram_dict.values():
-			for n_gram in n_gram_list:
-				if n_gram == node.label:
-					continue
-				# node with n-gram label exists, so create edge between the nodes
-				elif self.nodes.has_key(n_gram):
-					self.edges.append((n_gram, node.label))
+			self.addEdgesForNode(node, ngram_level=1)
+	def addEdgesForNode(self, node, ngram_level=1):
+		for n_gram in node.n_gram_dict[ngram_level]:
+			if n_gram == node.label: # no self loops
+				continue
+			# node with n-gram label exists, so create edge between the nodes
+			elif self.nodes.has_key(n_gram):
+				self.edges.append((n_gram, node.label))
 	def getGraphEdges(self):
 		return '\n'.join([ src + '->' + dest for src, dest in self.edges])
 	def addNodesToGraphViz(self):
