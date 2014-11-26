@@ -42,10 +42,6 @@ _validTime(Time)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Fluents Over Time %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-_holds(Time, Fluent)
-		:-	_holds(initially, Fluent),
-			_startTime(Time).
-
 _holds(NextTick, Fluent)			
 		:-	_holds(Time, Fluent),
 			_nextTimeTick(Time, NextTick),
