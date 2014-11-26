@@ -2,7 +2,7 @@
 % 
 #include "nodes.lp".
 #include "polynomial.lp".
-%%#include "eqn_solver.lp".%%
+#include "eqn_solver.lp".
 %%#include "rules.lp".%%
 %%#include "math_operations.lp".%%
 %%#include "heuristics.lp".%%
@@ -33,6 +33,12 @@ _initiallyIsNeg(Time, Node)
 		:-	_initiallyHasType(Time, Node, neg).
 _initiallyIsMono(Time, Node)
 		:-	_initiallyHasType(Time, Node, mono).
+
+_holds(StartTime, Fluent)
+	:-	_initially(Initially, Fluent),
+		_streamOfInitTime(Initially, Stream),
+		_startTime(StartTime),
+		_streamOf(StartTime, Stream).
 %%other changes%%
 %%* numChildren() if used elsewhere%%
 %%* requirements to eqn structure changed to apply mainly to holds predicates%%
@@ -61,6 +67,9 @@ _initiallyIsMono(Time, Node)
 
 
 _initialTime(_eqn(1..maxNumStreams)).	% captures idea of initial state of a particular eqn 
+_streamOfInitTime(Time, Stream)
+	:-	_initialTime(_eqn(Stream)),
+		Time = _eqn(Stream).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM GENERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % every root node (see node.lp) is active initially
 _initially(Initially, _fact(Node, _nodeField(active,yes)))	
