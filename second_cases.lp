@@ -3,9 +3,9 @@
 #include "nodes.lp".
 #include "polynomial.lp".
 #include "eqn_solver.lp".
-%%#include "rules.lp".%%
-%%#include "math_operations.lp".%%
-%%#include "heuristics.lp".%%
+#include "rules.lp".
+#include "math_operations.lp".
+#include "heuristics.lp".
 %%#include "rule_features.lp".%%
 
 % external predicate dependencies
@@ -128,28 +128,28 @@ _initially(Initially, _fact(Child, _nodeField(active,yes)))
 		:-	_initiallyIsMono(Initially, Node),
 			_initialTime(Initially).
 					
-%%[>%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREVENTING ZERO DENOMINATORS %%%%%%%%%%%%%%%%%%%%%%%%%%%%<]%%
-%%[>% Constraint: if a denominator is reducible to zero, then fail%%
-%%:- _reducibleToZero(Time, Node), _denomOf(Time, Frac, Node).%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREVENTING ZERO DENOMINATORS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Constraint: if a denominator is reducible to zero, then fail
+:- _reducibleToZero(Time, Node), _denomOf(Time, Frac, Node).
 
-%%[>%%%%%%%%%%%%%%%%%%%%%%%%%%%% MISC GENERATION CONSTRAINTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%<]%%
-%%[>% CONSTRAINT: div node has at most 2 children%%
-%%:- _initiallyIsDiv(Time, Node), _activeChild(Time, Node, Child), _childNum(Node, Child, Num), Num >= 3.%%
-%%_hasNoDeg(Time, Mono) :- _initiallyIsMono(Time, Mono), 0 { _degOf(Time, Mono, Deg) : _degree(Deg) } 0.%%
-%%[>% CONSTRAINT: each monomial must have a degree term. NOTE: for some unknown reason, monomials without degree terms were being generated too%%
-%%:-	_validTime(Time), _initiallyIsMono(Time, Mono), _hasNoDeg(Time, Mono).%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MISC GENERATION CONSTRAINTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% CONSTRAINT: div node has at most 2 children
+:- _isDiv(Time, Node), _activeChild(Time, Node, Child), _childNum(Node, Child, Num), Num >= 3.
+_hasNoDeg(Time, Mono) :- _isMono(Time, Mono), 0 { _degOf(Time, Mono, Deg) : _degree(Deg) } 0.
+%%% CONSTRAINT: each monomial must have a degree term. NOTE: for some unknown reason, monomials without degree terms were being generated too
+:-	_validTime(Time), _isMono(Time, Mono), _hasNoDeg(Time, Mono).
 
-%%% monomial nodes must be leave nodes%%
-%%_isLeafNode(Time, Mono)%%
-	%%:-	_initiallyIsMono(Time, Mono), %%
-		%%0 { _activeChild(Time, Mono, Child) : _node(Child) } 0 .%%
-%%_monoHasChildren(Time, Mono)%%
-	%%:-	_initiallyIsMono(Time, Mono), %%
-	%%not _isLeafNode(Time, Mono).%%
+% monomial nodes must be leave nodes
+_isLeafNode(Time, Mono)
+	:-	_isMono(Time, Mono), 
+		0 { _activeChild(Time, Mono, Child) : _node(Child) } 0 .
+_monoHasChildren(Time, Mono)
+	:-	_isMono(Time, Mono), 
+	not _isLeafNode(Time, Mono).
 
-%%:- _monoHasChildren(Time, Mono).%%
+:- _monoHasChildren(Time, Mono).
 
-%%% CONSTRAINT: unary operations (just neg really), must have exactly one child at all times%%
-%%:-	_unary(Oper),%%
-	%%_hasType(Time, Node, Oper),%%
-	%%2 { _activeChild(Time, Node, Child) : _validChildOf(Node, Child) }.%%
+% CONSTRAINT: unary operations (just neg really), must have exactly one child at all times
+:-	_unary(Oper),
+	_hasType(Time, Node, Oper),
+	2 { _activeChild(Time, Node, Child) : _validChildOf(Node, Child) }.
