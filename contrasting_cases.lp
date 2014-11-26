@@ -51,4 +51,73 @@ _differencePenalty(Depth, Penalty)
 	:-	_depthValue(Depth),
 		Penalty = (maxDepth +1) - Depth.
 
+% diferent type
+_nodeDiff(Node, 2)% distinguish between what pair of times is being compared??
+	:-	_node(Node),
+		_startTime(FstTime),
+		_startTime(SndTime),
+		FstTime < SndTime,
+		_hasType(FstTime, Node, FstType), 
+		_hasType(SndTime, Node, SndType), 
+		FstType != SndType.
+% same type and both operators
+_nodeDiff(Node, 0)
+	:-	_node(Node),
+		_startTime(FstTime),
+		_startTime(SndTime),
+		FstTime < SndTime,
+		_hasType(FstTime, Node, Type), 
+		_hasType(SndTime, Node, Type), 
+		Type != mono.
+
+% both monos, diff deg, 
+_sameDegAcrossStreams(Node)
+	:-	_node(Node),
+		_startTime(FstTime),
+		_startTime(SndTime),
+		FstTime < SndTime,
+		_degOf(FstTime, Node, Deg),
+		_degOf(SndTime, Node, Deg).
+_sameCoeffAcrossStreams(Node)
+	:-	_node(Node),
+		_startTime(FstTime),
+		_startTime(SndTime),
+		FstTime < SndTime,
+		_coeffOf(FstTime, Node, Coeff),
+		_coeffOf(SndTime, Node, Coeff).
+
+% TODO: do something else if both deg and coeff are different??
+_nodeDiff(Node, 1)
+	:-	_node(Node),
+		_startTime(FstTime),
+		_startTime(SndTime),
+		FstTime < SndTime,
+		_isMono(FstTime, Node),
+		_isMono(SndTime, Node),
+		not _sameDegAcrossStreams(Node).
+% both monos diff coeff, 
+_nodeDiff(Node, 1)
+	:-	_node(Node),
+		_startTime(FstTime),
+		_startTime(SndTime),
+		FstTime < SndTime,
+		_isMono(FstTime, Node),
+		_isMono(SndTime, Node),
+		not _sameCoeffAcrossStreams(Node).
+% both monos identical
+_nodeDiff(Node, 0)
+	:-	_node(Node),
+		_startTime(FstTime),
+		_startTime(SndTime),
+		FstTime < SndTime,
+		_sameDegAcrossStreams(Node),
+		_sameCoeffAcrossStreams(Node).
+% one mono is active the other is not
+_nodeDiff(Node, 3)
+	:-	_node(Node),	
+		_startTime(FstTime),
+		_startTime(SndTime),	% NOTE: don't specify FstTime < SndTime, capture both cases in one rule
+		_isActive(FstTime, Node),
+		not _isActive(SndTime, Node).
+
 
