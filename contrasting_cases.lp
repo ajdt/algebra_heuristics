@@ -40,3 +40,15 @@
 % allow/disallow specific operators in initial expression.
 % by default all types are allowed. To disallow a type use _disallowedType(Type)
 %%_disallowedType(neg).%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% EQN DIFFERENCES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% defines the difference between two problems at timestep = 0 
+_initialTimeStep(0).
+
+% defines a weighted penalty for two nodes at given depth having different values
+_differencePenalty(Depth, Penalty)
+	:-	_depthValue(Depth),
+		Penalty = (maxDepth +1) - Depth.
+
+
