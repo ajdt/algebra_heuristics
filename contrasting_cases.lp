@@ -120,4 +120,11 @@ _nodeDiff(Node, 3)
 		_isActive(FstTime, Node),
 		not _isActive(SndTime, Node).
 
-
+_weightedNodeDiff(Node, Diff*Penalty)
+	:-	_nodeDiff(Node, Diff),
+		_nodeDepth(Node, Depth),
+		_differencePenalty(Depth, Penalty).
+	
+_totalDifference(Sum)	:- Sum = #sum { Diff, _weightedNodeDiff: _weightedNodeDiff(Node, Diff), _node(Node)} .
+#minimize { DiffSum@1, _total: _totalDifference(DiffSum) } .
+%%:-	_totalDifference(X), X > 1.%%
