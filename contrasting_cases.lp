@@ -28,7 +28,7 @@
 #const maxInitialDepth		=	2.	
 
 % solver params
-#const maxSteps = 1.
+#const maxSteps = 3.
 #const maxNumStreams	= 2.
 
 % problem feature constraints 
@@ -127,4 +127,39 @@ _weightedNodeDiff(Node, Diff*Penalty)
 	
 _totalDifference(Sum)	:- Sum = #sum { Diff, _weightedNodeDiff: _weightedNodeDiff(Node, Diff), _node(Node)} .
 #minimize { DiffSum@1, _total: _totalDifference(DiffSum) } .
-%%:-	_totalDifference(X), X > 1.%%
+
+
+%%_contrast(HeuristicName).%%
+_contrast(factorSimpleQuad).
+
+% ALTERNATIVE: just require that first prob uses a heur and second does not 
+_streamUsesHeur(Stream, Heur)
+	:-	_selectedHeuristic(Time, Heur),
+		_streamOf(Time, Stream).
+
+_contrastingCaseFound
+	:-	_contrast(HeurName),
+		_streamUsesHeur(1, HeurName),
+		not _streamUsesHeur(2, HeurName).
+	
+:-	not _contrastingCaseFound.
+
+
+
+
+% if a heuristic is applied at time step x, and it's not the contast heuristic ---> it should be applied
+% at same time step across all time streams
+
+%%[>% COnstraint: require problems to match on all steps except current%%
+%%:-	_sameStep(Fst, Snd),%%
+	%%_selectedHeuristic(Fst, FstHeur),%%
+	%%_selectedHeuristic(Fst, SndHeur),%%
+	%%_contrast(ContrastHeur),%%
+	%%FstHeur != ContrastHeur,%%
+	%%FstHeur != SndHeur.%%
+
+% x is applied at time step x --> it must not be applied for the other stream
+
+% contrasting heuristic must be applied at most once
+
+% minimize the difference between generated problems
