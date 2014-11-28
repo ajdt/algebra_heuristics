@@ -40,6 +40,15 @@ _stopTime(Time)
 _validTime(Time)
 		:-	_stepOf(Time, Step).
 
+_sameStep(FstTime, SndTime)	% FstTime < SndTime will hold
+		:-	_validTime(FstTime),
+			_validTime(SndTime),
+			_streamOf(FstTime, FstStream),
+			_streamOf(SndTime, SndStream),
+			FstStream < SndStream,
+			_stepOf(FstTime, Step),
+			_stepOf(SndTime, Step).
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Fluents Over Time %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _holds(NextTick, Fluent)			
