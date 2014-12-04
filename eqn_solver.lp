@@ -115,7 +115,7 @@ _ruleForTimeStep(Time, RuleName)
 % NOTE: all solvability constraints have x-term on leftSide
 % 		This is to avoid redundancy of producing results like x=4 and 4=x as two different answer sets
 
-:-	not _solved(Time), _stopTime(Time).
+:-	not _solved(Time), _stopTime(Time), not _disableSolvability.
 :-	_solved(Time), _startTime(Time).	% eqn shouldn't be solved initially
 
 _solved(Time)	% solved if x = constant
