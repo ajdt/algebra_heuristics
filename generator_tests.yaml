@@ -6,80 +6,88 @@ Test equations exist:
     Modules: generator
     Expect: SAT
 
-Test should perform divIdent rule:
-    Modules: generator
-    Program: |
-        :- not _ruleForTimeStep(_time(0,1), divIdent).
-    Expect: SAT
-
-Test should perform multFrac rule:
-    Modules: generator
-    Program: |
-        :- not _ruleForTimeStep(_time(0,1), multFrac).
-    Expect: SAT
-
-Test should perform fracDiv rule:
-    Modules: generator
-    Program: |
-        :- not _ruleForTimeStep(_time(0,1), fracDiv).
-    Expect: SAT
-
-Test should perform numerSimp rule:
-    Modules: generator
-    Program: |
-        :- not _ruleForTimeStep(_time(0,1), numerSimp).
-    Expect: SAT
-
-# NOTE: I've disabled the rule for this test
-#Test should perform addMonom rule:
+# note: ensure maxInitialDepth > 2 for the below code
+#Test should perform addFractions heuristic:
     #Modules: generator
     #Program: |
-        #:- not _ruleForTimeStep(_time(0,1), addMonom).
+        #:- not _selectedHeuristic(_time(0,1), addFractions).
+        #_disableSolvability.
     #Expect: SAT
 
-Test should perform monoMult rule:
+# TODO: this test is broken
+#Test should perform addInverses heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), addInverses).
+        #_disableSolvability.
+    #Expect: SAT
+
+#Test should perform additiveIdentity heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), additiveIdentity).
+    #Expect: SAT
+
+# TODO: test is broken
+#Test should perform applyDistribute heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), applyDistribute).
+        #_disableSolvability.
+    #Expect: SAT
+
+#Test should perform cancelAcrossEqn heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), cancelAcrossEqn).
+    #Expect: SAT
+
+#Test should perform cancelCommTerms heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), cancelCommTerms).
+        #_disableSolvability.
+    #Expect: SAT
+
+#Test should perform cancelNeg heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), cancelNeg).
+    #Expect: SAT
+
+#Test should perform combineLikeTerms heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), combineLikeTerms).
+        #_disableSolvability.    # TODO: should work without this predicate
+    #Expect: SAT
+
+## TODO: broken test
+#Test should perform divByOne heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), divByOne).
+    #Expect: SAT
+
+Test should perform factorSimpleQuad heuristic:
     Modules: generator
     Program: |
-        :- not _ruleForTimeStep(_time(0,1), monoMult).
+        :- not _selectedHeuristic(_time(0,1), factorSimpleQuad).
     Expect: SAT
 
-Test should perform fracCancel rule:
-    Modules: generator
-    Program: |
-        :- not _ruleForTimeStep(_time(0,1), fracCancel).
-    Expect: SAT
-
-Test should perform factor rule:
-    Modules: generator
-    Program: |
-        :- not _ruleForTimeStep(_time(0,1), factor).
-    Expect: SAT
-
-Test should perform addSameFrac rule:
-    Modules: generator
-    Program: |
-        :- not _ruleForTimeStep(_time(0,1), addSameFrac).
-    Expect: SAT
-
-Test should perform distribute rule:
-    Modules: generator
-    Program: |
-        :- not _ruleForTimeStep(_time(0,1), distribute).
-    Expect: SAT
-
-Test should perform divByOne rule:
-    Modules: generator
-    Program: |
-        :- not _ruleForTimeStep(_time(0,1), divByOne).
-    Expect: SAT
-Test should perform addZero rule:
-    Modules: generator
-    Program: |
-        :- not _ruleForTimeStep(_time(0,1), addZero).
-    Expect: SAT
-Test should perform factorCommTerm rule:
-    Modules: generator
-    Program: |
-        :- not _ruleForTimeStep(_time(0,1), factorCommTerm).
-    Expect: SAT
+#Test should perform divByOne heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), divByOne).
+    #Expect: SAT
+#Test should perform addZero heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), addZero).
+    #Expect: SAT
+#Test should perform factorCommTerm heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), factorCommTerm).
+    #Expect: SAT
 
