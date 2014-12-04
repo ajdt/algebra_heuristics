@@ -167,7 +167,8 @@ _applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))
 #const defaultRulePriority = 5.
 
 _ruleAlreadyHasHigherPriority(RuleName) 
-	:-	_heuristicToApplyRule(HeurName, Priority, RuleName),
+	:-	_heuristic(HeurName, Priority, RuleName),
+		_rule(RuleName),
 		Priority < defaultRulePriority. 
 
 _heuristicToApplyRule(RuleName, defaultRulePriority, RuleName)
