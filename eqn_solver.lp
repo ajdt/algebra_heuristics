@@ -116,13 +116,14 @@ _ruleForTimeStep(Time, RuleName)
 % 		This is to avoid redundancy of producing results like x=4 and 4=x as two different answer sets
 
 :-	not _solved(Time), _stopTime(Time).
+:-	_solved(Time), _startTime(Time).	% eqn shouldn't be solved initially
 
 _solved(Time)	% solved if x = constant
 	:-	_isXTerm(Time, leftSide),
 		_isConstant(Time, rightSide).
 _solved(Time)	% solved if x = rational constant
 	:-	_isXTerm(Time, leftSide),
-		_isRational(Time, rightSide).
+		_isProperRational(Time, rightSide).
 
 _solved(Time)	% solved if (x+c_1) * (x + c_2) ... = 0 
 	:-	_isProductOfLinearBinomials(Time, leftSide),

@@ -229,3 +229,18 @@ _isRational(Time, Node)
 		_denomOf(Time, Node, Denom),
 		_isConstant(Time, Numer),
 		_isConstant(Time, Denom).
+_isProperRational(Time, Node)
+	:-	_isRational(Time, Node),
+		not _isImproperRational(Time, Node).
+
+_isImproperRational(Time, Node)
+	:-	_isRational(Time, Node),
+		_numerOf(Time, Node, Numer),
+		_isZero(Time, Numer).
+_isImproperRational(Time, Node)
+	:-	_isRational(Time, Node),
+		_numerOf(Time, Node, Numer),
+		_absoluteValueIsOne(Time, Numer),
+		_denomOf(Time, Node, Denom),
+		_absoluteValueIsOne(Time, Denom).
+

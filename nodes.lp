@@ -126,6 +126,14 @@ _mulOrDiv(Time, Node)	:-	_isMul(Time, Node).
 					%%% Derived Properties %%%
 % Useful, secondary properties of tree nodes.
 % Derived from holds() predicates or their aliases
+_absoluteValueIsOne(Time, Node)
+	:- _isNegOne(Time, Node).
+_absoluteValueIsOne(Time, Node)
+	:- _isOne(Time, Node).
+_isNegOne(Time, Node)
+	:-	_isMono(Time, Node),
+		_coeffOf(Time, Node, -1),
+		_degOf(Time, Node, 0).
 _isOne(Time, Node)
 	:-	_isMono(Time, Node),
 		_coeffOf(Time, Node, 1),
