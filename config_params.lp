@@ -23,8 +23,9 @@
 #const maxNumStreams	= 1.
 
 % problem feature constraints 
-:- _coeffOverflow.
-:- _degOverflow.
+% TODO: figure out why _coeffOverflow and _degOverflow cause UNSAT even when not triggered
+%%:- _coeffOverflow.%%
+%%:- _degOverflow.%%
 
 
 

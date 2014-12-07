@@ -89,3 +89,13 @@ _monoHasChildren(Time, Mono)
 :-	_unary(Oper),
 	_hasType(Time, Node, Oper),
 	2 { _activeChild(Time, Node, Child) : _validChildOf(Node, Child) }.
+
+% TODO: figure out why _coeffOverflow and _degOverflow cause UNSAT even when not triggered
+_hasCoeff(Time, Node)
+	:-	_coeffOf(Time, Node, Coeff).
+_hasDeg(Time, Node)
+	:-	_degOf(Time, Node, Deg).
+% CONSTRAINT: every monomial has a degree value
+:- _isMono(Time, Node), not _hasDeg(Time, Node).
+% CONSTRAINT: every monomial has a coeff value
+:- _isMono(Time, Node), not _hasCoeff(Time, Node).
