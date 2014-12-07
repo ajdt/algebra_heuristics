@@ -69,25 +69,59 @@ Test equations exist:
         #:- not _selectedHeuristic(_time(0,1), divByOne).
     #Expect: SAT
 
-Test should perform factorSimpleQuad heuristic:
+#Test should perform factorSimpleQuad heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), factorSimpleQuad).
+    #Expect: SAT
+
+#Test should perform ignoreDenom heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), ignoreDenom).
+    #Expect: SAT
+#Test should perform isolateConst heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), isolateConst).
+        #_disableSolvability.    
+    #Expect: SAT
+## TODO: broken test
+#Test should perform isolateVars heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), isolateVars).
+    #Expect: SAT
+#Test should perform multiplyByOne heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), multiplyByOne).
+    #Expect: SAT
+#Test should perform multiplyByZero heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), multiplyByZero).
+    #Expect: SAT
+#Test should perform multiplyMonoms heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), multiplyMonoms).
+    #Expect: SAT
+## TODO: broken test
+#Test should perform multiplyWithFrac heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), multiplyWithFrac).
+    #Expect: SAT
+## TODO: broken test
+#Test should perform setRHSZero heuristic:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), setRHSZero).
+    #Expect: SAT
+Test should perform substitute heuristic:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), factorSimpleQuad).
+        :- not _selectedHeuristic(_time(0,1), substitute).
     Expect: SAT
-
-#Test should perform divByOne heuristic:
-    #Modules: generator
-    #Program: |
-        #:- not _selectedHeuristic(_time(0,1), divByOne).
-    #Expect: SAT
-#Test should perform addZero heuristic:
-    #Modules: generator
-    #Program: |
-        #:- not _selectedHeuristic(_time(0,1), addZero).
-    #Expect: SAT
-#Test should perform factorCommTerm heuristic:
-    #Modules: generator
-    #Program: |
-        #:- not _selectedHeuristic(_time(0,1), factorCommTerm).
-    #Expect: SAT
 
