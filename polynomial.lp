@@ -48,13 +48,17 @@ _monosOutOfOrder(Time)
 		_degOf(Time, Fst, FstDeg),
 		_degOf(Time, Snd, SndDeg),
 		FstDeg < SndDeg.
+_monoSiblingsHaveCoeffValuesInOrder(Time, Fst, Snd)
+	:-	_monoSiblings(Time, Fst, Snd),
+		Fst < Snd,
+		_coeffOf(Time, Fst, FstCoeff),
+		_coeffOf(Time, Snd, SndCoeff),
+		SndCoeff > FstCoeff.
 _monosOutOfOrder(Time)
 	:-	_monoSiblings(Time, Fst, Snd),
 		_degOf(Time, Fst, SameDeg),
 		_degOf(Time, Snd, SameDeg),
-		_coeffOf(Time, Fst, FstCoeff),
-		_coeffOf(Time, Snd, SndCoeff),
-		SndCoeff > FstCoeff.
+		not _monoSiblingsHaveCoeffValuesInOrder(Time, Fst, Snd).
 
 _polyHasTermWithDeg(Time, Poly, Deg)
 	:-	_isPolynomial(Time, Poly),
