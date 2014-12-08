@@ -105,12 +105,12 @@ Test should perform multiplyMonoms heuristic:
         :- not _selectedHeuristic(_time(0,1), multiplyMonoms).
     Expect: SAT
 
-#Test should perform multiplyWithFrac heuristic:
-    #Modules: generator
-    #Program: |
-        #:- not _selectedHeuristic(_time(0,1), multiplyWithFrac).
-        #_disableSolvability.    # TODO: should work with solvability enabled if fraction and multiplier are constants
-    #Expect: SAT
+Test should perform multiplyWithFrac heuristic:
+    Modules: generator
+    Program: |
+        :- not _selectedHeuristic(_time(0,1), multiplyWithFrac).
+        _disableSolvability.    
+    Expect: SAT
 
 #Test should perform setRHSZero heuristic:
     #Modules: generator
