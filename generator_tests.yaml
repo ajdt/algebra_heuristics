@@ -83,12 +83,12 @@ Test should perform isolateConst heuristic:
         :- not _selectedHeuristic(_time(0,1), isolateConst).
         _disableSolvability.    
     Expect: SAT
-## TODO: broken test
-#Test should perform isolateVars heuristic:
-    #Modules: generator
-    #Program: |
-        #:- not _selectedHeuristic(_time(0,1), isolateVars).
-    #Expect: SAT
+Test should perform isolateVars heuristic:
+    Modules: generator
+    Program: |
+        :- not _selectedHeuristic(_time(0,1), isolateVars).
+        _disableSolvability.    
+    Expect: SAT
 Test should perform multiplyByOne heuristic:
     Modules: generator
     Program: |
@@ -112,11 +112,12 @@ Test should perform multiplyWithFrac heuristic:
         _disableSolvability.    
     Expect: SAT
 
-#Test should perform setRHSZero heuristic:
-    #Modules: generator
-    #Program: |
-        #:- not _selectedHeuristic(_time(0,1), setRHSZero).
-    #Expect: SAT
+Test should perform setRHSZero heuristic:
+    Modules: generator
+    Program: |
+        :- not _selectedHeuristic(_time(0,1), setRHSZero).
+        _disableSolvability.    
+    Expect: SAT
 Test should perform substitute heuristic:
     Modules: generator
     Program: |
