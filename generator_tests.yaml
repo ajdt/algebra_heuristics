@@ -53,12 +53,11 @@ Test should perform cancelNeg heuristic:
         :- not _selectedHeuristic(_time(0,1), cancelNeg).
     Expect: SAT
 
-#Test should perform combineLikeTerms heuristic:
-    #Modules: generator
-    #Program: |
-        #:- not _selectedHeuristic(_time(0,1), combineLikeTerms).
-        #_disableSolvability.    # TODO: should work without this predicate
-    #Expect: SAT
+Test should perform combineLikeTerms heuristic:
+    Modules: generator
+    Program: |
+        :- not _selectedHeuristic(_time(0,1), combineLikeTerms).
+    Expect: SAT
 
 Test should perform divByOne heuristic:
     Modules: generator
