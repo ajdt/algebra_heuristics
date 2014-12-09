@@ -25,6 +25,7 @@ _operandNumer(Time, Numer, RuleName, Side)
 _writeBinaryOp(Time, Fst, Snd)
 	:-	_operand(Time, Fst, Operation, left),
 		_operand(Time, Snd, Operation, right),
+		_node(Fst), _node(Snd),
 		_writeBinaryOp(Time).
 % saving the results of an Equation-wide operation
 _deepCopy(Time, RootNode, TempRoot)
