@@ -19,7 +19,7 @@
 #const maxInitialDepth		=	3.	
 
 % solver params
-#const maxSteps = 1.
+#const maxSteps = 2.
 #const maxNumStreams	= 1.
 
 % problem feature constraints 
@@ -31,4 +31,4 @@
 
 % allow/disallow specific operators in initial expression.
 % by default all types are allowed. To disallow a type use _disallowedType(Type)
-%%_disallowedType(neg).%%
+_disallowedType(neg).

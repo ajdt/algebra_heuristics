@@ -15,5 +15,18 @@
 #include "rules.lp".
 #include "math_operations.lp".
 #include "heuristics.lp".
-#include "rule_features.lp".
+%%#include "rule_features.lp".%%
+%%activeNode(Node)%%
+	%%:-	_isActive(_time(0,1), Node).%%
+:- not _selectedHeuristic(_time(0,1), cancelAcrossEqn).
 
+typeOfOperand(Type)
+	:-	_operand(Time, Oper, Rule, Side),
+		_hasType(Time, Oper, Type).
+
+selectedOperand(Oper)
+	:-	_operand(Time, Oper, Rule, Side).
+
+%%% CONSTRAINT: denominator should not be +- 1
+:-	_denomOf(Time, Frac, Denom),
+	_absoluteValueIsOne(Time, Denom).

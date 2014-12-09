@@ -212,13 +212,13 @@ _redundantStep(Fst)
 
 
 % used for projection
-usesRule(Time, Name)
-	:-	_ruleForTimeStep(Time, Name).
+%%usesRule(Time, Name)%%
+	%%:-	_ruleForTimeStep(Time, Name).%%
 
-% useful for 1-grams
-% TODO: reuse old n-grams code instead??
-selectedHeuristic(Name)
-	:-	_selectedHeuristic(Time, Name).
+%%% useful for 1-grams%%
+%%% TODO: reuse old n-grams code instead??%%
+%%selectedHeuristic(Name)%%
+	%%:-	_selectedHeuristic(Time, Name).%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Ensure Each Step Has Rule Application %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _stepUsesHeuristic(Time)
