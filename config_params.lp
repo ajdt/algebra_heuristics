@@ -19,7 +19,7 @@
 #const maxInitialDepth		=	3.	
 
 % solver params
-#const maxSteps = 2.
+#const maxSteps = 1.
 #const maxNumStreams	= 1.
 
 % problem feature constraints 

@@ -68,6 +68,36 @@ _holds(StartTime, _fact(Child, _nodeField(active,yes)))
 %%% Constraint: if a denominator is reducible to zero, then fail
 :- _reducibleToZero(Time, Node), _denomOf(Time, Frac, Node).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ORDER CONSTRAINTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTE: this constraint reduces redundancy by partially defining
+% a canonical form for a given problem to have
+_subtreeHeight(Time, Node, 0)
+	:-	_isMono(Time, Node).
+_hasSubtreeWithHeight(Time, Parent, Height)
+	:-	_activeChild(Time, Parent, Child),
+		_subtreeHeight(Time, Child, Height).
+_subtreeHeight(Time, Node, Height+1)
+	:-	_hasSubtreeWithHeight(Time, Node, Height),
+	0 { _hasSubtreeWithHeight(Time, Node, OtherHeight) : OtherHeight > Height } 0.
+
+_initiallyOutOfOrderByHeight(Fst, Snd)
+	:-	_siblings(StartTime, Fst, Snd),
+		_subtreeHeight(StartTime, Fst, FstHeight),
+		_subtreeHeight(StartTime, Snd, SndHeight),
+		_startTime(StartTime),
+		FstHeight < SndHeight.
+
+_initiallyOutOfOrderByNumKids(Fst, Snd)
+	:-	_startTime(StartTime),
+		_siblings(StartTime, Fst, Snd),
+		not _initiallyOutOfOrderByHeight(Fst, Snd),
+		_numActiveChildren(StartTime, Fst, FstTotal),
+		_numActiveChildren(StartTime, Snd, SndTotal),
+		FstTotal < SndTotal.
+
+%%% CONSTRAINT: no subtree should be out of order
+%%:- _initiallyOutOfOrderByHeight(Fst, Snd).%%
+%%:- _initiallyOutOfOrderByNumKids(Fst, Snd).%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MISC GENERATION CONSTRAINTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% CONSTRAINT: div node has at most 2 children
 :- _isDiv(Time, Node), _activeChild(Time, Node, Child), _childNum(Node, Child, Num), Num >= 3.
