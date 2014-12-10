@@ -7,12 +7,12 @@
 % 
 %
 
-#script (python)
-import gringo
-import random
-def calcHash(X):
-	return (X*(X+3))%100
-#end.
+%%#script (python)%%
+%%import gringo%%
+%%import random%%
+%%def calcHash(X):%%
+	%%return (X*(X+3))%100%%
+%%#end.%%
 #include "config_params.lp".
 #include "prob_generator.lp".
 #include "nodes.lp".
@@ -33,6 +33,15 @@ typeOfOperand(Type)
 selectedOperand(Oper)
 	:-	_operand(Time, Oper, Rule, Side).
 
+usesNode(Node)
+	:-	_isActive(StartTime, Node),
+		_startTime(StartTime).
+eqnHasMonoWithDeg(Deg)
+	:-	_startTime(StartTime),
+		_degOf(StartTime, Mono, Deg).
+%%_someNumber(1..10).%%
+%%1 { selectedNum(X) : _someNumber(X) } 1 %%
+	%%:-	_startTime(ST) .%%
 %%% CONSTRAINT: denominator should not be +- 1
 :-	_denomOf(Time, Frac, Denom),
 	_absoluteValueIsOne(Time, Denom).
