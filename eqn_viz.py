@@ -58,8 +58,9 @@ wrapInKeyValueAndFact		=	lambda parser: wrapWithHolds(wrapNodeFact(wrapKeyValueP
 type_parser				=	wrapInKeyValueAndFact(word_word_parser)
 deg_coeff_parser		=	wrapInKeyValueAndFact(word_number_parser)
 child_parser 			= 	wrapInKeyValueAndFact(word_node_parser)
+applicable_heur_parser	= 'applicableHeuristic(' + time_parser + ',' + word_parser + ')'
 
-all_parsers 	=	[ type_parser, child_parser, deg_coeff_parser, action_parser, binary_operand_parser, unary_operand_parser]
+all_parsers 	=	[ type_parser, child_parser, deg_coeff_parser, action_parser, binary_operand_parser, unary_operand_parser, applicable_heur_parser]
 op_symbols 		= 	{'add' : '+' , 'div' : '/' , 'mul' : '*' , 'neg' : '-'}
 
 
@@ -200,6 +201,7 @@ class SolnParser(object):
 	def __init__(self):
 		self.solution_steps = defaultdict(StepParser)
 		self.actions = []
+		self.applicable_actions = set()
 	def addPredicate(self, time, pred_array):
 		step = time[0]
 		self.solution_steps[step].addPredicate(pred_array)
@@ -225,6 +227,11 @@ class SolnParser(object):
 		return self.solution_steps[0].getStepString()
 	def getActions(self):
 		return list(self.actions)
+	def addApplicableAction(self, action_name):
+		self.applicable_actions.add(action_name)
+	def getApplicableActions(self):
+		return set(self.applicable_actions)
+
 def findParserMatchingPredicate(predicate, parser_list=all_parsers):
 	""" if any parser successfully parses the predicate, return tokens and the parser"""
 	for parser in parser_list:
@@ -251,6 +258,11 @@ def parseSolutions(predicates_list, soln_parser=SolnParser):
 			soln_num = time[1]
 			operand = ''.join(remaining_tokens[1:-1])
 			all_solutions[soln_num].addOperands(time, [operand])
+		elif parser == applicable_heur_parser:
+			# tokens = ['applicableHeuristic(', '_time(', 'step', ',' 'solnNum', ')', ',' , 'actionName' , ')']
+			soln_num = int(tokens[4])
+			action_name = tokens[-2]
+			all_solutions[soln_num].addApplicableAction(action_name)
 		elif parser != None and parser != action_parser:
 			# parsing was successful
 			time, remaining_tokens = peelHolds(tokens)
