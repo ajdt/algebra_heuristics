@@ -39,23 +39,43 @@ def distanceOfASTs(fst_tree, snd_tree):
 			compareExpressionsRecursive(fst_tree[1], snd_tree[1]))	# compare right sides
 def compareExpressionsRecursive(fst_expr, snd_expr):
 	"""compare two parsed expressions and return their differences"""
-	# root of both expr has different type
 	diff = 0
-	if fst_expr.__class__ != snd_expr.__class__:
+	if fst_expr is None:
+		return countSubtreeNodes(snd_expr)
+	elif snd_expr is None:
+		return countSubtreeNodes(fst_expr)
+	elif isinstance(fst_expr, compiler.ast.Const) and isinstance(snd_expr, compiler.ast.Const):
+		return compareMonomials(fst_expr, snd_expr)
+	# include case to handle monomial comparisons 
+	elif fst_expr.__class__ != snd_expr.__class__:
 		diff += 1
-	# both expressions have no children 
-	if isinstance(fst_expr, compiler.ast.Const) and isinstance(snd_expr, compiler.ast.Const):
-		diff +=  0 # compare their constants
 	# only fst has children
 	elif isinstance(fst_expr, compiler.ast.Const):
-		return 0
+		return countSubtreeNodes(snd_expr)
 	# only snd has chilren
 	elif isinstance(snd_expr, compiler.ast.Const):
-		return 0
+		return countSubtreeNodes(fst_expr)
 	# both have children
 	else:
-		return 0
+		diff += sum(map(compareExpressionsRecursive, fst_expr.getChildren(), snd_expr.getChildren()))
+	return diff
+
+def countSubtreeNodes(fst_expr, depth=0):
+	if isinstance(fst_expr, compiler.ast.Power):
+		return 1
+	else:
+		return 1 + sum(map(countSubtreeNodes, fst_expr.getChildren()))
+def compareMonomials(fst_mono, snd_mono):
+	# compare degree values
 	return 0
+def isMonomial(expr):
+	""" monomials have exactly two children and they must be Mul and Power respectively """
+	if len(expr.getChildren()) != 2 :
+		return False
+	coeff, variable = expr.getChildren()[:2]
+	return (isinstance(expr, compiler.ast.Mul) and 
+			isinstance(coeff, compiler.ast.Const) and 
+			isinstance(variable, compiler.ast.Power) )
 	
 
 # this code is for testing purposes only
