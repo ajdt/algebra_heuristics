@@ -211,6 +211,9 @@ class SolnParser(object):
 			all_steps = {}
 			for solve_step in sorted(self.solution_steps.keys()):
 				all_steps[str(solve_step)] = self.solution_steps[solve_step].getStepString(as_latex, json_output)
+				# add applicable and selected heuristics too
+				all_steps['applicableHeuristics']	= list(self.getApplicableActions())
+				all_steps['selectedHeuristics']		= list(self.getActions())
 			return json.dumps(all_steps)
 		else:
 			for solve_step in sorted(self.solution_steps.keys()):
