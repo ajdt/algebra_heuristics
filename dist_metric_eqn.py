@@ -25,8 +25,8 @@ def astOfEqn(eqn_string):
 	"""use compiler to return tuple containing AST of given string equation"""
 	clean_eqn = sanitizeEqnString(eqn_string)
 	# compiler can't parse '=' :(, so we split equation ourselves
-	print [ side for side in clean_eqn.split('=')]
 	eqn_tree = [ compiler.parse(side) for side in clean_eqn.split('=')]
+
 	# extract root node for each side and place in tuple
 	# asList() actually returns a 1-tuple containing root node only
 	return tuple([child.node.nodes[0].asList()[0]for child in eqn_tree])
@@ -45,32 +45,29 @@ def compareExpressionsRecursive(fst_expr, snd_expr, depth=1):
 	global current_depth
 	diff = 0
 	if fst_expr is None:
-		return countSubtreeNodes(snd_expr, current_depth[-1])
+		return computeSubtreeWeight(snd_expr, depth)
 	elif snd_expr is None:
-		return countSubtreeNodes(fst_expr, current_depth[-1])
+		return computeSubtreeWeight(fst_expr, depth)
 	elif isMonomial(fst_expr) and isMonomial(snd_expr):
 		return compareMonomials(fst_expr, snd_expr)
 	elif isMonomial(fst_expr):
-		return countSubtreeNodes(snd_expr, current_depth[-1])
+		return computeSubtreeWeight(snd_expr, depth)
 	elif isMonomial(snd_expr):
-		return countSubtreeNodes(fst_expr, current_depth[-1])
+		return computeSubtreeWeight(fst_expr, depth)
 	# neither node is a monomial
 	else:
 		if fst_expr.__class__ != snd_expr.__class__:
-			#diff += DIFF_NODE_TYPE_PENALTY*depth
-			diff += DIFF_NODE_TYPE_PENALTY*current_depth[-1]
-		#compareChildren = lambda f, s : compareExpressionsRecursive(f, s, depth+1)
-		current_depth.append(current_depth[-1]+1)
-		diff += sum(map(compareExpressionsRecursive, fst_expr.getChildren(), snd_expr.getChildren()))
-		current_depth.pop()
+			diff += DIFF_NODE_TYPE_PENALTY*depth
+		compareChildren = lambda f, s : compareExpressionsRecursive(f, s, depth+1)
+		diff += sum(map(compareChildren, fst_expr.getChildren(), snd_expr.getChildren()))
 	return diff
 
-def countSubtreeNodes(expr, depth=1):
+def computeSubtreeWeight(expr, depth=1):
 	root_weight = DIFF_MONOS_PENALTY*depth
 	if isMonomial(expr):
 		return root_weight
 	else:
-		return root_weight + sum([ countSubtreeNodes(child, depth+1) for child in expr.getChildren()])
+		return root_weight + sum([ computeSubtreeWeight(child, depth+1) for child in expr.getChildren()])
 
 # TODO: decide if we need to compare degree and coefficient terms too
 def compareMonomials(fst_mono, snd_mono):
