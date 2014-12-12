@@ -192,7 +192,7 @@ def peelHolds(tokens):
     misc_tokens     = tokens[7:-1]
     return time, misc_tokens
 
-class AnswerSetParser(object):
+class MathProblemParser(object):
     """ 
     parse a single solution to a problem. This is done by adding
     predicates one at a time to the parser, then calling 
@@ -235,9 +235,46 @@ class AnswerSetParser(object):
     def getApplicableActions(self):
         return set(self.applicable_actions)
 
+class AnswerSetParser(object):
+    def __init__(self, predicates):
+        self.math_problems = defaultdict(MathProblemParser)
+        self.parseAnsSetFromPredicates(predicates)
+    def parseAnsSetFromPredicates(self, predicates_list):
+        """ compose as a string every solution in the predicate list given"""
+        for predicate in predicates_list:
+            parser, tokens  = findParserMatchingPredicate(predicate)
+            if parser == binary_operand_parser:
+                time, remaining_tokens = peelHolds(tokens)
+                soln_num = time[1]
+                fst_oper = ''.join(remaining_tokens[1:6])
+                snd_oper = ''.join(remaining_tokens[7:-1])
+                self.math_problems[soln_num].addOperands(time, [fst_oper, snd_oper])
+            elif parser == unary_operand_parser:
+                time, remaining_tokens = peelHolds(tokens)
+                soln_num = time[1]
+                operand = ''.join(remaining_tokens[1:-1])
+                self.math_problems[soln_num].addOperands(time, [operand])
+            elif parser == applicable_heur_parser:
+                # tokens = ['applicableHeuristic(', '_time(', 'step', ',' 'solnNum', ')', ',' , 'actionName' , ')']
+                soln_num = int(tokens[4])
+                action_name = tokens[-2]
+                self.math_problems[soln_num].addApplicableAction(action_name)
+            elif parser != None and parser != action_parser:
+                # parsing was successful
+                time, remaining_tokens = peelHolds(tokens)
+                soln_num = time[1]      # time is a tuple (step, soln_number)
+                self.math_problems[soln_num].addPredicate(time, remaining_tokens)
+            elif parser == action_parser:
+                time        = int(tokens[2])
+                soln_num    = int(tokens[4])
+                action_name = tokens[7]
+                self.math_problems[soln_num].addActionPred(time, action_name)
+    def getMathProblems(self):
+        return self.math_problems
+
 class AnswerSetManager(object):
     def __init__(self, cmdline_args):
-        # initialize AnswerSetParser for each solution generated
+        # initialize MathProblemParser for each solution generated
         self.cmdline_args = cmdline_args
         self.answer_sets = []
 
@@ -248,9 +285,9 @@ class AnswerSetManager(object):
         for solution in all_prob:
             self.parseAnsSet(solution)
     def parseAnsSet(self, answer_set):
-        """ extract predicates then initialize AnswerSetParser for given answer set"""
+        """ extract predicates then initialize MathProblemParser for given answer set"""
         predicates = answer_set['Value']
-        self.answer_sets.append(AnswerSetParser(predicates))
+        self.answer_sets.append(MathProblemParser(predicates))
 
     def __getJSONAnswerSetsFromSTDIN(self):
         """ read json from stdin, remove underscores, load via json module and return answer sets """
@@ -287,41 +324,10 @@ def findParserMatchingPredicate(predicate, parser_list=all_parsers):
         return (parser, parse_output)
     return (None, [])
 
-def parseSolutions(predicates_list, soln_parser=AnswerSetParser):
-    """ compose as a string every solution in the predicate list given"""
-    all_solutions = defaultdict(soln_parser)
-    for predicate in predicates_list:
-        parser, tokens  = findParserMatchingPredicate(predicate)
-        if parser == binary_operand_parser:
-            time, remaining_tokens = peelHolds(tokens)
-            soln_num = time[1]
-            fst_oper = ''.join(remaining_tokens[1:6])
-            snd_oper = ''.join(remaining_tokens[7:-1])
-            all_solutions[soln_num].addOperands(time, [fst_oper, snd_oper])
-        elif parser == unary_operand_parser:
-            time, remaining_tokens = peelHolds(tokens)
-            soln_num = time[1]
-            operand = ''.join(remaining_tokens[1:-1])
-            all_solutions[soln_num].addOperands(time, [operand])
-        elif parser == applicable_heur_parser:
-            # tokens = ['applicableHeuristic(', '_time(', 'step', ',' 'solnNum', ')', ',' , 'actionName' , ')']
-            soln_num = int(tokens[4])
-            action_name = tokens[-2]
-            all_solutions[soln_num].addApplicableAction(action_name)
-        elif parser != None and parser != action_parser:
-            # parsing was successful
-            time, remaining_tokens = peelHolds(tokens)
-            soln_num = time[1]      # time is a tuple (step, soln_number)
-            all_solutions[soln_num].addPredicate(time, remaining_tokens)
-        elif parser == action_parser:
-            time        = int(tokens[2])
-            soln_num    = int(tokens[4])
-            action_name = tokens[7]
-            all_solutions[soln_num].addActionPred(time, action_name)
-    return all_solutions
 
 def parseSolutionsAndGetStrings(predicates_list, json_output=False):
-    all_solutions = parseSolutions(predicates_list)
+    answer_set_parser = AnswerSetParser(predicates_list)
+    all_solutions = answer_set_parser.getMathProblems()
     return [soln.getSolutionString(as_latex=False, json_output=json_output) for soln in all_solutions.values() ]
 
 def prettyPrintAnsSets(all_prob, json_output=False):
