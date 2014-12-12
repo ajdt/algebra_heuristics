@@ -63,6 +63,14 @@ applicable_heur_parser  = 'applicableHeuristic(' + time_parser + ',' + word_pars
 all_parsers     =   [ type_parser, child_parser, deg_coeff_parser, action_parser, binary_operand_parser, unary_operand_parser, applicable_heur_parser]
 op_symbols      =   {'add' : '+' , 'div' : '/' , 'mul' : '*' , 'neg' : '-'}
 
+class GeneratedProblem(object):
+    def __init__(self, equation_steps, operands, selected_heur, applicable_heur):
+        self.equation_parameters = { 'equation steps': equation_steps,
+                                     'operands': operands,
+                                     'selected_heuristics': selected_heur,
+                                     'appllicable_heur': applicable_heur}
+    def getEqnString(self, as_latex=False, json_output=False):
+        return '\n'.join(self.equation_parameters['equation steps'])
 
 class EquationStepParser:
     """ encapsulates the state of an equation during one step."""
@@ -180,10 +188,12 @@ class EquationStepParser:
             return  coeff + '*x^' + deg
     def addOperands(self, operands):
         self.operands = operands
+    def getOperands(self):
+        return list(self.operands)
     def addActionPred(self, action_name):
         self.action = action_name
 
-        
+
 def peelHolds(tokens):
     """ extract time and fact from tokens"""
     step            = int(tokens[2])
@@ -228,12 +238,18 @@ class MathProblemParser(object):
         self.solution_steps[step].addOperands(operands)
     def getProblem(self):
         return self.solution_steps[0].getStepString()
+    def getOperands(self):
+        return [(step_number, step_parser.getOperands()) for step_number, step_parser in self.solution_steps.items()]
+    def getEqnSteps(self):
+        return [step.getStepString() for step in self.solution_steps]
     def getActions(self):
         return list(self.actions)
     def addApplicableAction(self, action_name):
         self.applicable_actions.add(action_name)
     def getApplicableActions(self):
-        return set(self.applicable_actions)
+        return list(set(self.applicable_actions))
+    def jsonFriendlyFormat(self):
+        return GeneratedProblem(self.getEqnSteps(), self.getOperands(), self.getActions(), self.getApplicableActions())
 
 class AnswerSetParser(object):
     def __init__(self, predicates):
@@ -242,7 +258,7 @@ class AnswerSetParser(object):
     def parseAnsSetFromPredicates(self, predicates_list):
         """ compose as a string every solution in the predicate list given"""
         for predicate in predicates_list:
-            parser, tokens  = findParserMatchingPredicate(predicate)
+            parser, tokens  = self.findParserMatchingPredicate(predicate)
             if parser == binary_operand_parser:
                 time, remaining_tokens = peelHolds(tokens)
                 soln_num = time[1]
@@ -269,6 +285,15 @@ class AnswerSetParser(object):
                 soln_num    = int(tokens[4])
                 action_name = tokens[7]
                 self.math_problems[soln_num].addActionPred(time, action_name)
+    def findParserMatchingPredicate(self, predicate, parser_list=all_parsers):
+        """ if any parser successfully parses the predicate, return tokens and the parser"""
+        for parser in parser_list:
+            try:
+                parse_output = parser.parseString(predicate)
+            except ParseException:
+                continue
+            return (parser, parse_output)
+        return (None, [])
     def getMathProblems(self):
         return self.math_problems.values()
 
@@ -283,79 +308,33 @@ class AnswerSetManager(object):
         all_answer_sets = self.__getJSONAnswerSetsFromSTDIN()
         # parse the answer sets
         for answer_set in all_answer_sets:
-            self.parseAnsSet(answer_set)
-    def parseAnsSet(self, answer_set):
-        """ extract predicates then initialize AnswerSetParser for given answer set"""
-        # TODO: may not need this function
-        predicates = answer_set['Value']
-        self.answer_sets.append(AnswerSetParser(predicates))
+            predicates = answer_set['Value']
+            self.answer_sets.append(AnswerSetParser(predicates))
 
     def __getJSONAnswerSetsFromSTDIN(self):
         """ read json from stdin, remove underscores, load via json module and return answer sets """
         clingo_output = ''.join(sys.stdin.xreadlines())
         decoded_output = json.loads(clingo_output.replace('_', ''))
-
         return decoded_output['Call'][0]['Witnesses'] # clingo provides lots of info, we just want answer sets
 
     def loadFromJSONFile(self):
         pass
-    def dumpToJSONFile(self):
-        pass
-    def printProblems(self, json_output=False):
-        if json_output:
-            self.printAnsSetsJSON()
-        else:
-            self.prettyPrintAnsSets()
-    def prettyPrintAnsSets(self):
+    def dumpToJSONFile(self, file_name):
+        json_file = open(file_name, 'w')
+    def printAnswerSets(self, json_printing=False):
         """display all answer sets in user-friendly way"""
         for ans_set in self.answer_sets:
             for problem in ans_set.getMathProblems():
-                print problem.getSolutionString(as_latex=False, json_output=False) + '\n\n'
-        print 30*"-"
-    def printAnsSetsJSON(self):
-        for problem in self.answer_sets:
-            print problem.getSolutionString(as_latex=False, json_output=True) + '\n\n'
-
-def findParserMatchingPredicate(predicate, parser_list=all_parsers):
-    """ if any parser successfully parses the predicate, return tokens and the parser"""
-    for parser in parser_list:
-        try:
-            parse_output = parser.parseString(predicate)
-        except ParseException:
-            continue
-        return (parser, parse_output)
-    return (None, [])
-
-
-def parseSolutionsAndGetStrings(predicates_list, json_output=False):
-    answer_set_parser = AnswerSetParser(predicates_list)
-    all_solutions = answer_set_parser.getMathProblems()
-    return [soln.getSolutionString(as_latex=False, json_output=json_output) for soln in all_solutions.values() ]
-
-def prettyPrintAnsSets(all_prob, json_output=False):
-    """ parse each generated problem, and display all solutions found for each problem"""
-    for problem in all_prob:
-        print '\n\n'.join(parseSolutionsAndGetStrings(problem['Value'], json_output))
-        if not json_output:
+                print problem.getSolutionString(as_latex=False, json_output=json_printing) + '\n\n'
+        if not json_printing:
             print 30*"-"
-def getAllSolnFromJSON(json_output):
-    sanitized_json = json_output.replace('_', '')
-    decoded = json.loads(sanitized_json)
-    all_soln = decoded['Call'][0]['Witnesses']
-    return all_soln
 
 def main(cmd_line_args):
-    """ read solutions in json format from stdin"""
-    clasp_output = ''.join(sys.stdin.xreadlines())
-    all_soln = getAllSolnFromJSON(clasp_output)
-    if vars(cmd_line_args)['json_output'] == 'true':
-        prettyPrintAnsSets(all_soln, json_output=True)
-    else:
-        prettyPrintAnsSets(all_soln)
-def useManagerInstead(cmd_line_args):
     manager = AnswerSetManager(cmd_line_args)
     manager.initFromSTDIN()
-    manager.prettyPrintAnsSets()
+    json_output = vars(cmd_line_args)['json_output'] == 'true'
+    manager.printAnswerSets(json_printing=json_output)
+
 
 def getCmdLineArgs():
     cmd_parser = argparse.ArgumentParser(description='Visualizer for ASP code')
@@ -363,5 +342,4 @@ def getCmdLineArgs():
     return cmd_parser.parse_args()
 
 if __name__ == "__main__":
-    #main( getCmdLineArgs() )
-    useManagerInstead(getCmdLineArgs())
+    main(getCmdLineArgs())
