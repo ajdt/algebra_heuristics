@@ -270,7 +270,7 @@ class AnswerSetParser(object):
                 action_name = tokens[7]
                 self.math_problems[soln_num].addActionPred(time, action_name)
     def getMathProblems(self):
-        return self.math_problems
+        return self.math_problems.values()
 
 class AnswerSetManager(object):
     def __init__(self, cmdline_args):
@@ -280,14 +280,15 @@ class AnswerSetManager(object):
 
     def initFromSTDIN(self):
         """load answer sets from stdin NOTE: expects JSON input via clingo --outf=2"""
-        all_prob = self.__getJSONAnswerSetsFromSTDIN()
+        all_answer_sets = self.__getJSONAnswerSetsFromSTDIN()
         # parse the answer sets
-        for solution in all_prob:
-            self.parseAnsSet(solution)
+        for answer_set in all_answer_sets:
+            self.parseAnsSet(answer_set)
     def parseAnsSet(self, answer_set):
-        """ extract predicates then initialize MathProblemParser for given answer set"""
+        """ extract predicates then initialize AnswerSetParser for given answer set"""
+        # TODO: may not need this function
         predicates = answer_set['Value']
-        self.answer_sets.append(MathProblemParser(predicates))
+        self.answer_sets.append(AnswerSetParser(predicates))
 
     def __getJSONAnswerSetsFromSTDIN(self):
         """ read json from stdin, remove underscores, load via json module and return answer sets """
@@ -307,8 +308,9 @@ class AnswerSetManager(object):
             self.prettyPrintAnsSets()
     def prettyPrintAnsSets(self):
         """display all answer sets in user-friendly way"""
-        for problem in self.answer_sets:
-            print problem.getSolutionString(as_latex=False, json_output=False) + '\n\n'
+        for ans_set in self.answer_sets:
+            for problem in ans_set.getMathProblems():
+                print problem.getSolutionString(as_latex=False, json_output=False) + '\n\n'
         print 30*"-"
     def printAnsSetsJSON(self):
         for problem in self.answer_sets:
@@ -350,6 +352,10 @@ def main(cmd_line_args):
         prettyPrintAnsSets(all_soln, json_output=True)
     else:
         prettyPrintAnsSets(all_soln)
+def useManagerInstead(cmd_line_args):
+    manager = AnswerSetManager(cmd_line_args)
+    manager.initFromSTDIN()
+    manager.prettyPrintAnsSets()
 
 def getCmdLineArgs():
     cmd_parser = argparse.ArgumentParser(description='Visualizer for ASP code')
@@ -357,4 +363,5 @@ def getCmdLineArgs():
     return cmd_parser.parse_args()
 
 if __name__ == "__main__":
-    main( getCmdLineArgs() )
+    #main( getCmdLineArgs() )
+    useManagerInstead(getCmdLineArgs())
