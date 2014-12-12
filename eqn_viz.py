@@ -64,7 +64,7 @@ all_parsers     =   [ type_parser, child_parser, deg_coeff_parser, action_parser
 op_symbols      =   {'add' : '+' , 'div' : '/' , 'mul' : '*' , 'neg' : '-'}
 
 
-class StepParser:
+class EquationStepParser:
     """ encapsulates the state of an equation during one step."""
     def __init__(self):
         # one dictionary per predicate type
@@ -192,14 +192,14 @@ def peelHolds(tokens):
     misc_tokens     = tokens[7:-1]
     return time, misc_tokens
 
-class SolnParser(object):
+class AnswerSetParser(object):
     """ 
     parse a single solution to a problem. This is done by adding
     predicates one at a time to the parser, then calling 
     getSolutionString().
     """
     def __init__(self):
-        self.solution_steps = defaultdict(StepParser)
+        self.solution_steps = defaultdict(EquationStepParser)
         self.actions = []
         self.applicable_actions = set()
     def addPredicate(self, time, pred_array):
@@ -235,6 +235,21 @@ class SolnParser(object):
     def getApplicableActions(self):
         return set(self.applicable_actions)
 
+class SolnManager(object):
+    def __init__(self, cmdline_args):
+        # initialize AnswerSetParser for each solution generated
+        self.cmdline_args = cmdline_args
+        self.answer_sets = []
+
+    def loadFromJSONFile(self):
+        pass
+    def dumpToJSONFile(self):
+        pass
+    def printProblems(self, json_output=False):
+        if json_output:
+            self.printAnsSetsJSON()
+        else:
+            self.prettyPrintAnsSets()
 def findParserMatchingPredicate(predicate, parser_list=all_parsers):
     """ if any parser successfully parses the predicate, return tokens and the parser"""
     for parser in parser_list:
@@ -245,7 +260,7 @@ def findParserMatchingPredicate(predicate, parser_list=all_parsers):
         return (parser, parse_output)
     return (None, [])
 
-def parseSolutions(predicates_list, soln_parser=SolnParser):
+def parseSolutions(predicates_list, soln_parser=AnswerSetParser):
     """ compose as a string every solution in the predicate list given"""
     all_solutions = defaultdict(soln_parser)
     for predicate in predicates_list:
@@ -282,7 +297,7 @@ def parseSolutionsAndGetStrings(predicates_list, json_output=False):
     all_solutions = parseSolutions(predicates_list)
     return [soln.getSolutionString(as_latex=False, json_output=json_output) for soln in all_solutions.values() ]
 
-def printProbsAndSolutions(all_prob, json_output=False):
+def prettyPrintAnsSets(all_prob, json_output=False):
     """ parse each generated problem, and display all solutions found for each problem"""
     for problem in all_prob:
         print '\n\n'.join(parseSolutionsAndGetStrings(problem['Value'], json_output))
@@ -299,9 +314,9 @@ def main(cmd_line_args):
     clasp_output = ''.join(sys.stdin.xreadlines())
     all_soln = getAllSolnFromJSON(clasp_output)
     if vars(cmd_line_args)['json_output'] == 'true':
-        printProbsAndSolutions(all_soln, json_output=True)
+        prettyPrintAnsSets(all_soln, json_output=True)
     else:
-        printProbsAndSolutions(all_soln)
+        prettyPrintAnsSets(all_soln)
 
 def getCmdLineArgs():
     cmd_parser = argparse.ArgumentParser(description='Visualizer for ASP code')
