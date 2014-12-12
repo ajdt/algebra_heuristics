@@ -5,12 +5,14 @@
 #
 
 import compiler
+import pdb
 # required functions
 #distanceBetween
 #astOfEqn	# calls compiler module to generate ast and return in a useful way 
 #distanceOfASTs # recursive, does actual ast comparison
 # sanitize EQnString
-
+DIFF_MONOS_PENALTY = 1
+DIFF_NODE_TYPE_PENALTY = 2
 def distanceBetweenEqn(fst_eqn, snd_eqn):
 	"""compute the 'distance' between two equations"""
 	# obtain AST for each eqn
@@ -37,49 +39,79 @@ def distanceOfASTs(fst_tree, snd_tree):
 	"""compare two trees and return the 'difference' between them"""
 	return (compareExpressionsRecursive(fst_tree[0], snd_tree[0]) +	
 			compareExpressionsRecursive(fst_tree[1], snd_tree[1]))	# compare right sides
-def compareExpressionsRecursive(fst_expr, snd_expr):
+current_depth = [1]
+def compareExpressionsRecursive(fst_expr, snd_expr, depth=1):
 	"""compare two parsed expressions and return their differences"""
+	global current_depth
 	diff = 0
 	if fst_expr is None:
-		return countSubtreeNodes(snd_expr)
+		return countSubtreeNodes(snd_expr, current_depth[-1])
 	elif snd_expr is None:
-		return countSubtreeNodes(fst_expr)
-	elif isinstance(fst_expr, compiler.ast.Const) and isinstance(snd_expr, compiler.ast.Const):
+		return countSubtreeNodes(fst_expr, current_depth[-1])
+	elif isMonomial(fst_expr) and isMonomial(snd_expr):
 		return compareMonomials(fst_expr, snd_expr)
-	# include case to handle monomial comparisons 
-	elif fst_expr.__class__ != snd_expr.__class__:
-		diff += 1
-	# only fst has children
-	elif isinstance(fst_expr, compiler.ast.Const):
-		return countSubtreeNodes(snd_expr)
-	# only snd has chilren
-	elif isinstance(snd_expr, compiler.ast.Const):
-		return countSubtreeNodes(fst_expr)
-	# both have children
+	elif isMonomial(fst_expr):
+		return countSubtreeNodes(snd_expr, current_depth[-1])
+	elif isMonomial(snd_expr):
+		return countSubtreeNodes(fst_expr, current_depth[-1])
+	# neither node is a monomial
 	else:
+		if fst_expr.__class__ != snd_expr.__class__:
+			#diff += DIFF_NODE_TYPE_PENALTY*depth
+			diff += DIFF_NODE_TYPE_PENALTY*current_depth[-1]
+		#compareChildren = lambda f, s : compareExpressionsRecursive(f, s, depth+1)
+		current_depth.append(current_depth[-1]+1)
 		diff += sum(map(compareExpressionsRecursive, fst_expr.getChildren(), snd_expr.getChildren()))
+		current_depth.pop()
 	return diff
 
-def countSubtreeNodes(fst_expr, depth=0):
-	if isinstance(fst_expr, compiler.ast.Power):
-		return 1
+def countSubtreeNodes(expr, depth=1):
+	root_weight = DIFF_MONOS_PENALTY*depth
+	if isMonomial(expr):
+		return root_weight
 	else:
-		return 1 + sum(map(countSubtreeNodes, fst_expr.getChildren()))
+		return root_weight + sum([ countSubtreeNodes(child, depth+1) for child in expr.getChildren()])
+
+# TODO: decide if we need to compare degree and coefficient terms too
 def compareMonomials(fst_mono, snd_mono):
 	# compare degree values
-	return 0
-def isMonomial(expr):
-	""" monomials have exactly two children and they must be Mul and Power respectively """
+	if str(fst_mono) != str(snd_mono):	# use string comparison b/c __eq__ isn't implemented for AST classes
+		return 1
+	else:
+		return 0
+def isConstTerm(expr):
+	return isinstance(expr, compiler.ast.Const)
+
+def isExponentiatedVariable(expr):
+	"""indicates expr has form x^n"""
 	if len(expr.getChildren()) != 2 :
 		return False
-	coeff, variable = expr.getChildren()[:2]
-	return (isinstance(expr, compiler.ast.Mul) and 
-			isinstance(coeff, compiler.ast.Const) and 
-			isinstance(variable, compiler.ast.Power) )
+	
+	has_variable		=	isVariableTerm(expr.getChildren()[0])
+	has_const_exponent	=	isConstTerm(expr.getChildren()[1])
+	return isinstance(expr, compiler.ast.Power) and has_variable and has_const_exponent
+
+
+def isVariableTerm(expr):
+	return isinstance(expr, compiler.ast.Name)
+
+def isMonoInStandardForm(expr):
+	if len(expr.getChildren()) != 2 :
+		return False
+	
+	has_coeff		=	isConstTerm(expr.getChildren()[0])
+	has_variable	=	isVariableTerm(expr.getChildren()[1]) or isExponentiatedVariable(expr.getChildren()[1])
+	return isinstance(expr, compiler.ast.Mul) and has_variable and has_coeff
+
+def isMonomial(expr):
+	return isConstTerm(expr) or isVariableTerm(expr) or isExponentiatedVariable(expr) or isMonoInStandardForm(expr)
 	
 
 # this code is for testing purposes only
 fst = '3*x^5 + 4 = 0'
 snd = 'x^2 + 4*x + 6 = 2'
-
+print distanceBetweenEqn(fst, snd)
+fst = '3*x^5 + 4 = 0'
+snd = '3*x^5 + 3 = 0'
+#pdb.set_trace()
 print distanceBetweenEqn(fst, snd)
