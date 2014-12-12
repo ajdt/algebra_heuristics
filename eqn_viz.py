@@ -69,8 +69,9 @@ class GeneratedProblem(object):
                                      'operands': operands,
                                      'selected_heuristics': selected_heur,
                                      'appllicable_heur': applicable_heur}
-    def getEqnString(self, as_latex=False, json_output=False):
+    def getSolutionString(self, as_latex=False, json_output=False):
         return '\n'.join(self.equation_parameters['equation steps'])
+
 
 class EquationStepParser:
     """ encapsulates the state of an equation during one step."""
@@ -241,7 +242,7 @@ class MathProblemParser(object):
     def getOperands(self):
         return [(step_number, step_parser.getOperands()) for step_number, step_parser in self.solution_steps.items()]
     def getEqnSteps(self):
-        return [step.getStepString() for step in self.solution_steps]
+        return [step.getStepString() for step in self.solution_steps.values()]
     def getActions(self):
         return list(self.actions)
     def addApplicableAction(self, action_name):
@@ -253,10 +254,11 @@ class MathProblemParser(object):
 
 class AnswerSetParser(object):
     def __init__(self, predicates):
-        self.math_problems = defaultdict(MathProblemParser)
+        self.math_problems = dict()
         self.parseAnsSetFromPredicates(predicates)
     def parseAnsSetFromPredicates(self, predicates_list):
         """ compose as a string every solution in the predicate list given"""
+        problem_parsers = defaultdict(MathProblemParser)
         for predicate in predicates_list:
             parser, tokens  = self.findParserMatchingPredicate(predicate)
             if parser == binary_operand_parser:
@@ -264,27 +266,30 @@ class AnswerSetParser(object):
                 soln_num = time[1]
                 fst_oper = ''.join(remaining_tokens[1:6])
                 snd_oper = ''.join(remaining_tokens[7:-1])
-                self.math_problems[soln_num].addOperands(time, [fst_oper, snd_oper])
+                problem_parsers[soln_num].addOperands(time, [fst_oper, snd_oper])
             elif parser == unary_operand_parser:
                 time, remaining_tokens = peelHolds(tokens)
                 soln_num = time[1]
                 operand = ''.join(remaining_tokens[1:-1])
-                self.math_problems[soln_num].addOperands(time, [operand])
+                problem_parsers[soln_num].addOperands(time, [operand])
             elif parser == applicable_heur_parser:
                 # tokens = ['applicableHeuristic(', '_time(', 'step', ',' 'solnNum', ')', ',' , 'actionName' , ')']
                 soln_num = int(tokens[4])
                 action_name = tokens[-2]
-                self.math_problems[soln_num].addApplicableAction(action_name)
+                problem_parsers[soln_num].addApplicableAction(action_name)
             elif parser != None and parser != action_parser:
                 # parsing was successful
                 time, remaining_tokens = peelHolds(tokens)
                 soln_num = time[1]      # time is a tuple (step, soln_number)
-                self.math_problems[soln_num].addPredicate(time, remaining_tokens)
+                problem_parsers[soln_num].addPredicate(time, remaining_tokens)
             elif parser == action_parser:
                 time        = int(tokens[2])
                 soln_num    = int(tokens[4])
                 action_name = tokens[7]
-                self.math_problems[soln_num].addActionPred(time, action_name)
+                problem_parsers[soln_num].addActionPred(time, action_name)
+        # NOTE: important, we don't want to save the parser objects, just the relevant parts of the generated problems
+        # So we save GeneratedProblem instances instead
+        self.math_problems = dict( [(prob_number, parser.jsonFriendlyFormat() ) for prob_number, parser in problem_parsers.items()])
     def findParserMatchingPredicate(self, predicate, parser_list=all_parsers):
         """ if any parser successfully parses the predicate, return tokens and the parser"""
         for parser in parser_list:
