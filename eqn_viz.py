@@ -235,11 +235,29 @@ class AnswerSetParser(object):
     def getApplicableActions(self):
         return set(self.applicable_actions)
 
-class SolnManager(object):
+class AnswerSetManager(object):
     def __init__(self, cmdline_args):
         # initialize AnswerSetParser for each solution generated
         self.cmdline_args = cmdline_args
         self.answer_sets = []
+
+    def initFromSTDIN(self):
+        """load answer sets from stdin NOTE: expects JSON input via clingo --outf=2"""
+        all_prob = self.__getJSONAnswerSetsFromSTDIN()
+        # parse the answer sets
+        for solution in all_prob:
+            self.parseAnsSet(solution)
+    def parseAnsSet(self, answer_set):
+        """ extract predicates then initialize AnswerSetParser for given answer set"""
+        predicates = answer_set['Value']
+        self.answer_sets.append(AnswerSetParser(predicates))
+
+    def __getJSONAnswerSetsFromSTDIN(self):
+        """ read json from stdin, remove underscores, load via json module and return answer sets """
+        clingo_output = ''.join(sys.stdin.xreadlines())
+        decoded_output = json.loads(clingo_output.replace('_', ''))
+
+        return decoded_output['Call'][0]['Witnesses'] # clingo provides lots of info, we just want answer sets
 
     def loadFromJSONFile(self):
         pass
@@ -250,6 +268,15 @@ class SolnManager(object):
             self.printAnsSetsJSON()
         else:
             self.prettyPrintAnsSets()
+    def prettyPrintAnsSets(self):
+        """display all answer sets in user-friendly way"""
+        for problem in self.answer_sets:
+            print problem.getSolutionString(as_latex=False, json_output=False) + '\n\n'
+        print 30*"-"
+    def printAnsSetsJSON(self):
+        for problem in self.answer_sets:
+            print problem.getSolutionString(as_latex=False, json_output=True) + '\n\n'
+
 def findParserMatchingPredicate(predicate, parser_list=all_parsers):
     """ if any parser successfully parses the predicate, return tokens and the parser"""
     for parser in parser_list:
