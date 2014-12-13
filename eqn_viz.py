@@ -72,7 +72,11 @@ class GeneratedProblem(object):
     def getSolutionString(self, as_latex=False, json_output=False):
         return '\n'.join(self.equation_parameters['equation steps'])
 
-
+class GeneratedAnswerSet(object):
+    def __init__(self, generated_problems):
+        self.generated_problems_dict = generated_problems
+    def getMathProblems(self):
+        return self.generated_problems_dict.values()
 class EquationStepParser:
     """ encapsulates the state of an equation during one step."""
     def __init__(self):
@@ -242,7 +246,7 @@ class MathProblemParser(object):
     def getOperands(self):
         return [(step_number, step_parser.getOperands()) for step_number, step_parser in self.solution_steps.items()]
     def getEqnSteps(self):
-        return [step.getStepString() for step in self.solution_steps.values()]
+        return [step.getEqnString() for step in self.solution_steps.values()]
     def getActions(self):
         return list(self.actions)
     def addApplicableAction(self, action_name):
@@ -254,7 +258,7 @@ class MathProblemParser(object):
 
 class AnswerSetParser(object):
     def __init__(self, predicates):
-        self.math_problems = dict()
+        self.math_problems_dict = dict()
         self.parseAnsSetFromPredicates(predicates)
     def parseAnsSetFromPredicates(self, predicates_list):
         """ compose as a string every solution in the predicate list given"""
@@ -289,7 +293,7 @@ class AnswerSetParser(object):
                 problem_parsers[soln_num].addActionPred(time, action_name)
         # NOTE: important, we don't want to save the parser objects, just the relevant parts of the generated problems
         # So we save GeneratedProblem instances instead
-        self.math_problems = dict( [(prob_number, parser.jsonFriendlyFormat() ) for prob_number, parser in problem_parsers.items()])
+        self.math_problems_dict = dict( [(prob_number, parser.jsonFriendlyFormat() ) for prob_number, parser in problem_parsers.items()])
     def findParserMatchingPredicate(self, predicate, parser_list=all_parsers):
         """ if any parser successfully parses the predicate, return tokens and the parser"""
         for parser in parser_list:
@@ -300,13 +304,17 @@ class AnswerSetParser(object):
             return (parser, parse_output)
         return (None, [])
     def getMathProblems(self):
-        return self.math_problems.values()
+        return self.math_problems_dict.values()
+    def getGeneratedAnsSet(self):
+        return GeneratedAnswerSet(self.math_problems_dict)
 
-class AnswerSetManager(object):
+class AnswerSetManager(json.JSONEncoder):
+    """This class parses answer sets from stdin or json file, outputs to file in json format or user-friendly format"""
     def __init__(self, cmdline_args):
         # initialize MathProblemParser for each solution generated
         self.cmdline_args = cmdline_args
         self.answer_sets = []
+        json.JSONEncoder.__init__(self)
 
     def initFromSTDIN(self):
         """load answer sets from stdin NOTE: expects JSON input via clingo --outf=2"""
@@ -314,7 +322,8 @@ class AnswerSetManager(object):
         # parse the answer sets
         for answer_set in all_answer_sets:
             predicates = answer_set['Value']
-            self.answer_sets.append(AnswerSetParser(predicates))
+            ans_set= AnswerSetParser(predicates).getGeneratedAnsSet()
+            self.answer_sets.append(ans_set)
 
     def __getJSONAnswerSetsFromSTDIN(self):
         """ read json from stdin, remove underscores, load via json module and return answer sets """
@@ -322,7 +331,11 @@ class AnswerSetManager(object):
         decoded_output = json.loads(clingo_output.replace('_', ''))
         return decoded_output['Call'][0]['Witnesses'] # clingo provides lots of info, we just want answer sets
 
-    def loadFromJSONFile(self):
+    def default(self, answer_set):
+        """
+        :param answer_set: answers set to save
+        :return: json encoded answer set (a string)
+        """
         pass
     def dumpToJSONFile(self, file_name):
         json_file = open(file_name, 'w')
@@ -348,3 +361,5 @@ def getCmdLineArgs():
 
 if __name__ == "__main__":
     main(getCmdLineArgs())
+
+
