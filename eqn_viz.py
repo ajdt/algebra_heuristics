@@ -71,12 +71,16 @@ class GeneratedProblem(object):
                                      'appllicable_heur': applicable_heur}
     def getSolutionString(self, as_latex=False, json_output=False):
         return '\n'.join(self.equation_parameters['equation steps'])
+    def toJSONFormat(self):
+        return self.equation_parameters
 
 class GeneratedAnswerSet(object):
     def __init__(self, generated_problems):
         self.generated_problems_dict = generated_problems
     def getMathProblems(self):
         return self.generated_problems_dict.values()
+    def toJSONFormat(self):
+        return dict( [(num, prob.toJSONFormat()) for num, prob in self.generated_problems_dict.items() ])
 class EquationStepParser:
     """ encapsulates the state of an equation during one step."""
     def __init__(self):
@@ -336,9 +340,25 @@ class AnswerSetManager(json.JSONEncoder):
         :param answer_set: answers set to save
         :return: json encoded answer set (a string)
         """
-        pass
+        return answer_set.toJSONFormat()
     def dumpToJSONFile(self, file_name):
         json_file = open(file_name, 'w')
+        for answer_set in self.answer_sets:
+            encoded_ans_set = self.encode(answer_set).replace('\n', '') # sanity check: no newline characters in encoding
+            json_file.write(encoded_ans_set + '\n')
+    def __recoverAnswerSetFromJSON(self, json_object):
+        if not isinstance(json_object, dict):
+            return None
+        # convert keys from strings to integers
+        ans_set_data = dict([(int(k), v) for k,v in json_object.items()])
+        return GeneratedAnswerSet(ans_set_data)
+
+    def initFromJSONFile(self, file_name):
+        json_file = open(file_name, 'r')
+        for encoded_answer_set in json_file:
+            self.answer_sets.append(self.__recoverAnswerSetFromJSON(encoded_answer_set))
+        json_file.close()
+
     def printAnswerSets(self, json_printing=False):
         """display all answer sets in user-friendly way"""
         for ans_set in self.answer_sets:
@@ -352,11 +372,13 @@ def main(cmd_line_args):
     manager.initFromSTDIN()
     json_output = vars(cmd_line_args)['json_output'] == 'true'
     manager.printAnswerSets(json_printing=json_output)
+    manager.dumpToJSONFile('some_file.txt') # TODO: for testing purposes only
 
 
 def getCmdLineArgs():
     cmd_parser = argparse.ArgumentParser(description='Visualizer for ASP code')
     cmd_parser.add_argument('--json_output', default=False, required=False)
+    cmd_parser.add_argument('--save_file', default=False, required=False) # provides file name for saving result
     return cmd_parser.parse_args()
 
 if __name__ == "__main__":
