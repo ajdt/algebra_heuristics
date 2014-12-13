@@ -343,11 +343,6 @@ class AnswerSetManager(json.JSONEncoder):
         :return: json encoded answer set (a string)
         """
         return answer_set.toJSONFormat()
-    def dumpToJSONFile(self, file_name):
-        json_file = open(file_name, 'w')
-        for answer_set in self.answer_sets:
-            encoded_ans_set = self.encode(answer_set).replace('\n', '') # sanity check: no newline characters in encoding
-            json_file.write(encoded_ans_set + '\n')
 
     @classmethod
     def __recoverAnswerSetFromJSON(cls, json_string):
@@ -365,29 +360,42 @@ class AnswerSetManager(json.JSONEncoder):
             self.answer_sets.append(AnswerSetManager.__recoverAnswerSetFromJSON(encoded_answer_set))
         json_file.close()
 
+    def getAnsSetsAsJSON(self):
+        return [ self.encode(ans).replace('\n', '')  for ans in self.answer_sets]
     def printAnswerSets(self, json_printing=False):
         """display all answer sets in user-friendly way"""
-        for ans_set in self.answer_sets:
-            for problem in ans_set.getMathProblems():
-                print problem.getSolutionString(as_latex=False, json_output=json_printing) + '\n\n'
-        if not json_printing:
+        if json_printing:
+            for ans_set in self.getAnsSetsAsJSON():
+                print ans_set
+        else:
+            for ans_set in self.answer_sets:
+                for problem in ans_set.getMathProblems():
+                    print problem.getSolutionString(as_latex=False, json_output=json_printing) + '\n\n'
             print 30*"-"
 
 def main(cmd_line_args):
+    """ get cmd line args, initialize manager, set stdout if needed """
     # get cmd line args as dictionary
     cmd_line_args = vars(cmd_line_args)
+
     # create ans set manager and load with answer sets
     manager = AnswerSetManager(cmd_line_args)
     if cmd_line_args['json_input']:
         manager.initFromJSONFile(cmd_line_args['json_input'])
     else:
         manager.initFromSTDIN()
-    # save to file or print as indicated
+
+    # set stdout accordingly
+    old_stdout = sys.stdout
     if cmd_line_args['save_file']:
-        manager.dumpToJSONFile(cmd_line_args['save_file'])
-    else:
-        json_output = cmd_line_args['json_output'] == 'true'
-        manager.printAnswerSets(json_printing=json_output)
+        sys.stdout = open(cmd_line_args['save_file'], 'w')
+
+    # print results. NOTE: prints to file if save_file parameter is used
+    json_output = cmd_line_args['json_output'] == 'true'
+    manager.printAnswerSets(json_printing=json_output)
+
+    # restore stdout
+    sys.stdout = old_stdout
 
 
 def getCmdLineArgs():
