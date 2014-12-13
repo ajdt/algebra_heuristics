@@ -64,13 +64,10 @@ all_parsers     =   [ type_parser, child_parser, deg_coeff_parser, action_parser
 op_symbols      =   {'add' : '+' , 'div' : '/' , 'mul' : '*' , 'neg' : '-'}
 
 class GeneratedProblem(object):
-    def __init__(self, equation_steps, operands, selected_heur, applicable_heur):
-        self.equation_parameters = { 'equation steps': equation_steps,
-                                     'operands': operands,
-                                     'selected_heuristics': selected_heur,
-                                     'appllicable_heur': applicable_heur}
+    def __init__(self, eqn_params_dict):
+        self.equation_parameters = dict(eqn_params_dict)
     def getSolutionString(self, as_latex=False, json_output=False):
-        return '\n'.join(self.equation_parameters['equation steps'])
+        return '\n'.join(self.equation_parameters['equation_steps'])
     def toJSONFormat(self):
         return self.equation_parameters
 
@@ -258,7 +255,12 @@ class MathProblemParser(object):
     def getApplicableActions(self):
         return list(set(self.applicable_actions))
     def jsonFriendlyFormat(self):
-        return GeneratedProblem(self.getEqnSteps(), self.getOperands(), self.getActions(), self.getApplicableActions())
+        # add necessary equation parameters
+        eqn_params = { 'equation_steps': self.getEqnSteps(),
+                         'operands': self.getOperands(),
+                         'selected_heuristics': self.getActions(),
+                         'applicable_heur': self.getApplicableActions()}
+        return GeneratedProblem(eqn_params)
 
 class AnswerSetParser(object):
     def __init__(self, predicates):
@@ -346,17 +348,21 @@ class AnswerSetManager(json.JSONEncoder):
         for answer_set in self.answer_sets:
             encoded_ans_set = self.encode(answer_set).replace('\n', '') # sanity check: no newline characters in encoding
             json_file.write(encoded_ans_set + '\n')
-    def __recoverAnswerSetFromJSON(self, json_object):
-        if not isinstance(json_object, dict):
-            return None
-        # convert keys from strings to integers
-        ans_set_data = dict([(int(k), v) for k,v in json_object.items()])
-        return GeneratedAnswerSet(ans_set_data)
+
+    @classmethod
+    def __recoverAnswerSetFromJSON(cls, json_string):
+        """ create a GeneratedAnswerSet instance from given json string and return it"""
+        # decode json_string into dict and create GeneratedProblem for each prob in answer set
+        answer_set_dict = dict()
+        for prob_num, prob_data in json.JSONDecoder().decode(json_string).items():
+            answer_set_dict[prob_num] = GeneratedProblem(prob_data)
+        return GeneratedAnswerSet(answer_set_dict)
+
 
     def initFromJSONFile(self, file_name):
         json_file = open(file_name, 'r')
         for encoded_answer_set in json_file:
-            self.answer_sets.append(self.__recoverAnswerSetFromJSON(encoded_answer_set))
+            self.answer_sets.append(AnswerSetManager.__recoverAnswerSetFromJSON(encoded_answer_set))
         json_file.close()
 
     def printAnswerSets(self, json_printing=False):
@@ -368,17 +374,27 @@ class AnswerSetManager(json.JSONEncoder):
             print 30*"-"
 
 def main(cmd_line_args):
+    # get cmd line args as dictionary
+    cmd_line_args = vars(cmd_line_args)
+    # create ans set manager and load with answer sets
     manager = AnswerSetManager(cmd_line_args)
-    manager.initFromSTDIN()
-    json_output = vars(cmd_line_args)['json_output'] == 'true'
-    manager.printAnswerSets(json_printing=json_output)
-    manager.dumpToJSONFile('some_file.txt') # TODO: for testing purposes only
+    if cmd_line_args['json_input']:
+        manager.initFromJSONFile(cmd_line_args['json_input'])
+    else:
+        manager.initFromSTDIN()
+    # save to file or print as indicated
+    if cmd_line_args['save_file']:
+        manager.dumpToJSONFile(cmd_line_args['save_file'])
+    else:
+        json_output = cmd_line_args['json_output'] == 'true'
+        manager.printAnswerSets(json_printing=json_output)
 
 
 def getCmdLineArgs():
     cmd_parser = argparse.ArgumentParser(description='Visualizer for ASP code')
     cmd_parser.add_argument('--json_output', default=False, required=False)
     cmd_parser.add_argument('--save_file', default=False, required=False) # provides file name for saving result
+    cmd_parser.add_argument('--json_input', default=False, required=False)
     return cmd_parser.parse_args()
 
 if __name__ == "__main__":
