@@ -6,12 +6,15 @@ import eqn_viz
 import pygraphviz as pgv
 
 class ClingoRunner:
-    """Run clingo based on command line arguments"""
+    """Run clingo based on command line arguments, optionally generates graph based on generated problems"""
     BASH_COMMAND = "clingo eqn_generator.lp --project -n 0 --outf=2 "
     TEST_COMMAND = "cat three_steps_output" # used for testing, for faster turnaround
 
     BOOLEAN_FLAGS = ['iterative', 'json']
-    def __init__(self):
+    def __init__(self, bash_cmd=BASH_COMMAND, flags=BOOLEAN_FLAGS, misc_params=dict()):
+        self.bash_cmd   =   bash_cmd
+        self.boolean_flags = flags
+        self.misc_params = misc_params
         self.cmd_parser =   self.initCmdParser()
         self.args       =   self.cmd_parser.parse_args()
 
@@ -25,22 +28,27 @@ class ClingoRunner:
         param_file.close()
 
         # add optional flags
-        for flag in ClingoRunner.BOOLEAN_FLAGS:
+        for flag in self.boolean_flags:
             cmd_parser.add_argument('--' + flag, action='store_true')
+
+        # add more params as required
+        for param, default_value in self.misc_params.items():
+            cmd_parser.add_argument('--'+param, default=default_value, required=False)
         return cmd_parser
 
-    def writeSolverConfigFile(self, param_dict, filename='config_params.lp'):
+    def writeSolverConfigFile(self, param_dict, filename='config_params.lp', misc_constraints=''):
         solver_file = open(filename, 'w')
         for (param, value) in param_dict.items():
-            if param not in ClingoRunner.BOOLEAN_FLAGS:
+            if param not in self.boolean_flags and param not in self.misc_params:
                 solver_file.write('#const ' + param + ' = ' + value +'.\n')
 
         # also write overflow constraints
         solver_file.write(':- _coeffOverflow.\n')
         solver_file.write(':- _degOverflow.\n')
+        solver_file.write(misc_constraints)
         solver_file.close()
 
-    def runSolver(self):
+    def runSolver(self, make_graph=True):
         # write the config file needed to run the program
         param_dict = vars(self.args)
         if param_dict.has_key('iterative'):
@@ -48,9 +56,9 @@ class ClingoRunner:
         else:
             generated = [self.computeAnsSets(param_dict)]
 
-        self.displayAnsSets(generated)
+        self.displayAnsSets(generated, make_graph)
 
-    def displayAnsSets(self, ans_set_list):
+    def displayAnsSets(self, ans_set_list, make_graph=True):
         # display each answer set, and save the generated problems in a separate list
         # NOTE: when running iterative deepening, we produce several ans_set_managers
         #       each answer set manager can contain multiple answer sets, and each answer set
@@ -64,7 +72,8 @@ class ClingoRunner:
 
 
         # create graph
-        self.graph = Graph(generated_problems)
+        if make_graph:
+            self.graph = Graph(generated_problems)
         #print self.graph.getGraphEdges()
         #print self.graph.nodes.keys()
 
@@ -80,7 +89,7 @@ class ClingoRunner:
         """ run clingo with param_dict options, and return the resulting AnswerSetManager instance"""
         self.writeSolverConfigFile(param_dict)
         # run the process
-        process = subprocess.Popen(ClingoRunner.BASH_COMMAND.split(), stdout=subprocess.PIPE)
+        process = subprocess.Popen(self.bash_cmd.split(), stdout=subprocess.PIPE)
         output = process.communicate()[0]
         return self.parseGeneratedProblems(output)
 
