@@ -1,4 +1,6 @@
 import subprocess
+import tempfile # for temporarily saving piped output from clingo
+import sys
 import argparse
 import eqn_viz
 import pygraphviz as pgv
@@ -44,34 +46,38 @@ class ClingoRunner:
         if param_dict.has_key('iterative'):
             generated = self.iterativeDeepeningGeneration(param_dict)
         else:
-            generated = self.computeAnsSets(param_dict)
+            generated = [self.computeAnsSets(param_dict)]
 
         self.displayAnsSets(generated)
 
-    def displayAnsSets(self, ans_sets):
-        # display
-        soln_parsers = []
-        for prob in ans_sets:
+    def displayAnsSets(self, ans_set_list):
+        # display each answer set, and save the generated problems in a separate list
+        # NOTE: when running iterative deepening, we produce several ans_set_managers
+        #       each answer set manager can contain multiple answer sets, and each answer set
+        #       can contain multiple problems, so the generated problems may be heavily nested
+        generated_problems = []
+        for ans_set_manager in ans_set_list:
+            ans_set_manager.printAnswerSets()
             # for now taking only the first solution, hence subscript 1
-            all_soln = eqn_viz.parseSolutions(prob['Value'])
-            sample_soln = all_soln[1]
-            print sample_soln.getSolutionString()
-            print '-'*10 + '\n'
-            soln_parsers.append(sample_soln)
+            for ans_set in ans_set_manager.getGeneratedAnsSets():
+                generated_problems.append(ans_set.getMathProblems()[0])
+
 
         # create graph
-        self.graph = Graph(soln_parsers)
+        self.graph = Graph(generated_problems)
         #print self.graph.getGraphEdges()
         #print self.graph.nodes.keys()
 
     def iterativeDeepeningGeneration(self, param_dict):
-        output = []
+        """ return a list of AnswerSetManager instances"""
+        ans_set_manager_list = []
         for num_steps in range(1, int(param_dict['maxSteps']) + 1):
             param_dict['maxSteps'] = str(num_steps)
-            output += (self.computeAnsSets(param_dict))
-        return output
+            ans_set_manager_list.append(self.computeAnsSets(param_dict))
+        return ans_set_manager_list
 
     def computeAnsSets(self, param_dict):
+        """ run clingo with param_dict options, and return the resulting AnswerSetManager instance"""
         self.writeSolverConfigFile(param_dict)
         # run the process
         process = subprocess.Popen(ClingoRunner.BASH_COMMAND.split(), stdout=subprocess.PIPE)
@@ -79,27 +85,43 @@ class ClingoRunner:
         return self.parseGeneratedProblems(output)
 
     def parseGeneratedProblems(self, json_output):
-        return eqn_viz.getAllSolnFromJSON(json_output)
+        """ parse output string with AnswerSetManager and return the manager"""
+        # set stdin to be json_output
+        # NOTE: eqn_viz.AnswerSetManager can only read from file or from stdin, so
+        # we save output to a temporary file and set it to stdin
+        old_stdin = sys.stdin
+        temp_file = tempfile.TemporaryFile(mode='w+')
+        temp_file.write(json_output)
+        temp_file.seek(0) # file obj only has one file pointer (go to start of file for reading)
+        sys.stdin = temp_file
+
+        # initialize manager
+        manager = eqn_viz.AnswerSetManager({}) # NOTE: we're not passing any cmd line args
+        manager.initFromSTDIN()
+
+        # set stdin to old value
+        sys.stdin = old_stdin
+
+        return manager
 
 
 
 class Node(object):
-    def __init__(self, soln_parser):
+    def __init__(self, generated_prob):
         super(Node, self).__init__()
-        self.soln_parser = soln_parser
+        self.generated_prob = generated_prob
+        self.actions = sorted(self.generated_prob.equation_parameters['selected_heuristics']) # sort actions so they're in some canonical order
         self.label = self.makeLabel()
-        self.actions = sorted(self.soln_parser.getActions()) # sort actions so they're in some canonical order
         self.n_gram_dict = {}
         self.initNGrams()
     def makeLabel(self):
-        actions = sorted(self.soln_parser.getActions())
-        return ':'.join(actions)
+        return ':'.join(self.actions)
     def getProblem(self):
-        return self.soln_parser.solution_steps[0].getEqnString()
+        return self.generated_prob.getProblemString()
     def getLabel(self):
         return self.label
     def getSolution(self):
-        return self.soln_parser.getSolutionString()
+        return self.generated_prob.getSolutionString()
     def initNGrams(self, num=2):
         for n_gram in range(1,num+1):
             current_n_gram_list = []
@@ -110,13 +132,13 @@ class Node(object):
             self.n_gram_dict[n_gram] = current_n_gram_list
 
 class Graph(object):
-    def __init__(self, all_solns):
+    def __init__(self, generated_probs):
         super(Graph, self).__init__()
-        self.all_solns  = all_solns
+        self.generated_probs  = generated_probs
         self.nodes      = {}
         self.edges      = []
-        for soln in all_solns:
-            self.addNodeFromSoln(soln)
+        for prob in generated_probs:
+            self.addNodeFromSoln(prob)
         # now form the edges of the graph
         self.formGraphEdges()
         
@@ -124,8 +146,8 @@ class Graph(object):
         self.visual_graph = pgv.AGraph()
         self.initVisualGraph()
 
-    def addNodeFromSoln(self, soln_parser):
-        new_node = Node(soln_parser)
+    def addNodeFromSoln(self, generated_problem):
+        new_node = Node(generated_problem)
         if new_node.getLabel() == '': # don't save cases where no rule is used
             return
         self.nodes[new_node.getLabel()] = new_node
@@ -151,15 +173,6 @@ class Graph(object):
         self.visual_graph.layout(prog='fdp')
         self.visual_graph.draw('graph.png')
 
-        
 
-        
-# TODO: must have a unique name (based on 1-gram)
-# TODO: unnecessary remove later
-class DAGSolnParser(eqn_viz.SolnParser):
-    """parses an entire solution and contains aux information to form rule DAG"""
-    def __init__(self):
-        super(DAGSolnParser, self).__init__()
-        
 if __name__ == "__main__":
     ClingoRunner().runSolver()

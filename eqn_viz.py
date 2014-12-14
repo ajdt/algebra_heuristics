@@ -70,6 +70,8 @@ class GeneratedProblem(object):
         return '\n'.join(self.equation_parameters['equation_steps'])
     def toJSONFormat(self):
         return self.equation_parameters
+    def getProblemString(self):
+        return self.equation_parameters['equation_steps'][0]
 
 class GeneratedAnswerSet(object):
     def __init__(self, generated_problems):
@@ -322,6 +324,8 @@ class AnswerSetManager(json.JSONEncoder):
         self.answer_sets = []
         json.JSONEncoder.__init__(self)
 
+    def getGeneratedAnsSets(self):
+        return list(self.answer_sets)
     def initFromSTDIN(self):
         """load answer sets from stdin NOTE: expects JSON input via clingo --outf=2"""
         all_answer_sets = self.__getJSONAnswerSetsFromSTDIN()
