@@ -43,8 +43,8 @@ class ClingoRunner:
                 solver_file.write('#const ' + param + ' = ' + value +'.\n')
 
         # also write overflow constraints
-        solver_file.write(':- _coeffOverflow.\n')
-        solver_file.write(':- _degOverflow.\n')
+        # solver_file.write(':- _coeffOverflow.\n')
+        # solver_file.write(':- _degOverflow.\n')
         solver_file.write(misc_constraints)
         solver_file.close()
 
