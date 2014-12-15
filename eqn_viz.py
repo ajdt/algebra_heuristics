@@ -72,6 +72,10 @@ class GeneratedProblem(object):
         return self.equation_parameters
     def getProblemString(self):
         return self.equation_parameters['equation_steps'][0]
+    def getSelectedHeuristics(self):
+        return set(self.equation_parameters['selected_heuristics'])
+    def getApplicableHeuristics(self):
+        return set(self.equation_parameters['applicable_heur'])
 
 class GeneratedAnswerSet(object):
     def __init__(self, generated_problems):

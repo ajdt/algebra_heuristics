@@ -131,12 +131,49 @@ def findContrastingCases(generated_probs_list, max_distance):
 			contrasting_cases.append((fst, snd))
 	return contrasting_cases
 
+def includeByHeuristic(generated_probs_list, heuristic):
+	return filter(lambda problem: heuristic in problem.getSelectedHeuristics(), generated_probs_list)
+def excludeByHeuristic(generated_probs_list, heuristic):
+	filter_fnc = lambda prob: heuristic not in prob.getSelectedHeuristics() and heuristic in prob.getApplicableHeuristics()
+	return filter(filter_fnc, generated_probs_list)
+
+all_heuristics = [	'addFractions',
+					'addInverses',
+					'additiveIdentity',
+					'applyDistribute',
+					'cancelAcrossEqn',
+					'cancelCommTerms',
+					'cancelNeg',
+					'combineLikeTerms',
+					'divByOne',
+					'factorSimpleQuad',
+					'ignoreDenom',
+					'isolateConst',
+					'isolateVars',
+					'multiplyByOne',
+					'multiplyByZero',
+					'multiplyMonoms',
+					'multiplyWithFrac',
+					'setRHSZero',
+					'substitute'
+				]
+def alternateContrastingCases(generated_problems_list, max_distance):
+	contrasting_cases = []
+	for heur in all_heuristics:
+		use_heur = includeByHeuristic(generated_problems_list, heur)
+		dont_use_heur = excludeByHeuristic(generated_problems_list, heur)
+		for fst in use_heur:
+			for snd in dont_use_heur:
+				if distanceBetweenEqn(fst.getProblemString(), snd.getProblemString()) <= max_distance:
+					contrasting_cases.append((fst, snd, heur))
+	return contrasting_cases
+
 def main():
 	manager = eqn_viz.AnswerSetManager({}) # no args passed
 	manager.initFromJSONFile('math_probs.txt')
 	print 'finding contrasting cases...'
-	for p,q in findContrastingCases(manager.getGeneratedProblems(), 10):
-		print p.getProblemString(), q.getProblemString()
+	for p,q, case in alternateContrastingCases(manager.getGeneratedProblems(), 20):
+		print p.getProblemString(), q.getProblemString(), case
 	print 'done :)'
 # this code is for testing purposes only
 # fst = '3*x^5 + 4 = 0'
