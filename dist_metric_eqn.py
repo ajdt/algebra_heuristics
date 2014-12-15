@@ -6,6 +6,8 @@
 
 import compiler
 import pdb
+import eqn_viz
+
 # required functions
 #distanceBetween
 #astOfEqn	# calls compiler module to generate ast and return in a useful way 
@@ -103,12 +105,45 @@ def isMonoInStandardForm(expr):
 def isMonomial(expr):
 	return isConstTerm(expr) or isVariableTerm(expr) or isExponentiatedVariable(expr) or isMonoInStandardForm(expr)
 	
+def iteratePairs(some_list):
+	if len(some_list) < 2 :
+		yield some_list
+		return
+	for index in range(0, len(some_list)):
+		fst_elem = some_list[index]
+		for other_index in range(index+1, len(some_list)):
+			snd_elem = some_list[other_index]
+			yield (fst_elem, snd_elem)
 
+def findContrastingCases(generated_probs_list, max_distance):
+	# TODO: ensure that equations also have different 1-grams!!
+	contrasting_cases = []
+	# for fst in generated_probs_list:
+	# 	for snd in generated_probs_list:
+	# 		if fst == snd:
+	# 			continue
+	# 		if distanceBetweenEqn(fst.getProblemString(), snd.getProblemString()) <= max_distance:
+	# 			contrasting_cases.append((fst, snd))
+	for fst, snd in iteratePairs(generated_probs_list):
+		if set(fst.equation_parameters['selected_heuristics']) == set(snd.equation_parameters['selected_heuristics']):
+			continue
+		if distanceBetweenEqn(fst.getProblemString(), snd.getProblemString()) <= max_distance:
+			contrasting_cases.append((fst, snd))
+	return contrasting_cases
+
+def main():
+	manager = eqn_viz.AnswerSetManager({}) # no args passed
+	manager.initFromJSONFile('math_probs.txt')
+	print 'finding contrasting cases...'
+	for p,q in findContrastingCases(manager.getGeneratedProblems(), 10):
+		print p.getProblemString(), q.getProblemString()
+	print 'done :)'
 # this code is for testing purposes only
-fst = '3*x^5 + 4 = 0'
-snd = 'x^2 + 4*x + 6 = 2'
-print distanceBetweenEqn(fst, snd)
-fst = '3*x^5 + 4 = 0'
-snd = '3*x^5 + 3 = 0'
-#pdb.set_trace()
-print distanceBetweenEqn(fst, snd)
+# fst = '3*x^5 + 4 = 0'
+# snd = 'x^2 + 4*x + 6 = 2'
+# print distanceBetweenEqn(fst, snd)
+# fst = '3*x^5 + 4 = 0'
+# snd = '3*x^5 + 3 = 0'
+# #pdb.set_trace()
+# print distanceBetweenEqn(fst, snd)
+main()

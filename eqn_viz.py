@@ -326,6 +326,13 @@ class AnswerSetManager(json.JSONEncoder):
 
     def getGeneratedAnsSets(self):
         return list(self.answer_sets)
+    def getGeneratedProblems(self):
+        """ returns a flat list of all problems contained by answer set manager"""
+        probs = []
+        for ans_set in self.answer_sets:
+            probs += ans_set.getMathProblems()
+        return probs
+
     def initFromSTDIN(self):
         """load answer sets from stdin NOTE: expects JSON input via clingo --outf=2"""
         all_answer_sets = self.__getJSONAnswerSetsFromSTDIN()
