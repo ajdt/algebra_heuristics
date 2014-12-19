@@ -3,7 +3,7 @@ import eqn_viz
 class DemoRunner(ClingoRunner):
 	"""Run clingo based on command line arguments"""
 	BASE_COMMAND = "clingo eqn_generator.lp --outf=2 "
-	additional_params = { 'heurSeq' :  '', 'numSets': '1' , 'clingo' : '', 'random' : 'false', 'featuresFile' : 'None'}
+	additional_params = { 'heurSeq' :  '', 'numSets': '1' , 'clingo' : '', 'random' : 'false', 'featuresFile' : 'None', 'json_output': 'true'}
 	def __init__(self):
 		self.cmd_line_args = []
 		ClingoRunner.__init__(self, DemoRunner.BASE_COMMAND, flags=[], misc_params=DemoRunner.additional_params)

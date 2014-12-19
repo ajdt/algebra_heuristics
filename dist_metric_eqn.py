@@ -15,6 +15,7 @@ import eqn_viz
 # sanitize EQnString
 DIFF_MONOS_PENALTY = 1
 DIFF_NODE_TYPE_PENALTY = 2
+MAX_DEPTH_PENALTY = 4
 def distanceBetweenEqn(fst_eqn, snd_eqn):
 	"""compute the 'distance' between two equations"""
 	# obtain AST for each eqn
@@ -59,13 +60,13 @@ def compareExpressionsRecursive(fst_expr, snd_expr, depth=1):
 	# neither node is a monomial
 	else:
 		if fst_expr.__class__ != snd_expr.__class__:
-			diff += DIFF_NODE_TYPE_PENALTY*depth
+			diff += DIFF_NODE_TYPE_PENALTY*(MAX_DEPTH_PENALTY - depth)
 		compareChildren = lambda f, s : compareExpressionsRecursive(f, s, depth+1)
 		diff += sum(map(compareChildren, fst_expr.getChildren(), snd_expr.getChildren()))
 	return diff
 
 def computeSubtreeWeight(expr, depth=1):
-	root_weight = DIFF_MONOS_PENALTY*depth
+	root_weight = DIFF_MONOS_PENALTY*(depth - 1)
 	if isMonomial(expr):
 		return root_weight
 	else:
@@ -170,10 +171,15 @@ def alternateContrastingCases(generated_problems_list, max_distance):
 
 def main():
 	manager = eqn_viz.AnswerSetManager({}) # no args passed
-	manager.initFromJSONFile('math_probs.txt')
+	#manager.initFromJSONFile('math_probs.txt')
+	manager.initFromJSONFile('check_this')
 	print 'finding contrasting cases...'
-	for p,q, case in alternateContrastingCases(manager.getGeneratedProblems(), 20):
-		print p.getProblemString(), q.getProblemString(), case
+	for p,q, case in alternateContrastingCases(manager.getGeneratedProblems(), 15):
+		#print p.getProblemString(), q.getProblemString(), case
+		print 'case: ', case
+		print p.getSolutionString()
+		print q.getSolutionString()
+		print '-'*30
 	print 'done :)'
 # this code is for testing purposes only
 # fst = '3*x^5 + 4 = 0'

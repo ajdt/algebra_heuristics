@@ -217,8 +217,8 @@ _redundantStep(Fst)
 
 %%% useful for 1-grams%%
 %%% TODO: reuse old n-grams code instead??%%
-%%selectedHeuristic(Name)%%
-	%%:-	_selectedHeuristic(Time, Name).%%
+selectedHeuristic(Name)
+    :-	_selectedHeuristic(Time, Name).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Ensure Each Step Has Rule Application %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _stepUsesHeuristic(Time)

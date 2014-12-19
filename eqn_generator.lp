@@ -63,3 +63,6 @@ eqnHasMonoWithDeg(Deg)
 %%hash(@calcHash(Total))%%
 	%%:-	_eqnTotal(Total).%%
 
+% just trying stuff out
+:-  2 { _isZero(StartTime, Node) : _node(Node) } , _startTime(StartTime).
+_disallowedType(neg).

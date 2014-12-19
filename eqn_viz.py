@@ -201,9 +201,21 @@ class EquationStepParser:
     def addOperands(self, operands):
         self.operands = operands
     def getOperands(self):
-        return list(self.operands)
+        return [ self.makeEqnString(operand) for operand in self.operands ]
     def addActionPred(self, action_name):
         self.action = action_name
+
+    def getTreeStructure(self):
+        left = self.getTreeStructureOfNode('id(1,1)')
+        right = self.getTreeStructureOfNode('id(1,2)')
+        return {'type': '=', 'children':[left, right]}
+    def getTreeStructureOfNode(self, node_string):
+        if self.node_types[node_string] == 'mono':
+            return {'type': 'monomial', 'coeff': self.coeff_of[node_string], 'degree': self.degree_of[node_string]}
+        else:
+            children = [ self.getTreeStructureOfNode(child) for child in self.node_children[node_string]]
+            type_symbol = op_symbols[self.node_types[node_string]]
+            return {'type': type_symbol, 'children': children }
 
 
 def peelHolds(tokens):
@@ -251,9 +263,11 @@ class MathProblemParser(object):
     def getProblem(self):
         return self.solution_steps[0].getStepString()
     def getOperands(self):
-        return [(step_number, step_parser.getOperands()) for step_number, step_parser in self.solution_steps.items()]
+        return [step_parser.getOperands() for step_number, step_parser in self.solution_steps.items()]
     def getEqnSteps(self):
         return [step.getEqnString() for step in self.solution_steps.values()]
+    def getEqnTrees(self):
+        return [step.getTreeStructure() for step in self.solution_steps.values()]
     def getActions(self):
         return list(self.actions)
     def addApplicableAction(self, action_name):
@@ -265,7 +279,8 @@ class MathProblemParser(object):
         eqn_params = { 'equation_steps': self.getEqnSteps(),
                          'operands': self.getOperands(),
                          'selected_heuristics': self.getActions(),
-                         'applicable_heur': self.getApplicableActions()}
+                         'applicable_heur': self.getApplicableActions(),
+                         'expression_trees': self.getEqnTrees() }
         return GeneratedProblem(eqn_params)
 
 class AnswerSetParser(object):
@@ -326,6 +341,7 @@ class AnswerSetManager(json.JSONEncoder):
         # initialize MathProblemParser for each solution generated
         self.cmdline_args = cmdline_args
         self.answer_sets = []
+
         json.JSONEncoder.__init__(self)
 
     def getGeneratedAnsSets(self):
