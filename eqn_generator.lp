@@ -42,9 +42,10 @@ eqnHasMonoWithDeg(Deg)
 %%_someNumber(1..10).%%
 %%1 { selectedNum(X) : _someNumber(X) } 1 %%
 	%%:-	_startTime(ST) .%%
-%%% CONSTRAINT: denominator should not be +- 1
+%%% CONSTRAINT: denominator should not be +- 1 in the solution
 :-	_denomOf(Time, Frac, Denom),
-	_absoluteValueIsOne(Time, Denom).
+	_absoluteValueIsOne(Time, Denom),
+    _stopTime(Time).
 
 %%_nodeValue(Node, 1)%%
 	%%:-	_isMono(StartTime, Node),%%
@@ -63,6 +64,6 @@ eqnHasMonoWithDeg(Deg)
 %%hash(@calcHash(Total))%%
 	%%:-	_eqnTotal(Total).%%
 
-% just trying stuff out
-:-  2 { _isZero(StartTime, Node) : _node(Node) } , _startTime(StartTime).
-_disallowedType(neg).
+% trying to generate problems with fewer zeroes
+%%:-  2 { _isZero(StartTime, Node) : _node(Node) } , _startTime(StartTime).%%
+%%_disallowedType(neg).%%

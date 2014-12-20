@@ -320,15 +320,15 @@ _applicable(Time, _rule(divByOne, _operands(Fraction)))
 _deepCopy(Time, Fraction, Numer)
 	:-	_operand(Time, Fraction, divByOne, left),
 		_numerOf(Time, Fraction, Numer).
-%%%================================================================================%%
-%%% addZero A + 0 --> A%%
-%%%================================================================================%%
-%%_applicable(Time, _rule(addZero, _operands(Mono)))%%
-	%%:-	_isZero(Time, Mono),%%
-		%%_parentType(Time, Mono, add).%%
+%================================================================================
+% addZero A + 0 --> A
+%================================================================================
+_applicable(Time, _rule(addZero, _operands(Mono)))
+	:-	_isZero(Time, Mono),
+		_parentType(Time, Mono, add).
 
-%%_cancelTerm(Time, ZeroTerm)%%
-	%%:-	_operand(Time, ZeroTerm, addZero, left).%%
+_cancelTerm(Time, ZeroTerm)
+	:-	_operand(Time, ZeroTerm, addZero, left).
 
 %================================================================================
 % factorMonom:	ax^k  --> bx^m * cx^n 
@@ -431,25 +431,25 @@ _tempHolds(Time, _fact(TempTerm, _nodeField(degree, NewDeg)))
 _setResultTo(Time, Poly)
 	:-	_operand(Time, Poly, factorCommTerm, left).
 
-%%%================================================================================%%
-%%% multByZero:	A*0 --> 0%%
-%%%================================================================================%%
-%%_applicable(Time, _rule(multByZero, _operands(ZeroTerm)))%%
-	%%:-	_isZero(Time, ZeroTerm),%%
-		%%_parentType(Time, ZeroTerm, mul).%%
+%================================================================================
+% multByZero:	A*0 --> 0
+%================================================================================
+_applicable(Time, _rule(multByZero, _operands(ZeroTerm)))
+	:-	_isZero(Time, ZeroTerm),
+		_parentType(Time, ZeroTerm, mul).
 
-%%_setToZero(Time, Parent)%%
-	%%:-	_operand(Time, ZeroTerm, multByZero, left),%%
-		%%_activeChild(Time, Parent, ZeroTerm).%%
+_setToZero(Time, Parent)
+	:-	_operand(Time, ZeroTerm, multByZero, left),
+		_activeChild(Time, Parent, ZeroTerm).
 
-%%%================================================================================%%
-%%% multIdentity:	A*1 --> A%%
-%%%================================================================================%%
-%%_applicable(Time, _rule(multIdentity, _operands(UnitTerm)))%%
-	%%:-	_isOne(Time, UnitTerm),%%
-		%%_parentType(Time, UnitTerm, mul).%%
-%%_cancelTerm(Time, UnitTerm)%%
-	%%:-	_operand(Time, UnitTerm, multIdentity, left).%%
+%================================================================================
+% multIdentity:	A*1 --> A
+%================================================================================
+_applicable(Time, _rule(multIdentity, _operands(UnitTerm)))
+	:-	_isOne(Time, UnitTerm),
+		_parentType(Time, UnitTerm, mul).
+_cancelTerm(Time, UnitTerm)
+	:-	_operand(Time, UnitTerm, multIdentity, left).
 
 %================================================================================
 % multNumerAndDenom:	A/B --> (A*C)/(B*C)
@@ -528,22 +528,22 @@ _saveEqnResult(Time)
 %%_deepCopy(Time, rightSide, tempRightRoot)%%
 	%%:-	_ruleForTimeStep(Time, multEqnWithMono).%%
 
-%%%================================================================================%%
-%%% swapTerms: A*B --> B*A, or A+B --> B*A	%%
-%%%================================================================================%%
-%%_applicable(Time, _rule(swapTerms, _operands(FstTerm, SndTerm)))%%
-	%%:-	_swappableTerms(Time, FstTerm, SndTerm),%%
-		%%not _equal(Time, FstTerm, SndTerm).	% NOTE: swapping equal terms is basically a NO-OP%%
+%================================================================================
+% swapTerms: A*B --> B*A, or A+B --> B*A	
+%================================================================================
+_applicable(Time, _rule(swapTerms, _operands(FstTerm, SndTerm)))
+	:-	_swappableTerms(Time, FstTerm, SndTerm),
+		not _equal(Time, FstTerm, SndTerm).	% NOTE: swapping equal terms is basically a NO-OP
 
-%%_deepCopy(Time, FstTerm, SndTerm)%%
-	%%:-	_operand(Time, FstTerm, swapTerms, left),%%
-		%%_operand(Time, SndTerm, swapTerms, right),%%
-		%%_siblings(Time, FstTerm, SndTerm).	% specify operands are siblings to avoid excessively large grounding%%
+_deepCopy(Time, FstTerm, SndTerm)
+	:-	_operand(Time, FstTerm, swapTerms, left),
+		_operand(Time, SndTerm, swapTerms, right),
+		_siblings(Time, FstTerm, SndTerm).	% specify operands are siblings to avoid excessively large grounding
 
-%%_deepCopy(Time, SndTerm, FstTerm)%%
-	%%:-	_operand(Time, FstTerm, swapTerms, left),%%
-		%%_operand(Time, SndTerm, swapTerms, right),%%
-		%%_siblings(Time, FstTerm, SndTerm).%%
+_deepCopy(Time, SndTerm, FstTerm)
+	:-	_operand(Time, FstTerm, swapTerms, left),
+		_operand(Time, SndTerm, swapTerms, right),
+		_siblings(Time, FstTerm, SndTerm).
 
 %================================================================================
 % cancelNegatives: -(-A) --> A
