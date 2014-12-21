@@ -1,5 +1,6 @@
 grammar PrologRules;
 
+listofrules :           prologrule (prologrule)* ;
 prologrule  :           predicate   ':-' predlist  '.';
 predicate   :           atom '(' args ')' | atom ;
 predlist    :           predicate ',' predlist | predicate ;

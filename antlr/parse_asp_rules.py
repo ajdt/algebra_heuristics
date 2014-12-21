@@ -20,7 +20,7 @@ prolog_file = FileStream(sys.argv[1])
 lexer = PrologRulesLexer(prolog_file)
 tokens = CommonTokenStream(lexer)
 parser = PrologRulesParser(tokens)
-tree = parser.prologrule()
+tree = parser.listofrules()
 
 # try get token stream? or consume
 class RuleWalker(PrologRulesListener):
