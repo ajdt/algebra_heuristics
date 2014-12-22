@@ -6,7 +6,7 @@ from PrologRulesParser import *
 from collections import namedtuple
 Predicate           =   namedtuple('Predicate', ['name', 'args', 'arity'])
 Rule                =   namedtuple('Rule', ['head', 'body'])
-Comparision         =   namedtuple('Comparison', ['left', 'comparator', 'right'] )
+Comparison          =   namedtuple('Comparison', ['left', 'comparator', 'right'] )
 
 #   body should be a list of conditions
 PredCount           =   namedtuple('PredCount', ['left_count', 'predicate', 'body', 'right_count']) 
@@ -70,6 +70,14 @@ class RuleWalker(PrologRulesListener):
             self.appendToLastContainer(arg_list)
     def exitAtom(self, ctx):
         self.appendToLastContainer(str(ctx.WORD()))
+    def enterComparator(self, ctx):
+        self.pushContainer([])
+    def exitComparator(self, ctx):
+        compared_atoms = self.popContainer()
+        left, right = compared_atoms  # NOTE: only two atoms should be stored here
+        operation = str(ctx.OPERATOR())
+        comp_object = Comparison(left, operation, right) 
+        self.appendToLastContainer(comp_object)
 
     # stack helpers, written only as a convenience
     def pushContainer(self, elem):
