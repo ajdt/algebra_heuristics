@@ -4,8 +4,12 @@ from PrologRulesLexer import *
 from PrologRulesParser import *
 
 from collections import namedtuple
-Predicate   =   namedtuple('Predicate', ['name', 'args', 'arity'])
-DefinedPredicate = namedtuple('DefinedPredicate', ['name', 'args', 'arity', 'definition'])
+Predicate           =   namedtuple('Predicate', ['name', 'args', 'arity'])
+Rule                =   namedtuple('Rule', ['head', 'body'])
+Comparision         =   namedtuple('Comparison', ['left', 'comparator', 'right'] )
+
+#   body should be a list of conditions
+PredCount           =   namedtuple('PredCount', ['left_count', 'predicate', 'body', 'right_count']) 
 #class DefinedPredicate(Predicate):
     #"""A DefinedPredicate is just an ASP rule"""
     #def __new__(cls, name, args, arity, defining_predicates):
@@ -43,8 +47,8 @@ class RuleWalker(PrologRulesListener):
     def exitPrologrule(self, ctx):
         parsed_rule = self.popContainer()
         head = parsed_rule[0]
-        tail = parsed_rule[1:]
-        self.appendToLastContainer(DefinedPredicate(head.name, head.args, head.arity, tail))
+        body = parsed_rule[1:]
+        self.appendToLastContainer(Rule(head, body))
     def enterPredicate(self, ctx):
         self.pushContainer([])
     def exitPredicate(self, ctx):
@@ -83,13 +87,17 @@ walker = ParseTreeWalker()
 walker.walk(printer, tree)
 print printer.tree
         
-# classes to be created
-# Predicate
-    # name and variables
-# DefinedPredicate (aka rule)
-    # has other Predicates as explanations
-    # has an arity field
-    # has a generate explanations field
-    # (will be added to a dict that indexes based on name and arity)
-# args: can just be a tuple or list, remember to preserve order
-        
+
+# misc classes needed:
+# change definedPredicate to Rule:
+# add code for comparison, test it out
+# add code for predCount
+# body is a list of predicates, comparisions and counts
+# change atom to be either an identifier or a number
+
+# should we have a base class for condition?
+    # predicate
+    # comparisons : variables, : can be turned into predicate easily, don't convert to avoid conflicts with predicate names
+    # counters:     : have nested conditions, can't be turned into predicates so easily 
+        # conditions could be factored out, but seems unnecessary to do so
+

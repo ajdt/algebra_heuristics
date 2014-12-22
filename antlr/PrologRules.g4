@@ -1,13 +1,23 @@
 grammar PrologRules;
 
 listofrules :           prologrule (prologrule)* ;
-prologrule  :           predicate   ':-' predlist  '.';
+prologrule  :           predicate   ':-' rulebody  '.';
+/*prologdef   :           '#const' atom '=' atom '.' ;*/
+/*prologfact  :           predicate '.' ;*/
+/*constraint  :           '\n:-' predlist '.' ;*/
 predicate   :           atom '(' args ')' | atom ;
-predlist    :           predicate ',' predlist | predicate ;
+rulebody    :           condition | condition ',' rulebody ;
+condition   :           predicate | comparator | predcount ;
+comparator  :           atom OPERATOR atom ;    // note: we assume operator only compares simple types
+predcount   :           NUMBER? '{' predicate (':' rulebody)? '}' NUMBER? ;
 args        :           atom (',' atom)* ;
 atom        :           WORD ;
 
+NUMBER      :   [0-9]+ ;
+OPERATOR    :   '=' | '<' | '>' | '>=' | '<=' ;
 WORD        :   [_a-zA-Z][_a-zA-Z0-9]* ;
+COMMENT     :   '%'(.)*'\n' -> skip ;
+WS          :   [\n\r\t' ']+ -> skip ;
 
 /*
 grammar PrologRules;

@@ -1,6 +1,13 @@
 # compiled files
+*
+!*.*
 *.pyc
 *.swp
 throwaway_code/*
 *.log
 *.txt
+*.ipynb
+*.tokens
+*.png
+*.tar.gz
+*.diff
