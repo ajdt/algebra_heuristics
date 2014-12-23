@@ -2,35 +2,19 @@ import sys
 from antlr4 import *
 from PrologRulesLexer import *
 from PrologRulesParser import *
-
 from collections import namedtuple
+
+# define tuples to store parsed predicate info
 Predicate           =   namedtuple('Predicate', ['name', 'args', 'arity'])
 Rule                =   namedtuple('Rule', ['head', 'body'])
 Comparison          =   namedtuple('Comparison', ['left', 'comparator', 'right'] )
-
-#   body should be a list of conditions
-PredCount           =   namedtuple('PredCount', ['left_count', 'predicate', 'body', 'right_count']) 
-#class DefinedPredicate(Predicate):
-    #"""A DefinedPredicate is just an ASP rule"""
-    #def __new__(cls, name, args, arity, defining_predicates):
-        #self = super(DefinedPredicate, cls).__new__(cls, name, args, arity)
-        #self.def_predicates = defining_predicates
-        #return self
-    #def __str__(self):
-        #return Predicate.__str__(self) + 'definiton: ' + ','.join([str(p) for p in self.def_predicates])
-
-#prolog_file = FileStream('rules.lp')
-prolog_file = FileStream(sys.argv[1])
-lexer = PrologRulesLexer(prolog_file)
-tokens = CommonTokenStream(lexer)
-parser = PrologRulesParser(tokens)
-tree = parser.listofrules()
+PredCount           =   namedtuple('PredCount', ['left_count', 'predicate', 'conditions', 'right_count']) # body is list of conditions
 
 # try get token stream? or consume
-class RuleWalker(PrologRulesListener):
-    """custom listener will walk a parse tree, and generate list of rules parsed """
+class RuleListener(PrologRulesListener):
+    """custom listener will generate list of rules parsed, when passed to a tree walker """
     def __init__(self):
-        super(RuleWalker, self).__init__()
+        super(RuleListener, self).__init__()
         self.tree = []      # will contain list of parsed rules after walking the parsed tree
 
         # while tree is walked, this class gets a callback when a grammar rule (NOT ASP rule) defined in antlr
@@ -68,13 +52,6 @@ class RuleWalker(PrologRulesListener):
         arg_list = self.popContainer()
         if len(arg_list) > 0:
             self.appendToLastContainer(arg_list)
-    # TODO: reorder this code: it's gotten messy
-    def exitAtom(self, ctx):
-        if ctx.NUMBER() != None:
-            self.appendToLastContainer(str(ctx.NUMBER()))
-        # NOTE: if Atom is WORD then it's parsed as an identifer and exitIdentifier() adds it to last container
-    def exitIdentifier(self, ctx):
-        self.appendToLastContainer(str(ctx.WORD()))
     def enterComparator(self, ctx):
         self.pushContainer([])
     def exitComparator(self, ctx):
@@ -112,12 +89,20 @@ class RuleWalker(PrologRulesListener):
             right_count = other_data[1]
 
         return (left_count, head, body, right_count)
-            
     def exitPredcount(self, ctx):
         result = self.popContainer()
         left, head, body, right = self.isolatePredcountData(result)
         pred_count = PredCount(left, head, body, right )
         self.appendToLastContainer(pred_count)
+
+    # callbacks for terminal nodes: push text value of terminal node
+    def exitAtom(self, ctx):
+        if ctx.NUMBER() != None:
+            self.appendToLastContainer(str(ctx.NUMBER()))
+        # NOTE: if Atom is WORD then it's parsed as an identifer and exitIdentifier() adds it to last container
+    def exitIdentifier(self, ctx):
+        self.appendToLastContainer(str(ctx.WORD()))
+
 
     # stack helpers, written only as a convenience
     def pushContainer(self, elem):
@@ -131,24 +116,27 @@ class RuleWalker(PrologRulesListener):
         self.container_stack[-1].append(elem)
         #print self.container_stack
 
-# print some info rpom parsing
-printer = RuleWalker()
-walker = ParseTreeWalker()
+def parseRulesFromFile(file_name):
+    """return a list of ASP rules parsed from given file
+        XXX: expects the file to contain only rules (no const definitions, facts, comments, or constraints). Other functions handle cleanup
+    """
+    # read asp file, lex, parse and create parse tree for its contents 
+    prolog_file = FileStream(file_name)
+    lexer = PrologRulesLexer(prolog_file)
+    tokens = CommonTokenStream(lexer)
+    parser = PrologRulesParser(tokens)
+    tree = parser.listofrules()
 
-walker.walk(printer, tree)
-print printer.tree
-        
+    # initialize listener and walk tree (generates tree info)
+    printer = RuleListener()
+    walker = ParseTreeWalker()
+    walker.walk(printer, tree)
+    return printer.tree
 
-# misc classes needed:
-# change definedPredicate to Rule:
-# add code for comparison, test it out
-# add code for predCount
-# body is a list of predicates, comparisions and counts
-# change atom to be either an identifier or a number
+def main():
+    for rule in parseRulesFromFile(sys.argv[1]):
+        print rule 
+        print '\n'
 
-# should we have a base class for condition?
-    # predicate
-    # comparisons : variables, : can be turned into predicate easily, don't convert to avoid conflicts with predicate names
-    # counters:     : have nested conditions, can't be turned into predicates so easily 
-        # conditions could be factored out, but seems unnecessary to do so
-
+if __name__ == '__main__':
+    main()
