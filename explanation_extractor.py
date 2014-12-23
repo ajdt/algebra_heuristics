@@ -14,6 +14,8 @@
 import re
 import tempfile
 import os       # for file deletion at the end 
+import parse_asp_rules as par
+
 # just testing out regular expression
 def makeSanitizedFile(file_name):
     """remove comments, then extract rules. Save to new file"""
