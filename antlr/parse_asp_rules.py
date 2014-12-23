@@ -68,7 +68,12 @@ class RuleWalker(PrologRulesListener):
         arg_list = self.popContainer()
         if len(arg_list) > 0:
             self.appendToLastContainer(arg_list)
+    # TODO: reorder this code: it's gotten messy
     def exitAtom(self, ctx):
+        if ctx.NUMBER() != None:
+            self.appendToLastContainer(str(ctx.NUMBER()))
+        # NOTE: if Atom is WORD then it's parsed as an identifer and exitIdentifier() adds it to last container
+    def exitIdentifier(self, ctx):
         self.appendToLastContainer(str(ctx.WORD()))
     def enterComparator(self, ctx):
         self.pushContainer([])
@@ -78,15 +83,53 @@ class RuleWalker(PrologRulesListener):
         operation = str(ctx.OPERATOR())
         comp_object = Comparison(left, operation, right) 
         self.appendToLastContainer(comp_object)
+    def enterPredcount(self, ctx):
+        self.pushContainer([])
+    def isolatePredcountData(self, predcount_data):
+        """ Isolate predcount data from a parse tree walk.
+            predcount_data may look like: [left_count, head, body, right_count].
+            Only head is guaranteed to exist, anything else will exist in that relative order if at all.
+        """
+        left_count, head, body, right_count = (None, None, None, None)
+
+        # find and set the value for head 
+        head_idx = map(lambda x : isinstance(x, Predicate), predcount_data).index(True)
+        head = predcount_data[head_idx]
+
+        # check if a left_count comes before head
+        if head_idx == 1 :
+            left_count = predcount_data[0]
+
+        # parse body and right_count
+        other_data = predcount_data[head_idx+1:]
+        if len(other_data) == 1 :
+            if isinstance(other_data[0], list):
+                body = other_data[0]
+            else:
+                right_count = other_data[0]
+        elif len(other_data) == 2 :
+            body = other_data[0]
+            right_count = other_data[1]
+
+        return (left_count, head, body, right_count)
+            
+    def exitPredcount(self, ctx):
+        result = self.popContainer()
+        left, head, body, right = self.isolatePredcountData(result)
+        pred_count = PredCount(left, head, body, right )
+        self.appendToLastContainer(pred_count)
 
     # stack helpers, written only as a convenience
     def pushContainer(self, elem):
         self.container_stack.append(elem)
+        #print self.container_stack
     def popContainer(self):
         last_elem = self.container_stack.pop()
+        #print self.container_stack
         return last_elem
     def appendToLastContainer(self, elem):
         self.container_stack[-1].append(elem)
+        #print self.container_stack
 
 # print some info rpom parsing
 printer = RuleWalker()

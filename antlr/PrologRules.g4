@@ -2,16 +2,15 @@ grammar PrologRules;
 
 listofrules :           prologrule (prologrule)* ;
 prologrule  :           predicate   ':-' rulebody  '.';
-/*prologdef   :           '#const' atom '=' atom '.' ;*/
-/*prologfact  :           predicate '.' ;*/
-/*constraint  :           '\n:-' predlist '.' ;*/
-predicate   :           atom '(' args ')' | atom ;
+predcount   :           atom? '{' predicate (':' rulebody)? '}' atom? ; // bounds can be variables too so just use atoms
+predicate   :           identifier '(' args ')' | identifier ;
 rulebody    :           condition | condition ',' rulebody ;
 condition   :           predicate | comparator | predcount ;
 comparator  :           atom OPERATOR atom ;    // note: we assume operator only compares simple types
-predcount   :           NUMBER? '{' predicate (':' rulebody)? '}' NUMBER? ;
 args        :           atom (',' atom)* ;
-atom        :           WORD ;
+
+atom        :           identifier | NUMBER ;
+identifier  :           WORD ;
 
 NUMBER      :   [0-9]+ ;
 OPERATOR    :   '=' | '<' | '>' | '>=' | '<=' ;
