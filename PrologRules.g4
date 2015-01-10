@@ -1,12 +1,17 @@
 grammar PrologRules;
 
-listofrules :           prologrule (prologrule)* ;
+listofrules :           prologthing (prologthing)* ;
+prologthing :           somerule | fact | constraint ;
+fact        :           predicate '.' ;
+constraint  :           ':-' rulebody '.' ;
+somerule    :           prologrule | guessrule ;
 prologrule  :           predicate   ':-' rulebody  '.';
-guessrule   :           NUMBER? '{' predicate (':' rulebody)? '}' NUMBER? ':-' rulebody ;   // will be ignored
+guessrule   :           NUMBER? '{' predicate (':' rulebody)? '}' NUMBER? ':-' rulebody '.';   // will be ignored
 predcount   :           atom? '{' predicate (':' rulebody)? '}' atom? ; // bounds can be variables too so just use atoms
 predicate   :           identifier '(' args ')' | identifier ;
 rulebody    :           condition | condition ',' rulebody ;
-condition   :           predicate | comparator | predcount ;
+condition   :           negpred | predicate | comparator | predcount ;
+negpred     :           'not' predicate ;   // defined separately so we can remember that predicate was negated
 comparator  :           atom RELOPERATOR mathexpr ;    // note: we assume operator only compares simple types
 mathexpr    :           OPERATOR mathexpr | atom OPERATOR mathexpr | atom | predicate ;
 args        :           onearg (',' onearg)* ;

@@ -24,10 +24,12 @@ def makeSanitizedFile(file_name):
 
     new_file_obj   = tempfile.NamedTemporaryFile(mode='w', delete=False)
     # extract each matching corresponding to a rule
-    for matching in re.findall(r'[\w]+\(?[^\.:]*:-[^\.]*\.', code):
-        if len(matching.split(':-')) > 2:
-            continue
-        new_file_obj.write(matching)
+    # TODO: do we still need to sanitize file??
+    new_file_obj.write(code)
+    #for matching in re.findall(r'[\w]+\(?[^\.:]*:-[^\.]*\.', code):
+        #if len(matching.split(':-')) > 2:
+            #continue
+        #new_file_obj.write(matching)
 
     file_obj.close()
     new_file_obj.close()
@@ -38,7 +40,9 @@ def parseRules():
     rules_list      = par.parseRulesFromFile(temp_file_name)
 
     for rule in rules_list:
-        print makeExplanationForRule(rule)
+        #print makeExplanationForRule(rule)
+        if isinstance(rule, par.Rule):  # TODO: fix so that only rules are provided in list
+            print makeExplanationForRule(rule)
 
     os.remove(temp_file_name)
 
@@ -101,6 +105,7 @@ if __name__ == '__main__':
 # Code TODOs
     # XX be able to generate explanations first
     # fix mismatched input errors
+    # figure out how non-rule namedtuples end up in returned list of parsed objects
     # create template class for each parsed rule
     # merge multiple explanations for same predicate
     # create a manager class to deal with lookups of predicates etc

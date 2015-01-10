@@ -6,6 +6,7 @@ from collections import namedtuple
 
 # define tuples to store parsed predicate info
 Predicate           =   namedtuple('Predicate', ['name', 'args', 'arity'])
+NegPredicate        =   namedtuple('NegPredicate', ['name', 'args', 'arity'])
 Rule                =   namedtuple('Rule', ['head', 'body'])
 Comparison          =   namedtuple('Comparison', ['left', 'comparator'] )
 PredCount           =   namedtuple('PredCount', ['left_count', 'predicate', 'conditions', 'right_count']) # body is list of conditions
@@ -60,6 +61,19 @@ class RuleListener(PrologRulesListener):
         comparison  = str(ctx.RELOPERATOR())
         comp_object = Comparison(var_name, comparison) 
         self.appendToLastContainer(comp_object)
+    def exitNegpred(self, ctx):
+        # last appended predicate should be negated, pop it, and 
+        # instantiate a NegPredicate instance instead
+        last_pred = self.popLastPredicate()
+        neg_pred = NegPredicate(last_pred.name, last_pred.args, last_pred.arity)
+        self.appendToLastContainer(neg_pred)
+
+    # remove predicates relating to facts or constraints (just interested in rule definitions)
+    def exitFact(self, ctx):
+        self.popLastPredicate()
+    def exitConstraint(self, ctx):
+        self.popLastPredicate()
+
     def enterGuessrule(self, ctx):  # want to ignore guessrules
         self.pushContainer([])
     def exitGuessrule(self, ctx):
@@ -119,6 +133,8 @@ class RuleListener(PrologRulesListener):
     def appendToLastContainer(self, elem):
         self.container_stack[-1].append(elem)
         #print self.container_stack
+    def popLastPredicate(self):
+        return self.container_stack[-1].pop()
 
 def parseRulesFromFile(file_name):
     """return a list of ASP rules parsed from given file
