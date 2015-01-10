@@ -2,18 +2,22 @@ grammar PrologRules;
 
 listofrules :           prologrule (prologrule)* ;
 prologrule  :           predicate   ':-' rulebody  '.';
+guessrule   :           NUMBER? '{' predicate (':' rulebody)? '}' NUMBER? ':-' rulebody ;   // will be ignored
 predcount   :           atom? '{' predicate (':' rulebody)? '}' atom? ; // bounds can be variables too so just use atoms
 predicate   :           identifier '(' args ')' | identifier ;
 rulebody    :           condition | condition ',' rulebody ;
 condition   :           predicate | comparator | predcount ;
-comparator  :           atom OPERATOR atom ;    // note: we assume operator only compares simple types
-args        :           atom (',' atom)* ;
+comparator  :           atom RELOPERATOR mathexpr ;    // note: we assume operator only compares simple types
+mathexpr    :           OPERATOR mathexpr | atom OPERATOR mathexpr | atom | predicate ;
+args        :           onearg (',' onearg)* ;
+onearg      :           atom | predicate ;
 
 atom        :           identifier | NUMBER ;
 identifier  :           WORD ;
 
 NUMBER      :   [0-9]+ ;
-OPERATOR    :   '=' | '<' | '>' | '>=' | '<=' ;
+RELOPERATOR :   '=' | '<' | '>' | '>=' | '<=' | '!=' ;
+OPERATOR    :   '+' | '-' | '*' | '**' | '/' ;
 WORD        :   [_a-zA-Z][_a-zA-Z0-9]* ;
 COMMENT     :   '%'(.)*'\n' -> skip ;
 WS          :   [\n\r\t' ']+ -> skip ;

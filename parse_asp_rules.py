@@ -7,7 +7,7 @@ from collections import namedtuple
 # define tuples to store parsed predicate info
 Predicate           =   namedtuple('Predicate', ['name', 'args', 'arity'])
 Rule                =   namedtuple('Rule', ['head', 'body'])
-Comparison          =   namedtuple('Comparison', ['left', 'comparator', 'right'] )
+Comparison          =   namedtuple('Comparison', ['left', 'comparator'] )
 PredCount           =   namedtuple('PredCount', ['left_count', 'predicate', 'conditions', 'right_count']) # body is list of conditions
 
 # try get token stream? or consume
@@ -56,10 +56,14 @@ class RuleListener(PrologRulesListener):
         self.pushContainer([])
     def exitComparator(self, ctx):
         compared_atoms = self.popContainer()
-        left, right = compared_atoms  # NOTE: only two atoms should be stored here
-        operation = str(ctx.OPERATOR())
-        comp_object = Comparison(left, operation, right) 
+        var_name    = compared_atoms[0]
+        comparison  = str(ctx.RELOPERATOR())
+        comp_object = Comparison(var_name, comparison) 
         self.appendToLastContainer(comp_object)
+    def enterGuessrule(self, ctx):  # want to ignore guessrules
+        self.pushContainer([])
+    def exitGuessrule(self, ctx):
+        self.popContainer()
     def enterPredcount(self, ctx):
         self.pushContainer([])
     def isolatePredcountData(self, predcount_data):
