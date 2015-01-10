@@ -1,6 +1,6 @@
 grammar PrologRules;
 
-listofrules :           prologthing (prologthing)* ;
+prologcode  :           prologthing (prologthing)* ;
 prologthing :           somerule | fact | constraint ;
 fact        :           predicate '.' ;
 constraint  :           ':-' rulebody '.' ;

@@ -40,9 +40,7 @@ def parseRules():
     rules_list      = par.parseRulesFromFile(temp_file_name)
 
     for rule in rules_list:
-        #print makeExplanationForRule(rule)
-        if isinstance(rule, par.Rule):  # TODO: fix so that only rules are provided in list
-            print makeExplanationForRule(rule)
+        print makeExplanationForRule(rule)
 
     os.remove(temp_file_name)
 
@@ -104,7 +102,7 @@ if __name__ == '__main__':
 
 # Code TODOs
     # XX be able to generate explanations first
-    # fix mismatched input errors
+    # XX fix mismatched input errors
     # figure out how non-rule namedtuples end up in returned list of parsed objects
     # create template class for each parsed rule
     # merge multiple explanations for same predicate

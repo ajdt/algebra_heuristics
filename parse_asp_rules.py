@@ -145,7 +145,7 @@ def parseRulesFromFile(file_name):
     lexer = PrologRulesLexer(prolog_file)
     tokens = CommonTokenStream(lexer)
     parser = PrologRulesParser(tokens)
-    tree = parser.listofrules()
+    tree = parser.prologcode()
 
     # initialize listener and walk tree (generates tree info)
     printer = RuleListener()
