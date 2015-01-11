@@ -17,7 +17,6 @@ class RuleListener(PrologRulesListener):
     def __init__(self):
         super(RuleListener, self).__init__()
         self.tree = []      # will contain list of parsed rules after walking the parsed tree
-
         # while tree is walked, this class gets a callback when a grammar rule (NOT ASP rule) defined in antlr
         # is entered, and when it's exited. container_stack is used to preserve the nested structure of
         # the rules. Whenever a non-terminal rule is entered, it pushes an empty list to this stack ,
@@ -78,6 +77,7 @@ class RuleListener(PrologRulesListener):
         self.pushContainer([])
     def exitGuessrule(self, ctx):
         self.popContainer()
+
     def enterPredcount(self, ctx):
         self.pushContainer([])
     def isolatePredcountData(self, predcount_data):
@@ -148,10 +148,10 @@ def parseRulesFromFile(file_name):
     tree = parser.prologcode()
 
     # initialize listener and walk tree (generates tree info)
-    printer = RuleListener()
+    listener = RuleListener()
     walker = ParseTreeWalker()
-    walker.walk(printer, tree)
-    return printer.tree
+    walker.walk(listener, tree)
+    return listener.tree 
 
 def main():
     for rule in parseRulesFromFile(sys.argv[1]):
