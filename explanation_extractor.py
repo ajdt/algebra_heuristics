@@ -47,9 +47,11 @@ def parseRules():
     # TODO: for testing purposes only; remove later
     for template in template_mgr.templates.values():
         if template.rule.head.name == '_applicable':
-            print template.rule.head.name
             nested_pred = template.rule.head.args[1]
-            print nested_pred.name, nested_pred.args, nested_pred.args[1].__class__.__name__
+            print '## ', nested_pred.args[0]
+            #print nested_pred.name, nested_pred.args, nested_pred.args[1].__class__.__name__
+            for sentence in  template.makeExplanation({})[1]:
+                print str(sentence)
         #print template.makeExplanation({})
 
     os.remove(temp_file_name)
@@ -98,7 +100,6 @@ class ExplanationManager(object):
         condition_name  = nested_pred.args[0]
         operands        = nested_pred.args[1]    # contains Operands(...) nested predicate
         heur_key        = (condition_name, operands.arity)
-        print heur_key
         return heur_key
         
 class ExplanationTemplate(object):
@@ -140,13 +141,34 @@ class TemplateSentence(object):
     """
     def __init__(self, sentence, variables):
         super(TemplateSentence, self).__init__()
-        self.sentence, variables = sentence, variables
+        self.sentence, self.variables = sentence, variables
+
+    def injectVariables(self):
+        vars_to_inject = list(self.variables)
+
+        # remove Time variable; won't be used
+        if 'Time' in vars_to_inject:
+            vars_to_inject.remove('Time')
+
+        # predicate name contains 'of', then assume desired string is 'Var1 <predicate description> Var2'
+        if 'of' in self.sentence.split():
+            return ' '.join([vars_to_inject[0], self.sentence,vars_to_inject[1]])
+
+        # 'of' isn't in predicate name, so generate var string in format 'Var1, Var2, ... and VarN'
+        if len(vars_to_inject) < 2:
+            vars_str = ', '.join(vars_to_inject)
+        else:
+            vars_str = ', '.join(vars_to_inject[:-1]) + ' and ' + vars_to_inject[-1]
+
+        # prepend vars to the sentence
+        return vars_str + ' ' + self.sentence
+
     def fillTemplate(self, variable_values):
         """replace variables with given values and return the filled in sentence as string"""
         pass
     def __str__(self):
         # TODO: should work whether template is filled or unfilled
-        return self.sentence
+        return self.injectVariables()
         
         
 # extract predicate and variables from a given
