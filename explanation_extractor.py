@@ -44,6 +44,10 @@ def parseRules():
     for rule in rules_list:
         #print makeExplanationForRule(rule)
         template_mgr.addExplanationTemplate(rule)
+    # TODO: for testing purposes only; remove later
+    for template in template_mgr.templates.values():
+        if template.rule.head.name == '_applicable':
+            print template.makeExplanation({})
 
     os.remove(temp_file_name)
     return template_mgr
@@ -96,24 +100,24 @@ class ExplanationTemplate(object):
         """Some predicates can be derived in more than one way"""
         pass
 
-    def MakeExplanation(self, var_assignments, depth=1):
+    def makeExplanation(self, var_assignments, depth=1):
         """ var_assignments is a list of variable values to substitute in the explanation"""
-        return [ self.makeConditionExplanation(cond) for cond in rule.body]
+        return (self.rule.head.name, [ self.makeConditionExplanation(cond) for cond in self.rule.body] )
 
     # each of these returns a list with text explanations
-    def makeConditionExplanation(condition, stop_depth=0, depth=0):
+    def makeConditionExplanation(self, condition, stop_depth=0, depth=0):
         if isinstance(condition, par.Predicate):
-            return makePredicateExplanation(condition, stop_depth, depth)
+            return self.makePredicateExplanation(condition, stop_depth, depth)
 
-    def makePredicateExplanation(predicate, stop_depth=0, depth=0):
+    def makePredicateExplanation(self, predicate, stop_depth=0, depth=0):
         # for now just generate explanation for this predicate ignore depth input
         sentence    = convertFromCamelCase(predicate.name)
         variables   = predicate.args
-        return TemplateSentence(sentence, args)
+        return TemplateSentence(sentence, variables)
 
-    def makeComparisonExplanation(comparison, stop_depth=0, depth=0):
+    def makeComparisonExplanation(self, comparison, stop_depth=0, depth=0):
         pass
-    def makePredcountExplanation(predcount, stop_depth=0, depth=0):
+    def makePredcountExplanation(self, predcount, stop_depth=0, depth=0):
         pass
 
 class TemplateSentence(object):
@@ -128,7 +132,7 @@ class TemplateSentence(object):
         pass
     def __str__(self):
         # TODO: should work whether template is filled or unfilled
-        return ''
+        return self.sentence
         
         
 # extract predicate and variables from a given
