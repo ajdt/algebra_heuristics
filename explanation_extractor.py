@@ -47,7 +47,10 @@ def parseRules():
     # TODO: for testing purposes only; remove later
     for template in template_mgr.templates.values():
         if template.rule.head.name == '_applicable':
-            print template.makeExplanation({})
+            print template.rule.head.name
+            nested_pred = template.rule.head.args[1]
+            print nested_pred.name, nested_pred.args, nested_pred.args[1].__class__.__name__
+        #print template.makeExplanation({})
 
     os.remove(temp_file_name)
     return template_mgr
@@ -86,7 +89,17 @@ class ExplanationManager(object):
 
     @staticmethod
     def makeRuleKey(rule):
-        return (rule.head.name, rule.head.arity)
+        """ heuristics have a key determined by condition and arity of their operands. Other predicates
+        are indexed by their own predicate name and arity"""
+        if rule.head.name != '_applicable':
+            return (rule.head.name, rule.head.arity)
+
+        nested_pred     = rule.head.args[1]     # either a rule() or condition pred
+        condition_name  = nested_pred.args[0]
+        operands        = nested_pred.args[1]    # contains Operands(...) nested predicate
+        heur_key        = (condition_name, operands.arity)
+        print heur_key
+        return heur_key
         
 class ExplanationTemplate(object):
     """stores the explanation logic for a single predicate type. A predicate type
@@ -119,6 +132,7 @@ class ExplanationTemplate(object):
         pass
     def makePredcountExplanation(self, predcount, stop_depth=0, depth=0):
         pass
+
 
 class TemplateSentence(object):
     """encapsulates a single sentence of a template along with var substitution functionality
