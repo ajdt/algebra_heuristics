@@ -16,21 +16,16 @@ import tempfile
 import os       # for file deletion at the end 
 import parse_asp_rules as par
 
-# just testing out regular expression
+                        ### HELPER FUNCTIONS ###
 def makeSanitizedFile(file_name):
-    """remove comments, then extract rules. Save to new file"""
+    """remove comments. Save to new file"""
     file_obj    = open(file_name, 'r')
     code        = re.sub('%.*\n', '\n', file_obj.read()) # remove comments
 
+    # create new file and write new code to file, return temp file name
+    # NOTE: new_file_name should be deleted by caller
     new_file_obj   = tempfile.NamedTemporaryFile(mode='w', delete=False)
-    # extract each matching corresponding to a rule
-    # TODO: do we still need to sanitize file??
     new_file_obj.write(code)
-    #for matching in re.findall(r'[\w]+\(?[^\.:]*:-[^\.]*\.', code):
-        #if len(matching.split(':-')) > 2:
-            #continue
-        #new_file_obj.write(matching)
-
     file_obj.close()
     new_file_obj.close()
     return new_file_obj.name
@@ -57,9 +52,7 @@ def parseRules():
     os.remove(temp_file_name)
     return template_mgr
 
-
-
-## code to convert camelcase to proper explanation
+## convert predicate name from camelcase to proper explanation
 def convertFromCamelCase(name):
     """ Takes a string like 'ILikePuppies' and returns 'i like puppies' """
     # NOTE: this code is not mine!!
@@ -69,6 +62,7 @@ def convertFromCamelCase(name):
     return s3
 
 
+                        ### EXPLANATION CLASSES ###
 class ExplanationManager(object):
     """manages a set of explanations extracted from ASP gringo files"""
     def __init__(self):
@@ -83,9 +77,10 @@ class ExplanationManager(object):
         else:
             self.templates[rule_key] = ExplanationTemplate(rule, self)
 
-    def lookupTemplateFor(self, predicate_name, arity, explanation_depth=1):
+    def lookupTemplateFor(self, predicate_key, explanation_depth=1):
         """generate an explanation for the given predicate_name and arity.
         explanation_depth controls how detailed the generated explanation is
+        NOTE: predicate_key  should be generated using ExplanationManager.makeRuleKey(rule)
         """
         pass
 
@@ -163,9 +158,6 @@ class TemplateSentence(object):
         # prepend vars to the sentence
         return vars_str + ' ' + self.sentence
 
-    def fillTemplate(self, variable_values):
-        """replace variables with given values and return the filled in sentence as string"""
-        pass
     def __str__(self):
         # TODO: should work whether template is filled or unfilled
         return self.injectVariables()
@@ -185,26 +177,3 @@ if __name__ == '__main__':
     parseRules()
 
 
-# code design for generating explanations
-# extractExplanationForRule -- given rule create an explanation template for it: shold also have a depth parameter to suggest how much detail to go into
-# extractExplanationForPredicate -- see above, but works only for predicates recursively calls extractExplanationForRule if necessary
-# extractExplanationForPredCount
-# extractExplanationForComparison
-# template class? contains list of all variables, can substitute values in for the variables?
-#   stores predicate that it defines, stores explanation code, stores depth level of the explanation
-#   how do the variables get matched to equation elements? Decide this later
-#   stores elements as a list
-#   whatever calls explanation generation code creates this template 
-# code to process predicate explanations:
-#   convert camel case to underscores, split and then join with spaces
-#   include place for variables
-# need global container for all rules that have been parse!!
-
-
-# Code TODOs
-    # XX be able to generate explanations first
-    # XX fix mismatched input errors
-    # XX figure out how non-rule namedtuples end up in returned list of parsed objects
-    # create template class for each parsed rule
-    # merge multiple explanations for same predicate
-    # create a manager class to deal with lookups of predicates etc
