@@ -226,7 +226,7 @@ _haveCommonFactors(Time, FstNode, SndNode)
 	:-	_areSiblings(Time, FstNode, SndNode),
 		_factorOf(Time, FstNode, FstFactor),
 		_factorOf(Time, SndNode, SndFactor),
-		_equal(Time, FstFactor, SndFactor).
+		_areEqual(Time, FstFactor, SndFactor).
 
 
 _hasTwoTerms(Time, Node)
@@ -243,7 +243,7 @@ _sameDenom(Time, FstFrac, SndFrac)
 	:-	_areSiblings(Time, FstFrac, SndFrac),
 		_denomOf(Time, FstFrac, FstDenom),
 		_denomOf(Time, SndFrac, SndDenom),
-		_equal(Time, FstDenom, SndDenom).
+		_areEqual(Time, FstDenom, SndDenom).
 
 % counting number of children
 % XXX: requires that we 'slide' down siblings of a deleted node, to work correctly

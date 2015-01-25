@@ -132,7 +132,7 @@ _solved(Time)	% solved if (x+c_1) * (x + c_2) ... = 0
 %%[>_solved(Time)	% solved if c = c<]%%
 	%%[>:-	_polyProperty(Time, leftSide, is_const),<]%%
 		%%[>_polyProperty(Time, rightSide, is_const),<]%%
-		%%[>_equal(Time, leftSide, rightSide).<]%%
+		%%[>_areEqual(Time, leftSide, rightSide).<]%%
 
 _solved(SndTime)
 	:-	_solved(FstTime),

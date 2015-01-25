@@ -42,7 +42,7 @@ _applicable(Time, _rule(divIdent, _operands(Fraction)))
 	:-	_isDiv(Time, Fraction),
 		_numerOf(Time, Fraction, Numer),
 		_denomOf(Time, Fraction, Denom),
-		_equal(Time, Numer, Denom).
+		_areEqual(Time, Numer, Denom).
 _setToOne(Time, Fraction)
 	:-	_operand(Time, Fraction, divIdent, left).
 
@@ -169,7 +169,7 @@ _applicable(Time, _rule(fracCancel, _operands(FstNode, SndNode)))
 1 { _factorsToCancel(Time, NumerFactor, DenomFactor) : 
 		_factorOf(Time, Numer, NumerFactor), 
 		_factorOf(Time, Denom, DenomFactor),
-		_equal(Time, NumerFactor, DenomFactor) } 1
+		_areEqual(Time, NumerFactor, DenomFactor) } 1
 	:-	_operand(Time, Numer, fracCancel, left),
 		_operand(Time, Denom, fracCancel, right).
 _cancelTerm(Time, Fst)
@@ -533,7 +533,7 @@ _saveEqnResult(Time)
 %================================================================================
 _applicable(Time, _rule(swapTerms, _operands(FstTerm, SndTerm)))
 	:-	_swappableTerms(Time, FstTerm, SndTerm),
-		not _equal(Time, FstTerm, SndTerm).	% NOTE: swapping equal terms is basically a NO-OP
+		not _areEqual(Time, FstTerm, SndTerm).	% NOTE: swapping equal terms is basically a NO-OP
 
 _deepCopy(Time, FstTerm, SndTerm)
 	:-	_operand(Time, FstTerm, swapTerms, left),
@@ -620,7 +620,7 @@ _applicable(Time, _rule(cancelSumTerm, _operands(LeftChild, RightChild)))
 		_isAdd(Time, rightSide),
 		_isATermOf(Time, leftSide, LeftChild),
 		_isATermOf(Time, rightSide, RightChild),
-		_equal(Time, LeftChild, RightChild).
+		_areEqual(Time, LeftChild, RightChild).
 _cancelTerm(Time, Node)
 	:-	_operand(Time, Node, cancelSumTerm, Side).
 
@@ -632,7 +632,7 @@ _applicable(Time, _rule(addInverses, _operands(SndSibling, FstSibling)))
 		_isBeingAdded(Time, FstSibling),
 		_isNeg(Time, SndSibling),
 		_isATermOf(Time, SndSibling, Child),
-		_equal(Time, FstSibling, Child).
+		_areEqual(Time, FstSibling, Child).
 
 % we know the result is zero, writeBinaryOp handles the rewrite 
 _setTempNodeToMono(Time, tempResultRoot, 0, 0)	

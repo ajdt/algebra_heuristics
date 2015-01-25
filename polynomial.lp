@@ -180,7 +180,7 @@ _equalDegs(Time, FstMono, SndMono)
 		_node(SndMono),
 		Time != initially,
 		FstMono != SndMono.
-_equal(Time, FstMono, SndMono)
+_areEqual(Time, FstMono, SndMono)
 	:-	_equalDegs(Time, FstMono, SndMono),
 		_coeffOf(Time, FstMono, Coeff),
 		_coeffOf(Time, SndMono, Coeff),
@@ -194,7 +194,7 @@ _equal(Time, FstMono, SndMono)
 % Basically, if child 1 of Node X equals child 1 of Node Y, and so on...
 % IMPORTANT NOTE: The code below checks for structural equality
 %		Thus, x + 1		is NOT considered equal to 	1 + x 
-_equal(Time, FstNode, SndNode)
+_areEqual(Time, FstNode, SndNode)
 	:-	_correspChildrenAreEqual(Time, FstNode, SndNode),
 		_hasType(Time, FstNode, Type),
 		_hasType(Time, SndNode, Type),
@@ -215,7 +215,7 @@ _haveUnequalChildren(Time, FstNode, SndNode)	% found a corresponding pair that i
 		_childNum(FstNode, FstChild, Num),
 		_childNum(SndNode, SndChild, Num),
 		Num <= TotalChildren,
-		not _equal(Time, FstChild, SndChild).
+		not _areEqual(Time, FstChild, SndChild).
 _haveUnequalChildren(Time, FstNode, SndNode)	% if two nodes have an unequal number of children
 	:-	_isActive(Time, FstNode),				% then they're automatically unequal
 		_isActive(Time, SndNode),
