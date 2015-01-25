@@ -21,6 +21,7 @@ def makeSanitizedFile(file_name):
     """remove comments. Save to new file"""
     file_obj    = open(file_name, 'r')
     code        = re.sub('%.*\n', '\n', file_obj.read()) # remove comments
+    code        = re.sub('#.*\n', '\n', code) # remove comments
 
     # create new file and write new code to file, return temp file name
     # NOTE: new_file_name should be deleted by caller
@@ -30,27 +31,36 @@ def makeSanitizedFile(file_name):
     new_file_obj.close()
     return new_file_obj.name
 
-def parseRules():
-    """ parse rules file and initialize an explanation manager for the parsed rules"""
-    temp_file_name  = makeSanitizedFile('rules.lp')
+def getRulesListFromFile(file_name):
+    temp_file_name  = makeSanitizedFile(file_name)
     rules_list      = par.parseRulesFromFile(temp_file_name)
+    os.remove(temp_file_name)
+    return rules_list
 
+def parseFiles(file_list):
+    rules_list = []
+    for rule_file in file_list:
+        rules_list += getRulesListFromFile(rule_file)
+
+    # populate manager from rules_list
     template_mgr    = ExplanationManager()
     for rule in rules_list:
         #print makeExplanationForRule(rule)
         template_mgr.addExplanationTemplate(rule)
-    # TODO: for testing purposes only; remove later
-    for template in template_mgr.templates.values():
-        if template.rule.head.name == '_applicable':
-            nested_pred = template.rule.head.args[1]
-            print '## ', nested_pred.args[0]
-            #print nested_pred.name, nested_pred.args, nested_pred.args[1].__class__.__name__
-            for sentence in  template.makeExplanation({})[1]:
-                print str(sentence)
-        #print template.makeExplanation({})
-
-    os.remove(temp_file_name)
+    #for template in template_mgr.templates.values():
+        ##if template.rule.head.name == '_applicable':
+            ##nested_pred = template.rule.head.args[1]
+            ##print '## ', nested_pred.args[0]
+            ###print nested_pred.name, nested_pred.args, nested_pred.args[1].__class__.__name__
+            ##for sentence in  template.makeExplanation({})[1]:
+                ##print str(sentence)
+        #for sentence in template.makeExplanation({})[1]:
+            #print str(sentence)
     return template_mgr
+
+def parseRules():
+    """ parse rules file and initialize an explanation manager for the parsed rules"""
+    return parseFiles(['rules.lp'])
 
 ## convert predicate name from camelcase to proper explanation
 def convertFromCamelCase(name):
@@ -187,14 +197,11 @@ class TemplateSentence(object):
         
 # extract predicate and variables from a given
 # I've written this function mostly to verify that everything works
-def main():
-    name =  makeSanitizedFile('nodes.lp')
-    print 'filename', name
-    print open(name, 'r').read()
-    os.remove(name)
-    print 'file now deleted'
-
+def main(files):
+    parseFiles(files)
 if __name__ == '__main__':
-    #main()
-    parseRules()
+    #files_to_parse = ['rules.lp', 'eqn_generator.lp', 'nodes.lp', 'polynomial.lp', 'heuristics.lp']
+    files_to_parse = ['rules.lp', 'nodes.lp']
+    main(files_to_parse)
+
 

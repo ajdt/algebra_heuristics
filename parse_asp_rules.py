@@ -70,8 +70,10 @@ class RuleListener(PrologRulesListener):
     # remove predicates relating to facts or constraints (just interested in rule definitions)
     def exitFact(self, ctx):
         self.popLastPredicate()
+    def enterConstraint(self, ctx):
+        self.pushContainer([])
     def exitConstraint(self, ctx):
-        self.popLastPredicate()
+        self.popContainer()
 
     def enterGuessrule(self, ctx):  # want to ignore guessrules
         self.pushContainer([])
