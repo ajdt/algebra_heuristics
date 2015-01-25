@@ -77,12 +77,12 @@ class ExplanationManager(object):
         else:
             self.templates[rule_key] = ExplanationTemplate(rule, self)
 
-    def lookupTemplateFor(self, predicate_key, explanation_depth=1):
+    def lookupTemplateFor(self, predicate_key, var_assignment={}, explanation_depth=1):
         """generate an explanation for the given predicate_name and arity.
         explanation_depth controls how detailed the generated explanation is
         NOTE: predicate_key  should be generated using ExplanationManager.makeRuleKey(rule)
         """
-        pass
+        return ['explanation string']
 
     @staticmethod
     def makeRuleKey(rule):
@@ -138,12 +138,20 @@ class TemplateSentence(object):
         super(TemplateSentence, self).__init__()
         self.sentence, self.variables = sentence, variables
 
-    def injectVariables(self):
-        vars_to_inject = list(self.variables)
+    def injectVariables(self, var_assignments={}):
+        var_names = list(self.variables)
 
         # remove Time variable; won't be used
-        if 'Time' in vars_to_inject:
-            vars_to_inject.remove('Time')
+        if 'Time' in var_names:
+            var_names.remove('Time')
+
+        # substitute values for assigned variables, keep unassigned variables same
+        vars_to_inject = []
+        for variable in var_names:
+            if var_assignments.has_key(variable):
+                vars_to_inject.append(var_assignments[variable])
+            else:
+                vars_to_inject.append(variable)
 
         # predicate name contains 'of', then assume desired string is 'Var1 <predicate description> Var2'
         if 'of' in self.sentence.split():
@@ -175,5 +183,4 @@ def main():
 if __name__ == '__main__':
     #main()
     parseRules()
-
 

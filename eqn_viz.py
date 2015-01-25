@@ -16,9 +16,30 @@ import json
 import re
 import sympy as sp
 from collections import defaultdict
+from collections import namedtuple
 import pdb
 from pyparsing import Word, alphas, nums, ParseException
 
+import explanation_extractor as explain
+
+# parse all heuristics from list_of_heuristics.txt file 
+# NOTE: assumes file exists and is complete: to generate file just run the command "bash make_heur_list.sh"
+Heuristic           =   namedtuple('Heuristic', ['name', 'priority', 'trigger'])
+heur_file = open('list_of_heuristics.txt', 'r')
+HEUR_INFO = {}
+for line in heur_file:
+    #print line.split(' ')
+    heur_name, priority, trigger = [item.strip() for item in line.split(' ') ]
+    HEUR_INFO[heur_name] = Heuristic(heur_name, priority, trigger)
+heur_file.close()
+
+# template manager
+TEMPLATE_MANAGER = None
+def getTemplateManager(): # used to manage singleton template_manager
+    global TEMPLATE_MANAGER
+    if TEMPLATE_MANAGER == None:
+        TEMPLATE_MANAGER = explain.parseRules()
+    return TEMPLATE_MANAGER
 
 # values is a list of dictionaries, each dictionary contains one solution.
 # each dictionary has one key called 'Value' which refers to a list of predicates and their values
@@ -72,6 +93,13 @@ class GeneratedProblem(object):
         return self.equation_parameters
     def getProblemString(self):
         return self.equation_parameters['equation_steps'][0]
+
+    def getSolutionStringWithExplanations(self):
+        steps           = self.equation_parameters['equation_steps']
+        explanations    = self.equation_parameters['explanations']
+        combined        = map(lambda step, expl : step + '\n\t\t' + expl, steps, explanations)
+        return '\n'.join(combined)
+
     def getSelectedHeuristics(self):
         return set(self.equation_parameters['selected_heuristics'])
     def getApplicableHeuristics(self):
@@ -146,6 +174,7 @@ class EquationStepParser:
             string = left + '=' + right
         return string
 
+    # TODO: simplify getting string for a step
     # getStepString will output both the eqn for a given step as well as operands and heuristic applied
     def getStepString(self, as_latex=False, json_output=False):
         eqn_string = self.getEqnString(as_latex, json_output)
@@ -183,6 +212,16 @@ class EquationStepParser:
                 child_strings.append( self.makeEqnString(child) )
             oper_symbol = op_symbols[self.node_types[root_node]]
             return '(' + oper_symbol.join(child_strings) + ')'
+
+    def getExplanationString(self):
+        if self.action is None: # last step has no action string
+            return ''
+        operands        = self.getOperands()
+        condition       = HEUR_INFO[self.action].trigger
+        arity           = len(operands)
+        template_key    = (condition, arity)
+        template_mgr    = getTemplateManager()
+        return '\n'.join(template_mgr.lookupTemplateFor(template_key, operands))
 
     def makeMonomial(self, node_name):
         """ Given a node name, construct the monomial referenced by that node"""
@@ -270,6 +309,8 @@ class MathProblemParser(object):
         return [step.getTreeStructure() for step in self.solution_steps.values()]
     def getActions(self):
         return list(self.actions)
+    def getExplanationsForSteps(self):
+        return [step.getExplanationString() for step in self.solution_steps.values()]
     def addApplicableAction(self, action_name):
         self.applicable_actions.add(action_name)
     def getApplicableActions(self):
@@ -280,7 +321,8 @@ class MathProblemParser(object):
                          'operands': self.getOperands(),
                          'selected_heuristics': self.getActions(),
                          'applicable_heur': self.getApplicableActions(),
-                         'expression_trees': self.getEqnTrees() }
+                         'expression_trees': self.getEqnTrees(),
+                         'explanations': self.getExplanationsForSteps()}
         return GeneratedProblem(eqn_params)
 
 class AnswerSetParser(object):
@@ -393,7 +435,7 @@ class AnswerSetManager(json.JSONEncoder):
 
     def getAnsSetsAsJSON(self):
         return [ self.encode(ans).replace('\n', '')  for ans in self.answer_sets]
-    def printAnswerSets(self, json_printing=False):
+    def printAnswerSets(self, json_printing=False, with_explanation=False):
         """display all answer sets in user-friendly way"""
         if json_printing:
             for ans_set in self.getAnsSetsAsJSON():
@@ -401,7 +443,10 @@ class AnswerSetManager(json.JSONEncoder):
         else:
             for ans_set in self.answer_sets:
                 for problem in ans_set.getMathProblems():
-                    print problem.getSolutionString(as_latex=False, json_output=json_printing) + '\n\n'
+                    if with_explanation:
+                        print problem.getSolutionStringWithExplanations() + '\n\n'
+                    else:
+                        print problem.getSolutionString(as_latex=False, json_output=json_printing) + '\n\n'
             print 30*"-"
 
 def main(cmd_line_args):
@@ -423,7 +468,7 @@ def main(cmd_line_args):
 
     # print results. NOTE: prints to file if save_file parameter is used
     json_output = cmd_line_args['json_output'] == 'true'
-    manager.printAnswerSets(json_printing=json_output)
+    manager.printAnswerSets(json_printing=json_output, with_explanation=True)
 
     # restore stdout
     sys.stdout = old_stdout
