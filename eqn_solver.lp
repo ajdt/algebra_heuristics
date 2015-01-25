@@ -37,12 +37,12 @@ _startTime(Time)
 _stopTime(Time)
 		:-	_stepOf(Time, maxSteps).
 % every time(..) predicate is a valid time
-_validTime(Time)
+__validTime(Time)
 		:-	_stepOf(Time, Step).
 
 _sameStep(FstTime, SndTime)	% FstTime < SndTime will hold
-		:-	_validTime(FstTime),
-			_validTime(SndTime),
+		:-	__validTime(FstTime),
+			__validTime(SndTime),
 			_streamOf(FstTime, FstStream),
 			_streamOf(SndTime, SndStream),
 			FstStream < SndStream,
@@ -189,15 +189,15 @@ _sameTimeStream(Fst, Snd)
 		Fst != Snd.
 
 _unequalTimeSteps(Fst, Snd)
-	:-	_validTime(Fst),
-		_validTime(Snd),
+	:-	__validTime(Fst),
+		__validTime(Snd),
 		Fst != Snd,
 		_sameTimeStream(Fst, Snd),
 		_holds(Fst, Fluent),
 		not _holds(Snd, Fluent).
 _redundantStep(Fst)
-	:-	_validTime(Fst),
-		_validTime(Snd),
+	:-	__validTime(Fst),
+		__validTime(Snd),
 		Fst != Snd,
 		_sameTimeStream(Fst, Snd),
 		not _unequalTimeSteps(Fst, Snd).
@@ -224,6 +224,6 @@ selectedHeuristic(Name)
 _stepUsesHeuristic(Time)
 	:-	_selectedHeuristic(Time, Name).
 %%% CONSTRAINT: step without heuristic
-:-	_validTime(Time),
+:-	__validTime(Time),
 	not _stopTime(Time),
 	not _stepUsesHeuristic(Time).

@@ -37,7 +37,7 @@ _hasZeroDeg(Time, Node)
 	not _hasZeroDeg(Time, Node).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Polynomial Properties %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% CONSTRAINT: ensure polynomials are in descending order
-:-	_validTime(Time), _monosOutOfOrder(Time).
+:-	__validTime(Time), _monosOutOfOrder(Time).
 _monoSiblings(Time, Fst, Snd)
 	:-	_siblings(Time, Fst, Snd),
 		Fst < Snd,

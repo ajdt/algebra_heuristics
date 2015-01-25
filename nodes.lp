@@ -222,7 +222,7 @@ _haveCommonFactors(Time, FstNode, SndNode)
 
 
 _hasTwoTerms(Time, Node)
-		:-	_validTime(Time),
+		:-	__validTime(Time),
 			_node(Node),
 			2 { _activeChild(Time, Node, Child) : _validChildOf(Node, Child) } 2.
 _parentHasTwoChildren(Time, Child)

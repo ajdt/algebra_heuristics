@@ -135,7 +135,7 @@ class ExplanationTemplate(object):
 
     def makeExplanation(self, var_assignments, depth=1):
         """ var_assignments is a list of variable values to substitute in the explanation"""
-        return (self.rule.head.name, [ self.makeConditionExplanation(cond) for cond in self.rule.body] )
+        return (self.rule.head.name, [ self.makeConditionExplanation(cond) for cond in self.rule.body if not self.isSkippedCondition(cond)] )
 
     # each of these returns a list with text explanations
     def makeConditionExplanation(self, condition, stop_depth=0, depth=0):
@@ -152,6 +152,9 @@ class ExplanationTemplate(object):
         pass
     def makePredcountExplanation(self, predcount, stop_depth=0, depth=0):
         pass
+    def isSkippedCondition(self, condition):
+        if isinstance(condition, par.Predicate) and '__' in condition.name:
+            return True
 
 
 class TemplateSentence(object):

@@ -29,9 +29,9 @@ _writeBinaryOp(Time, Fst, Snd)
 		_writeBinaryOp(Time).
 % saving the results of an Equation-wide operation
 _deepCopy(Time, RootNode, TempRoot)
-	:-	_saveEqnResult(Time),	% output saveEqnResult/1 to save equation-wide operation
-		_rootNode(RootNode),
-		TempRoot = _temp(RootNode) .
+    :-	_saveEqnResult(Time),	% output saveEqnResult/1 to save equation-wide operation
+        _rootNode(RootNode),
+        TempRoot = _temp(RootNode) .
 
 
 %================================================================================
@@ -486,7 +486,7 @@ _setResultTo(Time, Fraction)
 % addMonoToEqn:	A = B --> A + e = B + e
 %================================================================================
 _applicable(Time, _rule(addMonoToEqn, _operands(leftSide, rightSide)))
-	:-	_validTime(Time).	
+	:-	__validTime(Time).	
 
 % select an arbitrary degree and coefficient
 1 { _selectedDeg(Time, Deg) : _degree(Deg) } 1
@@ -509,7 +509,7 @@ _saveEqnResult(Time)
 % NOTE: commented out b/c this rule seems redundant now that we can multiply by any
 % existing subtree. Not clear that we would ever want to multiply by an arbitrary mono
 %%_applicable(Time, _rule(multEqnWithMono, _operands(leftSide, rightSide)))%%
-	%%:-	_validTime(Time).	%%
+	%%:-	__validTime(Time).	%%
 
 %%% select an arbitrary degree and coefficient%%
 %%1 { _selectedDeg(Time, Deg) : _degree(Deg) } 1%%
@@ -571,10 +571,11 @@ _applicable(Time, _rule(percolateNeg, _operands(Node, Node)))
 
 			%%% negating nodes
 % mono case
-_setTempNodeToMono(Time, tempResultRoot, Deg, Coeff*-1)
+_setTempNodeToMono(Time, tempResultRoot, Deg, NegatedCoeff)
 	:-	_operand(Time, RootNode, percolateNeg, left),
 		_isMono(Time, RootNode),
 		_coeffOf(Time, RootNode, Coeff),
+        NegatedCoeff = Coeff*-1,
 		_degOf(Time, RootNode, Deg).
 % add operator case
 _treeOp(Time, tempResultRoot, RootNode, RootNode, negateChildren)
@@ -667,7 +668,7 @@ _saveEqnResult(Time)
 %================================================================================
 _applicable(Time, _rule(divEqnByConst, _operands(Coeff)))
 	:-	_coeff(Coeff),
-		_validTime(Time).
+		__validTime(Time).
 _eqnOp(Time, Coeff, divConst)
 	:-	_operand(Time, Coeff, divEqnByConst, left).
 % save the results
@@ -691,7 +692,7 @@ _saveEqnResult(Time)
 % decreaseDeg: x^4 + x^2= 0  --> x^2 + 1 = 0 (example)
 %================================================================================
 _applicable(Time, _rule(decreaseDeg, _operands(leftSide)))
-	:-	_validTime(Time),
+	:-	__validTime(Time),
 		not _xVarCannotBeSubstituted(Time),
 		_eqnHasNonConstantTerms(Time).
 _update(Time, Node, degree, ResultDeg)
@@ -771,3 +772,4 @@ _rule(divEqnByConst).
 _rule(addEqn).
 _rule(decreaseDeg).
 _rule(mulWithFrac).
+
