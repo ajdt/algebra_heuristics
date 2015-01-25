@@ -81,7 +81,7 @@ _subtreeHeight(Time, Node, Height+1)
 	0 { _hasSubtreeWithHeight(Time, Node, OtherHeight) : OtherHeight > Height } 0.
 
 _initiallyOutOfOrderByHeight(Fst, Snd)
-	:-	_siblings(StartTime, Fst, Snd),
+	:-	_areSiblings(StartTime, Fst, Snd),
 		_subtreeHeight(StartTime, Fst, FstHeight),
 		_subtreeHeight(StartTime, Snd, SndHeight),
 		_startTime(StartTime),
@@ -89,7 +89,7 @@ _initiallyOutOfOrderByHeight(Fst, Snd)
 
 _initiallyOutOfOrderByNumKids(Fst, Snd)
 	:-	_startTime(StartTime),
-		_siblings(StartTime, Fst, Snd),
+		_areSiblings(StartTime, Fst, Snd),
 		not _initiallyOutOfOrderByHeight(Fst, Snd),
 		_numActiveChildren(StartTime, Fst, FstTotal),
 		_numActiveChildren(StartTime, Snd, SndTotal),

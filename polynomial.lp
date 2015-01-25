@@ -39,7 +39,7 @@ _hasZeroDeg(Time, Node)
 %%% CONSTRAINT: ensure polynomials are in descending order
 :-	__validTime(Time), _monosOutOfOrder(Time).
 _monoSiblings(Time, Fst, Snd)
-	:-	_siblings(Time, Fst, Snd),
+	:-	_areSiblings(Time, Fst, Snd),
 		Fst < Snd,
 		_isMono(Time, Fst),
 		_isMono(Time, Snd).

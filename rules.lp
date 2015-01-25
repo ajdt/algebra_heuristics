@@ -53,7 +53,7 @@ _applicable(Time, _rule(multFrac, _operands(LeftFrac, RightFrac)))
 	:-	_isDiv(Time, LeftFrac),
 		_isDiv(Time, RightFrac),
 		LeftFrac < RightFrac,
-		_siblings(Time, LeftFrac, RightFrac),
+		_areSiblings(Time, LeftFrac, RightFrac),
 		_isBeingMultiplied(Time, LeftFrac).
 
 % set result as a fraction with numer and denom as fractions
@@ -75,7 +75,7 @@ _writeBinaryOp(Time)
 % fracDiv: a/c / b/d --> a/c * d/b
 %================================================================================
 _applicable(Time, _rule(fracDiv, _operands(NumerFrac, DenomFrac)))
-			:-	_siblings(Time, NumerFrac, DenomFrac),
+			:-	_areSiblings(Time, NumerFrac, DenomFrac),
 				_isDiv(Time, NumerFrac),
 				_isDiv(Time, DenomFrac),
 				NumerFrac < DenomFrac, % to ensure NumerFrac actually corresponds to numerator
@@ -120,7 +120,7 @@ _setResultTo(Time, leftSide)
 %================================================================================
 
 _applicable(Time, _rule(addMonom, _operands(LeftMono, RightMono)))
-	:-	_siblings(Time, LeftMono, RightMono),
+	:-	_areSiblings(Time, LeftMono, RightMono),
 		_equalDegs(Time, LeftMono, RightMono),
 		_isMono(Time, LeftMono),
 		_isMono(Time, RightMono),
@@ -140,7 +140,7 @@ _writeBinaryOp(Time)
 % monomult ax^b  * cx^d --> (a*c)x^(b+d)
 %================================================================================
 _applicable(Time, _rule(monoMult, _operands(LeftMono, RightMono)))
-	:-	_siblings(Time, LeftMono, RightMono),
+	:-	_areSiblings(Time, LeftMono, RightMono),
 		_isMono(Time, LeftMono),
 		_isMono(Time, RightMono),
 		LeftMono < RightMono,
@@ -159,7 +159,7 @@ _writeBinaryOp(Time)
 % NOTE: relies on equal/3 predicate to work
 _applicable(Time, _rule(fracCancel, _operands(FstNode, SndNode)))
 	:-	_haveCommonFactors(Time, FstNode, SndNode),
-		_siblings(Time, FstNode, SndNode),
+		_areSiblings(Time, FstNode, SndNode),
 		_isMul(Time, FstNode),
 		_isMul(Time, SndNode),
 		_isBeingDivided(Time, FstNode),
@@ -216,7 +216,7 @@ _setResultTo(Time, Poly)
 %================================================================================
 % NOTE: _sameDenom depends on equals/3 predicate (which applies only to monomials)
 _applicable(Time, _rule(addSameFrac, _operands(Fst, Snd)))
-	:-	_siblings(Time, Fst, Snd),
+	:-	_areSiblings(Time, Fst, Snd),
 		_sameDenom(Time, Fst, Snd),
 		Fst < Snd,
 		_isBeingAdded(Time, Fst).
@@ -244,7 +244,7 @@ _writeBinaryOp(Time)
 % NOTE: requires max depth of allowable expression trees to be at least 4 
 % NOTE: also dependent on equal/3 predicate
 %%_applicable(Time, _rule(addDiffFrac, _operands(Fst, Snd)))%%
-	%%:-	_siblings(Time, Fst, Snd),%%
+	%%:-	_areSiblings(Time, Fst, Snd),%%
 		%%_isDiv(Time, Fst),%%
 		%%_isDiv(Time, Snd),%%
 		%%Fst < Snd, %%
@@ -284,7 +284,7 @@ _writeBinaryOp(Time)
 % distribute (a + b) * C --> (a*C + b*C)
 %================================================================================
 _applicable(Time, _rule(distribute, _operands(PlusTerm, DistribTerm)))
-	:-	_siblings(Time, PlusTerm, DistribTerm),
+	:-	_areSiblings(Time, PlusTerm, DistribTerm),
 		_isBeingMultiplied(Time, PlusTerm),
 		PlusTerm < DistribTerm, % TODO: this is necessary, but prevents distribute if C occurs before (a+b) term
 		_isAdd(Time, PlusTerm).
@@ -538,12 +538,12 @@ _applicable(Time, _rule(swapTerms, _operands(FstTerm, SndTerm)))
 _deepCopy(Time, FstTerm, SndTerm)
 	:-	_operand(Time, FstTerm, swapTerms, left),
 		_operand(Time, SndTerm, swapTerms, right),
-		_siblings(Time, FstTerm, SndTerm).	% specify operands are siblings to avoid excessively large grounding
+		_areSiblings(Time, FstTerm, SndTerm).	% specify operands are siblings to avoid excessively large grounding
 
 _deepCopy(Time, SndTerm, FstTerm)
 	:-	_operand(Time, FstTerm, swapTerms, left),
 		_operand(Time, SndTerm, swapTerms, right),
-		_siblings(Time, FstTerm, SndTerm).
+		_areSiblings(Time, FstTerm, SndTerm).
 
 %================================================================================
 % cancelNegatives: -(-A) --> A
@@ -628,7 +628,7 @@ _cancelTerm(Time, Node)
 % addInverses: A + -A --> 0 
 %================================================================================
 _applicable(Time, _rule(addInverses, _operands(SndSibling, FstSibling)))
-	:-	_siblings(Time, FstSibling, SndSibling),
+	:-	_areSiblings(Time, FstSibling, SndSibling),
 		_isBeingAdded(Time, FstSibling),
 		_isNeg(Time, SndSibling),
 		_isATermOf(Time, SndSibling, Child),
@@ -720,7 +720,7 @@ _eqnHasNonConstantTerms(Time)
 % mulWithFrac: (A/B) * D --> (A*D)/B
 %================================================================================
 _applicable(Time, _rule(mulWithFrac, _operands(Fraction, NotFraction)))
-	:-	_siblings(Time, Fraction, NotFraction),
+	:-	_areSiblings(Time, Fraction, NotFraction),
 		_isBeingMultiplied(Time, Fraction),
 		_isDiv(Time, Fraction),
 		not _isDiv(Time, NotFraction).
