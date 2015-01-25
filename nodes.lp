@@ -170,6 +170,14 @@ _nestedGrouping(Time, Child)
 _parentType(Time, Child, Type)
 		:-	_activeChild(Time, Parent, Child),
 			_hasType(Time, Parent, Type).
+_isBeingMultiplied(Time, Child)
+        :-  _parentType(Time, Child, mul).
+_isBeingDivided(Time, Child)
+        :-  _parentType(Time, Child, div).
+_isBeingAdded(Time, Child)
+        :-  _parentType(Time, Child, add).
+_isBeingNegated(Time, Child)
+        :-  _parentType(Time, Child, neg).
 
 _activeChild(Time, Parent, Child)
 		:-	_isActive(Time, Parent),
@@ -307,14 +315,14 @@ _applyNodeOpRecursive(Time, Child, delete)
 % NOTE: if parent has more than two children, we assume that @ least two children will
 _setToOne(Time, Node)	% term is numer or denom of a fraction
 		:-	_cancelTerm(Time, Node),
-			_parentType(Time, Node, div).
+			_isBeingDivided(Time, Node).
 _setToNegOne(Time, Node)	% term is negated, so we still have a -1 term
 		:-	_cancelTerm(Time, Node),
-			_parentType(Time, Node, neg).
+			_isBeingNegated(Time, Node).
 
 _replaceParent(Time, Sibling) 	% term is one of two children, replace parent with other child
 		:-	_cancelTerm(Time, Node),
-			not _parentType(Time, Node, div),
+			not _isBeingDivided(Time, Node),
 			_parentHasTwoChildren(Time, Node),
 			_siblings(Time, Node, Sibling),
 			not _cancelTerm(Time, Sibling),	% ensure the other child isn't also cancelled
@@ -327,7 +335,7 @@ _replaceParent(Time, Sibling) 	% term is one of two children, replace parent wit
 %%			all other siblings and delete the node at the end
 _shiftDownTerms(Time, Node)
 		:-	_cancelTerm(Time, Node),
-			not _parentType(Time, Node, div),
+			not _isBeingDivided(Time, Node),
 			not _parentHasTwoChildren(Time, Node).	% XXX: assumes parent has 3 or more children
 _shiftAdjacentTermDown(Time, Node, AdjacentSibling)
 		:-	_shiftDownTerms(Time, Node),

@@ -54,7 +54,7 @@ _applicable(Time, _rule(multFrac, _operands(LeftFrac, RightFrac)))
 		_isDiv(Time, RightFrac),
 		LeftFrac < RightFrac,
 		_siblings(Time, LeftFrac, RightFrac),
-		_parentType(Time, LeftFrac, mul).
+		_isBeingMultiplied(Time, LeftFrac).
 
 % set result as a fraction with numer and denom as fractions
 _activateTempAndSetChildren(Time, tempResultRoot, div, 2)
@@ -79,7 +79,7 @@ _applicable(Time, _rule(fracDiv, _operands(NumerFrac, DenomFrac)))
 				_isDiv(Time, NumerFrac),
 				_isDiv(Time, DenomFrac),
 				NumerFrac < DenomFrac, % to ensure NumerFrac actually corresponds to numerator
-				_parentType(Time, NumerFrac, div).
+				_isBeingDivided(Time, NumerFrac).
 
 % set root node to multiplication node
 _activateTempAndSetChildren(Time, tempResultRoot, mul, 2)
@@ -127,7 +127,7 @@ _applicable(Time, _rule(addMonom, _operands(LeftMono, RightMono)))
 		not _isZero(Time, LeftMono),	% if either mono is zero, then addZero rule is used instead
 		not _isZero(Time, RightMono),
 		LeftMono < RightMono,
-		_parentType(Time, LeftMono, add).
+		_isBeingAdded(Time, LeftMono).
 
 _monoOp(Time, tempResultRoot, LeftMono, RightMono, add)
 	:-	_operand(Time, LeftMono, addMonom, left),
@@ -144,7 +144,7 @@ _applicable(Time, _rule(monoMult, _operands(LeftMono, RightMono)))
 		_isMono(Time, LeftMono),
 		_isMono(Time, RightMono),
 		LeftMono < RightMono,
-		_parentType(Time, LeftMono, mul).
+		_isBeingMultiplied(Time, LeftMono).
  
 _monoOp(Time, tempResultRoot, LeftMono, RightMono, mul)
 	:-	_operand(Time, LeftMono, monoMult, left),
@@ -162,7 +162,7 @@ _applicable(Time, _rule(fracCancel, _operands(FstNode, SndNode)))
 		_siblings(Time, FstNode, SndNode),
 		_isMul(Time, FstNode),
 		_isMul(Time, SndNode),
-		_parentType(Time, FstNode, div),
+		_isBeingDivided(Time, FstNode),
 		FstNode < SndNode. % ensure numerator comes first
 
 % select a common factor and then cancel it
@@ -219,7 +219,7 @@ _applicable(Time, _rule(addSameFrac, _operands(Fst, Snd)))
 	:-	_siblings(Time, Fst, Snd),
 		_sameDenom(Time, Fst, Snd),
 		Fst < Snd,
-		_parentType(Time, Fst, add).
+		_isBeingAdded(Time, Fst).
 
 % set root to a fraction
 _activateTempAndSetChildren(Time, tempResultRoot, div, 2)
@@ -248,7 +248,7 @@ _writeBinaryOp(Time)
 		%%_isDiv(Time, Fst),%%
 		%%_isDiv(Time, Snd),%%
 		%%Fst < Snd, %%
-		%%_parentType(Time, Fst, add).%%
+		%%_isBeingAdded(Time, Fst).%%
 
 %%% set root to a fraction%%
 %%_activateTempAndSetChildren(Time, tempResultRoot, div, 2)%%
@@ -285,7 +285,7 @@ _writeBinaryOp(Time)
 %================================================================================
 _applicable(Time, _rule(distribute, _operands(PlusTerm, DistribTerm)))
 	:-	_siblings(Time, PlusTerm, DistribTerm),
-		_parentType(Time, PlusTerm, mul),
+		_isBeingMultiplied(Time, PlusTerm),
 		PlusTerm < DistribTerm, % TODO: this is necessary, but prevents distribute if C occurs before (a+b) term
 		_isAdd(Time, PlusTerm).
 
@@ -325,7 +325,7 @@ _deepCopy(Time, Fraction, Numer)
 %================================================================================
 _applicable(Time, _rule(addZero, _operands(Mono)))
 	:-	_isZero(Time, Mono),
-		_parentType(Time, Mono, add).
+		_isBeingAdded(Time, Mono).
 
 _cancelTerm(Time, ZeroTerm)
 	:-	_operand(Time, ZeroTerm, addZero, left).
@@ -436,7 +436,7 @@ _setResultTo(Time, Poly)
 %================================================================================
 _applicable(Time, _rule(multByZero, _operands(ZeroTerm)))
 	:-	_isZero(Time, ZeroTerm),
-		_parentType(Time, ZeroTerm, mul).
+		_isBeingMultiplied(Time, ZeroTerm).
 
 _setToZero(Time, Parent)
 	:-	_operand(Time, ZeroTerm, multByZero, left),
@@ -447,7 +447,7 @@ _setToZero(Time, Parent)
 %================================================================================
 _applicable(Time, _rule(multIdentity, _operands(UnitTerm)))
 	:-	_isOne(Time, UnitTerm),
-		_parentType(Time, UnitTerm, mul).
+		_isBeingMultiplied(Time, UnitTerm).
 _cancelTerm(Time, UnitTerm)
 	:-	_operand(Time, UnitTerm, multIdentity, left).
 
@@ -563,11 +563,11 @@ _deepCopy(Time, GrandParent, GrandChild)
 %================================================================================
 _applicable(Time, _rule(percolateNeg, _operands(Node, Child)))
 	:-	_mulOrDiv(Time, Node),
-		_parentType(Time, Node, neg),
+		_isBeingNegated(Time, Node),
 		_activeChild(Time, Node, Child).
 _applicable(Time, _rule(percolateNeg, _operands(Node, Node)))
 	:-	_addOrMono(Time, Node),
-		_parentType(Time, Node, neg).
+		_isBeingNegated(Time, Node).
 
 			%%% negating nodes
 % mono case
@@ -629,7 +629,7 @@ _cancelTerm(Time, Node)
 %================================================================================
 _applicable(Time, _rule(addInverses, _operands(SndSibling, FstSibling)))
 	:-	_siblings(Time, FstSibling, SndSibling),
-		_parentType(Time, FstSibling, add),
+		_isBeingAdded(Time, FstSibling),
 		_isNeg(Time, SndSibling),
 		_activeChild(Time, SndSibling, Child),
 		_equal(Time, FstSibling, Child).
@@ -721,7 +721,7 @@ _eqnHasNonConstantTerms(Time)
 %================================================================================
 _applicable(Time, _rule(mulWithFrac, _operands(Fraction, NotFraction)))
 	:-	_siblings(Time, Fraction, NotFraction),
-		_parentType(Time, Fraction, mul),
+		_isBeingMultiplied(Time, Fraction),
 		_isDiv(Time, Fraction),
 		not _isDiv(Time, NotFraction).
 _activateTempAndSetChildren(Time, tempResultRoot, div, 2)
