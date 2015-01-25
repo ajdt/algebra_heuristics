@@ -98,7 +98,7 @@ _treeOp(Time, RightTemp, Numer, Denom, reciprocal)
 
 _setResultTo(Time, Root)
 	:-	_operand(Time, DenomFrac, fracDiv, right),
-		_activeChild(Time, Root, DenomFrac).
+		_isATermOf(Time, Root, DenomFrac).
 
 %================================================================================
 % ignore denominator: a / b = 0 --> a = 0
@@ -296,7 +296,7 @@ _activateTempNode(Time, tempResultRoot, add)
 _treeOp(Time, TempNode, Term, DistribTerm, mul)
 	:-	_operand(Time, DistribTerm, distribute, right),
 		_operand(Time, PlusTerm, distribute, left),
-		_activeChild(Time, PlusTerm, Term),
+		_isATermOf(Time, PlusTerm, Term),
 		_childNum(PlusTerm, Term, ChildNum),
 		_tempChildNum(tempResultRoot, TempNode, ChildNum).
 
@@ -396,7 +396,7 @@ _activateTempNode(Time, TempLeft, add)
 		_tempChildOnSide(tempResultRoot, TempLeft, left).
 _originalMonoTerm(Time, Mono, Num)	% isolate monomial terms
 	:-	_operand(Time, Poly, factorCommTerm, left),
-		_activeChild(Time, Poly, Mono),
+		_isATermOf(Time, Poly, Mono),
 		_childNum(Poly, Mono, Num).
 _newMonoTerm(Time, TempChild, Num)
 	:-	_tempChildOnSide(tempResultRoot, TempLeft, left),
@@ -440,7 +440,7 @@ _applicable(Time, _rule(multByZero, _operands(ZeroTerm)))
 
 _setToZero(Time, Parent)
 	:-	_operand(Time, ZeroTerm, multByZero, left),
-		_activeChild(Time, Parent, ZeroTerm).
+		_isATermOf(Time, Parent, ZeroTerm).
 
 %================================================================================
 % multIdentity:	A*1 --> A
@@ -549,14 +549,14 @@ _deepCopy(Time, SndTerm, FstTerm)
 % cancelNegatives: -(-A) --> A
 %================================================================================
 _applicable(Time, _rule(cancelNegatives, _operands(Parent, Child)))
-	:-	_activeChild(Time, Parent, Child),
+	:-	_isATermOf(Time, Parent, Child),
 		_isNeg(Time, Parent),
 		_isNeg(Time, Child).
 
 _deepCopy(Time, GrandParent, GrandChild)
 	:-	_operand(Time, GrandParent, cancelNegatives, left),
 		_operand(Time, Parent, cancelNegatives, right),
-		_activeChild(Time, Parent, GrandChild).
+		_isATermOf(Time, Parent, GrandChild).
 
 %================================================================================
 % percolateNeg: -(a + b) --> -a - b         -(a*b*c) --> -a*b*c
@@ -564,7 +564,7 @@ _deepCopy(Time, GrandParent, GrandChild)
 _applicable(Time, _rule(percolateNeg, _operands(Node, Child)))
 	:-	_mulOrDiv(Time, Node),
 		_isBeingNegated(Time, Node),
-		_activeChild(Time, Node, Child).
+		_isATermOf(Time, Node, Child).
 _applicable(Time, _rule(percolateNeg, _operands(Node, Node)))
 	:-	_addOrMono(Time, Node),
 		_isBeingNegated(Time, Node).
@@ -590,7 +590,7 @@ _treeOp(Time, tempResultRoot, RootNode, Child, negateSingleChild)
 % save the result
 _setResultTo(Time, Parent)
 	:-	_operand(Time, RootNode, percolateNeg, left),
-		_activeChild(Time, Parent, RootNode).
+		_isATermOf(Time, Parent, RootNode).
 
 %================================================================================
 % ungroup: a+ (b+c) +d  --> a + b + c + d
@@ -599,7 +599,7 @@ _setResultTo(Time, Parent)
 % TODO: generalize to work for add or mul situations
 _applicable(Time, _rule(ungroup, _operands(Node, Child)))
 	:-	_nestedGrouping(Time, Child),
-		_activeChild(Time, Node, Child),
+		_isATermOf(Time, Node, Child),
 		_numActiveChildren(Time, Node, NumChildren),
 		_numActiveChildren(Time, Child, NumGrandChildren),
 		_maxNumChildren(Node, MaxNumChildren),
@@ -618,8 +618,8 @@ _setResultTo(Time, RootNode)
 _applicable(Time, _rule(cancelSumTerm, _operands(LeftChild, RightChild)))
 	:-	_isAdd(Time, leftSide),
 		_isAdd(Time, rightSide),
-		_activeChild(Time, leftSide, LeftChild),
-		_activeChild(Time, rightSide, RightChild),
+		_isATermOf(Time, leftSide, LeftChild),
+		_isATermOf(Time, rightSide, RightChild),
 		_equal(Time, LeftChild, RightChild).
 _cancelTerm(Time, Node)
 	:-	_operand(Time, Node, cancelSumTerm, Side).
@@ -631,7 +631,7 @@ _applicable(Time, _rule(addInverses, _operands(SndSibling, FstSibling)))
 	:-	_siblings(Time, FstSibling, SndSibling),
 		_isBeingAdded(Time, FstSibling),
 		_isNeg(Time, SndSibling),
-		_activeChild(Time, SndSibling, Child),
+		_isATermOf(Time, SndSibling, Child),
 		_equal(Time, FstSibling, Child).
 
 % we know the result is zero, writeBinaryOp handles the rewrite 

@@ -21,11 +21,11 @@ _writeBinaryRight(Time, RightOper)
 _setResultTo(Time, Root)	
 	:-	_writeBinaryLeft(Time, LeftOper),
 		_hasTwoTerms(Time, Root),	
-		_activeChild(Time, Root, LeftOper).
+		_isATermOf(Time, Root, LeftOper).
 _setResultTo(Time, LeftOper)
 	:-	_writeBinaryLeft(Time, LeftOper),
 		not _hasTwoTerms(Time, Root),
-		_activeChild(Time, Root, LeftOper).
+		_isATermOf(Time, Root, LeftOper).
 
 % cancel unneeded terms
 _shiftDownTerms(Time, RightOper)
@@ -105,7 +105,7 @@ _copyAttribAndChildPtrStructure(Time, Dest, RootNode)
 	:-	_treeOp(Time, Dest, RootNode, RootNode, negateChildren).
 _treeOp(Time, TempChild, Child, Child, negate)
 	:-	_treeOp(Time, Dest, RootNode, RootNode, negateChildren),
-		_activeChild(Time, RootNode, Child),
+		_isATermOf(Time, RootNode, Child),
 		_childNum(RootNode, Child, ChildNum),
 		_tempChildNum(Dest, TempChild, ChildNum).
 % negate single child
@@ -116,7 +116,7 @@ _deepCopy(Time, TempChild, Child)	% deepCopy all children that aren't negated
 	:-	_treeOp(Time, Dest, RootNode, left),
 		_treeOp(Time, Dest, negateSingleChild),
 		_treeOp(Time, Dest, NegatedNode, right),
-		_activeChild(Time, RootNode, Child), Child != NegatedNode,
+		_isATermOf(Time, RootNode, Child), Child != NegatedNode,
 		_childNum(RootNode, Child, ChildNum),
 		_tempChildNum(Dest, TempChild, ChildNum).
 _treeOp(Time, TempChild, NegatedNode, NegatedNode, negate)	% negate the child indicated by operation
@@ -177,7 +177,7 @@ _deepCopy(Time, TempChild, Child)
 	:-	_treeOp(Time, Dest, ungroup),
 		_treeOp(Time, Dest, RootNode, left),
 		_childNumOfNestedNode(Time, NestedNum),
-		_activeChild(Time, RootNode, Child),
+		_isATermOf(Time, RootNode, Child),
 		_childNum(RootNode, Child, Num),
 		_tempChildNum(Dest, TempChild, Num),
 		Num < NestedNum.
@@ -185,7 +185,7 @@ _deepCopy(Time, TempChild, Child)
 _deepCopy(Time, TempChild, Child)
 	:-	_treeOp(Time, Dest, ungroup),
 		_treeOp(Time, Dest, NestedNode, right),
-		_activeChild(Time, NestedNode, Child),
+		_isATermOf(Time, NestedNode, Child),
 		_childNum(NestedNode, Child, Num),
 		_childNumOfNestedNode(Time, NestedNum),
 		NewNum = Num + NestedNum - 1,
@@ -196,7 +196,7 @@ _deepCopy(Time, TempChild, Child)
 		_treeOp(Time, Dest, RootNode, left),
 		_treeOp(Time, Dest, NestedNode, right),
 		_childNumOfNestedNode(Time, NestedNodeNum),
-		_activeChild(Time, RootNode, Child),
+		_isATermOf(Time, RootNode, Child),
 		_childNum(RootNode, Child, Num),
 		Num > NestedNodeNum,
 		_numActiveChildren(Time, NestedNode, NumNewChildren),

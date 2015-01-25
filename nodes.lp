@@ -143,11 +143,11 @@ _isZero(Time, Node)
 % node fields
 _numerOf(Time, Parent, Child)
 		:-	_isDiv(Time, Parent),
-			_activeChild(Time, Parent, Child),
+			_isATermOf(Time, Parent, Child),
 			_childNum(Parent, Child, 1).
 _denomOf(Time, Parent, Child)
 		:-	_isDiv(Time, Parent),
-			_activeChild(Time, Parent, Child),
+			_isATermOf(Time, Parent, Child),
 			_childNum(Parent, Child, 2).
 %% NOTE: need these numer/denom fields for visualizer
 _holds(Time, _fact(Parent, _nodeField(numer, Child)))
@@ -159,16 +159,16 @@ _holds(Time, _fact(Parent, _nodeField(denom, Child)))
 % NOTE: a nested grouping: is an operator node nested inside another of the same type that can be ungrouped
 % as in (x+b)+c --> x + b + c
 _nestedGrouping(Time, Child)
-		:-	_activeChild(Time, Parent, Child),
+		:-	_isATermOf(Time, Parent, Child),
 			_isAdd(Time, Parent),
 			_isAdd(Time, Child).
 _nestedGrouping(Time, Child)
-		:-	_activeChild(Time, Parent, Child),
+		:-	_isATermOf(Time, Parent, Child),
 			_isMul(Time, Parent),
 			_isMul(Time, Child).
 
 _parentType(Time, Child, Type)
-		:-	_activeChild(Time, Parent, Child),
+		:-	_isATermOf(Time, Parent, Child),
 			_hasType(Time, Parent, Type).
 _isBeingMultiplied(Time, Child)
         :-  _parentType(Time, Child, mul).
@@ -179,14 +179,14 @@ _isBeingAdded(Time, Child)
 _isBeingNegated(Time, Child)
         :-  _parentType(Time, Child, neg).
 
-_activeChild(Time, Parent, Child)
+_isATermOf(Time, Parent, Child)
 		:-	_isActive(Time, Parent),
 			_isActive(Time, Child),
 			_validChildOf(Parent, Child).
 
 _siblings(Time, FstChild, SndChild)
-		:-	_activeChild(Time, Parent, FstChild),
-			_activeChild(Time, Parent, SndChild),
+		:-	_isATermOf(Time, Parent, FstChild),
+			_isATermOf(Time, Parent, SndChild),
 			FstChild != SndChild.
 
 _swappableTerms(Time, Fst, Snd)
@@ -199,7 +199,7 @@ _reducibleToZero(Time, Node)
 		:-	_isZero(Time, Node).
 _reducibleToZero(Time, Node)
 		:-	_isMul(Time, Node),
-			_activeChild(Time, Node, Child),
+			_isATermOf(Time, Node, Child),
 			_reducibleToZero(Time, Child).
 _reducibleToZero(Time, Node)
 		:-	_isOper(Time, Node),
@@ -209,7 +209,7 @@ _everyChildReducesToZero(Time, Node)
 			not _hasNonZeroChild(Time, Node).
 _hasNonZeroChild(Time, Node)
 		:-	_isOper(Time, Node),
-			_activeChild(Time, Node, Child),
+			_isATermOf(Time, Node, Child),
 			not _reducibleToZero(Time, Child).
 
 % NOTE: A factor (for a node) is a subtree that divides the node with no remainder.
@@ -218,7 +218,7 @@ _hasNonZeroChild(Time, Node)
 % Mostly, used for fraction cancel rule.
 _factorOf(Time, Node, Child)
 	:-	_isMul(Time, Node),
-		_activeChild(Time, Node, Child).
+		_isATermOf(Time, Node, Child).
 _factorOf(Time, Node, Node)
 	:-	_isActive(Time, Node),
 		not _isMul(Time, Node).
@@ -232,10 +232,10 @@ _haveCommonFactors(Time, FstNode, SndNode)
 _hasTwoTerms(Time, Node)
 		:-	__validTime(Time),
 			_node(Node),
-			2 { _activeChild(Time, Node, Child) : _validChildOf(Node, Child) } 2.
+			2 { _isATermOf(Time, Node, Child) : _validChildOf(Node, Child) } 2.
 _parentHasTwoChildren(Time, Child)
 		:-	_hasTwoTerms(Time, Parent),
-			_activeChild(Time, Parent, Child).
+			_isATermOf(Time, Parent, Child).
 
 % fractions that have same denominator
 % XXX: fractions must be siblings to be considered for sameDenom
@@ -248,12 +248,12 @@ _sameDenom(Time, FstFrac, SndFrac)
 % counting number of children
 % XXX: requires that we 'slide' down siblings of a deleted node, to work correctly
 _numActiveChildren(Time, Node, Num)
-	:-	_activeChild(Time, Node, FstChild),
+	:-	_isATermOf(Time, Node, FstChild),
 		_childNum(Node, FstChild, Num),
 		_childNum(Node, SndChild, Num+1),
 		not _isActive(Time, SndChild).
 _numActiveChildren(Time, Node, Num)
-	:-	_activeChild(Time, Node, FstChild),
+	:-	_isATermOf(Time, Node, FstChild),
 		_childNum(Node, FstChild, Num),
 		_maxNumChildren(Node, Num).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CHANGING NODE PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -279,7 +279,7 @@ _applyNodeOp(Time, Node, Op)
 		:-	_applyNodeOpRecursive(Time, Node, Op).
 _applyNodeOpRecursive(Time, Child, Op)
 		:-	_applyNodeOpRecursive(Time, Node, Op),
-			_activeChild(Time, Node, Child).
+			_isATermOf(Time, Node, Child).
 
 % applying the operations
 % NOTE: clearing won't delete any nodes in the subtree rooted at 'Node'
@@ -306,7 +306,7 @@ _applyNodeOp(Time, Node, clear)
 
 _applyNodeOpRecursive(Time, Child, delete)
 		:-	_clearNodeDeleteDescendants(Time, RootNode),
-			_activeChild(Time, RootNode, Child).
+			_isATermOf(Time, RootNode, Child).
 			%%% remove a subtree including pointers to it
 % cancelTerm -- used to remove terms cancelled via division operation, may update parent
 % deleteTerm -- just deletes a subtree
@@ -364,7 +364,7 @@ _removeReferencesToNode(Time, Node)
 		
 _remove(Time, _fact(Parent, _nodeField(activechild, Node)))
 		:-	_removeReferencesToNode(Time, Node),
-			_activeChild(Time, Parent, Node).
+			_isATermOf(Time, Parent, Node).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COPYING NODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: all copying is deep copying
@@ -477,7 +477,7 @@ _insufficientNodesError	% copying from regular node to regular node
 % replace parent with one of its children
 _deepCopy(Time, Parent, Node)
 		:-	_replaceParent(Time, Node),
-			_activeChild(Time, Parent, Node).
+			_isATermOf(Time, Parent, Node).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DEFINING TEMPNODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: predicates for temp Nodes are different to avoid integrity 

@@ -11,7 +11,7 @@ _isPolynomial(Time, Node)
 	:-	_isAdd(Time, Node),
 		not _hasNestedExpression(Time, Node).
 _hasNestedExpression(Time, Node)
-	:-	_activeChild(Time, Node, Child),
+	:-	_isATermOf(Time, Node, Child),
 		not _isMono(Time, Child).
 
 _isXTerm(Time, Node)
@@ -20,7 +20,7 @@ _isXTerm(Time, Node)
 		_degOf(Time, Node, 1).
 _hasXTerm(Time, Poly)
 	:-	_isPolynomial(Time, Poly),
-		_activeChild(Time, Poly, Child),
+		_isATermOf(Time, Poly, Child),
 		_isXTerm(Time, Child).
 
 _isConstant(Time, Node)
@@ -62,11 +62,11 @@ _monosOutOfOrder(Time)
 
 _polyHasTermWithDeg(Time, Poly, Deg)
 	:-	_isPolynomial(Time, Poly),
-		_activeChild(Time, Poly, Child),
+		_isATermOf(Time, Poly, Child),
 		_degOf(Time, Child, Deg).
 _hasSingleTermWithDeg(Time, Poly, Deg)
 	:-	_polyHasTermWithDeg(Time, Poly, Deg),
-		1 { _degOf(Time, Child, Deg) : _activeChild(Time, Poly, Child) } 1.
+		1 { _degOf(Time, Child, Deg) : _isATermOf(Time, Poly, Child) } 1.
 _hasTermWithDegLargerThan(Time, Poly, FstDeg)
 	:-	_degree(FstDeg),
 		_polyHasTermWithDeg(Time, Poly, SndDeg),
@@ -88,7 +88,7 @@ _notStandardPoly(Time, Poly)
 % access coeff/degree pairs of monomials at the polynomial level
 _monoTermOfPoly(Time, Poly, Deg, Coeff)
 	:-	_isPolynomial(Time, Poly),
-		_activeChild(Time, Poly, Child),
+		_isATermOf(Time, Poly, Child),
 		_degOf(Time, Child, Deg),
 		_coeffOf(Time, Child, Coeff).
 
@@ -151,7 +151,7 @@ _notCoeffFactorOfPoly(Time, Poly, Coeff)
 
 _polyHasTermWithCoeff(Time, Poly, Coeff)
 	:-	_isPolynomial(Time, Poly),
-		_activeChild(Time, Poly, Mono),
+		_isATermOf(Time, Poly, Mono),
 		_coeffOf(Time, Mono, Coeff).
 
 

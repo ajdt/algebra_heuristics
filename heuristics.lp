@@ -111,14 +111,14 @@ _heuristicAction(isolateVars, subtractFromEqn).
 
 _applicable(Time, _condition(rhsHasVariable, _operands(Child)))
 	:-	_isAdd(Time, rightSide),
-		_activeChild(Time, rightSide, Child),
+		_isATermOf(Time, rightSide, Child),
 		_hasVariable(Time, Child).
 
 _hasVariable(Time, Node)
 	:- _degOf(Time, Node, Deg),
 		Deg > 0.
 _hasVariable(Time, Parent)
-	:-	_activeChild(Time, Parent, Child),
+	:-	_isATermOf(Time, Parent, Child),
 		_hasVariable(Time, Child).
 
 _sideOf(leftSide,left;rightSide,right).
@@ -133,7 +133,7 @@ _heuristicAction(isolateConst, subtractFromEqn).
 _applicable(Time, _condition(lhsHasConst, _operands(Child)))
 	:-	_hasSuperlinearTerms(Time),
 		_isAdd(Time, leftSide),
-		_activeChild(Time, leftSide, Child),
+		_isATermOf(Time, leftSide, Child),
 		_isConstant(Time, Child). % TODO: update to move rationals also
 	
 _hasSuperlinearTerms(Time)

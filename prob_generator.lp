@@ -74,7 +74,7 @@ _holds(StartTime, _fact(Child, _nodeField(active,yes)))
 _subtreeHeight(Time, Node, 0)
 	:-	_isMono(Time, Node).
 _hasSubtreeWithHeight(Time, Parent, Height)
-	:-	_activeChild(Time, Parent, Child),
+	:-	_isATermOf(Time, Parent, Child),
 		_subtreeHeight(Time, Child, Height).
 _subtreeHeight(Time, Node, Height+1)
 	:-	_hasSubtreeWithHeight(Time, Node, Height),
@@ -100,7 +100,7 @@ _initiallyOutOfOrderByNumKids(Fst, Snd)
 %%:- _initiallyOutOfOrderByNumKids(Fst, Snd).%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MISC GENERATION CONSTRAINTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% CONSTRAINT: div node has at most 2 children
-:- _isDiv(Time, Node), _activeChild(Time, Node, Child), _childNum(Node, Child, Num), Num >= 3.
+:- _isDiv(Time, Node), _isATermOf(Time, Node, Child), _childNum(Node, Child, Num), Num >= 3.
 _hasNoDeg(Time, Mono) :- _isMono(Time, Mono), 0 { _degOf(Time, Mono, Deg) : _degree(Deg) } 0.
 %%% CONSTRAINT: each monomial must have a degree term. NOTE: for some unknown reason, monomials without degree terms were being generated too
 :-	__validTime(Time), _isMono(Time, Mono), _hasNoDeg(Time, Mono).
@@ -108,7 +108,7 @@ _hasNoDeg(Time, Mono) :- _isMono(Time, Mono), 0 { _degOf(Time, Mono, Deg) : _deg
 % monomial nodes must be leave nodes
 _isLeafNode(Time, Mono)
 	:-	_isMono(Time, Mono), 
-		0 { _activeChild(Time, Mono, Child) : _node(Child) } 0 .
+		0 { _isATermOf(Time, Mono, Child) : _node(Child) } 0 .
 _monoHasChildren(Time, Mono)
 	:-	_isMono(Time, Mono), 
 	not _isLeafNode(Time, Mono).
@@ -118,7 +118,7 @@ _monoHasChildren(Time, Mono)
 % CONSTRAINT: unary operations (just neg really), must have exactly one child at all times
 :-	_unary(Oper),
 	_hasType(Time, Node, Oper),
-	2 { _activeChild(Time, Node, Child) : _validChildOf(Node, Child) }.
+	2 { _isATermOf(Time, Node, Child) : _validChildOf(Node, Child) }.
 
 % TODO: figure out why _coeffOverflow and _degOverflow cause UNSAT even when not triggered
 _hasCoeff(Time, Node)

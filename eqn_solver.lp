@@ -146,7 +146,7 @@ _isProductOfLinearBinomials(Time, leftSide)
 		not _hasNonBinomialChild(Time, leftSide).
 
 _hasNonBinomialChild(Time, leftSide)
-	:-	_activeChild(Time, leftSide, Child),
+	:-	_isATermOf(Time, leftSide, Child),
 		not _isStdBinomial(Time, Child).
 
 % NOTE: x + 4x, will count as std binomial, it shouldn't count
