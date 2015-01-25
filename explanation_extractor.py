@@ -77,12 +77,26 @@ class ExplanationManager(object):
         else:
             self.templates[rule_key] = ExplanationTemplate(rule, self)
 
-    def lookupTemplateFor(self, predicate_key, var_assignment={}, explanation_depth=1):
+    def lookupTemplateFor(self, predicate_key, var_assignment=[], explanation_depth=1):
         """generate an explanation for the given predicate_name and arity.
         explanation_depth controls how detailed the generated explanation is
         NOTE: predicate_key  should be generated using ExplanationManager.makeRuleKey(rule)
         """
-        return ['explanation string']
+        template_obj = self.templates[predicate_key]
+
+        # applicable predicates have nested variables as in...
+        # _applicable(Time, _rule(condition, _operands(<nested_vars>)))
+
+        if template_obj.rule.head.name == '_applicable':
+            var_names = template_obj.rule.head.args[1].args[1].args
+        else:
+            var_names = template_obj.rule.head.args
+
+        assignment_dict     = dict(zip(var_names, var_assignment))
+        # makeExplanation() returns (predicat_name, sentence_objects)
+        sentence_objects    = template_obj.makeExplanation(assignment_dict)[1]
+
+        return [sentence.injectVariables(assignment_dict) for sentence in sentence_objects if sentence != None]
 
     @staticmethod
     def makeRuleKey(rule):
