@@ -95,9 +95,14 @@ class GeneratedProblem(object):
         return self.equation_parameters['equation_steps'][0]
 
     def getSolutionStringWithExplanations(self):
-        steps           = self.equation_parameters['equation_steps']
-        explanations    = self.equation_parameters['explanations']
-        combined        = map(lambda step, expl : step + '\n\t\t' + expl, steps, explanations)
+        steps               = self.equation_parameters['equation_steps']
+        step_explanations   = self.equation_parameters['explanations']
+        output_string = ''
+        
+        # step_explanations: contains one list of sentences per step, 
+        # each sentence list is a list of strings
+        combined = [ step + '\n'.join(sentences) for step, sentences in zip(steps, step_explanations)]
+
         return '\n'.join(combined)
 
     def getSelectedHeuristics(self):
@@ -213,15 +218,15 @@ class EquationStepParser:
             oper_symbol = op_symbols[self.node_types[root_node]]
             return '(' + oper_symbol.join(child_strings) + ')'
 
-    def getExplanationString(self):
+    def getExplanationStrings(self):
         if self.action is None: # last step has no action string
-            return ''
+            return []
         operands        = self.getOperands()
         condition       = HEUR_INFO[self.action].trigger
         arity           = len(operands)
         template_key    = (condition, arity)
         template_mgr    = getTemplateManager()
-        return '\n'.join(template_mgr.lookupTemplateFor(template_key, operands))
+        return template_mgr.lookupTemplateFor(template_key, operands)
 
     def makeMonomial(self, node_name):
         """ Given a node name, construct the monomial referenced by that node"""
@@ -310,7 +315,7 @@ class MathProblemParser(object):
     def getActions(self):
         return list(self.actions)
     def getExplanationsForSteps(self):
-        return [step.getExplanationString() for step in self.solution_steps.values()]
+        return [step.getExplanationStrings() for step in self.solution_steps.values()]
     def addApplicableAction(self, action_name):
         self.applicable_actions.add(action_name)
     def getApplicableActions(self):
