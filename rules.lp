@@ -692,8 +692,7 @@ _saveEqnResult(Time)
 % decreaseDeg: x^4 + x^2= 0  --> x^2 + 1 = 0 (example)
 %================================================================================
 _applicable(Time, _rule(decreaseDeg, _operands(leftSide)))
-	:-	__validTime(Time),
-		not _xVarCannotBeSubstituted(Time),
+	:-	_xVariableCanBeSubstituted(Time),
 		_eqnHasNonConstantTerms(Time).
 _update(Time, Node, degree, ResultDeg)
 	:-	_ruleForTimeStep(Time, decreaseDeg),
@@ -702,6 +701,9 @@ _update(Time, Node, degree, ResultDeg)
 		OrigDeg != 0,
 		_degProduct(OrigDeg, DividingDeg, ResultDeg).
 
+_xVariableCanBeSubstituted(Time)
+    :-  __validTime(Time),
+		not _xVarCannotBeSubstituted(Time).
 _xVarCannotBeSubstituted(Time)
 	:-	_smallestNonZeroDeg(Time, Deg),
 		Deg <= 1.

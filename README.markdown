@@ -37,3 +37,21 @@ Each node has an associated temp node. Temp nodes are mainly used to store the r
 This makes managing nodes simpler b/c we don't have to manipulate the existing expression tree on a rewrite. Instead
 we save a resulting subtree with temp nodes, and then perform a copy to place the new subtree in the correct part of the 
 expression tree. 
+
+Installation Dependencies
+=========================
+* Python
+    1. tempfile
+    2. antlr4
+    3. argparse
+    4. json
+    5. sympy
+    6. pyparsing 
+    7. antlr4 
+    8. clingo
+    9. pygraphviz
+* antlr4 
+    * version 4.4
+* clingo 
+    version 4.3
+

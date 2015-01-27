@@ -182,7 +182,7 @@ class TemplateSentence(object):
 
         # predicate name contains 'of', then assume desired string is 'Var1 <predicate description> Var2'
         if 'of' in self.sentence.split():
-            return ' '.join([vars_to_inject[0], self.sentence,vars_to_inject[1]])
+            return ' '.join([vars_to_inject[1], self.sentence,vars_to_inject[0]])
 
         # 'of' isn't in predicate name, so generate var string in format 'Var1, Var2, ... and VarN'
         if len(vars_to_inject) < 2:
