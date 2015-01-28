@@ -97,11 +97,12 @@ class GeneratedProblem(object):
     def getSolutionStringWithExplanations(self):
         steps               = self.equation_parameters['equation_steps']
         step_explanations   = self.equation_parameters['explanations']
-        output_string = ''
-        
+        merge               =   lambda x : ' '.join(x)
+        # TODO: this code is confusing, rewrite or or change way explanations are
+        #   stored in equation_parameters
         # step_explanations: contains one list of sentences per step, 
         # each sentence list is a list of strings
-        combined = [ step + '\n'.join(sentences) for step, sentences in zip(steps, step_explanations)]
+        combined = [ step + '\n'.join(map(merge, sentences)) for step, sentences in zip(steps, step_explanations)]
 
         return '\n'.join(combined)
 
@@ -257,11 +258,11 @@ class EquationStepParser:
         return {'type': '=', 'children':[left, right]}
     def getTreeStructureOfNode(self, node_string):
         if self.node_types[node_string] == 'mono':
-            return {'type': 'monomial', 'coeff': self.coeff_of[node_string], 'degree': self.degree_of[node_string]}
+            return {'id' : node_string, 'type': 'monomial', 'coeff': self.coeff_of[node_string], 'degree': self.degree_of[node_string]}
         else:
             children = [ self.getTreeStructureOfNode(child) for child in self.node_children[node_string]]
             type_symbol = op_symbols[self.node_types[node_string]]
-            return {'type': type_symbol, 'children': children }
+            return {'id' : node_string, 'type': type_symbol, 'children': children }
 
 
 def peelHolds(tokens):
