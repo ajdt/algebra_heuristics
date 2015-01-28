@@ -103,8 +103,9 @@ class ExplanationManager(object):
             var_names = template_obj.rule.head.args
 
         assignment_dict     = dict(zip(var_names, var_assignment))
-        # makeExplanation() returns (predicat_name, sentence_objects)
-        sentence_objects    = template_obj.makeExplanation(assignment_dict)[1]
+        # makeExplanation() returns (rule_head_explanation, body_explanation_list)
+        head_expl, body_expl_list  = template_obj.makeExplanation(assignment_dict)
+        sentence_objects = [head_expl] + body_expl_list
 
         return [sentence.injectVariables(assignment_dict) for sentence in sentence_objects if sentence != None]
 
@@ -135,12 +136,25 @@ class ExplanationTemplate(object):
 
     def makeExplanation(self, var_assignments, depth=1):
         """ var_assignments is a list of variable values to substitute in the explanation"""
-        return (self.rule.head.name, [ self.makeConditionExplanation(cond) for cond in self.rule.body if not self.isSkippedCondition(cond)] )
+
+        # if head of rule is _applicable/2 predicate, then its explanation string is obtained
+        # from the nested condition name
+        if self.isHeuristicApplication(self.rule.head):
+            head_explanation = self.makeHeuristicNameExplanation(self.rule.head)
+        else:
+            head_explanation    = self.makeConditionExplanation(self.rule.head)
+        body_explanations   = [ self.makeConditionExplanation(cond) for cond in self.rule.body if not self.isSkippedCondition(cond)]
+        return (head_explanation, body_explanations)
 
     # each of these returns a list with text explanations
     def makeConditionExplanation(self, condition, stop_depth=0, depth=0):
         if isinstance(condition, par.Predicate):
             return self.makePredicateExplanation(condition, stop_depth, depth)
+    def makeHeuristicNameExplanation(self, predicate):
+        # heuristic predicates have form _applicable(Time, _rule(condition, _operands(O1, O2, ...On)))
+        name = predicate.args[1].args[0]
+        operands = predicate.args[1].args[1].args
+        return TemplateSentence(convertFromCamelCase(name), operands)
 
     def makePredicateExplanation(self, predicate, stop_depth=0, depth=0):
         # for now just generate explanation for this predicate ignore depth input
@@ -155,6 +169,9 @@ class ExplanationTemplate(object):
     def isSkippedCondition(self, condition):
         if isinstance(condition, par.Predicate) and '__' in condition.name:
             return True
+    def isHeuristicApplication(self, predicate):
+        """ return true if predicate is an instance of _applicable/2 """
+        return predicate.name == '_applicable'
 
 
 class TemplateSentence(object):
