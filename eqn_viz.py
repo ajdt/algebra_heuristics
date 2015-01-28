@@ -221,7 +221,7 @@ class EquationStepParser:
     def getExplanationStrings(self):
         if self.action is None: # last step has no action string
             return []
-        operands        = self.getOperands()
+        operands        = self.getRawOperands()
         condition       = HEUR_INFO[self.action].trigger
         arity           = len(operands)
         template_key    = (condition, arity)
@@ -246,6 +246,8 @@ class EquationStepParser:
         self.operands = operands
     def getOperands(self):
         return [ self.makeEqnString(operand) for operand in self.operands ]
+    def getRawOperands(self):
+        return list(self.operands)
     def addActionPred(self, action_name):
         self.action = action_name
 
