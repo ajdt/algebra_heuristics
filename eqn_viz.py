@@ -102,7 +102,9 @@ class GeneratedProblem(object):
         #   stored in equation_parameters
         # step_explanations: contains one list of sentences per step, 
         # each sentence list is a list of strings
-        combined = [ step + '\n'.join(map(merge, sentences)) for step, sentences in zip(steps, step_explanations)]
+        # NOTE: sentences is actually a list of fragments that must be joined
+        # to form a sentence. like ['id(2,1)', 'equals' , 'id(3,3)']
+        combined = [ step + '\n' + '\n'.join(map(merge, sentences)) for step, sentences in zip(steps, step_explanations)]
 
         return '\n'.join(combined)
 
@@ -442,12 +444,16 @@ class AnswerSetManager(json.JSONEncoder):
         json_file.close()
 
     def getAnsSetsAsJSON(self):
-        return [ self.encode(ans).replace('\n', '')  for ans in self.answer_sets]
+        #return [ self.encode(ans).replace('\n', '')  for ans in self.answer_sets]
+        return [ ans.toJSONFormat()  for ans in self.answer_sets]
     def printAnswerSets(self, json_printing=False, with_explanation=False):
         """display all answer sets in user-friendly way"""
         if json_printing:
-            for ans_set in self.getAnsSetsAsJSON():
-                print ans_set
+            # print answer sets as one json object
+            all_ans_sets = dict()
+            for index, ans_set in enumerate(self.getAnsSetsAsJSON()):
+                all_ans_sets[str(index)] = ans_set
+            print all_ans_sets
         else:
             for ans_set in self.answer_sets:
                 for problem in ans_set.getMathProblems():
