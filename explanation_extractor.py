@@ -78,7 +78,7 @@ def isPredicate(condition):
 def isHeuristicPredicate(predicate):
     return isPredicate(predicate) and predicate.name == '_applicable'
 def isSkippedPredicate(predicate):
-    return isPredicate(predicate) and '__' in condition.name
+    return isPredicate(predicate) and '__' in predicate.name
 def filterUnusedConditions(condition_list):
     # filter out predicates that are explicitly skipped or anything that isn't a predicate
     pred_filter = lambda cond: isPredicate(cond) and not isSkippedPredicate(cond)
@@ -147,11 +147,18 @@ class ExplanationTemplate(object):
         return [head_expl] + body_expl
 
     def makeHeadExplanation(self, var_assignments):
-        return self.makePredicateExplanation(self.rule.head, var_assignments)
+        if isHeuristicPredicate(self.rule.head):
+            # heuristic predicates have explanation component extracted from nested value
+            condition_name  = self.rule.head.args[1].args[0]
+            sentence        = convertFromCamelCase(condition_name)
+            variables       = self.getPredicateVariables(self.rule.head)
+            return TemplateSentence(sentence, variables, var_assignments)
+        else:
+            return self.makePredicateExplanation(self.rule.head, var_assignments)
     def makeBodyExplanation(self, var_assignments, depth=1):
         # at desired explanation depth, return body explanations
         if depth <= 1:
-            return self.predListToSentences(self.rule.body, var_assignments)
+            return self.predListToSentences(filterUnusedConditions(self.rule.body), var_assignments)
         else:
             # recursive case -- go to greater depth if possible
             explanations = []
@@ -163,7 +170,7 @@ class ExplanationTemplate(object):
                     explanations += self.predListToSentences([pred], var_asignments)
             return explanations
     def predListToSentences(self, pred_list, var_asignments):
-        return [ self.makePredicateExplanation(pred, var_asignments) for pred in pred_list]
+        return [ self.makePredicateExplanation(pred, var_asignments) for pred in filterUnusedConditions(pred_list)]
     def getPredicateVariables(self, predicate):
         """return a list of variables referenced by given predicate"""
         if isHeuristicPredicate(predicate):
