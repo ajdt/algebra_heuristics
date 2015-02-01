@@ -1,18 +1,18 @@
 %================================================================================
 % divIdentity: A / A ----> 1
 %================================================================================
-ruleFeature(divIdent, complexity, 0)
-	:-	_operandDenom(Time, Denom, divIdent, left),
+ruleFeature(hasNumeratorAndDenominatorThatCancel, complexity, 0)
+	:-	_operandDenom(Time, Denom, hasNumeratorAndDenominatorThatCancel, left),
 		_isConstant(Time, Denom).
-ruleFeature(divIdent, complexity, 1)
-	:-	_operandDenom(Time, Denom, divIdent, left),
+ruleFeature(hasNumeratorAndDenominatorThatCancel, complexity, 1)
+	:-	_operandDenom(Time, Denom, hasNumeratorAndDenominatorThatCancel, left),
 		not _isConstant(Time, Denom),
 		_isMono(Time, Denom).
-ruleFeature(divIdent, complexity, 2)
-	:-	_operandDenom(Time, Denom, divIdent, left),
+ruleFeature(hasNumeratorAndDenominatorThatCancel, complexity, 2)
+	:-	_operandDenom(Time, Denom, hasNumeratorAndDenominatorThatCancel, left),
 		 _isNeg(Time, Denom).
-ruleFeature(divIdent, complexity, 3)
-	:-	_operandDenom(Time, Denom, divIdent, left),
+ruleFeature(hasNumeratorAndDenominatorThatCancel, complexity, 3)
+	:-	_operandDenom(Time, Denom, hasNumeratorAndDenominatorThatCancel, left),
 		 not _isNeg(Time, Denom),
 		 _isOper(Time, Denom).
 

@@ -85,11 +85,11 @@ _heuristic(Name, Priority, Rule)
 % combine monomials
 _heuristicToApplyRule(cancelAcrossEqn, 1, cancelSumTerm). 
 _heuristicToApplyRule(addInverses, 1, addInverses). 
-_heuristicToApplyRule(ignoreDenom, 1, numerSimp). 
+_heuristicToApplyRule(ignoreDenom, 1, canBeReducedToItsNumerator). 
 _heuristicToApplyRule(cancelCommTerms, 1, fracCancel). 
 _heuristicToApplyRule(cancelNeg, 1, cancelNegatives). 
 
-_heuristicToApplyRule(combineLikeTerms, 2, addMonom). 
+_heuristicToApplyRule(combineLikeTerms, 2, canBeAddedTogether). 
 _heuristicToApplyRule(additiveIdentity, 2, addZero). 
 _heuristicToApplyRule(addFractions, 2, addSameFrac). 
 _heuristicToApplyRule(divByOne, 2, divByOne). 

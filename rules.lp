@@ -38,18 +38,18 @@ _deepCopy(Time, RootNode, TempRoot)
 % divIdentity: A / A ----> 1
 %================================================================================
 % NOTE: applicable only to subtrees over which equality is defined
-_applicable(Time, _rule(divIdent, _operands(Fraction)))
+_applicable(Time, _rule(hasNumeratorAndDenominatorThatCancel, _operands(Fraction)))
 	:-	_isDiv(Time, Fraction),
 		_numerOf(Time, Fraction, Numer),
 		_denomOf(Time, Fraction, Denom),
 		_areEqual(Time, Numer, Denom).
 _setToOne(Time, Fraction)
-	:-	_operand(Time, Fraction, divIdent, left).
+	:-	_operand(Time, Fraction, hasNumeratorAndDenominatorThatCancel, left).
 
 %================================================================================
-% multFrac: a/b * c/d --> (a*c)/(b*d)
+% canBeMultipliedAsFractions: a/b * c/d --> (a*c)/(b*d)
 %================================================================================
-_applicable(Time, _rule(multFrac, _operands(LeftFrac, RightFrac)))
+_applicable(Time, _rule(canBeMultipliedAsFractions, _operands(LeftFrac, RightFrac)))
 	:-	_isDiv(Time, LeftFrac),
 		_isDiv(Time, RightFrac),
 		LeftFrac < RightFrac,
@@ -58,23 +58,23 @@ _applicable(Time, _rule(multFrac, _operands(LeftFrac, RightFrac)))
 
 % set result as a fraction with numer and denom as fractions
 _activateTempAndSetChildren(Time, tempResultRoot, div, 2)
-	:-	_ruleForTimeStep(Time, multFrac).
+	:-	_ruleForTimeStep(Time, canBeMultipliedAsFractions).
 _treeOp(Time, TempNumer, FstNumer, SndNumer, mul)
 	:-	_tempChildOnSide(tempResultRoot, TempNumer, left),
-		_operandNumer(Time, FstNumer, multFrac, left),
-		_operandNumer(Time, SndNumer, multFrac, right).
+		_operandNumer(Time, FstNumer, canBeMultipliedAsFractions, left),
+		_operandNumer(Time, SndNumer, canBeMultipliedAsFractions, right).
 _treeOp(Time, TempDenom, FstDenom, SndDenom, mul)
 	:-	_tempChildOnSide(tempResultRoot, TempDenom, right),
-		_operandDenom(Time, FstDenom, multFrac, left),
-		_operandDenom(Time, SndDenom, multFrac, right).
+		_operandDenom(Time, FstDenom, canBeMultipliedAsFractions, left),
+		_operandDenom(Time, SndDenom, canBeMultipliedAsFractions, right).
 
 _writeBinaryOp(Time)
-	:-	_ruleForTimeStep(Time, multFrac).
+	:-	_ruleForTimeStep(Time, canBeMultipliedAsFractions).
 
 %================================================================================
-% fracDiv: a/c / b/d --> a/c * d/b
+% canBeMultipliedByInverseOf: a/c / b/d --> a/c * d/b
 %================================================================================
-_applicable(Time, _rule(fracDiv, _operands(NumerFrac, DenomFrac)))
+_applicable(Time, _rule(canBeMultipliedByInverseOf, _operands(NumerFrac, DenomFrac)))
 			:-	_areSiblings(Time, NumerFrac, DenomFrac),
 				_isDiv(Time, NumerFrac),
 				_isDiv(Time, DenomFrac),
@@ -83,43 +83,43 @@ _applicable(Time, _rule(fracDiv, _operands(NumerFrac, DenomFrac)))
 
 % set root node to multiplication node
 _activateTempAndSetChildren(Time, tempResultRoot, mul, 2)
-	:-	_ruleForTimeStep(Time, fracDiv).
+	:-	_ruleForTimeStep(Time, canBeMultipliedByInverseOf).
 % 'left' fraction remains unchanged
 _deepCopy(Time, LeftTemp, NumerFrac)
 	:-	_tempChildOnSide(tempResultRoot, LeftTemp, left),
-		_ruleForTimeStep(Time, fracDiv),
-		_operand(Time, NumerFrac, fracDiv, left).
+		_ruleForTimeStep(Time, canBeMultipliedByInverseOf),
+		_operand(Time, NumerFrac, canBeMultipliedByInverseOf, left).
 % flip numer/denom fields
 _treeOp(Time, RightTemp, Numer, Denom, reciprocal)
-	:-	_operand(Time, DenomFrac, fracDiv, right),
+	:-	_operand(Time, DenomFrac, canBeMultipliedByInverseOf, right),
 		_numerOf(Time, DenomFrac, Numer),
 		_denomOf(Time, DenomFrac, Denom),
 		_tempChildOnSide(tempResultRoot, RightTemp, right).
 
 _setResultTo(Time, Root)
-	:-	_operand(Time, DenomFrac, fracDiv, right),
+	:-	_operand(Time, DenomFrac, canBeMultipliedByInverseOf, right),
 		_isATermOf(Time, Root, DenomFrac).
 
 %================================================================================
 % ignore denominator: a / b = 0 --> a = 0
 %================================================================================
-_applicable(Time, _rule(numerSimp, _operands(leftSide)))
+_applicable(Time, _rule(canBeReducedToItsNumerator, _operands(leftSide)))
 	:-	_isZero(Time, rightSide),
 		_isDiv(Time, leftSide).
 
 % assumes that fraction is poly/poly
 _deepCopy(Time, tempResultRoot, Numer)
-	:-	_operand(Time, Frac, numerSimp, left),
+	:-	_operand(Time, Frac, canBeReducedToItsNumerator, left),
 		_numerOf(Time, Frac, Numer).
 _setResultTo(Time, leftSide)
-	:-	_ruleForTimeStep(Time, numerSimp).
+	:-	_ruleForTimeStep(Time, canBeReducedToItsNumerator).
 
 
 %================================================================================
-% addMonom: a*x^b + c*x^b ----> (a+c)*x^b
+% canBeAddedTogether: a*x^b + c*x^b ----> (a+c)*x^b
 %================================================================================
 
-_applicable(Time, _rule(addMonom, _operands(LeftMono, RightMono)))
+_applicable(Time, _rule(canBeAddedTogether, _operands(LeftMono, RightMono)))
 	:-	_areSiblings(Time, LeftMono, RightMono),
 		_equalDegs(Time, LeftMono, RightMono),
 		_isMono(Time, LeftMono),
@@ -130,11 +130,11 @@ _applicable(Time, _rule(addMonom, _operands(LeftMono, RightMono)))
 		_isBeingAdded(Time, LeftMono).
 
 _monoOp(Time, tempResultRoot, LeftMono, RightMono, add)
-	:-	_operand(Time, LeftMono, addMonom, left),
-		_operand(Time, RightMono, addMonom, right).
+	:-	_operand(Time, LeftMono, canBeAddedTogether, left),
+		_operand(Time, RightMono, canBeAddedTogether, right).
 
 _writeBinaryOp(Time)
-	:-	_ruleForTimeStep(Time, addMonom).
+	:-	_ruleForTimeStep(Time, canBeAddedTogether).
 
 %================================================================================
 % monomult ax^b  * cx^d --> (a*c)x^(b+d)
@@ -686,7 +686,7 @@ _eqnOp(Time, Operand, add)
 _saveEqnResult(Time)
 	:-	_ruleForTimeStep(Time, addEqn).
 
-%%:- not _ruleForTimeStep(_time(0,1), addMonom).%%
+%%:- not _ruleForTimeStep(_time(0,1), canBeAddedTogether).%%
 
 %================================================================================
 % decreaseDeg: x^4 + x^2= 0  --> x^2 + 1 = 0 (example)
@@ -742,11 +742,11 @@ _writeBinaryOp(Time)
 	:-	_ruleForTimeStep(Time, mulWithFrac).
 
 %% Rules Listed: Used to generate default rule heuristics
-_rule(divIdent).
-_rule(multFrac).
-_rule(fracDiv).
-_rule(numerSimp).
-_rule(addMonom).
+_rule(hasNumeratorAndDenominatorThatCancel).
+_rule(canBeMultipliedAsFractions).
+_rule(canBeMultipliedByInverseOf).
+_rule(canBeReducedToItsNumerator).
+_rule(canBeAddedTogether).
 _rule(monoMult).
 _rule(fracCancel).
 _rule(factor).
