@@ -97,7 +97,7 @@ _heuristicToApplyRule(multiplyByZero, 2, multByZero).
 _heuristicToApplyRule(multiplyByOne, 2, multIdentity). 
 
 _heuristicToApplyRule(applyDistribute, 3, distribute). 
-_heuristicToApplyRule(multiplyMonoms, 3, monoMult). 
+_heuristicToApplyRule(multiplyMonoms, 3, canBeMultipliedTogether). 
 _heuristicToApplyRule(substitute, 3, decreaseDeg). 
 _heuristicToApplyRule(multiplyWithFrac, 3, mulWithFrac). 
 

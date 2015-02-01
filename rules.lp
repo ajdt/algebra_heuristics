@@ -139,7 +139,7 @@ _writeBinaryOp(Time)
 %================================================================================
 % monomult ax^b  * cx^d --> (a*c)x^(b+d)
 %================================================================================
-_applicable(Time, _rule(monoMult, _operands(LeftMono, RightMono)))
+_applicable(Time, _rule(canBeMultipliedTogether, _operands(LeftMono, RightMono)))
 	:-	_areSiblings(Time, LeftMono, RightMono),
 		_isMono(Time, LeftMono),
 		_isMono(Time, RightMono),
@@ -147,11 +147,11 @@ _applicable(Time, _rule(monoMult, _operands(LeftMono, RightMono)))
 		_isBeingMultiplied(Time, LeftMono).
  
 _monoOp(Time, tempResultRoot, LeftMono, RightMono, mul)
-	:-	_operand(Time, LeftMono, monoMult, left),
-		_operand(Time, RightMono, monoMult, right).
+	:-	_operand(Time, LeftMono, canBeMultipliedTogether, left),
+		_operand(Time, RightMono, canBeMultipliedTogether, right).
 
 _writeBinaryOp(Time)
-	:-	_ruleForTimeStep(Time, monoMult).
+	:-	_ruleForTimeStep(Time, canBeMultipliedTogether).
 
 %================================================================================
 % fracCancel A*B/C*B --> A/C
@@ -747,7 +747,7 @@ _rule(canBeMultipliedAsFractions).
 _rule(canBeMultipliedByInverseOf).
 _rule(canBeReducedToItsNumerator).
 _rule(canBeAddedTogether).
-_rule(monoMult).
+_rule(canBeMultipliedTogether).
 _rule(fracCancel).
 _rule(factor).
 _rule(addSameFrac).
