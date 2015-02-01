@@ -73,8 +73,16 @@ def convertFromCamelCase(name):
 
 
                         ### EXPLANATION CLASSES ###
-def filterOnlyPredicates(condition_list):
-    return filter(lambda cond: isinstance(cond, Predicate), cond_list)
+def isPredicate(condition):
+    return isinstance(condition, par.Predicate)
+def isHeuristicPredicate(predicate):
+    return isPredicate(predicate) and predicate.name == '_applicable'
+def isSkippedPredicate(predicate):
+    return isPredicate(predicate) and '__' in condition.name
+def filterUnusedConditions(condition_list):
+    # filter out predicates that are explicitly skipped or anything that isn't a predicate
+    pred_filter = lambda cond: isPredicate(cond) and not isSkippedPredicate(cond)
+    return filter(pred_filter, condition_list)
 
 class ExplanationManager(object):
     """manages a set of explanations extracted from ASP gringo files"""
@@ -128,16 +136,11 @@ class ExplanationTemplate(object):
         """Some predicates can be derived in more than one way"""
         pass
 
-    def isHeuristicApplication(self):
-        return self.rule.head.name == '_applicable'
-
-    def getVariablesUsed(self):
-        return self.getPredicateVariables(self.rule.head)
 
     def makeExplanation(self, var_values, depth=1):
         """ return list of template sentences containing explanation"""
         # create mapping from variables used to their values
-        var_assignments     = dict(zip(self.getVariablesUsed(), var_values))
+        var_assignments     = dict(zip(self.getPredicateVariables(self.rule.head), var_values))
 
         head_expl           = self.makeHeadExplanation(var_assignments)
         body_expl           = self.makeBodyExplanation(var_assignments, depth)
@@ -152,7 +155,7 @@ class ExplanationTemplate(object):
         else:
             # recursive case -- go to greater depth if possible
             explanations = []
-            for pred in filterOnlyPredicates(self.rule.body):
+            for pred in filterUnusedConditions(self.rule.body):
                 if self.manager.hasExplanationForPredicate(pred):
                     pred_definition = self.manager.lookupRuleForPred(pred)
                     explanations += pred_definition.makeBodyExplanation(var_asignments, depth - 1)
@@ -163,7 +166,7 @@ class ExplanationTemplate(object):
         return [ self.makePredicateExplanation(pred, var_asignments) for pred in pred_list]
     def getPredicateVariables(self, predicate):
         """return a list of variables referenced by given predicate"""
-        if predicate.name == '_applicable':
+        if isHeuristicPredicate(predicate):
             # heuristic rules have nested variables: 
             # _applicable(Time, _rule(condition, _operands(var1, var2, ... varN)))
             return predicate.args[1].args[1].args
@@ -174,9 +177,6 @@ class ExplanationTemplate(object):
         variables   = self.getPredicateVariables(predicate)    
         return TemplateSentence(sentence, variables, var_assignments)
 
-    def isSkippedCondition(self, condition):
-        if isinstance(condition, par.Predicate) and '__' in condition.name:
-            return True
 
 
 class TemplateSentence(object):
