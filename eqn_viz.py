@@ -221,7 +221,7 @@ class EquationStepParser:
             oper_symbol = op_symbols[self.node_types[root_node]]
             return '(' + oper_symbol.join(child_strings) + ')'
 
-    def getExplanationStrings(self):
+    def getExplanationSentences(self):
         if self.action is None: # last step has no action string
             return []
         operands        = self.getRawOperands()
@@ -229,7 +229,9 @@ class EquationStepParser:
         arity           = len(operands)
         template_key    = (condition, arity)
         template_mgr    = getTemplateManager()
-        return template_mgr.lookupTemplateFor(template_key, operands)
+        templates       = template_mgr.lookupTemplateFor(template_key, operands)
+        return [ temp.getSentenceFragments() for temp in templates]
+
 
     def makeMonomial(self, node_name):
         """ Given a node name, construct the monomial referenced by that node"""
@@ -320,7 +322,7 @@ class MathProblemParser(object):
     def getActions(self):
         return list(self.actions)
     def getExplanationsForSteps(self):
-        return [step.getExplanationStrings() for step in self.solution_steps.values()]
+        return [step.getExplanationSentences() for step in self.solution_steps.values()]
     def addApplicableAction(self, action_name):
         self.applicable_actions.add(action_name)
     def getApplicableActions(self):

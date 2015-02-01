@@ -73,6 +73,9 @@ def convertFromCamelCase(name):
 
 
                         ### EXPLANATION CLASSES ###
+def filterOnlyPredicates(condition_list):
+    return filter(lambda cond: isinstance(cond, Predicate), cond_list)
+
 class ExplanationManager(object):
     """manages a set of explanations extracted from ASP gringo files"""
     def __init__(self):
@@ -94,20 +97,7 @@ class ExplanationManager(object):
         """
         template_obj = self.templates[predicate_key]
 
-        # applicable predicates have nested variables as in...
-        # _applicable(Time, _rule(condition, _operands(<nested_vars>)))
-
-        if template_obj.rule.head.name == '_applicable':
-            var_names = template_obj.rule.head.args[1].args[1].args
-        else:
-            var_names = template_obj.rule.head.args
-
-        assignment_dict     = dict(zip(var_names, var_assignment))
-        # makeExplanation() returns (rule_head_explanation, body_explanation_list)
-        head_expl, body_expl_list  = template_obj.makeExplanation(assignment_dict)
-        sentence_objects = [head_expl] + body_expl_list
-
-        return [sentence.injectVariables(assignment_dict) for sentence in sentence_objects if sentence != None]
+        return template_obj.makeExplanation(var_assignment, explanation_depth)
 
     @staticmethod
     def makeRuleKey(rule):
@@ -121,6 +111,10 @@ class ExplanationManager(object):
         operands        = nested_pred.args[1]    # contains Operands(...) nested predicate
         heur_key        = (condition_name, operands.arity)
         return heur_key
+
+    def hasExplanationForPredicate(self, predicate):
+        predicate_key = (predicate.name, predicate.arity)
+        return predicate_key in self.templates.keys()
         
 class ExplanationTemplate(object):
     """stores the explanation logic for a single predicate type. A predicate type
@@ -134,88 +128,96 @@ class ExplanationTemplate(object):
         """Some predicates can be derived in more than one way"""
         pass
 
-    def makeExplanation(self, var_assignments, depth=1):
-        """ var_assignments is a list of variable values to substitute in the explanation"""
+    def isHeuristicApplication(self):
+        return self.rule.head.name == '_applicable'
 
-        # if head of rule is _applicable/2 predicate, then its explanation string is obtained
-        # from the nested condition name
-        if self.isHeuristicApplication(self.rule.head):
-            head_explanation = self.makeHeuristicNameExplanation(self.rule.head)
+    def getVariablesUsed(self):
+        return self.getPredicateVariables(self.rule.head)
+
+    def makeExplanation(self, var_values, depth=1):
+        """ return list of template sentences containing explanation"""
+        # create mapping from variables used to their values
+        var_assignments     = dict(zip(self.getVariablesUsed(), var_values))
+
+        head_expl           = self.makeHeadExplanation(var_assignments)
+        body_expl           = self.makeBodyExplanation(var_assignments, depth)
+        return [head_expl] + body_expl
+
+    def makeHeadExplanation(self, var_assignments):
+        return self.makePredicateExplanation(self.rule.head, var_assignments)
+    def makeBodyExplanation(self, var_assignments, depth=1):
+        # at desired explanation depth, return body explanations
+        if depth <= 1:
+            return self.predListToSentences(self.rule.body, var_assignments)
         else:
-            head_explanation    = self.makeConditionExplanation(self.rule.head)
-        body_explanations   = [ self.makeConditionExplanation(cond) for cond in self.rule.body if not self.isSkippedCondition(cond)]
-        return (head_explanation, body_explanations)
-
-    # each of these returns a list with text explanations
-    def makeConditionExplanation(self, condition, stop_depth=0, depth=0):
-        if isinstance(condition, par.Predicate):
-            return self.makePredicateExplanation(condition, stop_depth, depth)
-    def makeHeuristicNameExplanation(self, predicate):
-        # heuristic predicates have form _applicable(Time, _rule(condition, _operands(O1, O2, ...On)))
-        name = predicate.args[1].args[0]
-        operands = predicate.args[1].args[1].args
-        return TemplateSentence(convertFromCamelCase(name), operands)
-
-    def makePredicateExplanation(self, predicate, stop_depth=0, depth=0):
-        # for now just generate explanation for this predicate ignore depth input
+            # recursive case -- go to greater depth if possible
+            explanations = []
+            for pred in filterOnlyPredicates(self.rule.body):
+                if self.manager.hasExplanationForPredicate(pred):
+                    pred_definition = self.manager.lookupRuleForPred(pred)
+                    explanations += pred_definition.makeBodyExplanation(var_asignments, depth - 1)
+                else:
+                    explanations += self.predListToSentences([pred], var_asignments)
+            return explanations
+    def predListToSentences(self, pred_list, var_asignments):
+        return [ self.makePredicateExplanation(pred, var_asignments) for pred in pred_list]
+    def getPredicateVariables(self, predicate):
+        """return a list of variables referenced by given predicate"""
+        if predicate.name == '_applicable':
+            # heuristic rules have nested variables: 
+            # _applicable(Time, _rule(condition, _operands(var1, var2, ... varN)))
+            return predicate.args[1].args[1].args
+        else:
+            return predicate.args
+    def makePredicateExplanation(self, predicate, var_assignments):
         sentence    = convertFromCamelCase(predicate.name)
-        variables   = predicate.args
-        return TemplateSentence(sentence, variables)
+        variables   = self.getPredicateVariables(predicate)    
+        return TemplateSentence(sentence, variables, var_assignments)
 
-    def makeComparisonExplanation(self, comparison, stop_depth=0, depth=0):
-        pass
-    def makePredcountExplanation(self, predcount, stop_depth=0, depth=0):
-        pass
     def isSkippedCondition(self, condition):
         if isinstance(condition, par.Predicate) and '__' in condition.name:
             return True
-    def isHeuristicApplication(self, predicate):
-        """ return true if predicate is an instance of _applicable/2 """
-        return predicate.name == '_applicable'
 
 
 class TemplateSentence(object):
     """encapsulates a single sentence of a template along with var substitution functionality
     Also decides order of vars w.r.t. explanation
     """
-    def __init__(self, sentence, variables):
+    def __init__(self, sentence, variables, var_assignments = {}):
         super(TemplateSentence, self).__init__()
-        self.sentence, self.variables = sentence, variables
-
-    def injectVariables(self, var_assignments={}):
-        """ returns list containing variables and strings to be joined """
-        var_names = list(self.variables)
+        self.sentence, self.variables   = sentence, list(variables)
+        self.var_values                 = var_assignments
 
         # remove Time variable; won't be used
-        if 'Time' in var_names:
-            var_names.remove('Time')
+        if 'Time' in self.variables:
+            self.variables.remove('Time')
 
+    def updateVariables(self, var_assignments={}):
+        """ returns list containing variables and strings to be joined """
+        self.var_values = var_assignments
+    def getSentenceFragments(self):
+        """ returns a list of variables and explanation extracted from predicate name
+            that must be joined to obtain a full explanation
+        """
         # substitute values for assigned variables, keep unassigned variables same
         vars_to_inject = []
-        for variable in var_names:
-            if var_assignments.has_key(variable):
-                vars_to_inject.append(var_assignments[variable])
+        for variable in self.variables:
+            if self.var_values.has_key(variable):
+                vars_to_inject.append(self.var_values[variable])
             else:
                 vars_to_inject.append(variable)
 
         # predicate name contains 'of', then assume desired string is 'Var1 <predicate description> Var2'
         if 'of' in self.sentence.split():
-            return [vars_to_inject[1], self.sentence,vars_to_inject[0]]
+            return [vars_to_inject[1], self.sentence, vars_to_inject[0]]
             #return ' '.join([vars_to_inject[1], self.sentence,vars_to_inject[0]])
-
-        ## 'of' isn't in predicate name, so generate var string in format 'Var1, Var2, ... and VarN'
-        #if len(vars_to_inject) < 2:
-            #vars_str = ', '.join(vars_to_inject)
-        #else:
-            #vars_str = ', '.join(vars_to_inject[:-1]) + ' and ' + vars_to_inject[-1]
-        return vars_to_inject + [self.sentence]
-
-        ## prepend vars to the sentence
-        #return vars_str + ' ' + self.sentence
-
+        else:
+            # string will be formatted as 'var1, var2, ... and varN' + sentence
+            if len(vars_to_inject) > 1:
+                vars_to_inject[-1] = 'and ' + vars_to_inject[-1]
+            return vars_to_inject + [self.sentence]
     def __str__(self):
-        # TODO: should work whether template is filled or unfilled
-        return ' '.join(self.injectVariables())
+        return ' '.join(self.getSentenceFragments())
         
         
 # extract predicate and variables from a given
@@ -223,8 +225,8 @@ class TemplateSentence(object):
 def main(files):
     parseFiles(files)
 if __name__ == '__main__':
-    #files_to_parse = ['rules.lp', 'eqn_generator.lp', 'nodes.lp', 'polynomial.lp', 'heuristics.lp']
-    files_to_parse = ['rules.lp', 'nodes.lp']
+    files_to_parse = ['rules.lp', 'eqn_generator.lp', 'nodes.lp', 'polynomial.lp', 'heuristics.lp']
+    #files_to_parse = ['rules.lp', 'nodes.lp']
     main(files_to_parse)
 
 
