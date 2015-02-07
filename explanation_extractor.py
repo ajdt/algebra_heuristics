@@ -98,14 +98,15 @@ class ExplanationManager(object):
         else:
             self.templates[rule_key] = ExplanationTemplate(rule, self)
 
-    def lookupTemplateFor(self, predicate_key, var_assignment=[], explanation_depth=1):
-        """generate an explanation for the given predicate_name and arity.
-        explanation_depth controls how detailed the generated explanation is
+    def lookupTemplateFor(self, predicate_key):
+        """Return an ExplanationTemplate instance for given predicate_key
+        predicate_ key = (predicate_name, arity)
         NOTE: predicate_key  should be generated using ExplanationManager.makeRuleKey(rule)
         """
-        template_obj = self.templates[predicate_key]
-
-        return template_obj.makeExplanation(var_assignment, explanation_depth)
+        if predicate_key in self.templates.keys():
+            return self.templates[predicate_key]
+        else:
+            return None
 
     @staticmethod
     def makeRuleKey(rule):
@@ -215,7 +216,7 @@ class TemplateSentence(object):
                 vars_to_inject.append(variable)
 
         # predicate name contains 'of', then assume desired string is 'Var1 <predicate description> Var2'
-        if 'of' in self.sentence.split():
+        if 'of' in self.sentence.split() and len(vars_to_inject) > 1:
             return [vars_to_inject[1], self.sentence, vars_to_inject[0]]
             #return ' '.join([vars_to_inject[1], self.sentence,vars_to_inject[0]])
         else:

@@ -228,9 +228,13 @@ class EquationStepParser:
         condition       = HEUR_INFO[self.action].trigger
         arity           = len(operands)
         template_key    = (condition, arity)
+
+        # get manager and sentence templates
         template_mgr    = getTemplateManager()
-        templates       = template_mgr.lookupTemplateFor(template_key, operands)
-        return [ temp.getSentenceFragments() for temp in templates]
+        template        = template_mgr.lookupTemplateFor(template_key)
+        sentence_temp   = template.makeExplanation(operands, 1)
+        # have to still make explanation
+        return [ temp.getSentenceFragments() for temp in sentence_temp]
 
 
     def makeMonomial(self, node_name):
