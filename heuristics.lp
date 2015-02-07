@@ -90,9 +90,9 @@ _heuristicToApplyRule(cancelCommTerms, 1, canHaveTheirCommonFactorCancelled).
 _heuristicToApplyRule(cancelNeg, 1, cancelNegatives). 
 
 _heuristicToApplyRule(combineLikeTerms, 2, canBeAddedTogether). 
-_heuristicToApplyRule(additiveIdentity, 2, addZero). 
+_heuristicToApplyRule(additiveIdentity, 2, canBeCancelled). 
 _heuristicToApplyRule(addFractions, 2, canBeAddedAsOneFraction). 
-_heuristicToApplyRule(divByOne, 2, divByOne). 
+_heuristicToApplyRule(canHaveItsDenominatorCancelled, 2, canHaveItsDenominatorCancelled). 
 _heuristicToApplyRule(multiplyByZero, 2, multByZero). 
 _heuristicToApplyRule(multiplyByOne, 2, multIdentity). 
 

@@ -313,22 +313,22 @@ _writeBinaryOp(Time)
 %================================================================================
 % divByOne A/1 --> A
 %================================================================================
-_applicable(Time, _rule(divByOne, _operands(Fraction)))
+_applicable(Time, _rule(canHaveItsDenominatorCancelled, _operands(Fraction)))
 	:-	_denomOf(Time, Fraction, Denom),
 		_isOne(Time, Denom).
 
 _deepCopy(Time, Fraction, Numer)
-	:-	_operand(Time, Fraction, divByOne, left),
+	:-	_operand(Time, Fraction, canHaveItsDenominatorCancelled, left),
 		_numerOf(Time, Fraction, Numer).
 %================================================================================
 % addZero A + 0 --> A
 %================================================================================
-_applicable(Time, _rule(addZero, _operands(Mono)))
+_applicable(Time, _rule(canBeCancelled, _operands(Mono)))
 	:-	_isZero(Time, Mono),
 		_isBeingAdded(Time, Mono).
 
 _cancelTerm(Time, ZeroTerm)
-	:-	_operand(Time, ZeroTerm, addZero, left).
+	:-	_operand(Time, ZeroTerm, canBeCancelled, left).
 
 %================================================================================
 % factorMonom:	ax^k  --> bx^m * cx^n 
@@ -752,8 +752,8 @@ _rule(canHaveTheirCommonFactorCancelled).
 _rule(canBeFactored).
 _rule(canBeAddedAsOneFraction).
 _rule(canBeDistributed).
-_rule(divByOne).
-_rule(addZero).
+_rule(canHaveItsDenominatorCancelled).
+_rule(canBeCancelled).
 _rule(factorMonom).
 _rule(factorCommTerm).
 _rule(multByZero).
