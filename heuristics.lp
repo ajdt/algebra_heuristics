@@ -86,7 +86,7 @@ _heuristic(Name, Priority, Rule)
 _heuristicToApplyRule(cancelAcrossEqn, 1, cancelSumTerm). 
 _heuristicToApplyRule(addInverses, 1, addInverses). 
 _heuristicToApplyRule(ignoreDenom, 1, canBeReducedToItsNumerator). 
-_heuristicToApplyRule(cancelCommTerms, 1, fracCancel). 
+_heuristicToApplyRule(cancelCommTerms, 1, canHaveTheirCommonFactorCancelled). 
 _heuristicToApplyRule(cancelNeg, 1, cancelNegatives). 
 
 _heuristicToApplyRule(combineLikeTerms, 2, canBeAddedTogether). 
@@ -149,11 +149,11 @@ _applicable(Time, _condition(rhsIsNotZero, _operands(rightSide)))
 
 		%% factor quadratic to solve eqn
 _heuristic(factorSimpleQuad, 1, stdQuadSetToZero).
-_heuristicAction(factorSimpleQuad, factor).
+_heuristicAction(factorSimpleQuad, canBeFactored).
 
 _applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))
 	:-	_isZero(Time, rightSide),
-		_applicable(Time, _rule(factor, _operands(leftSide))).
+		_applicable(Time, _rule(canBeFactored, _operands(leftSide))).
 
 
 

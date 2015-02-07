@@ -157,7 +157,7 @@ _writeBinaryOp(Time)
 % fracCancel A*B/C*B --> A/C
 %================================================================================
 % NOTE: relies on equal/3 predicate to work
-_applicable(Time, _rule(fracCancel, _operands(FstNode, SndNode)))
+_applicable(Time, _rule(canHaveTheirCommonFactorCancelled, _operands(FstNode, SndNode)))
 	:-	_haveCommonFactors(Time, FstNode, SndNode),
 		_areSiblings(Time, FstNode, SndNode),
 		_isMul(Time, FstNode),
@@ -170,8 +170,8 @@ _applicable(Time, _rule(fracCancel, _operands(FstNode, SndNode)))
 		_factorOf(Time, Numer, NumerFactor), 
 		_factorOf(Time, Denom, DenomFactor),
 		_areEqual(Time, NumerFactor, DenomFactor) } 1
-	:-	_operand(Time, Numer, fracCancel, left),
-		_operand(Time, Denom, fracCancel, right).
+	:-	_operand(Time, Numer, canHaveTheirCommonFactorCancelled, left),
+		_operand(Time, Denom, canHaveTheirCommonFactorCancelled, right).
 _cancelTerm(Time, Fst)
 	:-	_factorsToCancel(Time, Fst, Snd).
 _cancelTerm(Time, Snd)
@@ -182,21 +182,21 @@ _cancelTerm(Time, Snd)
 %================================================================================
 % NOTE: squared term must have coeff 1, divide by constant my be required to reach 
 % this form
-_applicable(Time, _rule(factor, _operands(Node)))
+_applicable(Time, _rule(canBeFactored, _operands(Node)))
 	:-	_isPolynomial(Time, Node),
 		_isQuadratic(Time, Node),
 		_isFactorable(Time, Node).
 
 % select the factors to use
 _factorsForBinomials(Time, FstFactor, SndFactor)
-	:-	_operand(Time, Poly,  factor, left),
+	:-	_operand(Time, Poly,  canBeFactored, left),
 		_monoTermOfPoly(Time, Poly, 1, LinearTerm),
 		_monoTermOfPoly(Time, Poly, 0, ConstTerm),
 		_factors(FstFactor, SndFactor, LinearTerm, ConstTerm),
 		FstFactor <= SndFactor. % NOTE: sanity check, ensure this rule is used @ most once per time step
 % result is product of two binomials
 _activateTempAndSetChildren(Time, tempResultRoot, mul, 2)
-	:-	_ruleForTimeStep(Time, factor).
+	:-	_ruleForTimeStep(Time, canBeFactored).
 
 % initialize binomials
 _setToBinomial(Time, LeftChild, FstFactor)
@@ -208,7 +208,7 @@ _setToBinomial(Time, RightChild, SndFactor)
 
 % save the result of factoring
 _setResultTo(Time, Poly)
-	:-	_operand(Time, Poly,  factor, left).
+	:-	_operand(Time, Poly,  canBeFactored, left).
 
 
 %================================================================================
@@ -748,8 +748,8 @@ _rule(canBeMultipliedByInverseOf).
 _rule(canBeReducedToItsNumerator).
 _rule(canBeAddedTogether).
 _rule(canBeMultipliedTogether).
-_rule(fracCancel).
-_rule(factor).
+_rule(canHaveTheirCommonFactorCancelled).
+_rule(canBeFactored).
 _rule(addSameFrac).
 _rule(distribute).
 _rule(divByOne).
