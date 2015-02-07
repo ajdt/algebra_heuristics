@@ -215,7 +215,7 @@ _setResultTo(Time, Poly)
 % addSameFrac A/B + C/B --> (A+C)/B
 %================================================================================
 % NOTE: _sameDenom depends on equals/3 predicate (which applies only to monomials)
-_applicable(Time, _rule(addSameFrac, _operands(Fst, Snd)))
+_applicable(Time, _rule(canBeAddedAsOneFraction, _operands(Fst, Snd)))
 	:-	_areSiblings(Time, Fst, Snd),
 		_sameDenom(Time, Fst, Snd),
 		Fst < Snd,
@@ -223,20 +223,20 @@ _applicable(Time, _rule(addSameFrac, _operands(Fst, Snd)))
 
 % set root to a fraction
 _activateTempAndSetChildren(Time, tempResultRoot, div, 2)
-	:-	_ruleForTimeStep(Time, addSameFrac).
+	:-	_ruleForTimeStep(Time, canBeAddedAsOneFraction).
 
 % set numerator to a sum
 _treeOp(Time, TempNumer, FstNumer, SndNumer, add)
 	:-	_tempChildNum(tempResultRoot, TempNumer, 1),
-		_operandNumer(Time, FstNumer, addSameFrac, left),
-		_operandNumer(Time, SndNumer, addSameFrac, right).
+		_operandNumer(Time, FstNumer, canBeAddedAsOneFraction, left),
+		_operandNumer(Time, SndNumer, canBeAddedAsOneFraction, right).
 % set denom 
 _deepCopy(Time, TempDenom, FstDenom)
 	:-	_tempChildNum(tempResultRoot, TempDenom, 2),
-		_operandDenom(Time, FstDenom, addSameFrac, left).
+		_operandDenom(Time, FstDenom, canBeAddedAsOneFraction, left).
 % save result
 _writeBinaryOp(Time)
-	:-	_ruleForTimeStep(Time, addSameFrac).
+	:-	_ruleForTimeStep(Time, canBeAddedAsOneFraction).
 	
 %================================================================================
 % addDiffFrac A/B + C/D --> (A*D+C*B)/B*D
@@ -283,7 +283,7 @@ _writeBinaryOp(Time)
 %================================================================================
 % distribute (a + b) * C --> (a*C + b*C)
 %================================================================================
-_applicable(Time, _rule(distribute, _operands(PlusTerm, DistribTerm)))
+_applicable(Time, _rule(canBeDistributed, _operands(PlusTerm, DistribTerm)))
 	:-	_areSiblings(Time, PlusTerm, DistribTerm),
 		_isBeingMultiplied(Time, PlusTerm),
 		PlusTerm < DistribTerm, % TODO: this is necessary, but prevents distribute if C occurs before (a+b) term
@@ -291,11 +291,11 @@ _applicable(Time, _rule(distribute, _operands(PlusTerm, DistribTerm)))
 
 % every term in original plus node, is multiplied by distributed term
 _activateTempNode(Time, tempResultRoot, add)
-	:-	_ruleForTimeStep(Time, distribute).
+	:-	_ruleForTimeStep(Time, canBeDistributed).
 
 _treeOp(Time, TempNode, Term, DistribTerm, mul)
-	:-	_operand(Time, DistribTerm, distribute, right),
-		_operand(Time, PlusTerm, distribute, left),
+	:-	_operand(Time, DistribTerm, canBeDistributed, right),
+		_operand(Time, PlusTerm, canBeDistributed, left),
 		_isATermOf(Time, PlusTerm, Term),
 		_childNum(PlusTerm, Term, ChildNum),
 		_tempChildNum(tempResultRoot, TempNode, ChildNum).
@@ -307,7 +307,7 @@ _tempHolds(Time, _fact(tempResultRoot, _nodeField(activechild, Temp)))
 		_validTempChildOf(tempResultRoot, Temp).
 % save result
 _writeBinaryOp(Time)
-	:-	_ruleForTimeStep(Time, distribute).
+	:-	_ruleForTimeStep(Time, canBeDistributed).
 
 
 %================================================================================
@@ -750,8 +750,8 @@ _rule(canBeAddedTogether).
 _rule(canBeMultipliedTogether).
 _rule(canHaveTheirCommonFactorCancelled).
 _rule(canBeFactored).
-_rule(addSameFrac).
-_rule(distribute).
+_rule(canBeAddedAsOneFraction).
+_rule(canBeDistributed).
 _rule(divByOne).
 _rule(addZero).
 _rule(factorMonom).

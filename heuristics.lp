@@ -91,12 +91,12 @@ _heuristicToApplyRule(cancelNeg, 1, cancelNegatives).
 
 _heuristicToApplyRule(combineLikeTerms, 2, canBeAddedTogether). 
 _heuristicToApplyRule(additiveIdentity, 2, addZero). 
-_heuristicToApplyRule(addFractions, 2, addSameFrac). 
+_heuristicToApplyRule(addFractions, 2, canBeAddedAsOneFraction). 
 _heuristicToApplyRule(divByOne, 2, divByOne). 
 _heuristicToApplyRule(multiplyByZero, 2, multByZero). 
 _heuristicToApplyRule(multiplyByOne, 2, multIdentity). 
 
-_heuristicToApplyRule(applyDistribute, 3, distribute). 
+_heuristicToApplyRule(applyDistribute, 3, canBeDistributed). 
 _heuristicToApplyRule(multiplyMonoms, 3, canBeMultipliedTogether). 
 _heuristicToApplyRule(substitute, 3, decreaseDeg). 
 _heuristicToApplyRule(multiplyWithFrac, 3, mulWithFrac). 
