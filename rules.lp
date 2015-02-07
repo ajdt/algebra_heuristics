@@ -434,22 +434,22 @@ _setResultTo(Time, Poly)
 %================================================================================
 % multByZero:	A*0 --> 0
 %================================================================================
-_applicable(Time, _rule(multByZero, _operands(ZeroTerm)))
+_applicable(Time, _rule(isEqualToZero, _operands(ZeroTerm)))
 	:-	_isZero(Time, ZeroTerm),
 		_isBeingMultiplied(Time, ZeroTerm).
 
 _setToZero(Time, Parent)
-	:-	_operand(Time, ZeroTerm, multByZero, left),
+	:-	_operand(Time, ZeroTerm, isEqualToZero, left),
 		_isATermOf(Time, Parent, ZeroTerm).
 
 %================================================================================
 % multIdentity:	A*1 --> A
 %================================================================================
-_applicable(Time, _rule(multIdentity, _operands(UnitTerm)))
+_applicable(Time, _rule(canBeIgnored, _operands(UnitTerm)))
 	:-	_isOne(Time, UnitTerm),
 		_isBeingMultiplied(Time, UnitTerm).
 _cancelTerm(Time, UnitTerm)
-	:-	_operand(Time, UnitTerm, multIdentity, left).
+	:-	_operand(Time, UnitTerm, canBeIgnored, left).
 
 %================================================================================
 % multNumerAndDenom:	A/B --> (A*C)/(B*C)
@@ -458,50 +458,50 @@ _cancelTerm(Time, UnitTerm)
 % expression is too large and we get a node overflow.
 % Additionally, we can only multiply expression by a polynomial expression already existing
 % somewhere in the equation
-_applicable(Time, _rule(multNumerAndDenom, _operands(Fraction, Poly)))
+_applicable(Time, _rule(numeratorAndDenominatorCanBeMultipliedBySameTerm, _operands(Fraction, Poly)))
 	:-	_isDiv(Time, Fraction),
 		_isPolynomial(Time, Poly).
 
 % set root to div
 _activateTempAndSetChildren(Time, tempResultRoot, div, 2)
-	:-	_ruleForTimeStep(Time, multNumerAndDenom).
+	:-	_ruleForTimeStep(Time, numeratorAndDenominatorCanBeMultipliedBySameTerm).
 
 % multiply numer
 _treeOp(Time, TempNode, Numer, Poly, mul)
-	:-	_operandNumer(Time, Numer, multNumerAndDenom, left),
-		_operand(Time, Poly, multNumerAndDenom, right),
+	:-	_operandNumer(Time, Numer, numeratorAndDenominatorCanBeMultipliedBySameTerm, left),
+		_operand(Time, Poly, numeratorAndDenominatorCanBeMultipliedBySameTerm, right),
 		_tempChildOnSide(tempResultRoot, TempNode, left).
 
 % multiply denom
 _treeOp(Time, TempNode, Denom, Poly, mul)
-	:-	_operandDenom(Time, Denom, multNumerAndDenom, left),
-		_operand(Time, Poly, multNumerAndDenom, right),
+	:-	_operandDenom(Time, Denom, numeratorAndDenominatorCanBeMultipliedBySameTerm, left),
+		_operand(Time, Poly, numeratorAndDenominatorCanBeMultipliedBySameTerm, right),
 		_tempChildOnSide(tempResultRoot, TempNode, right).
 
 % save the result
 _setResultTo(Time, Fraction)
-	:-	_operand(Time, Fraction, multNumerAndDenom, left).
+	:-	_operand(Time, Fraction, numeratorAndDenominatorCanBeMultipliedBySameTerm, left).
 
 %================================================================================
 % addMonoToEqn:	A = B --> A + e = B + e
 %================================================================================
-_applicable(Time, _rule(addMonoToEqn, _operands(leftSide, rightSide)))
+_applicable(Time, _rule(canHaveTheSameTermAddedToBothSides, _operands(leftSide, rightSide)))
 	:-	__validTime(Time).	
 
 % select an arbitrary degree and coefficient
 1 { _selectedDeg(Time, Deg) : _degree(Deg) } 1
-	:-	_ruleForTimeStep(Time, addMonoToEqn).
+	:-	_ruleForTimeStep(Time, canHaveTheSameTermAddedToBothSides).
 1 { _selectedCoeff(Time, Coeff) : _coeff(Coeff) } 1
-	:-	_ruleForTimeStep(Time, addMonoToEqn).
+	:-	_ruleForTimeStep(Time, canHaveTheSameTermAddedToBothSides).
 
 _eqnMonoOp(Time, Coeff, Deg, add)
-	:-	_ruleForTimeStep(Time, addMonoToEqn),
+	:-	_ruleForTimeStep(Time, canHaveTheSameTermAddedToBothSides),
 		_selectedDeg(Time, Deg),
 		_selectedCoeff(Time, Coeff).
 
 % save the results
 _saveEqnResult(Time)
-	:-	_ruleForTimeStep(Time, addMonoToEqn).
+	:-	_ruleForTimeStep(Time, canHaveTheSameTermAddedToBothSides).
 
 %================================================================================
 % multEqnWithMono:	A = B --> A * e = B * e
@@ -548,48 +548,48 @@ _deepCopy(Time, SndTerm, FstTerm)
 %================================================================================
 % cancelNegatives: -(-A) --> A
 %================================================================================
-_applicable(Time, _rule(cancelNegatives, _operands(Parent, Child)))
+_applicable(Time, _rule(areBothNegativeOperationsThatCancelOut, _operands(Parent, Child)))
 	:-	_isATermOf(Time, Parent, Child),
 		_isNeg(Time, Parent),
 		_isNeg(Time, Child).
 
 _deepCopy(Time, GrandParent, GrandChild)
-	:-	_operand(Time, GrandParent, cancelNegatives, left),
-		_operand(Time, Parent, cancelNegatives, right),
+	:-	_operand(Time, GrandParent, areBothNegativeOperationsThatCancelOut, left),
+		_operand(Time, Parent, areBothNegativeOperationsThatCancelOut, right),
 		_isATermOf(Time, Parent, GrandChild).
 
 %================================================================================
 % percolateNeg: -(a + b) --> -a - b         -(a*b*c) --> -a*b*c
 %================================================================================
-_applicable(Time, _rule(percolateNeg, _operands(Node, Child)))
+_applicable(Time, _rule(negationCanBeDistributed, _operands(Node, Child)))
 	:-	_mulOrDiv(Time, Node),
 		_isBeingNegated(Time, Node),
 		_isATermOf(Time, Node, Child).
-_applicable(Time, _rule(percolateNeg, _operands(Node, Node)))
+_applicable(Time, _rule(negationCanBeDistributed, _operands(Node, Node)))
 	:-	_addOrMono(Time, Node),
 		_isBeingNegated(Time, Node).
 
 			%%% negating nodes
 % mono case
 _setTempNodeToMono(Time, tempResultRoot, Deg, NegatedCoeff)
-	:-	_operand(Time, RootNode, percolateNeg, left),
+	:-	_operand(Time, RootNode, negationCanBeDistributed, left),
 		_isMono(Time, RootNode),
 		_coeffOf(Time, RootNode, Coeff),
         NegatedCoeff = Coeff*-1,
 		_degOf(Time, RootNode, Deg).
 % add operator case
 _treeOp(Time, tempResultRoot, RootNode, RootNode, negateChildren)
-	:-	_operand(Time, RootNode, percolateNeg, left),
+	:-	_operand(Time, RootNode, negationCanBeDistributed, left),
 		_isAdd(Time, RootNode).
 % div or mul case
 _treeOp(Time, tempResultRoot, RootNode, Child, negateSingleChild)
-	:-	_operand(Time, RootNode, percolateNeg, left),
-		_operand(Time, Child, percolateNeg, right),
+	:-	_operand(Time, RootNode, negationCanBeDistributed, left),
+		_operand(Time, Child, negationCanBeDistributed, right),
 		_mulOrDiv(Time, RootNode).
 
 % save the result
 _setResultTo(Time, Parent)
-	:-	_operand(Time, RootNode, percolateNeg, left),
+	:-	_operand(Time, RootNode, negationCanBeDistributed, left),
 		_isATermOf(Time, Parent, RootNode).
 
 %================================================================================
@@ -597,7 +597,7 @@ _setResultTo(Time, Parent)
 %================================================================================
 % NOTE: because of tree definitions, will likely only apply at depth = 1
 % TODO: generalize to work for add or mul situations
-_applicable(Time, _rule(ungroup, _operands(Node, Child)))
+_applicable(Time, _rule(canBeUngrouped, _operands(Node, Child)))
 	:-	_nestedGrouping(Time, Child),
 		_isATermOf(Time, Node, Child),
 		_numActiveChildren(Time, Node, NumChildren),
@@ -605,29 +605,29 @@ _applicable(Time, _rule(ungroup, _operands(Node, Child)))
 		_maxNumChildren(Node, MaxNumChildren),
 		MaxNumChildren >= NumChildren + NumGrandChildren - 1.
 
-_treeOp(Time, tempResultRoot, RootNode, NestedNode, ungroup)
-	:-	_operand(Time, RootNode, ungroup, left),
-		_operand(Time, NestedNode, ungroup, right).
+_treeOp(Time, tempResultRoot, RootNode, NestedNode, canBeUngrouped)
+	:-	_operand(Time, RootNode, canBeUngrouped, left),
+		_operand(Time, NestedNode, canBeUngrouped, right).
 
 _setResultTo(Time, RootNode)
-	:-	_operand(Time, RootNode, ungroup, left).
+	:-	_operand(Time, RootNode, canBeUngrouped, left).
 
 %================================================================================
 % cancelSumTerm: A + B = A + C --> B = C
 %================================================================================
-_applicable(Time, _rule(cancelSumTerm, _operands(LeftChild, RightChild)))
+_applicable(Time, _rule(areTermsThatCanBeCancelled, _operands(LeftChild, RightChild)))
 	:-	_isAdd(Time, leftSide),
 		_isAdd(Time, rightSide),
 		_isATermOf(Time, leftSide, LeftChild),
 		_isATermOf(Time, rightSide, RightChild),
 		_areEqual(Time, LeftChild, RightChild).
 _cancelTerm(Time, Node)
-	:-	_operand(Time, Node, cancelSumTerm, Side).
+	:-	_operand(Time, Node, areTermsThatCanBeCancelled, Side).
 
 %================================================================================
 % addInverses: A + -A --> 0 
 %================================================================================
-_applicable(Time, _rule(addInverses, _operands(SndSibling, FstSibling)))
+_applicable(Time, _rule(addUpToZero, _operands(SndSibling, FstSibling)))
 	:-	_areSiblings(Time, FstSibling, SndSibling),
 		_isBeingAdded(Time, FstSibling),
 		_isNeg(Time, SndSibling),
@@ -636,55 +636,55 @@ _applicable(Time, _rule(addInverses, _operands(SndSibling, FstSibling)))
 
 % we know the result is zero, writeBinaryOp handles the rewrite 
 _setTempNodeToMono(Time, tempResultRoot, 0, 0)	
-	:-	_ruleForTimeStep(Time, addInverses).
+	:-	_ruleForTimeStep(Time, addUpToZero).
 _writeBinaryOp(Time)
-	:-	_ruleForTimeStep(Time, addInverses).
+	:-	_ruleForTimeStep(Time, addUpToZero).
 
 %================================================================================
 % subtractFromEqn: A = B  --> A - D = B - D
 %================================================================================
-_applicable(Time, _rule(subtractFromEqn, _operands(Node)))
+_applicable(Time, _rule(canBeSubtractedFromTheEquation, _operands(Node)))
 	:-	_isActive(Time, Node).
 
 _eqnOp(Time, Operand, sub)
-	:-	_operand(Time, Operand, subtractFromEqn, left).
+	:-	_operand(Time, Operand, canBeSubtractedFromTheEquation, left).
 % save the results
 _saveEqnResult(Time)
-	:-	_ruleForTimeStep(Time, subtractFromEqn).
+	:-	_ruleForTimeStep(Time, canBeSubtractedFromTheEquation).
 
 %================================================================================
 % MulEqn: A = B  --> A * D = B * D
 %================================================================================
-_applicable(Time, _rule(mulEqn, _operands(Node)))
+_applicable(Time, _rule(canBeMultipliedAcrossBothSidesOfTheEquation, _operands(Node)))
 	:-	_isActive(Time, Node).
 _eqnOp(Time, Operand, mul)
-	:-	_operand(Time, Operand, mulEqn, left).
+	:-	_operand(Time, Operand, canBeMultipliedAcrossBothSidesOfTheEquation, left).
 % save the results
 _saveEqnResult(Time)
-	:-	_ruleForTimeStep(Time, mulEqn).
+	:-	_ruleForTimeStep(Time, canBeMultipliedAcrossBothSidesOfTheEquation).
 
 %================================================================================
 % divEqnByConst: A = B  --> A / d = B / d
 %================================================================================
-_applicable(Time, _rule(divEqnByConst, _operands(Coeff)))
+_applicable(Time, _rule(canDivideBothSidesOfTheEquation, _operands(Coeff)))
 	:-	_coeff(Coeff),
 		__validTime(Time).
 _eqnOp(Time, Coeff, divConst)
-	:-	_operand(Time, Coeff, divEqnByConst, left).
+	:-	_operand(Time, Coeff, canDivideBothSidesOfTheEquation, left).
 % save the results
 _saveEqnResult(Time)
-	:-	_ruleForTimeStep(Time, divEqnByConst).
+	:-	_ruleForTimeStep(Time, canDivideBothSidesOfTheEquation).
 
 %================================================================================
 % addEqn: A = B  --> A + D = B + D
 %================================================================================
-_applicable(Time, _rule(addEqn, _operands(Node)))
+_applicable(Time, _rule(canBeAddedToBothSidesOfTheEquation, _operands(Node)))
 	:-	_isActive(Time, Node).
 _eqnOp(Time, Operand, add)
-	:-	_operand(Time, Operand, addEqn, left).
+	:-	_operand(Time, Operand, canBeAddedToBothSidesOfTheEquation, left).
 % save the results
 _saveEqnResult(Time)
-	:-	_ruleForTimeStep(Time, addEqn).
+	:-	_ruleForTimeStep(Time, canBeAddedToBothSidesOfTheEquation).
 
 %%:- not _ruleForTimeStep(_time(0,1), canBeAddedTogether).%%
 
@@ -721,25 +721,25 @@ _eqnHasNonConstantTerms(Time)
 %================================================================================
 % mulWithFrac: (A/B) * D --> (A*D)/B
 %================================================================================
-_applicable(Time, _rule(mulWithFrac, _operands(Fraction, NotFraction)))
+_applicable(Time, _rule(fractionCanBeMultipliedWithNonFraction, _operands(Fraction, NotFraction)))
 	:-	_areSiblings(Time, Fraction, NotFraction),
 		_isBeingMultiplied(Time, Fraction),
 		_isDiv(Time, Fraction),
 		not _isDiv(Time, NotFraction).
 _activateTempAndSetChildren(Time, tempResultRoot, div, 2)
-	:-	_ruleForTimeStep(Time, mulWithFrac).
+	:-	_ruleForTimeStep(Time, fractionCanBeMultipliedWithNonFraction).
 _treeOp(Time, FstChild, Numer, NotFraction, append(mul))
-	:-	_operand(Time, Fraction, mulWithFrac, left),
+	:-	_operand(Time, Fraction, fractionCanBeMultipliedWithNonFraction, left),
 		_numerOf(Time, Fraction, Numer),
-		_operand(Time, NotFraction, mulWithFrac, right),
+		_operand(Time, NotFraction, fractionCanBeMultipliedWithNonFraction, right),
 		_tempChildNum(tempResultRoot, FstChild, 1).
 _deepCopy(Time, SndChild, Denom)
-	:-	_operand(Time, Fraction, mulWithFrac, left),
+	:-	_operand(Time, Fraction, fractionCanBeMultipliedWithNonFraction, left),
 		_denomOf(Time, Fraction, Denom),
 		_tempChildNum(tempResultRoot, SndChild, 2).
 
 _writeBinaryOp(Time)
-	:-	_ruleForTimeStep(Time, mulWithFrac).
+	:-	_ruleForTimeStep(Time, fractionCanBeMultipliedWithNonFraction).
 
 %% Rules Listed: Used to generate default rule heuristics
 _rule(hasNumeratorAndDenominatorThatCancel).
@@ -756,22 +756,22 @@ _rule(canHaveItsDenominatorCancelled).
 _rule(canBeCancelled).
 _rule(isATermThatCanBeFactored).
 _rule(hasATermThatCanBeFactoredOut).
-_rule(multByZero).
-_rule(multIdentity).
-_rule(multNumerAndDenom).
-_rule(addMonoToEqn).
+_rule(isEqualToZero).
+_rule(canBeIgnored).
+_rule(numeratorAndDenominatorCanBeMultipliedBySameTerm).
+_rule(canHaveTheSameTermAddedToBothSides).
 _rule(multEqnWithMono).
 _rule(swapTerms).
-_rule(cancelNegatives).
-_rule(percolateNeg).
-_rule(percolateNeg).
-_rule(ungroup).
-_rule(cancelSumTerm).
-_rule(addInverses).
-_rule(subtractFromEqn).
-_rule(mulEqn).
-_rule(divEqnByConst).
-_rule(addEqn).
+_rule(areBothNegativeOperationsThatCancelOut).
+_rule(negationCanBeDistributed).
+_rule(negationCanBeDistributed).
+_rule(canBeUngrouped).
+_rule(areTermsThatCanBeCancelled).
+_rule(addUpToZero).
+_rule(canBeSubtractedFromTheEquation).
+_rule(canBeMultipliedAcrossBothSidesOfTheEquation).
+_rule(canDivideBothSidesOfTheEquation).
+_rule(canBeAddedToBothSidesOfTheEquation).
 _rule(decreaseDeg).
-_rule(mulWithFrac).
+_rule(fractionCanBeMultipliedWithNonFraction).
 

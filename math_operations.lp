@@ -153,28 +153,28 @@ _activateChild(Time, TempParent, TempChild)
 	%%% ungroup nested mul or add trees
 % copy over parent, and allocate new nodes for original children plus new children
 _copyAttributes(Time, Dest, RootNode)
-	:-	_treeOp(Time, Dest, ungroup),
+	:-	_treeOp(Time, Dest, canBeUngrouped),
 		_treeOp(Time, Dest, RootNode, left).
 _newTotalChildren(Time, NumChildren+NumGrandChildren - 1)
-	:-	_treeOp(Time, Dest, ungroup),
+	:-	_treeOp(Time, Dest, canBeUngrouped),
 		_treeOp(Time, Dest, RootNode, left),
 		_treeOp(Time, Dest, NestedNode, right),
 		_numActiveChildren(Time, RootNode, NumChildren),
 		_numActiveChildren(Time, NestedNode, NumGrandChildren).
 _childNumOfNestedNode(Time, Num)
-	:-	_treeOp(Time, Dest, ungroup),
+	:-	_treeOp(Time, Dest, canBeUngrouped),
 		_treeOp(Time, Dest, RootNode, left),
 		_treeOp(Time, Dest, NestedNode, right),
 		_childNum(RootNode, NestedNode, Num).
 _activateChild(Time, Dest, Num)
-	:-	_treeOp(Time, Dest, ungroup),
+	:-	_treeOp(Time, Dest, canBeUngrouped),
 		_treeOp(Time, Dest, RootNode, left),
 		_newTotalChildren(Time, NewNumKids),
 		_childNum(RootNode, Child, Num),
 		Num <= NewNumKids.
 % copy children that are unaffected
 _deepCopy(Time, TempChild, Child)
-	:-	_treeOp(Time, Dest, ungroup),
+	:-	_treeOp(Time, Dest, canBeUngrouped),
 		_treeOp(Time, Dest, RootNode, left),
 		_childNumOfNestedNode(Time, NestedNum),
 		_isATermOf(Time, RootNode, Child),
@@ -183,7 +183,7 @@ _deepCopy(Time, TempChild, Child)
 		Num < NestedNum.
 % copy new children from nested node
 _deepCopy(Time, TempChild, Child)
-	:-	_treeOp(Time, Dest, ungroup),
+	:-	_treeOp(Time, Dest, canBeUngrouped),
 		_treeOp(Time, Dest, NestedNode, right),
 		_isATermOf(Time, NestedNode, Child),
 		_childNum(NestedNode, Child, Num),
@@ -192,7 +192,7 @@ _deepCopy(Time, TempChild, Child)
 		_tempChildNum(Dest, TempChild, NewNum).
 % copy remaining children
 _deepCopy(Time, TempChild, Child)
-	:-	_treeOp(Time, Dest, ungroup),
+	:-	_treeOp(Time, Dest, canBeUngrouped),
 		_treeOp(Time, Dest, RootNode, left),
 		_treeOp(Time, Dest, NestedNode, right),
 		_childNumOfNestedNode(Time, NestedNodeNum),

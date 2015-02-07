@@ -83,23 +83,23 @@ _heuristic(Name, Priority, Rule)
 
 % NOTE: I've reserved priority = 0 for testing purposes. O.W. highest priority is 1 
 % combine monomials
-_heuristicToApplyRule(cancelAcrossEqn, 1, cancelSumTerm). 
-_heuristicToApplyRule(addInverses, 1, addInverses). 
+_heuristicToApplyRule(cancelAcrossEqn, 1, areTermsThatCanBeCancelled). 
+_heuristicToApplyRule(addUpToZero, 1, addUpToZero). 
 _heuristicToApplyRule(ignoreDenom, 1, canBeReducedToItsNumerator). 
 _heuristicToApplyRule(cancelCommTerms, 1, canHaveTheirCommonFactorCancelled). 
-_heuristicToApplyRule(cancelNeg, 1, cancelNegatives). 
+_heuristicToApplyRule(cancelNeg, 1, areBothNegativeOperationsThatCancelOut). 
 
 _heuristicToApplyRule(combineLikeTerms, 2, canBeAddedTogether). 
 _heuristicToApplyRule(additiveIdentity, 2, canBeCancelled). 
 _heuristicToApplyRule(addFractions, 2, canBeAddedAsOneFraction). 
 _heuristicToApplyRule(canHaveItsDenominatorCancelled, 2, canHaveItsDenominatorCancelled). 
-_heuristicToApplyRule(multiplyByZero, 2, multByZero). 
-_heuristicToApplyRule(multiplyByOne, 2, multIdentity). 
+_heuristicToApplyRule(multiplyByZero, 2, isEqualToZero). 
+_heuristicToApplyRule(multiplyByOne, 2, canBeIgnored). 
 
 _heuristicToApplyRule(applyDistribute, 3, canBeDistributed). 
 _heuristicToApplyRule(multiplyMonoms, 3, canBeMultipliedTogether). 
 _heuristicToApplyRule(substitute, 3, decreaseDeg). 
-_heuristicToApplyRule(multiplyWithFrac, 3, mulWithFrac). 
+_heuristicToApplyRule(multiplyWithFrac, 3, fractionCanBeMultipliedWithNonFraction). 
 
 %%%================================================================================
 %%%					Condition Heuristics
@@ -107,7 +107,7 @@ _heuristicToApplyRule(multiplyWithFrac, 3, mulWithFrac).
 
 		%% isolate variables to lhs
 _heuristic(isolateVars, 3, rhsHasVariable).
-_heuristicAction(isolateVars, subtractFromEqn).
+_heuristicAction(isolateVars, canBeSubtractedFromTheEquation).
 
 _applicable(Time, _condition(rhsHasVariable, _operands(Child)))
 	:-	_isAdd(Time, rightSide),
@@ -128,7 +128,7 @@ _sideOf(Child, Side)
 
 		%% move constants to rhs if eqn is linear
 _heuristic(isolateConst, 3, lhsHasConst).
-_heuristicAction(isolateConst, subtractFromEqn).
+_heuristicAction(isolateConst, canBeSubtractedFromTheEquation).
 
 _applicable(Time, _condition(lhsHasConst, _operands(Child)))
 	:-	_hasSuperlinearTerms(Time),
@@ -142,7 +142,7 @@ _hasSuperlinearTerms(Time)
 		%% set lhs to zero if eqn has super-linear terms
 		% NOTE: this only subtracts rhs from both sides: other heuristics must simplify
 _heuristic(setRHSZero, 3, rhsIsNotZero).
-_heuristicAction(setRHSZero, subtractFromEqn).
+_heuristicAction(setRHSZero, canBeSubtractedFromTheEquation).
 _applicable(Time, _condition(rhsIsNotZero, _operands(rightSide)))
 	:-	_hasSuperlinearTerms(Time),
 		not _isZero(Time, rightSide).
