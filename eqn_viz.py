@@ -224,7 +224,8 @@ class EquationStepParser:
     def getExplanationSentences(self):
         if self.action is None: # last step has no action string
             return []
-        operands        = self.getRawOperands()
+        #operands        = self.getRawOperands()
+        operands        = self.getOperands()
         condition       = HEUR_INFO[self.action].trigger
         arity           = len(operands)
         template_key    = (condition, arity)
@@ -232,7 +233,7 @@ class EquationStepParser:
         # get manager and sentence templates
         template_mgr    = getTemplateManager()
         template        = template_mgr.lookupTemplateFor(template_key)
-        sentence_temp   = template.makeExplanation(operands, 1)
+        sentence_temp   = template.makeExplanation(operands, 2)
         # have to still make explanation
         return [ temp.getSentenceFragments() for temp in sentence_temp]
 

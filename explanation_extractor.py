@@ -172,7 +172,7 @@ class ExplanationTemplate(object):
             for pred in filterUnusedConditions(self.rule.body):
                 if self.manager.hasExplanationForPredicate(pred):
                     pred_definition = self.manager.lookupTemplateFor(ExplanationManager.makePredKey(pred))
-                    explanations += pred_definition.makeBodyExplanation(var_asignments, depth - 1)
+                    explanations += pred_definition.makeBodyExplanation(var_assignments, depth - 1)
                 else:
                     explanations += self.predListToSentences([pred], var_assignments)
             return explanations
