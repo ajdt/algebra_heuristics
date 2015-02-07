@@ -121,7 +121,7 @@ _setResultTo(Time, leftSide)
 
 _applicable(Time, _rule(canBeAddedTogether, _operands(LeftMono, RightMono)))
 	:-	_areSiblings(Time, LeftMono, RightMono),
-		_equalDegs(Time, LeftMono, RightMono),
+		_haveEqualDegrees(Time, LeftMono, RightMono),
 		_isMono(Time, LeftMono),
 		_isMono(Time, RightMono),
 		not _isZero(Time, LeftMono),	% if either mono is zero, then addZero rule is used instead
@@ -342,13 +342,13 @@ _applicable(Time, _rule(isATermThatCanBeFactored, _operands(Mono)))
 1 { _selectedCoeffFactors(Time, FstFactor, SndFactor) 
 		: _factors(FstFactor, SndFactor, FactorSum, Coeff) } 1
 	:-	_operand(Time, Mono, isATermThatCanBeFactored, left),
-		_coeffOf(Time, Mono, Coeff).
+		_isTheCoefficientOf(Time, Mono, Coeff).
 % select degree factors
 1 { _selectedDegDecomposition(Time, Fst, Snd) 
 		: _degree(Fst), _degree(Snd),
 			MonoDeg = Fst + Snd } 1
 	:-	_operand(Time, Mono, isATermThatCanBeFactored, left),
-		_degOf(Time, Mono, MonoDeg).
+		_isTheDegreeOf(Time, Mono, MonoDeg).
 % form product of monomials (careful with code reuse here!!)
 _activateTempAndSetChildren(Time, tempResultRoot, mul, 2)
 	:-	_ruleForTimeStep(Time, isATermThatCanBeFactored).
@@ -415,7 +415,7 @@ _tempHolds(Time, _fact(TempTerm, _nodeField(coeff, NewCoeff)))
 	:-	_ruleForTimeStep(Time, hasATermThatCanBeFactoredOut),
 		_originalMonoTerm(Time, Mono, Num),
 		_newMonoTerm(Time, TempTerm, Num),
-		_coeffOf(Time, Mono, MonoCoeff),
+		_isTheCoefficientOf(Time, Mono, MonoCoeff),
 		_selectedCommonCoeff(Time, CommonCoeff),
 		_coeffFactorPairOf(CommonCoeff, NewCoeff, MonoCoeff).
 
@@ -423,7 +423,7 @@ _tempHolds(Time, _fact(TempTerm, _nodeField(degree, NewDeg)))
 	:-	_ruleForTimeStep(Time, hasATermThatCanBeFactoredOut),
 		_originalMonoTerm(Time, Mono, Num),
 		_newMonoTerm(Time, TempTerm, Num),
-		_degOf(Time, Mono, MonoDeg),
+		_isTheDegreeOf(Time, Mono, MonoDeg),
 		_selectedCommonDeg(Time, CommonDeg),
 		NewDeg = MonoDeg - CommonDeg.
 
@@ -574,9 +574,9 @@ _applicable(Time, _rule(negationCanBeDistributed, _operands(Node, Node)))
 _setTempNodeToMono(Time, tempResultRoot, Deg, NegatedCoeff)
 	:-	_operand(Time, RootNode, negationCanBeDistributed, left),
 		_isMono(Time, RootNode),
-		_coeffOf(Time, RootNode, Coeff),
+		_isTheCoefficientOf(Time, RootNode, Coeff),
         NegatedCoeff = Coeff*-1,
-		_degOf(Time, RootNode, Deg).
+		_isTheDegreeOf(Time, RootNode, Deg).
 % add operator case
 _treeOp(Time, tempResultRoot, RootNode, RootNode, negateChildren)
 	:-	_operand(Time, RootNode, negationCanBeDistributed, left),
@@ -697,7 +697,7 @@ _applicable(Time, _rule(decreaseDeg, _operands(leftSide)))
 _update(Time, Node, degree, ResultDeg)
 	:-	_ruleForTimeStep(Time, decreaseDeg),
 		_smallestNonZeroDeg(Time, DividingDeg),
-		_degOf(Time, Node, OrigDeg),
+		_isTheDegreeOf(Time, Node, OrigDeg),
 		OrigDeg != 0,
 		_degProduct(OrigDeg, DividingDeg, ResultDeg).
 
@@ -713,8 +713,8 @@ _xVarCannotBeSubstituted(Time)
 		not _degDivisbleBy(OtherDeg, Deg).
 
 _eqnHasNonConstantTerms(Time)
-	:-	_degOf(Time, Node, Deg),
-		_coeffOf(Time, Node, Coeff),
+	:-	_isTheDegreeOf(Time, Node, Deg),
+		_isTheCoefficientOf(Time, Node, Coeff),
 		Coeff != 0,
 		Deg > 0.
 

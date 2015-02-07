@@ -115,7 +115,7 @@ _applicable(Time, _condition(rhsHasVariable, _operands(Child)))
 		_hasVariable(Time, Child).
 
 _hasVariable(Time, Node)
-	:- _degOf(Time, Node, Deg),
+	:- _isTheDegreeOf(Time, Node, Deg),
 		Deg > 0.
 _hasVariable(Time, Parent)
 	:-	_isATermOf(Time, Parent, Child),
@@ -137,7 +137,7 @@ _applicable(Time, _condition(lhsHasConst, _operands(Child)))
 		_isConstant(Time, Child). % TODO: update to move rationals also
 	
 _hasSuperlinearTerms(Time)
-	:- _degOf(Time, Node, Deg),  Deg >= 2.
+	:- _isTheDegreeOf(Time, Node, Deg),  Deg >= 2.
 
 		%% set lhs to zero if eqn has super-linear terms
 		% NOTE: this only subtracts rhs from both sides: other heuristics must simplify

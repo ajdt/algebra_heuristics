@@ -215,11 +215,11 @@ _monoOp(Time, Dest, Op)
 _monoOpCoeff(Time, Dest, Coeff, Side)
 	:-	_monoOp(Time, Dest, Op),
 		_monoOp(Time, Dest, Operand, Side),
-		_coeffOf(Time, Operand, Coeff).
+		_isTheCoefficientOf(Time, Operand, Coeff).
 _monoOpDeg(Time, Dest, Deg, Side)
 	:-	_monoOp(Time, Dest, Op),
 		_monoOp(Time, Dest, Operand, Side),
-		_degOf(Time, Operand, Deg).
+		_isTheDegreeOf(Time, Operand, Deg).
 
 % add two monomials
 _activateTempNode(Time, Dest, mono)

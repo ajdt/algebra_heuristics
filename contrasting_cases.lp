@@ -76,15 +76,15 @@ _sameDegAcrossStreams(Node)
 		_startTime(FstTime),
 		_startTime(SndTime),
 		FstTime < SndTime,
-		_degOf(FstTime, Node, Deg),
-		_degOf(SndTime, Node, Deg).
+		_isTheDegreeOf(FstTime, Node, Deg),
+		_isTheDegreeOf(SndTime, Node, Deg).
 _sameCoeffAcrossStreams(Node)
 	:-	_node(Node),
 		_startTime(FstTime),
 		_startTime(SndTime),
 		FstTime < SndTime,
-		_coeffOf(FstTime, Node, Coeff),
-		_coeffOf(SndTime, Node, Coeff).
+		_isTheCoefficientOf(FstTime, Node, Coeff),
+		_isTheCoefficientOf(SndTime, Node, Coeff).
 
 % TODO: do something else if both deg and coeff are different??
 _nodeDiff(Node, 1)

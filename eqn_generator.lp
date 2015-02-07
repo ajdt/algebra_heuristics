@@ -38,7 +38,7 @@ usesNode(Node)
 		_startTime(StartTime).
 eqnHasMonoWithDeg(Deg)
 	:-	_startTime(StartTime),
-		_degOf(StartTime, Mono, Deg).
+		_isTheDegreeOf(StartTime, Mono, Deg).
 %%_someNumber(1..10).%%
 %%1 { selectedNum(X) : _someNumber(X) } 1 %%
 	%%:-	_startTime(ST) .%%

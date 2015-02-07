@@ -16,8 +16,8 @@ _hasNestedExpression(Time, Node)
 
 _isXTerm(Time, Node)
 	:-	_isMono(Time, Node),
-		_coeffOf(Time, Node, 1),
-		_degOf(Time, Node, 1).
+		_isTheCoefficientOf(Time, Node, 1),
+		_isTheDegreeOf(Time, Node, 1).
 _hasXTerm(Time, Poly)
 	:-	_isPolynomial(Time, Poly),
 		_isATermOf(Time, Poly, Child),
@@ -25,15 +25,15 @@ _hasXTerm(Time, Poly)
 
 _isConstant(Time, Node)
 	:-	_isMono(Time, Node),
-		_degOf(Time, Node, 0).
+		_isTheDegreeOf(Time, Node, 0).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Zero Coeff Constraint %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% NOTE: to avoid redundancies, if a node has coeff==0, it must have deg = 0
 _hasZeroDeg(Time, Node)
-	:-	_degOf(Time, Node, 0).
+	:-	_isTheDegreeOf(Time, Node, 0).
 
 %%% CONSTRAINT: a zero monomial should have deg == 0 as well
-:-	_coeffOf(Time, Node, 0),
+:-	_isTheCoefficientOf(Time, Node, 0),
 	not _hasZeroDeg(Time, Node).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Polynomial Properties %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% CONSTRAINT: ensure polynomials are in descending order
@@ -45,28 +45,28 @@ _monoSiblings(Time, Fst, Snd)
 		_isMono(Time, Snd).
 _monosOutOfOrder(Time)
 	:-	_monoSiblings(Time, Fst, Snd),
-		_degOf(Time, Fst, FstDeg),
-		_degOf(Time, Snd, SndDeg),
+		_isTheDegreeOf(Time, Fst, FstDeg),
+		_isTheDegreeOf(Time, Snd, SndDeg),
 		FstDeg < SndDeg.
 _monoSiblingsHaveCoeffValuesInOrder(Time, Fst, Snd)
 	:-	_monoSiblings(Time, Fst, Snd),
 		Fst < Snd,
-		_coeffOf(Time, Fst, FstCoeff),
-		_coeffOf(Time, Snd, SndCoeff),
+		_isTheCoefficientOf(Time, Fst, FstCoeff),
+		_isTheCoefficientOf(Time, Snd, SndCoeff),
 		SndCoeff > FstCoeff.
 _monosOutOfOrder(Time)
 	:-	_monoSiblings(Time, Fst, Snd),
-		_degOf(Time, Fst, SameDeg),
-		_degOf(Time, Snd, SameDeg),
+		_isTheDegreeOf(Time, Fst, SameDeg),
+		_isTheDegreeOf(Time, Snd, SameDeg),
 		not _monoSiblingsHaveCoeffValuesInOrder(Time, Fst, Snd).
 
 _polyHasTermWithDeg(Time, Poly, Deg)
 	:-	_isPolynomial(Time, Poly),
 		_isATermOf(Time, Poly, Child),
-		_degOf(Time, Child, Deg).
+		_isTheDegreeOf(Time, Child, Deg).
 _hasSingleTermWithDeg(Time, Poly, Deg)
 	:-	_polyHasTermWithDeg(Time, Poly, Deg),
-		1 { _degOf(Time, Child, Deg) : _isATermOf(Time, Poly, Child) } 1.
+		1 { _isTheDegreeOf(Time, Child, Deg) : _isATermOf(Time, Poly, Child) } 1.
 _hasTermWithDegLargerThan(Time, Poly, FstDeg)
 	:-	_degree(FstDeg),
 		_polyHasTermWithDeg(Time, Poly, SndDeg),
@@ -89,8 +89,8 @@ _notStandardPoly(Time, Poly)
 _monoTermOfPoly(Time, Poly, Deg, Coeff)
 	:-	_isPolynomial(Time, Poly),
 		_isATermOf(Time, Poly, Child),
-		_degOf(Time, Child, Deg),
-		_coeffOf(Time, Child, Coeff).
+		_isTheDegreeOf(Time, Child, Deg),
+		_isTheCoefficientOf(Time, Child, Coeff).
 
 % is factorable
 _isFactorable(Time, Poly) % poly has form x^2 + b*x + c
@@ -152,13 +152,13 @@ _notCoeffFactorOfPoly(Time, Poly, Coeff)
 _polyHasTermWithCoeff(Time, Poly, Coeff)
 	:-	_isPolynomial(Time, Poly),
 		_isATermOf(Time, Poly, Mono),
-		_coeffOf(Time, Mono, Coeff).
+		_isTheCoefficientOf(Time, Mono, Coeff).
 
 
 % equation-wide deg info
 % NOTE: we're interested in smallest non-zero degree to perform degree substitution
 _eqnHasNonZeroDeg(Time, Deg)
-	:-	_degOf(Time, Node, Deg), Deg >  0.
+	:-	_isTheDegreeOf(Time, Node, Deg), Deg >  0.
 _smallestNonZeroDeg(Time, FstDeg)
 	:-	_eqnHasNonZeroDeg(Time, FstDeg),
 		0 { _eqnHasNonZeroDeg(Time, SndDeg) : _degree(SndDeg), SndDeg < FstDeg} 0.
@@ -173,17 +173,17 @@ _degProduct(Prod, Fst, Snd)
 _degDivisbleBy(Prod, Fst)
 	:-	_degProduct(Prod, Fst, Snd).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Equality %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-_equalDegs(Time, FstMono, SndMono)
-	:-	_degOf(Time, FstMono, Deg),
-		_degOf(Time, SndMono, Deg),
+_haveEqualDegrees(Time, FstMono, SndMono)
+	:-	_isTheDegreeOf(Time, FstMono, Deg),
+		_isTheDegreeOf(Time, SndMono, Deg),
 		_node(FstMono),
 		_node(SndMono),
 		Time != initially,
 		FstMono != SndMono.
 _areEqual(Time, FstMono, SndMono)
-	:-	_equalDegs(Time, FstMono, SndMono),
-		_coeffOf(Time, FstMono, Coeff),
-		_coeffOf(Time, SndMono, Coeff),
+	:-	_haveEqualDegrees(Time, FstMono, SndMono),
+		_isTheCoefficientOf(Time, FstMono, Coeff),
+		_isTheCoefficientOf(Time, SndMono, Coeff),
 		_node(FstMono),
 		_node(SndMono),
 		Time != initially,

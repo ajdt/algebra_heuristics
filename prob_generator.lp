@@ -101,7 +101,7 @@ _initiallyOutOfOrderByNumKids(Fst, Snd)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MISC GENERATION CONSTRAINTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% CONSTRAINT: div node has at most 2 children
 :- _isDiv(Time, Node), _isATermOf(Time, Node, Child), _childNum(Node, Child, Num), Num >= 3.
-_hasNoDeg(Time, Mono) :- _isMono(Time, Mono), 0 { _degOf(Time, Mono, Deg) : _degree(Deg) } 0.
+_hasNoDeg(Time, Mono) :- _isMono(Time, Mono), 0 { _isTheDegreeOf(Time, Mono, Deg) : _degree(Deg) } 0.
 %%% CONSTRAINT: each monomial must have a degree term. NOTE: for some unknown reason, monomials without degree terms were being generated too
 :-	__validTime(Time), _isMono(Time, Mono), _hasNoDeg(Time, Mono).
 
@@ -122,9 +122,9 @@ _monoHasChildren(Time, Mono)
 
 % TODO: figure out why _coeffOverflow and _degOverflow cause UNSAT even when not triggered
 _hasCoeff(Time, Node)
-	:-	_coeffOf(Time, Node, Coeff).
+	:-	_isTheCoefficientOf(Time, Node, Coeff).
 _hasDeg(Time, Node)
-	:-	_degOf(Time, Node, Deg).
+	:-	_isTheDegreeOf(Time, Node, Deg).
 % CONSTRAINT: every monomial has a degree value
 :- _isMono(Time, Node), not _hasDeg(Time, Node).
 % CONSTRAINT: every monomial has a coeff value

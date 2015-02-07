@@ -110,10 +110,10 @@ _isOper(Time, Node)
 		:-	_isActive(Time, Node),
 			_hasType(Time, Node, Type),
 			Type != mono.
-_degOf(Time, Node, Deg)
+_isTheDegreeOf(Time, Node, Deg)
 		:-	_holds(Time, _fact(Node, _nodeField(degree, Deg))),
 			_node(Node).
-_coeffOf(Time, Node, Coeff)
+_isTheCoefficientOf(Time, Node, Coeff)
 		:-	_holds(Time, _fact(Node, _nodeField(coeff, Coeff))),
 			_node(Node).
 
@@ -132,14 +132,14 @@ _absoluteValueIsOne(Time, Node)
 	:- _isOne(Time, Node).
 _isNegOne(Time, Node)
 	:-	_isMono(Time, Node),
-		_coeffOf(Time, Node, -1),
-		_degOf(Time, Node, 0).
+		_isTheCoefficientOf(Time, Node, -1),
+		_isTheDegreeOf(Time, Node, 0).
 _isOne(Time, Node)
 	:-	_isMono(Time, Node),
-		_coeffOf(Time, Node, 1),
-		_degOf(Time, Node, 0).
+		_isTheCoefficientOf(Time, Node, 1),
+		_isTheDegreeOf(Time, Node, 0).
 _isZero(Time, Node)
-		:-	_coeffOf(Time, Node, 0).
+		:-	_isTheCoefficientOf(Time, Node, 0).
 % node fields
 _numerOf(Time, Parent, Child)
 		:-	_isDiv(Time, Parent),
