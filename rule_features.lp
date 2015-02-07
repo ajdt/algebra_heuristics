@@ -33,48 +33,48 @@ ruleFeature(addInverses, complexity, 2)
 %================================================================================
 % factorMonom:	ax^k  --> bx^m * cx^n 
 %================================================================================
-ruleFeature(factorMonom, degComplexity, 0)
+ruleFeature(isATermThatCanBeFactored, degComplexity, 0)
 	:-	_selectedDegDecomposition(Time, Fst, Snd),
 		Fst == 0, Snd == 0.
-ruleFeature(factorMonom, degComplexity, 0)
+ruleFeature(isATermThatCanBeFactored, degComplexity, 0)
 	:-	_selectedDegDecomposition(Time, Fst, Snd),
 		Fst == 0, Snd != 0.
-ruleFeature(factorMonom, degComplexity, 0)
+ruleFeature(isATermThatCanBeFactored, degComplexity, 0)
 	:-	_selectedDegDecomposition(Time, Fst, Snd),
 		Fst != 0, Snd == 0.
-ruleFeature(factorMonom, degComplexity, 1)
+ruleFeature(isATermThatCanBeFactored, degComplexity, 1)
 	:-	_selectedDegDecomposition(Time, Fst, Snd),
 		Fst != 0, Snd != 0.
-ruleFeature(factorMonom, coeffComplexity, 0)
+ruleFeature(isATermThatCanBeFactored, coeffComplexity, 0)
 	:-	_selectedCoeffFactors(Time, FstFactor, SndFactor),
 		|SndFactor| == 1.
-ruleFeature(factorMonom, coeffComplexity, 0)
+ruleFeature(isATermThatCanBeFactored, coeffComplexity, 0)
 	:-	_selectedCoeffFactors(Time, FstFactor, SndFactor),
 		|FstFactor| == 1.
-ruleFeature(factorMonom, coeffComplexity, 1)
+ruleFeature(isATermThatCanBeFactored, coeffComplexity, 1)
 	:-	_selectedCoeffFactors(Time, FstFactor, SndFactor),
 		|FstFactor| != 1, |SndFactor| != 1.
 %================================================================================
 % factorCommTerm:	(a*x^k + b*x^l ) --> (a*x^m + b*x^n ) * x^j
 %================================================================================
-ruleFeature(factorCommTerm, degComplexity, 0)
+ruleFeature(hasATermThatCanBeFactoredOut, degComplexity, 0)
 	:-	_selectedCommonDeg(Time, Deg), Deg == 0.
-ruleFeature(factorCommTerm, degComplexity, 1)
+ruleFeature(hasATermThatCanBeFactoredOut, degComplexity, 1)
 	:-	_selectedCommonDeg(Time, Deg), Deg == 1.
-ruleFeature(factorCommTerm, degComplexity, 2)
+ruleFeature(hasATermThatCanBeFactoredOut, degComplexity, 2)
 	:-	_selectedCommonDeg(Time, Deg), Deg > 1.
 
-ruleFeature(factorCommTerm, coeffComplexity, 0)
+ruleFeature(hasATermThatCanBeFactoredOut, coeffComplexity, 0)
 	:-	_selectedCommonCoeff(Time, Coeff), Coeff == 0.
-ruleFeature(factorCommTerm, coeffComplexity, 1)
+ruleFeature(hasATermThatCanBeFactoredOut, coeffComplexity, 1)
 	:-	_selectedCommonCoeff(Time, Coeff), |Coeff| == 1.
-ruleFeature(factorCommTerm, coeffComplexity, 1)
+ruleFeature(hasATermThatCanBeFactoredOut, coeffComplexity, 1)
 	:-	_selectedCommonCoeff(Time, Coeff), |Coeff| != 1, Coeff != 0.
 
 % size of expression we're factoring from
-ruleFeature(factorCommTerm, exprComplexity, 1)
-	:-	_operand(Time, Poly, factorCommTerm, left),
+ruleFeature(hasATermThatCanBeFactoredOut, exprComplexity, 1)
+	:-	_operand(Time, Poly, hasATermThatCanBeFactoredOut, left),
 		_numActiveChildren(Time, Poly, 2).
-ruleFeature(factorCommTerm, exprComplexity, 2)
-	:-	_operand(Time, Poly, factorCommTerm, left),
+ruleFeature(hasATermThatCanBeFactoredOut, exprComplexity, 2)
+	:-	_operand(Time, Poly, hasATermThatCanBeFactoredOut, left),
 		_numActiveChildren(Time, Poly, Num), Num > 2.

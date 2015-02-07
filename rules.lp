@@ -333,69 +333,69 @@ _cancelTerm(Time, ZeroTerm)
 %================================================================================
 % factorMonom:	ax^k  --> bx^m * cx^n 
 %================================================================================
-% NOTE: this is the same rule as factorCommTerm, except written specifically for monomials
-_applicable(Time, _rule(factorMonom, _operands(Mono)))
+% NOTE: this is the same rule as hasATermThatCanBeFactoredOut, except written specifically for monomials
+_applicable(Time, _rule(isATermThatCanBeFactored, _operands(Mono)))
 	:-	_isMono(Time, Mono),
 		not _isOne(Time, Mono),
 		not _isZero(Time, Mono).
 % select coefficient factors,
 1 { _selectedCoeffFactors(Time, FstFactor, SndFactor) 
 		: _factors(FstFactor, SndFactor, FactorSum, Coeff) } 1
-	:-	_operand(Time, Mono, factorMonom, left),
+	:-	_operand(Time, Mono, isATermThatCanBeFactored, left),
 		_coeffOf(Time, Mono, Coeff).
 % select degree factors
 1 { _selectedDegDecomposition(Time, Fst, Snd) 
 		: _degree(Fst), _degree(Snd),
 			MonoDeg = Fst + Snd } 1
-	:-	_operand(Time, Mono, factorMonom, left),
+	:-	_operand(Time, Mono, isATermThatCanBeFactored, left),
 		_degOf(Time, Mono, MonoDeg).
 % form product of monomials (careful with code reuse here!!)
 _activateTempAndSetChildren(Time, tempResultRoot, mul, 2)
-	:-	_ruleForTimeStep(Time, factorMonom).
+	:-	_ruleForTimeStep(Time, isATermThatCanBeFactored).
 _setTempNodeToMono(Time, LeftChild, FstDeg, FstCoeff)
-	:-	_ruleForTimeStep(Time, factorMonom),
+	:-	_ruleForTimeStep(Time, isATermThatCanBeFactored),
 		_tempChildOnSide(tempResultRoot, LeftChild, left),
 		_selectedCoeffFactors(Time, FstCoeff, SndCoeff),
 		_selectedDegDecomposition(Time, FstDeg, SndDeg).
 _setTempNodeToMono(Time, RightChild, SndDeg, SndCoeff)
-	:-	_ruleForTimeStep(Time, factorMonom),
+	:-	_ruleForTimeStep(Time, isATermThatCanBeFactored),
 		_tempChildOnSide(tempResultRoot, RightChild, right),
 		_selectedCoeffFactors(Time, FstCoeff, SndCoeff),
 		_selectedDegDecomposition(Time, FstDeg, SndDeg).
 % save result 
 _setResultTo(Time, Mono)
-	:-	_operand(Time, Mono, factorMonom, left).
+	:-	_operand(Time, Mono, isATermThatCanBeFactored, left).
 
 %================================================================================
 % factorCommTerm:	(a*x^k + b*x^l ) --> (a*x^m + b*x^n ) * x^j
 %================================================================================
-_applicable(Time, _rule(factorCommTerm, _operands(Poly)))
+_applicable(Time, _rule(hasATermThatCanBeFactoredOut, _operands(Poly)))
 	:-	_isPolynomial(Time, Poly),
 		_hasCommonCoeff(Time, Poly),
 		_hasCommonDeg(Time, Poly).
 
 % select common term to factor our
 1 { _selectedCommonDeg(Time, Deg) : _hasCommonDeg(Time, Poly, Deg) } 1
-	:-	_operand(Time, Poly, factorCommTerm, left).
+	:-	_operand(Time, Poly, hasATermThatCanBeFactoredOut, left).
 1 { _selectedCommonCoeff(Time, Coeff) : _hasCommonCoeff(Time, Poly, Coeff) } 1
-	:-	_operand(Time, Poly, factorCommTerm, left).
+	:-	_operand(Time, Poly, hasATermThatCanBeFactoredOut, left).
 
 % setup correct tree structure
 _activateTempAndSetChildren(Time, tempResultRoot, mul, 2)
-	:-	_ruleForTimeStep(Time, factorCommTerm).
+	:-	_ruleForTimeStep(Time, hasATermThatCanBeFactoredOut).
 
 % save monomial that we factored out
 _setTempNodeToMono(Time, TempRight, Deg, Coeff)
-	:-	_ruleForTimeStep(Time, factorCommTerm),
+	:-	_ruleForTimeStep(Time, hasATermThatCanBeFactoredOut),
 		_tempChildOnSide(tempResultRoot, TempRight, right),
 		_selectedCommonDeg(Time, Deg),
 		_selectedCommonCoeff(Time, Coeff).
 % perform the division
 _activateTempNode(Time, TempLeft, add)
-	:-	_ruleForTimeStep(Time, factorCommTerm),
+	:-	_ruleForTimeStep(Time, hasATermThatCanBeFactoredOut),
 		_tempChildOnSide(tempResultRoot, TempLeft, left).
 _originalMonoTerm(Time, Mono, Num)	% isolate monomial terms
-	:-	_operand(Time, Poly, factorCommTerm, left),
+	:-	_operand(Time, Poly, hasATermThatCanBeFactoredOut, left),
 		_isATermOf(Time, Poly, Mono),
 		_childNum(Poly, Mono, Num).
 _newMonoTerm(Time, TempChild, Num)
@@ -404,15 +404,15 @@ _newMonoTerm(Time, TempChild, Num)
 		_tempChildNum(TempLeft, TempChild, Num).
 
 _tempHolds(Time, _fact(TempLeft, _nodeField(activechild, TempTerm)))
-	:-	_ruleForTimeStep(Time, factorCommTerm),
+	:-	_ruleForTimeStep(Time, hasATermThatCanBeFactoredOut),
 		_tempChildOnSide(tempResultRoot, TempLeft, left),
 		_newMonoTerm(Time, TempTerm, Num).
 _activateTempNode(Time, TempTerm, mono)
-	:-	_ruleForTimeStep(Time, factorCommTerm),
+	:-	_ruleForTimeStep(Time, hasATermThatCanBeFactoredOut),
 		_newMonoTerm(Time, TempTerm, Num).
 % set the new coeff and deg values
 _tempHolds(Time, _fact(TempTerm, _nodeField(coeff, NewCoeff)))
-	:-	_ruleForTimeStep(Time, factorCommTerm),
+	:-	_ruleForTimeStep(Time, hasATermThatCanBeFactoredOut),
 		_originalMonoTerm(Time, Mono, Num),
 		_newMonoTerm(Time, TempTerm, Num),
 		_coeffOf(Time, Mono, MonoCoeff),
@@ -420,7 +420,7 @@ _tempHolds(Time, _fact(TempTerm, _nodeField(coeff, NewCoeff)))
 		_coeffFactorPairOf(CommonCoeff, NewCoeff, MonoCoeff).
 
 _tempHolds(Time, _fact(TempTerm, _nodeField(degree, NewDeg)))
-	:-	_ruleForTimeStep(Time, factorCommTerm),
+	:-	_ruleForTimeStep(Time, hasATermThatCanBeFactoredOut),
 		_originalMonoTerm(Time, Mono, Num),
 		_newMonoTerm(Time, TempTerm, Num),
 		_degOf(Time, Mono, MonoDeg),
@@ -429,7 +429,7 @@ _tempHolds(Time, _fact(TempTerm, _nodeField(degree, NewDeg)))
 
 % save result
 _setResultTo(Time, Poly)
-	:-	_operand(Time, Poly, factorCommTerm, left).
+	:-	_operand(Time, Poly, hasATermThatCanBeFactoredOut, left).
 
 %================================================================================
 % multByZero:	A*0 --> 0
@@ -754,8 +754,8 @@ _rule(canBeAddedAsOneFraction).
 _rule(canBeDistributed).
 _rule(canHaveItsDenominatorCancelled).
 _rule(canBeCancelled).
-_rule(factorMonom).
-_rule(factorCommTerm).
+_rule(isATermThatCanBeFactored).
+_rule(hasATermThatCanBeFactoredOut).
 _rule(multByZero).
 _rule(multIdentity).
 _rule(multNumerAndDenom).
