@@ -101,7 +101,7 @@ class ExplanationManager(object):
     def lookupTemplateFor(self, predicate_key):
         """Return an ExplanationTemplate instance for given predicate_key
         predicate_ key = (predicate_name, arity)
-        NOTE: predicate_key  should be generated using ExplanationManager.makeRuleKey(rule)
+        NOTE: predicate_key  should be generated using ExplanationManager.makeRuleKey(rule) or makePredKey()
         """
         if predicate_key in self.templates.keys():
             return self.templates[predicate_key]
@@ -110,12 +110,18 @@ class ExplanationManager(object):
 
     @staticmethod
     def makeRuleKey(rule):
+        """ return predicate key for given rule """
+        return ExplanationManager.makePredKey(rule.head)
+
+    @staticmethod
+    def makePredKey(predicate):
         """ heuristics have a key determined by condition and arity of their operands. Other predicates
         are indexed by their own predicate name and arity"""
-        if rule.head.name != '_applicable':
-            return (rule.head.name, rule.head.arity)
+        if predicate.name != '_applicable':
+            return (predicate.name, predicate.arity)
 
-        nested_pred     = rule.head.args[1]     # either a rule() or condition pred
+        # heuristic predicate
+        nested_pred     = predicate.args[1]     # either a rule() or condition pred
         condition_name  = nested_pred.args[0]
         operands        = nested_pred.args[1]    # contains Operands(...) nested predicate
         heur_key        = (condition_name, operands.arity)
@@ -165,10 +171,10 @@ class ExplanationTemplate(object):
             explanations = []
             for pred in filterUnusedConditions(self.rule.body):
                 if self.manager.hasExplanationForPredicate(pred):
-                    pred_definition = self.manager.lookupRuleForPred(pred)
+                    pred_definition = self.manager.lookupTemplateFor(ExplanationManager.makePredKey(pred))
                     explanations += pred_definition.makeBodyExplanation(var_asignments, depth - 1)
                 else:
-                    explanations += self.predListToSentences([pred], var_asignments)
+                    explanations += self.predListToSentences([pred], var_assignments)
             return explanations
     def predListToSentences(self, pred_list, var_asignments):
         return [ self.makePredicateExplanation(pred, var_asignments) for pred in filterUnusedConditions(pred_list)]
