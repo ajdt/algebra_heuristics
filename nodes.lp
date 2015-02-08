@@ -96,7 +96,7 @@ _isActive(Time, Node)
 _hasType(Time, Node, Type)
 		:-	_holds(Time, _fact(Node, _nodeField(type, Type))).
 
-_isDiv(Time, Node)
+_isFraction(Time, Node)
 		:-	_hasType(Time, Node, div).
 _isMul(Time, Node)
 		:-	_hasType(Time, Node, mul).
@@ -120,7 +120,7 @@ _isTheCoefficientOf(Time, Node, Coeff)
 % used to simulate an OR of these two types
 _addOrMono(Time, Node)	:-	__isMono(Time, Node).
 _addOrMono(Time, Node)	:-	_isAdd(Time, Node).
-_mulOrDiv(Time, Node)	:-	_isDiv(Time, Node).
+_mulOrDiv(Time, Node)	:-	_isFraction(Time, Node).
 _mulOrDiv(Time, Node)	:-	_isMul(Time, Node).
 
 					%%% Derived Properties %%%
@@ -141,17 +141,17 @@ _isOne(Time, Node)
 _isZero(Time, Node)
 		:-	_isTheCoefficientOf(Time, Node, 0).
 % node fields
-_numerOf(Time, Parent, Child)
-		:-	_isDiv(Time, Parent),
+_numeratorOf(Time, Parent, Child)
+		:-	_isFraction(Time, Parent),
 			_isATermOf(Time, Parent, Child),
 			_childNum(Parent, Child, 1).
 _denomOf(Time, Parent, Child)
-		:-	_isDiv(Time, Parent),
+		:-	_isFraction(Time, Parent),
 			_isATermOf(Time, Parent, Child),
 			_childNum(Parent, Child, 2).
 %% NOTE: need these numer/denom fields for visualizer
 _holds(Time, _fact(Parent, _nodeField(numer, Child)))
-		:-	_numerOf(Time, Parent, Child).
+		:-	_numeratorOf(Time, Parent, Child).
 _holds(Time, _fact(Parent, _nodeField(denom, Child)))
 		:-	_denomOf(Time, Parent, Child).
 

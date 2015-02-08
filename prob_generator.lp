@@ -29,7 +29,7 @@ _holds(StartTime, _fact(Node, _nodeField(active,yes)))
 1 { _numChildren(StartTime, Node,  Num) : _childCount(Num), Num <=  MaxNumChildren, Num <= maxInitialChildren} 1	
 		:-	_isOper(StartTime, Node),
 			_startTime(StartTime),
-			not _isDiv(StartTime, Node),
+			not _isFraction(StartTime, Node),
 			not _isNeg(StartTime, Node),
 			_maxNumChildren(Node, MaxNumChildren).
 
@@ -37,7 +37,7 @@ _numChildren(StartTime, Node, 1)
 		:-	_isNeg(StartTime, Node),
 			_startTime(StartTime).
 _numChildren(StartTime, Node, 2)						
-		:-	_isDiv(StartTime, Node),
+		:-	_isFraction(StartTime, Node),
 			_startTime(StartTime).
 
 % 3. activate children for parent node 
@@ -100,7 +100,7 @@ _initiallyOutOfOrderByNumKids(Fst, Snd)
 %%:- _initiallyOutOfOrderByNumKids(Fst, Snd).%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MISC GENERATION CONSTRAINTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% CONSTRAINT: div node has at most 2 children
-:- _isDiv(Time, Node), _isATermOf(Time, Node, Child), _childNum(Node, Child, Num), Num >= 3.
+:- _isFraction(Time, Node), _isATermOf(Time, Node, Child), _childNum(Node, Child, Num), Num >= 3.
 _hasNoDeg(Time, Mono) :- __isMono(Time, Mono), 0 { _isTheDegreeOf(Time, Mono, Deg) : _degree(Deg) } 0.
 %%% CONSTRAINT: each monomial must have a degree term. NOTE: for some unknown reason, monomials without degree terms were being generated too
 :-	__validTime(Time), __isMono(Time, Mono), _hasNoDeg(Time, Mono).

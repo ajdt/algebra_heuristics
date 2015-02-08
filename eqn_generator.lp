@@ -57,7 +57,7 @@ eqnHasMonoWithDeg(Deg)
 	%%:-	_isMul(StartTime, Node),%%
 		%%_startTime(StartTime).%%
 %%_nodeValue(Node, 4)%%
-	%%:-	_isDiv(StartTime, Node),%%
+	%%:-	_isFraction(StartTime, Node),%%
 		%%_startTime(StartTime).%%
 
 %%_eqnTotal(Sum)	:- Sum = #count { Node : _isActive(_time(0,1), Node)} .%%

@@ -228,8 +228,8 @@ _haveUnequalChildren(Time, FstNode, SndNode)	% if two nodes have an unequal numb
 % NOTE: rational numbers must be represented as fractions, a rational number cannot be 
 %	represented in a single node like integer constants can be.
 _isRational(Time, Node)
-	:-	_isDiv(Time, Node),
-		_numerOf(Time, Node, Numer),
+	:-	_isFraction(Time, Node),
+		_numeratorOf(Time, Node, Numer),
 		_denomOf(Time, Node, Denom),
 		_isConstant(Time, Numer),
 		_isConstant(Time, Denom).
@@ -239,11 +239,11 @@ _isProperRational(Time, Node)
 
 _isImproperRational(Time, Node)
 	:-	_isRational(Time, Node),
-		_numerOf(Time, Node, Numer),
+		_numeratorOf(Time, Node, Numer),
 		_isZero(Time, Numer).
 _isImproperRational(Time, Node)
 	:-	_isRational(Time, Node),
-		_numerOf(Time, Node, Numer),
+		_numeratorOf(Time, Node, Numer),
 		_absoluteValueIsOne(Time, Numer),
 		_denomOf(Time, Node, Denom),
 		_absoluteValueIsOne(Time, Denom).

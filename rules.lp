@@ -18,7 +18,7 @@ _operandDenom(Time, Denom, RuleName, Side)
 		_denomOf(Time, Frac, Denom).
 _operandNumer(Time, Numer, RuleName, Side)
 	:-	_operand(Time, Frac, RuleName, Side),
-		_numerOf(Time, Frac, Numer).
+		_numeratorOf(Time, Frac, Numer).
 
 % writing result of a binary operation
 % _writeBinaryOp/1. must be generated explicitly to write result as a binary operation
@@ -39,8 +39,8 @@ _deepCopy(Time, RootNode, TempRoot)
 %================================================================================
 % NOTE: applicable only to subtrees over which equality is defined
 _applicable(Time, _rule(hasNumeratorAndDenominatorThatCancel, _operands(Fraction)))
-	:-	_isDiv(Time, Fraction),
-		_numerOf(Time, Fraction, Numer),
+	:-	_isFraction(Time, Fraction),
+		_numeratorOf(Time, Fraction, Numer),
 		_denomOf(Time, Fraction, Denom),
 		_areEqual(Time, Numer, Denom).
 _setToOne(Time, Fraction)
@@ -50,8 +50,8 @@ _setToOne(Time, Fraction)
 % canBeMultipliedAsFractions: a/b * c/d --> (a*c)/(b*d)
 %================================================================================
 _applicable(Time, _rule(canBeMultipliedAsFractions, _operands(LeftFrac, RightFrac)))
-	:-	_isDiv(Time, LeftFrac),
-		_isDiv(Time, RightFrac),
+	:-	_isFraction(Time, LeftFrac),
+		_isFraction(Time, RightFrac),
 		LeftFrac < RightFrac,
 		_areSiblings(Time, LeftFrac, RightFrac),
 		_isBeingMultiplied(Time, LeftFrac).
@@ -76,8 +76,8 @@ _writeBinaryOp(Time)
 %================================================================================
 _applicable(Time, _rule(canBeMultipliedByInverseOf, _operands(NumerFrac, DenomFrac)))
 			:-	_areSiblings(Time, NumerFrac, DenomFrac),
-				_isDiv(Time, NumerFrac),
-				_isDiv(Time, DenomFrac),
+				_isFraction(Time, NumerFrac),
+				_isFraction(Time, DenomFrac),
 				NumerFrac < DenomFrac, % to ensure NumerFrac actually corresponds to numerator
 				_isBeingDivided(Time, NumerFrac).
 
@@ -92,7 +92,7 @@ _deepCopy(Time, LeftTemp, NumerFrac)
 % flip numer/denom fields
 _treeOp(Time, RightTemp, Numer, Denom, reciprocal)
 	:-	_operand(Time, DenomFrac, canBeMultipliedByInverseOf, right),
-		_numerOf(Time, DenomFrac, Numer),
+		_numeratorOf(Time, DenomFrac, Numer),
 		_denomOf(Time, DenomFrac, Denom),
 		_tempChildOnSide(tempResultRoot, RightTemp, right).
 
@@ -105,12 +105,12 @@ _setResultTo(Time, Root)
 %================================================================================
 _applicable(Time, _rule(canBeReducedToItsNumerator, _operands(leftSide)))
 	:-	_isZero(Time, rightSide),
-		_isDiv(Time, leftSide).
+		_isFraction(Time, leftSide).
 
 % assumes that fraction is poly/poly
 _deepCopy(Time, tempResultRoot, Numer)
 	:-	_operand(Time, Frac, canBeReducedToItsNumerator, left),
-		_numerOf(Time, Frac, Numer).
+		_numeratorOf(Time, Frac, Numer).
 _setResultTo(Time, leftSide)
 	:-	_ruleForTimeStep(Time, canBeReducedToItsNumerator).
 
@@ -245,8 +245,8 @@ _writeBinaryOp(Time)
 % NOTE: also dependent on equal/3 predicate
 %%_applicable(Time, _rule(addDiffFrac, _operands(Fst, Snd)))%%
 	%%:-	_areSiblings(Time, Fst, Snd),%%
-		%%_isDiv(Time, Fst),%%
-		%%_isDiv(Time, Snd),%%
+		%%_isFraction(Time, Fst),%%
+		%%_isFraction(Time, Snd),%%
 		%%Fst < Snd, %%
 		%%_isBeingAdded(Time, Fst).%%
 
@@ -319,7 +319,7 @@ _applicable(Time, _rule(canHaveItsDenominatorCancelled, _operands(Fraction)))
 
 _deepCopy(Time, Fraction, Numer)
 	:-	_operand(Time, Fraction, canHaveItsDenominatorCancelled, left),
-		_numerOf(Time, Fraction, Numer).
+		_numeratorOf(Time, Fraction, Numer).
 %================================================================================
 % addZero A + 0 --> A
 %================================================================================
@@ -459,7 +459,7 @@ _cancelTerm(Time, UnitTerm)
 % Additionally, we can only multiply expression by a polynomial expression already existing
 % somewhere in the equation
 _applicable(Time, _rule(numeratorAndDenominatorCanBeMultipliedBySameTerm, _operands(Fraction, Poly)))
-	:-	_isDiv(Time, Fraction),
+	:-	_isFraction(Time, Fraction),
 		_isPolynomial(Time, Poly).
 
 % set root to div
@@ -724,13 +724,13 @@ _eqnHasNonConstantTerms(Time)
 _applicable(Time, _rule(fractionCanBeMultipliedWithNonFraction, _operands(Fraction, NotFraction)))
 	:-	_areSiblings(Time, Fraction, NotFraction),
 		_isBeingMultiplied(Time, Fraction),
-		_isDiv(Time, Fraction),
-		not _isDiv(Time, NotFraction).
+		_isFraction(Time, Fraction),
+		not _isFraction(Time, NotFraction).
 _activateTempAndSetChildren(Time, tempResultRoot, div, 2)
 	:-	_ruleForTimeStep(Time, fractionCanBeMultipliedWithNonFraction).
 _treeOp(Time, FstChild, Numer, NotFraction, append(mul))
 	:-	_operand(Time, Fraction, fractionCanBeMultipliedWithNonFraction, left),
-		_numerOf(Time, Fraction, Numer),
+		_numeratorOf(Time, Fraction, Numer),
 		_operand(Time, NotFraction, fractionCanBeMultipliedWithNonFraction, right),
 		_tempChildNum(tempResultRoot, FstChild, 1).
 _deepCopy(Time, SndChild, Denom)
