@@ -12,10 +12,10 @@ _isPolynomial(Time, Node)
 		not _hasNestedExpression(Time, Node).
 _hasNestedExpression(Time, Node)
 	:-	_isATermOf(Time, Node, Child),
-		not _isMono(Time, Child).
+		not __isMono(Time, Child).
 
 _isXTerm(Time, Node)
-	:-	_isMono(Time, Node),
+	:-	__isMono(Time, Node),
 		_isTheCoefficientOf(Time, Node, 1),
 		_isTheDegreeOf(Time, Node, 1).
 _hasXTerm(Time, Poly)
@@ -24,7 +24,7 @@ _hasXTerm(Time, Poly)
 		_isXTerm(Time, Child).
 
 _isConstant(Time, Node)
-	:-	_isMono(Time, Node),
+	:-	__isMono(Time, Node),
 		_isTheDegreeOf(Time, Node, 0).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Zero Coeff Constraint %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -41,8 +41,8 @@ _hasZeroDeg(Time, Node)
 _monoSiblings(Time, Fst, Snd)
 	:-	_areSiblings(Time, Fst, Snd),
 		Fst < Snd,
-		_isMono(Time, Fst),
-		_isMono(Time, Snd).
+		__isMono(Time, Fst),
+		__isMono(Time, Snd).
 _monosOutOfOrder(Time)
 	:-	_monoSiblings(Time, Fst, Snd),
 		_isTheDegreeOf(Time, Fst, FstDeg),

@@ -92,8 +92,8 @@ _nodeDiff(Node, 1)
 		_startTime(FstTime),
 		_startTime(SndTime),
 		FstTime < SndTime,
-		_isMono(FstTime, Node),
-		_isMono(SndTime, Node),
+		__isMono(FstTime, Node),
+		__isMono(SndTime, Node),
 		not _sameDegAcrossStreams(Node).
 % both monos diff coeff, 
 _nodeDiff(Node, 1)
@@ -101,8 +101,8 @@ _nodeDiff(Node, 1)
 		_startTime(FstTime),
 		_startTime(SndTime),
 		FstTime < SndTime,
-		_isMono(FstTime, Node),
-		_isMono(SndTime, Node),
+		__isMono(FstTime, Node),
+		__isMono(SndTime, Node),
 		not _sameCoeffAcrossStreams(Node).
 % both monos identical
 _nodeDiff(Node, 0)

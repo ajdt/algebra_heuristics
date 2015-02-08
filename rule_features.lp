@@ -7,7 +7,7 @@ ruleFeature(hasNumeratorAndDenominatorThatCancel, complexity, 0)
 ruleFeature(hasNumeratorAndDenominatorThatCancel, complexity, 1)
 	:-	_operandDenom(Time, Denom, hasNumeratorAndDenominatorThatCancel, left),
 		not _isConstant(Time, Denom),
-		_isMono(Time, Denom).
+		__isMono(Time, Denom).
 ruleFeature(hasNumeratorAndDenominatorThatCancel, complexity, 2)
 	:-	_operandDenom(Time, Denom, hasNumeratorAndDenominatorThatCancel, left),
 		 _isNeg(Time, Denom).
@@ -25,7 +25,7 @@ ruleFeature(addUpToZero, complexity, 0)
 ruleFeature(addUpToZero, complexity, 1)
 	:-	_operand(Time, Node, addUpToZero, right),
 		not _isConstant(Time, Node),
-		_isMono(Time, Node).
+		__isMono(Time, Node).
 ruleFeature(addUpToZero, complexity, 2)
 	:-	_operand(Time, Node, addUpToZero, right),
 		_isOper(Time, Node).

@@ -57,11 +57,11 @@ _holds(StartTime, _fact(Child, _nodeField(active,yes)))
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ASSIGN Monomials %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 1 { _holds(StartTime, _fact(Node, _nodeField(degree, Order))) : _degree(Order) , Order <= maxInitialDeg } 1 	
-		:-	_isMono(StartTime, Node),
+		:-	__isMono(StartTime, Node),
 			_startTime(StartTime).
 
 1 { _holds(StartTime, _fact(Node, _nodeField(coeff, Coeff))) : _coeff(Coeff) , |Coeff| <= maxInitialCoeff } 1 	
-		:-	_isMono(StartTime, Node),
+		:-	__isMono(StartTime, Node),
 			_startTime(StartTime).
 					
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREVENTING ZERO DENOMINATORS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -72,7 +72,7 @@ _holds(StartTime, _fact(Child, _nodeField(active,yes)))
 % NOTE: this constraint reduces redundancy by partially defining
 % a canonical form for a given problem to have
 _subtreeHeight(Time, Node, 0)
-	:-	_isMono(Time, Node).
+	:-	__isMono(Time, Node).
 _hasSubtreeWithHeight(Time, Parent, Height)
 	:-	_isATermOf(Time, Parent, Child),
 		_subtreeHeight(Time, Child, Height).
@@ -101,16 +101,16 @@ _initiallyOutOfOrderByNumKids(Fst, Snd)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MISC GENERATION CONSTRAINTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% CONSTRAINT: div node has at most 2 children
 :- _isDiv(Time, Node), _isATermOf(Time, Node, Child), _childNum(Node, Child, Num), Num >= 3.
-_hasNoDeg(Time, Mono) :- _isMono(Time, Mono), 0 { _isTheDegreeOf(Time, Mono, Deg) : _degree(Deg) } 0.
+_hasNoDeg(Time, Mono) :- __isMono(Time, Mono), 0 { _isTheDegreeOf(Time, Mono, Deg) : _degree(Deg) } 0.
 %%% CONSTRAINT: each monomial must have a degree term. NOTE: for some unknown reason, monomials without degree terms were being generated too
-:-	__validTime(Time), _isMono(Time, Mono), _hasNoDeg(Time, Mono).
+:-	__validTime(Time), __isMono(Time, Mono), _hasNoDeg(Time, Mono).
 
 % monomial nodes must be leave nodes
 _isLeafNode(Time, Mono)
-	:-	_isMono(Time, Mono), 
+	:-	__isMono(Time, Mono), 
 		0 { _isATermOf(Time, Mono, Child) : _node(Child) } 0 .
 _monoHasChildren(Time, Mono)
-	:-	_isMono(Time, Mono), 
+	:-	__isMono(Time, Mono), 
 	not _isLeafNode(Time, Mono).
 
 :- _monoHasChildren(Time, Mono).
@@ -126,6 +126,6 @@ _hasCoeff(Time, Node)
 _hasDeg(Time, Node)
 	:-	_isTheDegreeOf(Time, Node, Deg).
 % CONSTRAINT: every monomial has a degree value
-:- _isMono(Time, Node), not _hasDeg(Time, Node).
+:- __isMono(Time, Node), not _hasDeg(Time, Node).
 % CONSTRAINT: every monomial has a coeff value
-:- _isMono(Time, Node), not _hasCoeff(Time, Node).
+:- __isMono(Time, Node), not _hasCoeff(Time, Node).

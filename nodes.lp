@@ -104,7 +104,7 @@ _isAdd(Time, Node)
 		:-	_hasType(Time, Node, add).
 _isNeg(Time, Node)
 		:-	_hasType(Time, Node, neg).
-_isMono(Time, Node)
+__isMono(Time, Node)
 		:-	_hasType(Time, Node, mono).
 _isOper(Time, Node)
 		:-	_isActive(Time, Node),
@@ -118,7 +118,7 @@ _isTheCoefficientOf(Time, Node, Coeff)
 			_node(Node).
 
 % used to simulate an OR of these two types
-_addOrMono(Time, Node)	:-	_isMono(Time, Node).
+_addOrMono(Time, Node)	:-	__isMono(Time, Node).
 _addOrMono(Time, Node)	:-	_isAdd(Time, Node).
 _mulOrDiv(Time, Node)	:-	_isDiv(Time, Node).
 _mulOrDiv(Time, Node)	:-	_isMul(Time, Node).
@@ -131,11 +131,11 @@ _absoluteValueIsOne(Time, Node)
 _absoluteValueIsOne(Time, Node)
 	:- _isOne(Time, Node).
 _isNegOne(Time, Node)
-	:-	_isMono(Time, Node),
+	:-	__isMono(Time, Node),
 		_isTheCoefficientOf(Time, Node, -1),
 		_isTheDegreeOf(Time, Node, 0).
 _isOne(Time, Node)
-	:-	_isMono(Time, Node),
+	:-	__isMono(Time, Node),
 		_isTheCoefficientOf(Time, Node, 1),
 		_isTheDegreeOf(Time, Node, 0).
 _isZero(Time, Node)

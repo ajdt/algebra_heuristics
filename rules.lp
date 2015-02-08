@@ -122,8 +122,8 @@ _setResultTo(Time, leftSide)
 _applicable(Time, _rule(canBeAddedTogether, _operands(LeftMono, RightMono)))
 	:-	_areSiblings(Time, LeftMono, RightMono),
 		_haveEqualDegrees(Time, LeftMono, RightMono),
-		_isMono(Time, LeftMono),
-		_isMono(Time, RightMono),
+		__isMono(Time, LeftMono),
+		__isMono(Time, RightMono),
 		not _isZero(Time, LeftMono),	% if either mono is zero, then addZero rule is used instead
 		not _isZero(Time, RightMono),
 		LeftMono < RightMono,
@@ -141,8 +141,8 @@ _writeBinaryOp(Time)
 %================================================================================
 _applicable(Time, _rule(canBeMultipliedTogether, _operands(LeftMono, RightMono)))
 	:-	_areSiblings(Time, LeftMono, RightMono),
-		_isMono(Time, LeftMono),
-		_isMono(Time, RightMono),
+		__isMono(Time, LeftMono),
+		__isMono(Time, RightMono),
 		LeftMono < RightMono,
 		_isBeingMultiplied(Time, LeftMono).
  
@@ -335,7 +335,7 @@ _cancelTerm(Time, ZeroTerm)
 %================================================================================
 % NOTE: this is the same rule as hasATermThatCanBeFactoredOut, except written specifically for monomials
 _applicable(Time, _rule(isATermThatCanBeFactored, _operands(Mono)))
-	:-	_isMono(Time, Mono),
+	:-	__isMono(Time, Mono),
 		not _isOne(Time, Mono),
 		not _isZero(Time, Mono).
 % select coefficient factors,
@@ -573,7 +573,7 @@ _applicable(Time, _rule(negationCanBeDistributed, _operands(Node, Node)))
 % mono case
 _setTempNodeToMono(Time, tempResultRoot, Deg, NegatedCoeff)
 	:-	_operand(Time, RootNode, negationCanBeDistributed, left),
-		_isMono(Time, RootNode),
+		__isMono(Time, RootNode),
 		_isTheCoefficientOf(Time, RootNode, Coeff),
         NegatedCoeff = Coeff*-1,
 		_isTheDegreeOf(Time, RootNode, Deg).

@@ -48,7 +48,7 @@ eqnHasMonoWithDeg(Deg)
     _stopTime(Time).
 
 %%_nodeValue(Node, 1)%%
-	%%:-	_isMono(StartTime, Node),%%
+	%%:-	__isMono(StartTime, Node),%%
 		%%_startTime(StartTime).%%
 %%_nodeValue(Node, 2)%%
 	%%:-	_isAdd(StartTime, Node),%%
