@@ -43,7 +43,7 @@ eqnHasMonoWithDeg(Deg)
 %%1 { selectedNum(X) : _someNumber(X) } 1 %%
 	%%:-	_startTime(ST) .%%
 %%% CONSTRAINT: denominator should not be +- 1 in the solution
-:-	_denomOf(Time, Frac, Denom),
+:-	_denominatorOf(Time, Frac, Denom),
 	_absoluteValueIsOne(Time, Denom),
     _stopTime(Time).
 

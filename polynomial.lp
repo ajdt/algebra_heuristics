@@ -230,7 +230,7 @@ _haveUnequalChildren(Time, FstNode, SndNode)	% if two nodes have an unequal numb
 _isRational(Time, Node)
 	:-	_isFraction(Time, Node),
 		_numeratorOf(Time, Node, Numer),
-		_denomOf(Time, Node, Denom),
+		_denominatorOf(Time, Node, Denom),
 		_isConstant(Time, Numer),
 		_isConstant(Time, Denom).
 _isProperRational(Time, Node)
@@ -245,6 +245,6 @@ _isImproperRational(Time, Node)
 	:-	_isRational(Time, Node),
 		_numeratorOf(Time, Node, Numer),
 		_absoluteValueIsOne(Time, Numer),
-		_denomOf(Time, Node, Denom),
+		_denominatorOf(Time, Node, Denom),
 		_absoluteValueIsOne(Time, Denom).
 

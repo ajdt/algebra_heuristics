@@ -145,7 +145,7 @@ _numeratorOf(Time, Parent, Child)
 		:-	_isFraction(Time, Parent),
 			_isATermOf(Time, Parent, Child),
 			_childNum(Parent, Child, 1).
-_denomOf(Time, Parent, Child)
+_denominatorOf(Time, Parent, Child)
 		:-	_isFraction(Time, Parent),
 			_isATermOf(Time, Parent, Child),
 			_childNum(Parent, Child, 2).
@@ -153,7 +153,7 @@ _denomOf(Time, Parent, Child)
 _holds(Time, _fact(Parent, _nodeField(numer, Child)))
 		:-	_numeratorOf(Time, Parent, Child).
 _holds(Time, _fact(Parent, _nodeField(denom, Child)))
-		:-	_denomOf(Time, Parent, Child).
+		:-	_denominatorOf(Time, Parent, Child).
 
 					%%% Properties Derived From Tree Structure %%%
 % NOTE: a nested grouping: is an operator node nested inside another of the same type that can be ungrouped
@@ -241,8 +241,8 @@ _parentHasTwoChildren(Time, Child)
 % XXX: fractions must be siblings to be considered for sameDenom
 _sameDenom(Time, FstFrac, SndFrac)
 	:-	_areSiblings(Time, FstFrac, SndFrac),
-		_denomOf(Time, FstFrac, FstDenom),
-		_denomOf(Time, SndFrac, SndDenom),
+		_denominatorOf(Time, FstFrac, FstDenom),
+		_denominatorOf(Time, SndFrac, SndDenom),
 		_areEqual(Time, FstDenom, SndDenom).
 
 % counting number of children

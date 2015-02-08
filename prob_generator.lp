@@ -66,7 +66,7 @@ _holds(StartTime, _fact(Child, _nodeField(active,yes)))
 					
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREVENTING ZERO DENOMINATORS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Constraint: if a denominator is reducible to zero, then fail
-:- _reducibleToZero(Time, Node), _denomOf(Time, Frac, Node).
+:- _reducibleToZero(Time, Node), _denominatorOf(Time, Frac, Node).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ORDER CONSTRAINTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: this constraint reduces redundancy by partially defining

@@ -15,7 +15,7 @@ _operand(Time, Snd, RuleName, right)
 	:-	_performRule(Time, _rule(RuleName, _operands(Fst, Snd))).
 _operandDenom(Time, Denom, RuleName, Side)
 	:-	_operand(Time, Frac, RuleName, Side),
-		_denomOf(Time, Frac, Denom).
+		_denominatorOf(Time, Frac, Denom).
 _operandNumer(Time, Numer, RuleName, Side)
 	:-	_operand(Time, Frac, RuleName, Side),
 		_numeratorOf(Time, Frac, Numer).
@@ -41,7 +41,7 @@ _deepCopy(Time, RootNode, TempRoot)
 _applicable(Time, _rule(hasNumeratorAndDenominatorThatCancel, _operands(Fraction)))
 	:-	_isFraction(Time, Fraction),
 		_numeratorOf(Time, Fraction, Numer),
-		_denomOf(Time, Fraction, Denom),
+		_denominatorOf(Time, Fraction, Denom),
 		_areEqual(Time, Numer, Denom).
 _setToOne(Time, Fraction)
 	:-	_operand(Time, Fraction, hasNumeratorAndDenominatorThatCancel, left).
@@ -93,7 +93,7 @@ _deepCopy(Time, LeftTemp, NumerFrac)
 _treeOp(Time, RightTemp, Numer, Denom, reciprocal)
 	:-	_operand(Time, DenomFrac, canBeMultipliedByInverseOf, right),
 		_numeratorOf(Time, DenomFrac, Numer),
-		_denomOf(Time, DenomFrac, Denom),
+		_denominatorOf(Time, DenomFrac, Denom),
 		_tempChildOnSide(tempResultRoot, RightTemp, right).
 
 _setResultTo(Time, Root)
@@ -314,7 +314,7 @@ _writeBinaryOp(Time)
 % divByOne A/1 --> A
 %================================================================================
 _applicable(Time, _rule(canHaveItsDenominatorCancelled, _operands(Fraction)))
-	:-	_denomOf(Time, Fraction, Denom),
+	:-	_denominatorOf(Time, Fraction, Denom),
 		_isOne(Time, Denom).
 
 _deepCopy(Time, Fraction, Numer)
@@ -735,7 +735,7 @@ _treeOp(Time, FstChild, Numer, NotFraction, append(mul))
 		_tempChildNum(tempResultRoot, FstChild, 1).
 _deepCopy(Time, SndChild, Denom)
 	:-	_operand(Time, Fraction, fractionCanBeMultipliedWithNonFraction, left),
-		_denomOf(Time, Fraction, Denom),
+		_denominatorOf(Time, Fraction, Denom),
 		_tempChildNum(tempResultRoot, SndChild, 2).
 
 _writeBinaryOp(Time)
