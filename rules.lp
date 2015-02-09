@@ -47,6 +47,7 @@ _setToOne(Time, Fraction)
 	:-	_operand(Time, Fraction, hasNumeratorAndDenominatorThatCancel, left).
 
 %================================================================================
+% TODO: rewrite to generate better explanation
 % canBeMultipliedAsFractions: a/b * c/d --> (a*c)/(b*d)
 %================================================================================
 _applicable(Time, _rule(canBeMultipliedAsFractions, _operands(LeftFrac, RightFrac)))
@@ -154,6 +155,7 @@ _writeBinaryOp(Time)
 	:-	_ruleForTimeStep(Time, canBeMultipliedTogether).
 
 %================================================================================
+% TODO: rewrite to generate better explanation
 % fracCancel A*B/C*B --> A/C
 %================================================================================
 % NOTE: relies on equal/3 predicate to work
@@ -331,6 +333,7 @@ _cancelTerm(Time, ZeroTerm)
 	:-	_operand(Time, ZeroTerm, canBeCancelled, left).
 
 %================================================================================
+% TODO: rewrite to generate better explanation
 % factorMonom:	ax^k  --> bx^m * cx^n 
 %================================================================================
 % NOTE: this is the same rule as hasATermThatCanBeFactoredOut, except written specifically for monomials
@@ -367,6 +370,8 @@ _setResultTo(Time, Mono)
 	:-	_operand(Time, Mono, isATermThatCanBeFactored, left).
 
 %================================================================================
+% TODO: rewrite to generate better explanation
+%       check if layer 2 explanation is pretty good or not
 % factorCommTerm:	(a*x^k + b*x^l ) --> (a*x^m + b*x^n ) * x^j
 %================================================================================
 _applicable(Time, _rule(hasATermThatCanBeFactoredOut, _operands(Poly)))
@@ -452,6 +457,8 @@ _cancelTerm(Time, UnitTerm)
 	:-	_operand(Time, UnitTerm, canBeIgnored, left).
 
 %================================================================================
+% TODO: rewrite to generate better explanation
+%           should isPolynomial be used to choose what we multiply by??
 % multNumerAndDenom:	A/B --> (A*C)/(B*C)
 %================================================================================
 % NOTE: This rule requres max tree depth to be at least 4, otherwise the generated
@@ -483,6 +490,8 @@ _setResultTo(Time, Fraction)
 	:-	_operand(Time, Fraction, numeratorAndDenominatorCanBeMultipliedBySameTerm, left).
 
 %================================================================================
+% TODO: rewrite to generate better explanation
+%           is this necessary either??
 % addMonoToEqn:	A = B --> A + e = B + e
 %================================================================================
 _applicable(Time, _rule(canHaveTheSameTermAddedToBothSides, _operands(leftSide, rightSide)))
@@ -529,6 +538,8 @@ _saveEqnResult(Time)
 	%%:-	_ruleForTimeStep(Time, multEqnWithMono).%%
 
 %================================================================================
+% TODO: rewrite to generate better explanation
+%       do we need this rule???
 % swapTerms: A*B --> B*A, or A+B --> B*A	
 %================================================================================
 _applicable(Time, _rule(swapTerms, _operands(FstTerm, SndTerm)))
@@ -559,6 +570,8 @@ _deepCopy(Time, GrandParent, GrandChild)
 		_isATermOf(Time, Parent, GrandChild).
 
 %================================================================================
+% TODO: rewrite to generate better explanation
+%       separate the two cases
 % percolateNeg: -(a + b) --> -a - b         -(a*b*c) --> -a*b*c
 %================================================================================
 _applicable(Time, _rule(negationCanBeDistributed, _operands(Node, Child)))
@@ -593,6 +606,8 @@ _setResultTo(Time, Parent)
 		_isATermOf(Time, Parent, RootNode).
 
 %================================================================================
+% TODO: rewrite to generate better explanation
+%   contains too many internal terms, remove this too?
 % ungroup: a+ (b+c) +d  --> a + b + c + d
 %================================================================================
 % NOTE: because of tree definitions, will likely only apply at depth = 1
@@ -641,6 +656,7 @@ _writeBinaryOp(Time)
 	:-	_ruleForTimeStep(Time, addUpToZero).
 
 %================================================================================
+% TODO: rewrite to generate better explanation
 % subtractFromEqn: A = B  --> A - D = B - D
 %================================================================================
 _applicable(Time, _rule(canBeSubtractedFromTheEquation, _operands(Node)))
@@ -653,6 +669,7 @@ _saveEqnResult(Time)
 	:-	_ruleForTimeStep(Time, canBeSubtractedFromTheEquation).
 
 %================================================================================
+% TODO: rewrite to generate better explanation
 % MulEqn: A = B  --> A * D = B * D
 %================================================================================
 _applicable(Time, _rule(canBeMultipliedAcrossBothSidesOfTheEquation, _operands(Node)))
@@ -664,6 +681,8 @@ _saveEqnResult(Time)
 	:-	_ruleForTimeStep(Time, canBeMultipliedAcrossBothSidesOfTheEquation).
 
 %================================================================================
+% TODO: rewrite to generate better explanation
+%       how implement better? do we need this?
 % divEqnByConst: A = B  --> A / d = B / d
 %================================================================================
 _applicable(Time, _rule(canDivideBothSidesOfTheEquation, _operands(Coeff)))
@@ -676,6 +695,7 @@ _saveEqnResult(Time)
 	:-	_ruleForTimeStep(Time, canDivideBothSidesOfTheEquation).
 
 %================================================================================
+% TODO: rewrite to generate better explanation
 % addEqn: A = B  --> A + D = B + D
 %================================================================================
 _applicable(Time, _rule(canBeAddedToBothSidesOfTheEquation, _operands(Node)))
@@ -689,6 +709,7 @@ _saveEqnResult(Time)
 %%:- not _ruleForTimeStep(_time(0,1), canBeAddedTogether).%%
 
 %================================================================================
+% TODO: rewrite to generate better explanation
 % decreaseDeg: x^4 + x^2= 0  --> x^2 + 1 = 0 (example)
 %================================================================================
 _applicable(Time, _rule(decreaseDeg, _operands(leftSide)))
@@ -719,6 +740,7 @@ _eqnHasNonConstantTerms(Time)
 		Deg > 0.
 
 %================================================================================
+% TODO: rewrite to generate better explanation replace not isFraction with isNotFraction
 % mulWithFrac: (A/B) * D --> (A*D)/B
 %================================================================================
 _applicable(Time, _rule(fractionCanBeMultipliedWithNonFraction, _operands(Fraction, NotFraction)))
