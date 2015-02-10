@@ -153,29 +153,16 @@ _writeBinaryOp(Time)
 	:-	_ruleForTimeStep(Time, canBeMultipliedTogether).
 
 %================================================================================
-% TODO: rewrite to generate better explanation
 % fracCancel A*B/C*B --> A/C
 %================================================================================
 % NOTE: relies on equal/3 predicate to work
-_applicable(Time, _rule(canHaveTheirCommonFactorCancelled, _operands(FstNode, SndNode)))
-	:-	_haveCommonFactors(Time, FstNode, SndNode),
-		_areSiblings(Time, FstNode, SndNode),
-		_isMul(Time, FstNode),
-		_isMul(Time, SndNode),
-		_isBeingDivided(Time, FstNode),
-		FstNode < SndNode. % ensure numerator comes first
-
-% select a common factor and then cancel it
-1 { _factorsToCancel(Time, NumerFactor, DenomFactor) : 
-		_factorOf(Time, Numer, NumerFactor), 
-		_factorOf(Time, Denom, DenomFactor),
-		_areEqual(Time, NumerFactor, DenomFactor) } 1
-	:-	_operand(Time, Numer, canHaveTheirCommonFactorCancelled, left),
-		_operand(Time, Denom, canHaveTheirCommonFactorCancelled, right).
-_cancelTerm(Time, Fst)
-	:-	_factorsToCancel(Time, Fst, Snd).
-_cancelTerm(Time, Snd)
-	:-	_factorsToCancel(Time, Fst, Snd).
+_applicable(Time, _rule(areFactorsThatCancel, _operands(NumerFactor, DenomFactor)))
+	:-	_isFraction(Time, Fraction),
+		_isFactorInNumeratorOf(Time, Fraction, NumerFactor),
+        _isFactorInDenominatorOf(Time, Fraction, DenomFactor),
+        _areEqual(Time, NumerFactor, DenomFactor).
+_cancelTerm(Time, Factor)
+	:-	_operand(Time, Factor, areFactorsThatCancel, Side).
 
 %================================================================================
 % factor (x^2 + bx + c) --> (x + e) * (x + d)
@@ -768,7 +755,7 @@ _rule(canBeMultipliedByInverseOf).
 _rule(canBeReducedToItsNumerator).
 _rule(canBeAddedTogether).
 _rule(canBeMultipliedTogether).
-_rule(canHaveTheirCommonFactorCancelled).
+_rule(areFactorsThatCancel).
 _rule(canBeFactored).
 _rule(canBeAddedAsOneFraction).
 _rule(canBeDistributed).

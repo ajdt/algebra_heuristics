@@ -86,7 +86,7 @@ _heuristic(Name, Priority, Rule)
 _heuristicToApplyRule(cancelAcrossEqn, 1, areTermsThatCanBeCancelled). 
 _heuristicToApplyRule(addUpToZero, 1, addUpToZero). 
 _heuristicToApplyRule(ignoreDenom, 1, canBeReducedToItsNumerator). 
-_heuristicToApplyRule(cancelCommTerms, 1, canHaveTheirCommonFactorCancelled). 
+_heuristicToApplyRule(cancelCommTerms, 1, areFactorsThatCancel). 
 _heuristicToApplyRule(cancelNeg, 1, areBothNegativeOperationsThatCancelOut). 
 
 _heuristicToApplyRule(combineLikeTerms, 2, canBeAddedTogether). 

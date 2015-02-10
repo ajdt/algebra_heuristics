@@ -187,7 +187,7 @@ _areBeingMultiplied(Time, Fst, Snd)
         :-  _areSiblings(Time, Fst, Snd),
            _isBeingMultiplied(Time, Fst).
 
-_areInADivisionOperation(Time, Fst, Snd)
+_formAFraction(Time, Fst, Snd)
         :-  _areSiblings(Time, Fst, Snd),
            _isBeingDivided(Time, Fst).
 
@@ -234,12 +234,12 @@ _factorOf(Time, Node, Child)
 _factorOf(Time, Node, Node)
 	:-	_isActive(Time, Node),
 		not _isMul(Time, Node).
-_haveCommonFactors(Time, FstNode, SndNode)
-	:-	_areSiblings(Time, FstNode, SndNode),
-		_factorOf(Time, FstNode, FstFactor),
-		_factorOf(Time, SndNode, SndFactor),
-		_areEqual(Time, FstFactor, SndFactor).
-
+_isFactorInNumeratorOf(Time, Fraction, NumerFactor)
+    :-  _numeratorOf(Time, Fraction, Numer),
+        _factorOf(Time, Numer, NumerFactor).
+_isFactorInDenominatorOf(Time, Fraction, DenomFactor)
+    :-  _denominatorOf(Time, Fraction, Denom),
+        _factorOf(Time, Denom, DenomFactor).
 
 _hasTwoTerms(Time, Node)
 		:-	__validTime(Time),
