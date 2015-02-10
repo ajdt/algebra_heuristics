@@ -179,6 +179,18 @@ _isBeingAdded(Time, Child)
 _isBeingNegated(Time, Child)
         :-  _parentType(Time, Child, neg).
 
+_areBeingMultiplied(Time, Fst, Snd)
+        :-  _areSiblings(Time, Fst, Snd),
+           _isBeingAdded(Time, Fst).
+
+_areBeingAdded(Time, Fst, Snd)
+        :-  _areSiblings(Time, Fst, Snd),
+           _isBeingMultiplied(Time, Fst).
+
+_areInADivisionOperation(Time, Fst, Snd)
+        :-  _areSiblings(Time, Fst, Snd),
+           _isBeingDivided(Time, Fst).
+
 _isATermOf(Time, Parent, Child)
 		:-	_isActive(Time, Parent),
 			_isActive(Time, Child),
