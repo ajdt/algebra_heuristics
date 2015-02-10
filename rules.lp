@@ -47,15 +47,13 @@ _setToOne(Time, Fraction)
 	:-	_operand(Time, Fraction, hasNumeratorAndDenominatorThatCancel, left).
 
 %================================================================================
-% TODO: rewrite to generate better explanation
 % canBeMultipliedAsFractions: a/b * c/d --> (a*c)/(b*d)
 %================================================================================
 _applicable(Time, _rule(canBeMultipliedAsFractions, _operands(LeftFrac, RightFrac)))
 	:-	_isFraction(Time, LeftFrac),
 		_isFraction(Time, RightFrac),
 		LeftFrac < RightFrac,
-		_areSiblings(Time, LeftFrac, RightFrac),
-		_isBeingMultiplied(Time, LeftFrac).
+		_areBeingMultiplied(Time, LeftFrac, RightFrac).
 
 % set result as a fraction with numer and denom as fractions
 _activateTempAndSetChildren(Time, tempResultRoot, div, 2)

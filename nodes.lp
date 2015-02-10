@@ -179,11 +179,11 @@ _isBeingAdded(Time, Child)
 _isBeingNegated(Time, Child)
         :-  _parentType(Time, Child, neg).
 
-_areBeingMultiplied(Time, Fst, Snd)
+_areBeingAdded(Time, Fst, Snd)
         :-  _areSiblings(Time, Fst, Snd),
            _isBeingAdded(Time, Fst).
 
-_areBeingAdded(Time, Fst, Snd)
+_areBeingMultiplied(Time, Fst, Snd)
         :-  _areSiblings(Time, Fst, Snd),
            _isBeingMultiplied(Time, Fst).
 
