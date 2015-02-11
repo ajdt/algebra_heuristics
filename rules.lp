@@ -226,48 +226,6 @@ _writeBinaryOp(Time)
 	:-	_ruleForTimeStep(Time, canBeAddedAsOneFraction).
 	
 %================================================================================
-% addDiffFrac A/B + C/D --> (A*D+C*B)/B*D
-%================================================================================
-% NOTE: requires max depth of allowable expression trees to be at least 4 
-% NOTE: also dependent on equal/3 predicate
-%%_applicable(Time, _rule(addDiffFrac, _operands(Fst, Snd)))%%
-	%%:-	_areSiblings(Time, Fst, Snd),%%
-		%%_isFraction(Time, Fst),%%
-		%%_isFraction(Time, Snd),%%
-		%%Fst < Snd, %%
-		%%_isBeingAdded(Time, Fst).%%
-
-%%% set root to a fraction%%
-%%_activateTempAndSetChildren(Time, tempResultRoot, div, 2)%%
-	%%:-	_ruleForTimeStep(Time, addDiffFrac).%%
-
-%%% set numer to sum of products%%
-%%_activateTempAndSetChildren(Time, Numer, add, 2)%%
-	%%:-	_ruleForTimeStep(Time, addDiffFrac),%%
-		%%_tempChildNum(tempResultRoot, Numer, 1).%%
-
-%%_treeOp(Time, FstProd, FstNumer, SndDenom, mul)%%
-	%%:-	_tempChildNum(tempResultRoot, Numer, 1),%%
-		%%_tempChildNum(Numer, FstProd, 1),%%
-		%%_operandNumer(Time, FstNumer, addDiffFrac, left),%%
-		%%_operandDenom(Time, SndDenom, addDiffFrac, right).%%
-
-%%_treeOp(Time, SndProd, SndNumer, FstDenom, mul)%%
-	%%:-	_tempChildNum(tempResultRoot, Numer, 1),%%
-		%%_tempChildNum(Numer, SndProd, 2),%%
-		%%_operandNumer(Time, SndNumer, addDiffFrac, right),%%
-		%%_operandDenom(Time, FstDenom, addDiffFrac, left).%%
-
-%%% set denominator to product of two original numerators%%
-%%_treeOp(Time, RootDenom, FstDenom, SndDenom, mul)%%
-	%%:-	_tempChildNum(tempResultRoot, RootDenom, 2),%%
-		%%_operandDenom(Time, FstDenom, addDiffFrac, left),%%
-		%%_operandDenom(Time, SndDenom, addDiffFrac, right).%%
-%%% save result%%
-%%_writeBinaryOp(Time)%%
-	%%:-	_ruleForTimeStep(Time, addDiffFrac).%%
-
-%================================================================================
 % distribute (a + b) * C --> (a*C + b*C)
 %================================================================================
 _applicable(Time, _rule(canBeDistributed, _operands(PlusTerm, DistribTerm)))
@@ -475,73 +433,6 @@ _setResultTo(Time, Fraction)
 	:-	_operand(Time, Fraction, numeratorAndDenominatorCanBeMultipliedBySameTerm, left).
 
 %================================================================================
-% TODO: rewrite to generate better explanation
-%           is this necessary either??
-% addMonoToEqn:	A = B --> A + e = B + e
-%================================================================================
-_applicable(Time, _rule(canHaveTheSameTermAddedToBothSides, _operands(leftSide, rightSide)))
-	:-	__validTime(Time).	
-
-% select an arbitrary degree and coefficient
-1 { _selectedDeg(Time, Deg) : _degree(Deg) } 1
-	:-	_ruleForTimeStep(Time, canHaveTheSameTermAddedToBothSides).
-1 { _selectedCoeff(Time, Coeff) : _coeff(Coeff) } 1
-	:-	_ruleForTimeStep(Time, canHaveTheSameTermAddedToBothSides).
-
-_eqnMonoOp(Time, Coeff, Deg, add)
-	:-	_ruleForTimeStep(Time, canHaveTheSameTermAddedToBothSides),
-		_selectedDeg(Time, Deg),
-		_selectedCoeff(Time, Coeff).
-
-% save the results
-_saveEqnResult(Time)
-	:-	_ruleForTimeStep(Time, canHaveTheSameTermAddedToBothSides).
-
-%================================================================================
-% multEqnWithMono:	A = B --> A * e = B * e
-%================================================================================
-% NOTE: commented out b/c this rule seems redundant now that we can multiply by any
-% existing subtree. Not clear that we would ever want to multiply by an arbitrary mono
-%%_applicable(Time, _rule(multEqnWithMono, _operands(leftSide, rightSide)))%%
-	%%:-	__validTime(Time).	%%
-
-%%% select an arbitrary degree and coefficient%%
-%%1 { _selectedDeg(Time, Deg) : _degree(Deg) } 1%%
-	%%:-	_ruleForTimeStep(Time, multEqnWithMono).%%
-%%1 { _selectedCoeff(Time, Coeff) : _coeff(Coeff) } 1%%
-	%%:-	_ruleForTimeStep(Time, multEqnWithMono).%%
-
-%%_eqnMonoOp(Time, Coeff, Deg, mul)%%
-	%%:-	_ruleForTimeStep(Time, multEqnWithMono),%%
-		%%_selectedDeg(Time, Deg),%%
-		%%_selectedCoeff(Time, Coeff).%%
-
-%%% save the results%%
-%%_deepCopy(Time, leftSide, tempResultRoot)%%
-	%%:-	_ruleForTimeStep(Time, multEqnWithMono).%%
-%%_deepCopy(Time, rightSide, tempRightRoot)%%
-	%%:-	_ruleForTimeStep(Time, multEqnWithMono).%%
-
-%================================================================================
-% TODO: rewrite to generate better explanation
-%       do we need this rule???
-% swapTerms: A*B --> B*A, or A+B --> B*A	
-%================================================================================
-_applicable(Time, _rule(swapTerms, _operands(FstTerm, SndTerm)))
-	:-	_swappableTerms(Time, FstTerm, SndTerm),
-		not _areEqual(Time, FstTerm, SndTerm).	% NOTE: swapping equal terms is basically a NO-OP
-
-_deepCopy(Time, FstTerm, SndTerm)
-	:-	_operand(Time, FstTerm, swapTerms, left),
-		_operand(Time, SndTerm, swapTerms, right),
-		_areSiblings(Time, FstTerm, SndTerm).	% specify operands are siblings to avoid excessively large grounding
-
-_deepCopy(Time, SndTerm, FstTerm)
-	:-	_operand(Time, FstTerm, swapTerms, left),
-		_operand(Time, SndTerm, swapTerms, right),
-		_areSiblings(Time, FstTerm, SndTerm).
-
-%================================================================================
 % cancelNegatives: -(-A) --> A
 %================================================================================
 _applicable(Time, _rule(areBothNegativeOperationsThatCancelOut, _operands(Parent, Child)))
@@ -681,20 +572,6 @@ _saveEqnResult(Time)
 
 %================================================================================
 % TODO: rewrite to generate better explanation
-% addEqn: A = B  --> A + D = B + D
-%================================================================================
-_applicable(Time, _rule(canBeAddedToBothSidesOfTheEquation, _operands(Node)))
-	:-	_isActive(Time, Node).
-_eqnOp(Time, Operand, add)
-	:-	_operand(Time, Operand, canBeAddedToBothSidesOfTheEquation, left).
-% save the results
-_saveEqnResult(Time)
-	:-	_ruleForTimeStep(Time, canBeAddedToBothSidesOfTheEquation).
-
-%%:- not _ruleForTimeStep(_time(0,1), canBeAddedTogether).%%
-
-%================================================================================
-% TODO: rewrite to generate better explanation
 % decreaseDeg: x^4 + x^2= 0  --> x^2 + 1 = 0 (example)
 %================================================================================
 _applicable(Time, _rule(decreaseDeg, _operands(leftSide)))
@@ -766,9 +643,6 @@ _rule(hasATermThatCanBeFactoredOut).
 _rule(isEqualToZero).
 _rule(canBeIgnored).
 _rule(numeratorAndDenominatorCanBeMultipliedBySameTerm).
-_rule(canHaveTheSameTermAddedToBothSides).
-_rule(multEqnWithMono).
-_rule(swapTerms).
 _rule(areBothNegativeOperationsThatCancelOut).
 _rule(negationCanBeDistributed).
 _rule(negationCanBeDistributed).
@@ -778,7 +652,6 @@ _rule(addUpToZero).
 _rule(canBeSubtractedFromTheEquation).
 _rule(canBeMultipliedAcrossBothSidesOfTheEquation).
 _rule(canDivideBothSidesOfTheEquation).
-_rule(canBeAddedToBothSidesOfTheEquation).
 _rule(decreaseDeg).
 _rule(fractionCanBeMultipliedWithNonFraction).
 
