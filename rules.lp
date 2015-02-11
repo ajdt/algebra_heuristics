@@ -446,14 +446,8 @@ _deepCopy(Time, GrandParent, GrandChild)
 		_isATermOf(Time, Parent, GrandChild).
 
 %================================================================================
-% TODO: rewrite to generate better explanation
-%       separate the two cases
-% percolateNeg: -(a + b) --> -a - b         -(a*b*c) --> -a*b*c
+% distributeNegative: -(a + b) --> -a - b
 %================================================================================
-_applicable(Time, _rule(negationCanBeDistributed, _operands(Node, Child)))
-	:-	_mulOrDiv(Time, Node),
-		_isBeingNegated(Time, Node),
-		_isATermOf(Time, Node, Child).
 _applicable(Time, _rule(negationCanBeDistributed, _operands(Node, Node)))
 	:-	_addOrMono(Time, Node),
 		_isBeingNegated(Time, Node).
@@ -470,38 +464,28 @@ _setTempNodeToMono(Time, tempResultRoot, Deg, NegatedCoeff)
 _treeOp(Time, tempResultRoot, RootNode, RootNode, negateChildren)
 	:-	_operand(Time, RootNode, negationCanBeDistributed, left),
 		_isAdd(Time, RootNode).
-% div or mul case
-_treeOp(Time, tempResultRoot, RootNode, Child, negateSingleChild)
-	:-	_operand(Time, RootNode, negationCanBeDistributed, left),
-		_operand(Time, Child, negationCanBeDistributed, right),
-		_mulOrDiv(Time, RootNode).
-
+    
 % save the result
 _setResultTo(Time, Parent)
 	:-	_operand(Time, RootNode, negationCanBeDistributed, left),
 		_isATermOf(Time, Parent, RootNode).
-
 %================================================================================
-% TODO: rewrite to generate better explanation
-%   contains too many internal terms, remove this too?
-% ungroup: a+ (b+c) +d  --> a + b + c + d
+% negativeSignCanBePassedToChildOf:          -(a*b*c) --> -a*b*c
 %================================================================================
-% NOTE: because of tree definitions, will likely only apply at depth = 1
-% TODO: generalize to work for add or mul situations
-_applicable(Time, _rule(canBeUngrouped, _operands(Node, Child)))
-	:-	_nestedGrouping(Time, Child),
-		_isATermOf(Time, Node, Child),
-		_numActiveChildren(Time, Node, NumChildren),
-		_numActiveChildren(Time, Child, NumGrandChildren),
-		_maxNumChildren(Node, MaxNumChildren),
-		MaxNumChildren >= NumChildren + NumGrandChildren - 1.
+_applicable(Time, _rule(negativeSignCanBePassedToTermOf, _operands(Node, Child)))
+	:-	_mulOrDiv(Time, Node),
+		_isBeingNegated(Time, Node),
+		_isATermOf(Time, Node, Child).
+% div or mul case
+_treeOp(Time, tempResultRoot, RootNode, Child, negateSingleChild)
+	:-	_operand(Time, RootNode, negativeSignCanBePassedToTermOf, left),
+		_operand(Time, Child, negativeSignCanBePassedToTermOf, right),
+		_mulOrDiv(Time, RootNode).
 
-_treeOp(Time, tempResultRoot, RootNode, NestedNode, canBeUngrouped)
-	:-	_operand(Time, RootNode, canBeUngrouped, left),
-		_operand(Time, NestedNode, canBeUngrouped, right).
-
-_setResultTo(Time, RootNode)
-	:-	_operand(Time, RootNode, canBeUngrouped, left).
+% save the result
+_setResultTo(Time, Parent)
+	:-	_operand(Time, RootNode, negativeSignCanBePassedToTermOf, left),
+		_isATermOf(Time, Parent, RootNode).
 
 %================================================================================
 % cancelSumTerm: A + B = A + C --> B = C
@@ -646,7 +630,6 @@ _rule(numeratorAndDenominatorCanBeMultipliedBySameTerm).
 _rule(areBothNegativeOperationsThatCancelOut).
 _rule(negationCanBeDistributed).
 _rule(negationCanBeDistributed).
-_rule(canBeUngrouped).
 _rule(areTermsThatCanBeCancelled).
 _rule(addUpToZero).
 _rule(canBeSubtractedFromTheEquation).
@@ -654,4 +637,5 @@ _rule(canBeMultipliedAcrossBothSidesOfTheEquation).
 _rule(canDivideBothSidesOfTheEquation).
 _rule(decreaseDeg).
 _rule(fractionCanBeMultipliedWithNonFraction).
+_rule(negativeSignCanBePassedToTermOf).
 
