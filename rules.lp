@@ -532,8 +532,11 @@ _saveEqnResult(Time)
 % TODO: rewrite to generate better explanation
 % MulEqn: A = B  --> A * D = B * D
 %================================================================================
-_applicable(Time, _rule(canBeMultipliedAcrossBothSidesOfTheEquation, _operands(Node)))
-	:-	_isActive(Time, Node).
+% canBeUsedToMultiplyBothSidesOfEquation
+_applicable(Time, _rule(canBeMultipliedAcrossBothSidesOfTheEquation, _operands(Denom)))
+	:-	_rootNode(EqnSide),
+        _isFraction(Time, EqnSide),
+        _denominatorOf(Time, EqnSide, Denom).
 _eqnOp(Time, Operand, mul)
 	:-	_operand(Time, Operand, canBeMultipliedAcrossBothSidesOfTheEquation, left).
 % save the results
