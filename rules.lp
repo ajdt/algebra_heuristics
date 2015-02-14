@@ -529,7 +529,6 @@ _saveEqnResult(Time)
 	:-	_ruleForTimeStep(Time, canBeSubtractedFromTheEquation).
 
 %================================================================================
-% TODO: rewrite to generate better explanation
 % MulEqn: A = B  --> A * D = B * D
 %================================================================================
 % canBeUsedToMultiplyBothSidesOfEquation
@@ -545,12 +544,16 @@ _saveEqnResult(Time)
 
 %================================================================================
 % TODO: rewrite to generate better explanation
-%       how implement better? do we need this?
+%       is currently unsatisfiable
 % divEqnByConst: A = B  --> A / d = B / d
 %================================================================================
-_applicable(Time, _rule(canDivideBothSidesOfTheEquation, _operands(Coeff)))
-	:-	_coeff(Coeff),
-		__validTime(Time).
+_applicable(Time, _rule(canDivideBothSidesOfTheEquation, _operands(Node)))
+	:-	%_coeff(Coeff),
+        _isActive(Time, Node).
+        %%_isMul(Time, leftSide).%%
+        %%_factorOf(Time, leftSide, LeftFactor).%%
+        %%_factorOf(Time, rightSide, RightFactor),%%
+        %%_areEqual(Time, LeftFactor, RightFactor).%%
 _eqnOp(Time, Coeff, divConst)
 	:-	_operand(Time, Coeff, canDivideBothSidesOfTheEquation, left).
 % save the results
@@ -562,8 +565,8 @@ _saveEqnResult(Time)
 % decreaseDeg: x^4 + x^2= 0  --> x^2 + 1 = 0 (example)
 %================================================================================
 _applicable(Time, _rule(decreaseDeg, _operands(leftSide)))
-	:-	_xVariableCanBeSubstituted(Time),
-		_eqnHasNonConstantTerms(Time).
+	:-	_eqnHasNonConstantTerms(Time),
+        _canDivideEveryDegree(Time, Deg).
 _update(Time, Node, degree, ResultDeg)
 	:-	_ruleForTimeStep(Time, decreaseDeg),
 		_smallestNonZeroDeg(Time, DividingDeg),
@@ -571,9 +574,10 @@ _update(Time, Node, degree, ResultDeg)
 		OrigDeg != 0,
 		_degProduct(OrigDeg, DividingDeg, ResultDeg).
 
-_xVariableCanBeSubstituted(Time)
+_canDivideEveryDegree(Time, Deg)
     :-  __validTime(Time),
-		not _xVarCannotBeSubstituted(Time).
+        not _xVarCannotBeSubstituted(Time),
+        _smallestNonZeroDeg(Time, Deg).
 _xVarCannotBeSubstituted(Time)
 	:-	_smallestNonZeroDeg(Time, Deg),
 		Deg <= 1.
