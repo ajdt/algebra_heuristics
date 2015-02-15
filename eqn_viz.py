@@ -233,7 +233,7 @@ class EquationStepParser:
         # get manager and sentence templates
         template_mgr    = getTemplateManager()
         template        = template_mgr.lookupTemplateFor(template_key)
-        sentence_temp   = template.makeExplanation(operands, 2)
+        sentence_temp   = template.makeExplanation(operands, 1)
         # have to still make explanation
         return [ temp.getSentenceFragments() for temp in sentence_temp]
 
@@ -342,6 +342,58 @@ class MathProblemParser(object):
                          'explanations': self.getExplanationsForSteps()}
         return GeneratedProblem(eqn_params)
 
+class ModelManager(object):
+    """records every atom for a generated model (answer set)"""
+    # NOTE: I actually use a different ModelManager for each time step within a given model
+    def __init__(self):
+        super(ModelManager, self).__init__()
+        self.model_predicates = defaultdict(list)
+    def addPredicate(self, predicate_string):
+        """add grounded predicate to model"""
+        pred_name, operands = ModelManager.splitPredicate(predicate_string)
+        pred_key = (pred_name, len(operands))
+        self.model_predicates[pred_key].append(operands)
+    # TODO: remove, for testing purposes only
+    def printModel(self):
+        for pred_key, val_list in self.model_predicates.items():
+            print pred_key[0]
+            for values in val_list:
+                print '\t\t', values
+
+    @staticmethod
+    def splitPredicate(pred_string):
+        """return predicate name and list of operands from predicate string"""
+        # remove all whitespace first
+        pred_string = ''.join(pred_string.split())
+        open_paren  = pred_string.find('(')
+        close_paren = pred_string.rfind(')')
+
+        if open_paren == -1 or close_paren == -1:
+            return (pred_string, [])
+            
+        pred_name       = pred_string[:open_paren]
+        operand_str     = pred_string[open_paren+1:close_paren]
+        # split operands into an array
+        start_idx       = 0
+        paren_level     = 0
+
+        operands = []
+        for index in range(0, len(operand_str)):
+            if operand_str[index] == '(':
+                paren_level += 1
+            elif operand_str[index] == ')':
+                paren_level -= 1
+            elif operand_str[index] == ',' and paren_level == 0:
+                operands.append(operand_str[start_idx:index])
+                start_idx = index + 1
+                continue
+
+            # add the last operand
+            if index == len(operand_str) - 1 and paren_level == 0: 
+                operands.append(operand_str[start_idx:])
+                
+        return (pred_name, operands)
+        
 class AnswerSetParser(object):
     def __init__(self, predicates):
         self.math_problems_dict = dict()
@@ -349,8 +401,10 @@ class AnswerSetParser(object):
     def parseAnsSetFromPredicates(self, predicates_list):
         """ compose as a string every solution in the predicate list given"""
         problem_parsers = defaultdict(MathProblemParser)
+        model_manager   = ModelManager()
         for predicate in predicates_list:
             parser, tokens  = self.findParserMatchingPredicate(predicate)
+            model_manager.addPredicate(predicate)
             if parser == binary_operand_parser:
                 time, remaining_tokens = peelHolds(tokens)
                 soln_num = time[1]
@@ -380,6 +434,8 @@ class AnswerSetParser(object):
         # NOTE: important, we don't want to save the parser objects, just the relevant parts of the generated problems
         # So we save GeneratedProblem instances instead
         self.math_problems_dict = dict( [(prob_number, parser.jsonFriendlyFormat() ) for prob_number, parser in problem_parsers.items()])
+        # TODO: remove only used for debugging
+        model_manager.printModel()
     def findParserMatchingPredicate(self, predicate, parser_list=all_parsers):
         """ if any parser successfully parses the predicate, return tokens and the parser"""
         for parser in parser_list:
