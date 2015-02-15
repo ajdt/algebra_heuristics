@@ -226,8 +226,8 @@ class EquationStepParser:
     def getExplanationSentences(self):
         if self.action is None: # last step has no action string
             return []
-        #operands        = self.getRawOperands()
-        operands        = [self.time] + self.getOperands()
+        operands        = [self.time] + self.getRawOperands()
+        #operands        = [self.time] + self.getOperands()
         condition       = HEUR_INFO[self.action].trigger
         arity           = len(operands)
         template_key    = (condition, arity)
@@ -235,7 +235,7 @@ class EquationStepParser:
         # get manager and sentence templates
         template_mgr    = getTemplateManager()
         template        = template_mgr.lookupTemplateFor(template_key)
-        sentence_temp   = template.makeExplanation(operands, 1)
+        sentence_temp   = template.makeExplanation(operands, self.model_mgr, 1)
         # have to still make explanation
         return [ temp.getSentenceFragments() for temp in sentence_temp]
 
@@ -361,6 +361,17 @@ class ModelManager(object):
         pred_name, operands = ModelManager.splitPredicate(predicate_string)
         pred_key = (pred_name, len(operands))
         self.model_predicates[pred_key].append(operands)
+
+    def unify(self, pred_key, partial_assign):
+        if not self.model_predicates.has_key(pred_key):
+            return []
+        match_key = self.model_predicates[pred_key]
+        return [grounding for grounding in match_key if self.matches(grounding, partial_assign)]
+
+    def matches(self, grounding, partial_assign):
+        # checks if partial assignment of variables is consistent with given grounding
+        return all(map(lambda x,y: x == y or y == None, grounding, partial_assign))
+
     # TODO: remove, for testing purposes only
     def printModel(self):
         for pred_key, val_list in self.model_predicates.items():

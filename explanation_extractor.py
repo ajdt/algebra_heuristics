@@ -144,14 +144,77 @@ class ExplanationTemplate(object):
         """Some predicates can be derived in more than one way"""
         pass
 
+    @staticmethod
+    def isUnified(condition, var_assignment):
+        variables = ExplanationTemplate.getPredicateVariables(condition)
+        # ensure every variable has an assignment
+        return all(map(lambda x: x in var_assignment.keys(), variables))
 
-    def makeExplanation(self, var_values, depth=1):
+    @staticmethod
+    def substituteVariableValues(var_names, var_assignment):
+        # returns a list where variables are substitued for with values where possible
+        # where not possible None is used instead
+        values = []
+        for variable in var_names:
+            if var_assignment.has_key(variable):
+                values.append(var_assignment[variable])
+            else:
+                values.append(None)
+        return values
+    
+    @staticmethod
+    def translateVarsToTemplateNames(template, var_assignment, old_variables):
+        # the template for a predicate p1 may use different variable names than
+        # when p1 is used as a condition for another rule
+        # This method changes the names to the template naming system
+        # @return a new dictionary of variable assignments
+        substituted             = ExplanationTemplate.substituteVariableValues(old_variables, var_assignment)
+        new_vars_with_values    = zip(ExplanationTemplate.getPredicateVariables(template.rule.head), substituted)
+        
+        # remove cases where no assignment was found, and create new dictionary
+        return dict(filter(lambda tup: tup[1] != None, new_vars_with_values))
+
+    @staticmethod
+    def unify(var_assignment, conditions, model_mgr):
+        if len(conditions) == 0:
+            return var_assignment
+
+        first_cond = conditions[0]
+        if ExplanationTemplate.isUnified(first_cond, var_assignment):
+            return ExplanationTemplate.unify(var_assignment, conditions[1:], model_mgr)
+
+        # first condition isn't unified
+        cond_vars = ExplanationTemplate.getPredicateVariables(first_cond)
+        cond_assign = ExplanationTemplate.substituteVariableValues(cond_vars, var_assignment)
+        cond_key = ExplanationManager.makePredKey(first_cond)
+
+        # XXX: model_manager removes leading '_' characters, so this is necessary
+        cond_key = (cond_key[0].replace('_', ''), cond_key[1])
+
+        # look up possible assignments for not-unified variables and update
+        # a copy of var_assignment, recurse on update
+        for assignment in model_mgr.unify(cond_key, cond_assign):
+            temp_assign = dict(var_assignment)
+            temp_assign.update(zip(cond_vars, assignment)) # add new Variable assignments
+
+            # recurse on new assignment, if succeed in assigning for other conditions then return
+            new_assign = ExplanationTemplate.unify(temp_assign, conditions[1:], model_mgr)
+            if new_assign != None:
+                return new_assign
+        return None
+    def unifyVars(self, var_dictionary, model_manager):
+        predicates_only = filterUnusedConditions(self.rule.body)
+        #for cond in predicates_only:
+            #print cond.name
+        return ExplanationTemplate.unify(var_dictionary, predicates_only, model_manager)
+    def makeExplanation(self, var_values, model_manager=None, depth=1):
         """ return list of template sentences containing explanation"""
         # create mapping from variables used to their values
-        var_assignments     = dict(zip(self.getPredicateVariables(self.rule.head), var_values))
+        var_assignments     = dict(zip(ExplanationTemplate.getPredicateVariables(self.rule.head), var_values))
 
+        # generate head/body explanations
         head_expl           = self.makeHeadExplanation(var_assignments)
-        body_expl           = self.makeBodyExplanation(var_assignments, depth)
+        body_expl           = self.unifyAndMakeBodyExplanation(var_assignments, model_manager, depth)
         return [head_expl] + body_expl
 
     def makeHeadExplanation(self, var_assignments):
@@ -159,11 +222,17 @@ class ExplanationTemplate(object):
             # heuristic predicates have explanation component extracted from nested value
             condition_name  = self.rule.head.args[1].args[0]
             sentence        = convertFromCamelCase(condition_name)
-            variables       = self.getPredicateVariables(self.rule.head)
+            variables       = ExplanationTemplate.getPredicateVariables(self.rule.head)
             return TemplateSentence(sentence, variables, var_assignments)
         else:
             return self.makePredicateExplanation(self.rule.head, var_assignments)
-    def makeBodyExplanation(self, var_assignments, depth=1):
+    def unifyAndMakeBodyExplanation(self, var_assignments, model_manager=None, depth=1):
+        # unify variables first, then make explanations
+        unified_vars = self.unifyVars(var_assignments, model_manager)
+        if unified_vars != None:
+            var_assignments = unified_vars
+        return self.makeBodyExplanation(var_assignments, model_manager, depth)
+    def makeBodyExplanation(self, var_assignments, model_manager=None, depth=1):
         # at desired explanation depth, return body explanations
         if depth <= 1:
             return self.predListToSentences(filterUnusedConditions(self.rule.body), var_assignments)
@@ -173,13 +242,19 @@ class ExplanationTemplate(object):
             for pred in filterUnusedConditions(self.rule.body):
                 if self.manager.hasExplanationForPredicate(pred):
                     pred_definition = self.manager.lookupTemplateFor(ExplanationManager.makePredKey(pred))
-                    explanations += pred_definition.makeBodyExplanation(var_assignments, depth - 1)
+
+                    # have to translate variable names to those used in pred_definition template
+                    old_variables       = ExplanationTemplate.getPredicateVariables(pred)
+                    translated_assign   = ExplanationTemplate.translateVarsToTemplateNames(pred_definition, var_assignments, old_variables)
+
+                    explanations += pred_definition.unifyAndMakeBodyExplanation(translated_assign, model_manager, depth - 1)
                 else:
                     explanations += self.predListToSentences([pred], var_assignments)
             return explanations
     def predListToSentences(self, pred_list, var_asignments):
         return [ self.makePredicateExplanation(pred, var_asignments) for pred in filterUnusedConditions(pred_list)]
-    def getPredicateVariables(self, predicate):
+    @staticmethod
+    def getPredicateVariables(predicate):
         """return a list of variables referenced by given predicate"""
         if isHeuristicPredicate(predicate):
             # heuristic rules have nested variables: 
@@ -190,7 +265,7 @@ class ExplanationTemplate(object):
             return predicate.args
     def makePredicateExplanation(self, predicate, var_assignments):
         sentence    = convertFromCamelCase(predicate.name)
-        variables   = self.getPredicateVariables(predicate)    
+        variables   = ExplanationTemplate.getPredicateVariables(predicate)    
         return TemplateSentence(sentence, variables, var_assignments)
 
 
