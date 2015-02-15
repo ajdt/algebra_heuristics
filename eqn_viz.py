@@ -251,9 +251,9 @@ class EquationStepParser:
         elif coeff == '1':
             return 'x^' + deg
         elif deg == '1':
-            return coeff + '*x'
+            return coeff + 'x'
         else:
-            return  coeff + '*x^' + deg
+            return  coeff + 'x^' + deg
     def addOperands(self, operands):
         self.operands = operands
     def addTime(self, time):
