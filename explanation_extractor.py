@@ -149,8 +149,6 @@ class ExplanationTemplate(object):
         """ return list of template sentences containing explanation"""
         # create mapping from variables used to their values
         var_assignments     = dict(zip(self.getPredicateVariables(self.rule.head), var_values))
-        print var_assignments
-        print var_values
 
         head_expl           = self.makeHeadExplanation(var_assignments)
         body_expl           = self.makeBodyExplanation(var_assignments, depth)

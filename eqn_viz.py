@@ -122,7 +122,8 @@ class GeneratedAnswerSet(object):
         return dict( [(num, prob.toJSONFormat()) for num, prob in self.generated_problems_dict.items() ])
 class EquationStepParser:
     """ encapsulates the state of an equation during one step."""
-    def __init__(self):
+    def __init__(self, model_mgr=None):
+        self.model_mgr                      = model_mgr
         # one dictionary per predicate type
         self.node_types                     = {}
         self.degree_of                      = {}
@@ -226,7 +227,6 @@ class EquationStepParser:
         if self.action is None: # last step has no action string
             return []
         #operands        = self.getRawOperands()
-        operands        = self.getOperands()
         operands        = [self.time] + self.getOperands()
         condition       = HEUR_INFO[self.action].trigger
         arity           = len(operands)
@@ -293,8 +293,8 @@ class MathProblemParser(object):
     predicates one at a time to the parser, then calling 
     getSolutionString().
     """
-    def __init__(self):
-        self.solution_steps = defaultdict(EquationStepParser)
+    def __init__(self, model_mgr=None):
+        self.solution_steps = defaultdict(lambda : EquationStepParser(model_mgr))
         self.actions = []
         self.applicable_actions = set()
     def addPredicate(self, time, pred_array):
@@ -408,8 +408,8 @@ class AnswerSetParser(object):
         self.parseAnsSetFromPredicates(predicates)
     def parseAnsSetFromPredicates(self, predicates_list):
         """ compose as a string every solution in the predicate list given"""
-        problem_parsers = defaultdict(MathProblemParser)
         model_manager   = ModelManager()
+        problem_parsers = defaultdict(lambda : MathProblemParser(model_manager))
         for predicate in predicates_list:
             parser, tokens  = self.findParserMatchingPredicate(predicate)
             model_manager.addPredicate(predicate)
