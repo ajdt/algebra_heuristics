@@ -132,6 +132,7 @@ class EquationStepParser:
         self.denom_of                       = {}
         self.operands                       = [] 
         self.action                         = None
+        self.time                           = None
     def parseStepInfo(self, tokens):
         """ given a set of tokens return the node, field and value fields in the token array"""
         # peel fact() predicate first
@@ -226,6 +227,7 @@ class EquationStepParser:
             return []
         #operands        = self.getRawOperands()
         operands        = self.getOperands()
+        operands        = [self.time] + self.getOperands()
         condition       = HEUR_INFO[self.action].trigger
         arity           = len(operands)
         template_key    = (condition, arity)
@@ -254,6 +256,9 @@ class EquationStepParser:
             return  coeff + '*x^' + deg
     def addOperands(self, operands):
         self.operands = operands
+    def addTime(self, time):
+        # want to store time as a string not tuple
+        self.time = 'time' + ''.join(str(time).split())
     def getOperands(self):
         return [ self.makeEqnString(operand) for operand in self.operands ]
     def getRawOperands(self):
@@ -316,6 +321,9 @@ class MathProblemParser(object):
     def addOperands(self, time, operands):
         step = time[0]
         self.solution_steps[step].addOperands(operands)
+    def addTime(self, time):
+        step = time[0]
+        self.solution_steps[step].addTime(time)
     def getProblem(self):
         return self.solution_steps[0].getStepString()
     def getOperands(self):
@@ -427,15 +435,16 @@ class AnswerSetParser(object):
                 soln_num = time[1]      # time is a tuple (step, soln_number)
                 problem_parsers[soln_num].addPredicate(time, remaining_tokens)
             elif parser == action_parser:
-                time        = int(tokens[2])
+                time_step   = int(tokens[2])
                 soln_num    = int(tokens[4])
+                time        = (time_step, soln_num)
                 action_name = tokens[7]
-                problem_parsers[soln_num].addActionPred(time, action_name)
+                problem_parsers[soln_num].addActionPred(time_step, action_name)
+                # TODO: added time predicate temporarily
+                problem_parsers[soln_num].addTime(time)
         # NOTE: important, we don't want to save the parser objects, just the relevant parts of the generated problems
         # So we save GeneratedProblem instances instead
         self.math_problems_dict = dict( [(prob_number, parser.jsonFriendlyFormat() ) for prob_number, parser in problem_parsers.items()])
-        # TODO: remove only used for debugging
-        model_manager.printModel()
     def findParserMatchingPredicate(self, predicate, parser_list=all_parsers):
         """ if any parser successfully parses the predicate, return tokens and the parser"""
         for parser in parser_list:

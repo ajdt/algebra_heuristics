@@ -124,11 +124,12 @@ class ExplanationManager(object):
         nested_pred     = predicate.args[1]     # either a rule() or condition pred
         condition_name  = nested_pred.args[0]
         operands        = nested_pred.args[1]    # contains Operands(...) nested predicate
-        heur_key        = (condition_name, operands.arity)
+        # need to count time as an operand too
+        heur_key        = (condition_name, operands.arity+1)
         return heur_key
 
     def hasExplanationForPredicate(self, predicate):
-        predicate_key = (predicate.name, predicate.arity)
+        predicate_key = ExplanationManager.makePredKey(predicate)
         return predicate_key in self.templates.keys()
         
 class ExplanationTemplate(object):
@@ -148,6 +149,8 @@ class ExplanationTemplate(object):
         """ return list of template sentences containing explanation"""
         # create mapping from variables used to their values
         var_assignments     = dict(zip(self.getPredicateVariables(self.rule.head), var_values))
+        print var_assignments
+        print var_values
 
         head_expl           = self.makeHeadExplanation(var_assignments)
         body_expl           = self.makeBodyExplanation(var_assignments, depth)
@@ -183,7 +186,8 @@ class ExplanationTemplate(object):
         if isHeuristicPredicate(predicate):
             # heuristic rules have nested variables: 
             # _applicable(Time, _rule(condition, _operands(var1, var2, ... varN)))
-            return predicate.args[1].args[1].args
+            # return time and the nested predicates too
+            return [predicate.args[0]] + predicate.args[1].args[1].args
         else:
             return predicate.args
     def makePredicateExplanation(self, predicate, var_assignments):
