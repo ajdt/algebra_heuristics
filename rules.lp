@@ -550,7 +550,7 @@ _saveEqnResult(Time)
 _applicable(Time, _rule(canDivideBothSidesOfTheEquation, _operands(Node)))
 	:-	%_coeff(Coeff),
         _isActive(Time, Node).
-        %%_isMul(Time, leftSide).%%
+        %%_isMultiplicationOperation(Time, leftSide).%%
         %%_factorOf(Time, leftSide, LeftFactor).%%
         %%_factorOf(Time, rightSide, RightFactor),%%
         %%_areEqual(Time, LeftFactor, RightFactor).%%

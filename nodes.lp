@@ -98,7 +98,7 @@ _hasType(Time, Node, Type)
 
 _isFraction(Time, Node)
 		:-	_hasType(Time, Node, div).
-_isMul(Time, Node)
+_isMultiplicationOperation(Time, Node)
 		:-	_hasType(Time, Node, mul).
 _isAdditionOperation(Time, Node)
 		:-	_hasType(Time, Node, add).
@@ -121,7 +121,7 @@ _isTheCoefficientOf(Time, Node, Coeff)
 _addOrMono(Time, Node)	:-	__isMono(Time, Node).
 _addOrMono(Time, Node)	:-	_isAdditionOperation(Time, Node).
 _mulOrDiv(Time, Node)	:-	_isFraction(Time, Node).
-_mulOrDiv(Time, Node)	:-	_isMul(Time, Node).
+_mulOrDiv(Time, Node)	:-	_isMultiplicationOperation(Time, Node).
 
 					%%% Derived Properties %%%
 % Useful, secondary properties of tree nodes.
@@ -164,8 +164,8 @@ _nestedGrouping(Time, Child)
 			_isAdditionOperation(Time, Child).
 _nestedGrouping(Time, Child)
 		:-	_isATermOf(Time, Parent, Child),
-			_isMul(Time, Parent),
-			_isMul(Time, Child).
+			_isMultiplicationOperation(Time, Parent),
+			_isMultiplicationOperation(Time, Child).
 
 _parentType(Time, Child, Type)
 		:-	_isATermOf(Time, Parent, Child),
@@ -210,7 +210,7 @@ _swappableTerms(Time, Fst, Snd)
 _reducibleToZero(Time, Node)
 		:-	_isZero(Time, Node).
 _reducibleToZero(Time, Node)
-		:-	_isMul(Time, Node),
+		:-	_isMultiplicationOperation(Time, Node),
 			_isATermOf(Time, Node, Child),
 			_reducibleToZero(Time, Child).
 _reducibleToZero(Time, Node)
@@ -229,11 +229,11 @@ _hasNonZeroChild(Time, Node)
 % we consider the node its own factor.
 % Mostly, used for fraction cancel rule.
 _factorOf(Time, Node, Child)
-	:-	_isMul(Time, Node),
+	:-	_isMultiplicationOperation(Time, Node),
 		_isATermOf(Time, Node, Child).
 _factorOf(Time, Node, Node)
 	:-	_isActive(Time, Node),
-		not _isMul(Time, Node).
+		not _isMultiplicationOperation(Time, Node).
 _isFactorInNumeratorOf(Time, Fraction, NumerFactor)
     :-  _numeratorOf(Time, Fraction, Numer),
         _factorOf(Time, Numer, NumerFactor).

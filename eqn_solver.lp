@@ -142,7 +142,7 @@ _solved(SndTime)
 % NOTE: defining product of linear binomials only for leftSide b/c
 % it won't be used elsewhere
 _isProductOfLinearBinomials(Time, leftSide)
-	:-	_isMul(Time, leftSide),
+	:-	_isMultiplicationOperation(Time, leftSide),
 		not _hasNonBinomialChild(Time, leftSide).
 
 _hasNonBinomialChild(Time, leftSide)

@@ -54,7 +54,7 @@ eqnHasMonoWithDeg(Deg)
 	%%:-	_isAdditionOperation(StartTime, Node),%%
 		%%_startTime(StartTime).%%
 %%_nodeValue(Node, 3)%%
-	%%:-	_isMul(StartTime, Node),%%
+	%%:-	_isMultiplicationOperation(StartTime, Node),%%
 		%%_startTime(StartTime).%%
 %%_nodeValue(Node, 4)%%
 	%%:-	_isFraction(StartTime, Node),%%
