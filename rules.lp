@@ -74,11 +74,10 @@ _writeBinaryOp(Time)
 % canBeMultipliedByInverseOf: a/c / b/d --> a/c * d/b
 %================================================================================
 _applicable(Time, _rule(canBeMultipliedByInverseOf, _operands(NumerFrac, DenomFrac)))
-			:-	_areSiblings(Time, NumerFrac, DenomFrac),
+			:-	_formAFraction(Time, NumerFrac, DenomFrac),
 				_isFraction(Time, NumerFrac),
 				_isFraction(Time, DenomFrac),
-				NumerFrac < DenomFrac, % to ensure NumerFrac actually corresponds to numerator
-				_isBeingDivided(Time, NumerFrac).
+				NumerFrac < DenomFrac. % to ensure NumerFrac actually corresponds to numerator
 
 % set root node to multiplication node
 _activateTempAndSetChildren(Time, tempResultRoot, mul, 2)
@@ -226,8 +225,7 @@ _writeBinaryOp(Time)
 % distribute (a + b) * C --> (a*C + b*C)
 %================================================================================
 _applicable(Time, _rule(canBeDistributed, _operands(PlusTerm, DistribTerm)))
-	:-	_areSiblings(Time, PlusTerm, DistribTerm),
-		_isBeingMultiplied(Time, PlusTerm),
+	:-	_areBeingMultiplied(Time, PlusTerm, DistribTerm),
 		PlusTerm < DistribTerm, % TODO: this is necessary, but prevents distribute if C occurs before (a+b) term
 		_isAdditionOperation(Time, PlusTerm).
 
@@ -500,8 +498,7 @@ _cancelTerm(Time, Node)
 % addInverses: A + -A --> 0 
 %================================================================================
 _applicable(Time, _rule(addUpToZero, _operands(SndSibling, FstSibling)))
-	:-	_areSiblings(Time, FstSibling, SndSibling),
-		_isBeingAdded(Time, FstSibling),
+	:-	_areBeingAdded(Time, FstSibling, SndSibling),
 		_isNeg(Time, SndSibling),
 		_isATermOf(Time, SndSibling, Child),
 		_areEqual(Time, FstSibling, Child).
@@ -594,8 +591,7 @@ _equationHasNonConstantTerms(Time)
 % mulWithFrac: (A/B) * D --> (A*D)/B
 %================================================================================
 _applicable(Time, _rule(fractionCanBeMultipliedWithNonFraction, _operands(Fraction, NotFraction)))
-	:-	_areSiblings(Time, Fraction, NotFraction),
-		_isBeingMultiplied(Time, Fraction),
+	:-	_areBeingMultiplied(Time, Fraction, NotFraction),
 		_isFraction(Time, Fraction),
 		not _isFraction(Time, NotFraction).
 _activateTempAndSetChildren(Time, tempResultRoot, div, 2)
