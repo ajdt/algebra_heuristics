@@ -232,7 +232,7 @@ _applicable(Time, _rule(canBeDistributed, _operands(PlusTerm, DistribTerm)))
 	:-	_areSiblings(Time, PlusTerm, DistribTerm),
 		_isBeingMultiplied(Time, PlusTerm),
 		PlusTerm < DistribTerm, % TODO: this is necessary, but prevents distribute if C occurs before (a+b) term
-		_isAdd(Time, PlusTerm).
+		_isAdditionOperation(Time, PlusTerm).
 
 % every term in original plus node, is multiplied by distributed term
 _activateTempNode(Time, tempResultRoot, add)
@@ -463,7 +463,7 @@ _setTempNodeToMono(Time, tempResultRoot, Deg, NegatedCoeff)
 % add operator case
 _treeOp(Time, tempResultRoot, RootNode, RootNode, negateChildren)
 	:-	_operand(Time, RootNode, negationCanBeDistributed, left),
-		_isAdd(Time, RootNode).
+		_isAdditionOperation(Time, RootNode).
     
 % save the result
 _setResultTo(Time, Parent)
@@ -491,8 +491,8 @@ _setResultTo(Time, Parent)
 % cancelSumTerm: A + B = A + C --> B = C
 %================================================================================
 _applicable(Time, _rule(areTermsThatCanBeCancelled, _operands(LeftChild, RightChild)))
-	:-	_isAdd(Time, leftSide),
-		_isAdd(Time, rightSide),
+	:-	_isAdditionOperation(Time, leftSide),
+		_isAdditionOperation(Time, rightSide),
 		_isATermOf(Time, leftSide, LeftChild),
 		_isATermOf(Time, rightSide, RightChild),
 		_areEqual(Time, LeftChild, RightChild).

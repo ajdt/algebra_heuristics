@@ -110,7 +110,7 @@ _heuristic(isolateVars, 3, rhsHasVariable).
 _heuristicAction(isolateVars, canBeSubtractedFromTheEquation).
 
 _applicable(Time, _condition(rhsHasVariable, _operands(Child)))
-	:-	_isAdd(Time, rightSide),
+	:-	_isAdditionOperation(Time, rightSide),
 		_isATermOf(Time, rightSide, Child),
 		_hasVariable(Time, Child).
 
@@ -132,7 +132,7 @@ _heuristicAction(isolateConst, canBeSubtractedFromTheEquation).
 
 _applicable(Time, _condition(lhsHasConst, _operands(Child)))
 	:-	_hasSuperlinearTerms(Time),
-		_isAdd(Time, leftSide),
+		_isAdditionOperation(Time, leftSide),
 		_isATermOf(Time, leftSide, Child),
 		_isConstant(Time, Child). % TODO: update to move rationals also
 	
