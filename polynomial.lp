@@ -8,7 +8,7 @@ _degree(0..maxDeg).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Polynomial Tree Structure %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _isPolynomial(Time, Node)
-	:-	_isAdditionOperation(Time, Node),
+	:-	_isSumOfTerms(Time, Node),
 		not _hasNestedExpression(Time, Node).
 _hasNestedExpression(Time, Node)
 	:-	_isATermOf(Time, Node, Child),

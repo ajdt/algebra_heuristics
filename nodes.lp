@@ -100,7 +100,7 @@ _isFraction(Time, Node)
 		:-	_hasType(Time, Node, div).
 _isMultiplicationOperation(Time, Node)
 		:-	_hasType(Time, Node, mul).
-_isAdditionOperation(Time, Node)
+_isSumOfTerms(Time, Node)
 		:-	_hasType(Time, Node, add).
 _isNeg(Time, Node)
 		:-	_hasType(Time, Node, neg).
@@ -119,7 +119,7 @@ _isTheCoefficientOf(Time, Node, Coeff)
 
 % used to simulate an OR of these two types
 _isASingleTermOrSumOfTerms(Time, Node)	:-	__isMono(Time, Node).
-_isASingleTermOrSumOfTerms(Time, Node)	:-	_isAdditionOperation(Time, Node).
+_isASingleTermOrSumOfTerms(Time, Node)	:-	_isSumOfTerms(Time, Node).
 _mulOrDiv(Time, Node)	:-	_isFraction(Time, Node).
 _mulOrDiv(Time, Node)	:-	_isMultiplicationOperation(Time, Node).
 
@@ -160,8 +160,8 @@ _holds(Time, _fact(Parent, _nodeField(denom, Child)))
 % as in (x+b)+c --> x + b + c
 _nestedGrouping(Time, Child)
 		:-	_isATermOf(Time, Parent, Child),
-			_isAdditionOperation(Time, Parent),
-			_isAdditionOperation(Time, Child).
+			_isSumOfTerms(Time, Parent),
+			_isSumOfTerms(Time, Child).
 _nestedGrouping(Time, Child)
 		:-	_isATermOf(Time, Parent, Child),
 			_isMultiplicationOperation(Time, Parent),
