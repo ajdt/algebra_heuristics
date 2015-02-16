@@ -449,7 +449,7 @@ _deepCopy(Time, GrandParent, GrandChild)
 % distributeNegative: -(a + b) --> -a - b
 %================================================================================
 _applicable(Time, _rule(negationCanBeDistributed, _operands(Node, Node)))
-	:-	_addOrMono(Time, Node),
+	:-	_isASingleTermOrSumOfTerms(Time, Node),
 		_isBeingNegated(Time, Node).
 
 			%%% negating nodes

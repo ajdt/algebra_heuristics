@@ -118,8 +118,8 @@ _isTheCoefficientOf(Time, Node, Coeff)
 			_node(Node).
 
 % used to simulate an OR of these two types
-_addOrMono(Time, Node)	:-	__isMono(Time, Node).
-_addOrMono(Time, Node)	:-	_isAdditionOperation(Time, Node).
+_isASingleTermOrSumOfTerms(Time, Node)	:-	__isMono(Time, Node).
+_isASingleTermOrSumOfTerms(Time, Node)	:-	_isAdditionOperation(Time, Node).
 _mulOrDiv(Time, Node)	:-	_isFraction(Time, Node).
 _mulOrDiv(Time, Node)	:-	_isMultiplicationOperation(Time, Node).
 
