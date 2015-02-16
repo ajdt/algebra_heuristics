@@ -180,15 +180,15 @@ _isBeingNegated(Time, Child)
         :-  _parentType(Time, Child, neg).
 
 _areBeingAdded(Time, Fst, Snd)
-        :-  _areSiblings(Time, Fst, Snd),
+        :-  __areSiblings(Time, Fst, Snd),
            _isBeingAdded(Time, Fst).
 
 _areBeingMultiplied(Time, Fst, Snd)
-        :-  _areSiblings(Time, Fst, Snd),
+        :-  __areSiblings(Time, Fst, Snd),
            _isBeingMultiplied(Time, Fst).
 
 _formAFraction(Time, Fst, Snd)
-        :-  _areSiblings(Time, Fst, Snd),
+        :-  __areSiblings(Time, Fst, Snd),
            _isBeingDivided(Time, Fst).
 
 _isATermOf(Time, Parent, Child)
@@ -196,13 +196,13 @@ _isATermOf(Time, Parent, Child)
 			__isActive(Time, Child),
 			_validChildOf(Parent, Child).
 
-_areSiblings(Time, FstChild, SndChild)
+__areSiblings(Time, FstChild, SndChild)
 		:-	_isATermOf(Time, Parent, FstChild),
 			_isATermOf(Time, Parent, SndChild),
 			FstChild != SndChild.
 
 _swappableTerms(Time, Fst, Snd)
-		:-	_areSiblings(Time, Fst, Snd),
+		:-	__areSiblings(Time, Fst, Snd),
 			_parentType(Time, Fst, Type),
 			_commutatitve(Type).
 
@@ -252,7 +252,7 @@ _parentHasTwoChildren(Time, Child)
 % fractions that have same denominator
 % XXX: fractions must be siblings to be considered for sameDenom
 _sameDenom(Time, FstFrac, SndFrac)
-	:-	_areSiblings(Time, FstFrac, SndFrac),
+	:-	__areSiblings(Time, FstFrac, SndFrac),
 		_denominatorOf(Time, FstFrac, FstDenom),
 		_denominatorOf(Time, SndFrac, SndDenom),
 		_areEqual(Time, FstDenom, SndDenom).
@@ -336,7 +336,7 @@ _replaceParent(Time, Sibling) 	% term is one of two children, replace parent wit
 		:-	_cancelTerm(Time, Node),
 			not _isBeingDivided(Time, Node),
 			_parentHasTwoChildren(Time, Node),
-			_areSiblings(Time, Node, Sibling),
+			__areSiblings(Time, Node, Sibling),
 			not _cancelTerm(Time, Sibling),	% ensure the other child isn't also cancelled
 			Sibling != Node.
 
