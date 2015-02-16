@@ -520,7 +520,7 @@ _writeBinaryOp(Time)
 % subtractFromEqn: A = B  --> A - D = B - D
 %================================================================================
 _applicable(Time, _rule(canBeSubtractedFromTheEquation, _operands(Node)))
-	:-	_isActive(Time, Node).
+	:-	__isActive(Time, Node).
 
 _eqnOp(Time, Operand, sub)
 	:-	_operand(Time, Operand, canBeSubtractedFromTheEquation, left).
@@ -549,7 +549,7 @@ _saveEqnResult(Time)
 %================================================================================
 _applicable(Time, _rule(canDivideBothSidesOfTheEquation, _operands(Node)))
 	:-	%_coeff(Coeff),
-        _isActive(Time, Node).
+        __isActive(Time, Node).
         %%_isMultiplicationOperation(Time, leftSide).%%
         %%_factorOf(Time, leftSide, LeftFactor).%%
         %%_factorOf(Time, rightSide, RightFactor),%%

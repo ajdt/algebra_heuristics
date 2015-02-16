@@ -207,8 +207,8 @@ _correspChildrenAreEqual(Time, FstNode, SndNode)
 		FstNode != SndNode,
 		not _haveUnequalChildren(Time, FstNode, SndNode).
 _haveUnequalChildren(Time, FstNode, SndNode)	% found a corresponding pair that is unequal
-	:-	_isActive(Time, FstNode),
-		_isActive(Time, SndNode),
+	:-	__isActive(Time, FstNode),
+		__isActive(Time, SndNode),
 		FstNode != SndNode,
 		Time != initially,
 		_numActiveChildren(Time, FstNode, TotalChildren),
@@ -217,8 +217,8 @@ _haveUnequalChildren(Time, FstNode, SndNode)	% found a corresponding pair that i
 		Num <= TotalChildren,
 		not _areEqual(Time, FstChild, SndChild).
 _haveUnequalChildren(Time, FstNode, SndNode)	% if two nodes have an unequal number of children
-	:-	_isActive(Time, FstNode),				% then they're automatically unequal
-		_isActive(Time, SndNode),
+	:-	__isActive(Time, FstNode),				% then they're automatically unequal
+		__isActive(Time, SndNode),
 		FstNode != SndNode,
 		Time != initially,
 		_numActiveChildren(Time, FstNode, FstTotalChildren),

@@ -14,13 +14,13 @@ _holds(StartTime, _fact(Node, _nodeField(active,yes)))
 
 % 1. assigning type to a node, if we're at max depth node must be a polynomial
 1 { _holds(StartTime, _fact(Node, _nodeField(type, Type))) : _type(Type), not _disallowedType(Type)} 1		
-		:-	_isActive(StartTime, Node),
+		:-	__isActive(StartTime, Node),
 			_nodeDepth(Node, Depth), 
 			_startTime(StartTime),
 			Depth < maxInitialDepth.
 
  _holds(StartTime, _fact(Node, _nodeField(type, mono)))
-		:-	_isActive(StartTime, Node),
+		:-	__isActive(StartTime, Node),
 			_startTime(StartTime),
 			_nodeDepth(Node, Depth),
 			Depth >= maxInitialDepth.

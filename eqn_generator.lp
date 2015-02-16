@@ -23,7 +23,7 @@
 #include "heuristics.lp".
 %%#include "rule_features.lp".%%
 %%activeNode(Node)%%
-	%%:-	_isActive(_time(0,1), Node).%%
+	%%:-	__isActive(_time(0,1), Node).%%
 %%:- not _selectedHeuristic(_time(0,1), cancelAcrossEqn).%%
 
 typeOfOperand(Type)
@@ -34,7 +34,7 @@ selectedOperand(Oper)
 	:-	_operand(Time, Oper, Rule, Side).
 
 usesNode(Node)
-	:-	_isActive(StartTime, Node),
+	:-	__isActive(StartTime, Node),
 		_startTime(StartTime).
 eqnHasMonoWithDeg(Deg)
 	:-	_startTime(StartTime),
@@ -60,7 +60,7 @@ eqnHasMonoWithDeg(Deg)
 	%%:-	_isFraction(StartTime, Node),%%
 		%%_startTime(StartTime).%%
 
-%%_eqnTotal(Sum)	:- Sum = #count { Node : _isActive(_time(0,1), Node)} .%%
+%%_eqnTotal(Sum)	:- Sum = #count { Node : __isActive(_time(0,1), Node)} .%%
 %%hash(@calcHash(Total))%%
 	%%:-	_eqnTotal(Total).%%
 

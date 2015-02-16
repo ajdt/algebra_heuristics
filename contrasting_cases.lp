@@ -117,8 +117,8 @@ _nodeDiff(Node, 3)
 	:-	_node(Node),	
 		_startTime(FstTime),
 		_startTime(SndTime),	% NOTE: don't specify FstTime < SndTime, capture both cases in one rule
-		_isActive(FstTime, Node),
-		not _isActive(SndTime, Node).
+		__isActive(FstTime, Node),
+		not __isActive(SndTime, Node).
 
 _weightedNodeDiff(Node, Diff*Penalty)
 	:-	_nodeDiff(Node, Diff),

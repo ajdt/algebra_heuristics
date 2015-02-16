@@ -90,7 +90,7 @@ _simpleField(type;degree;coeff;active).  % these fields are safe to make shallow
 % that way holds(...) and tree representation can be changed more easily
 
 % node type
-_isActive(Time, Node)
+__isActive(Time, Node)
 		:-	_holds(Time, _fact(Node, _nodeField(active, yes))),
 			_node(Node).
 _hasType(Time, Node, Type)
@@ -107,7 +107,7 @@ _isNeg(Time, Node)
 __isMono(Time, Node)
 		:-	_hasType(Time, Node, mono).
 _isOper(Time, Node)
-		:-	_isActive(Time, Node),
+		:-	__isActive(Time, Node),
 			_hasType(Time, Node, Type),
 			Type != mono.
 _isTheDegreeOf(Time, Node, Deg)
@@ -192,8 +192,8 @@ _formAFraction(Time, Fst, Snd)
            _isBeingDivided(Time, Fst).
 
 _isATermOf(Time, Parent, Child)
-		:-	_isActive(Time, Parent),
-			_isActive(Time, Child),
+		:-	__isActive(Time, Parent),
+			__isActive(Time, Child),
 			_validChildOf(Parent, Child).
 
 _areSiblings(Time, FstChild, SndChild)
@@ -232,7 +232,7 @@ _factorOf(Time, Node, Child)
 	:-	_isMultiplicationOperation(Time, Node),
 		_isATermOf(Time, Node, Child).
 _factorOf(Time, Node, Node)
-	:-	_isActive(Time, Node),
+	:-	__isActive(Time, Node),
 		not _isMultiplicationOperation(Time, Node).
 _isFactorInNumeratorOf(Time, Fraction, NumerFactor)
     :-  _numeratorOf(Time, Fraction, Numer),
@@ -263,7 +263,7 @@ _numActiveChildren(Time, Node, Num)
 	:-	_isATermOf(Time, Node, FstChild),
 		_childNum(Node, FstChild, Num),
 		_childNum(Node, SndChild, Num+1),
-		not _isActive(Time, SndChild).
+		not __isActive(Time, SndChild).
 _numActiveChildren(Time, Node, Num)
 	:-	_isATermOf(Time, Node, FstChild),
 		_childNum(Node, FstChild, Num),
@@ -353,7 +353,7 @@ _shiftAdjacentTermDown(Time, Node, AdjacentSibling)
 		:-	_shiftDownTerms(Time, Node),
 			_childNum(Parent, Node, Num),
 			_childNum(Parent, AdjacentSibling, Num+1),
-			_isActive(Time, AdjacentSibling).
+			__isActive(Time, AdjacentSibling).
 _deepCopy(Time, Node, Adjacent)
 		:-	_shiftAdjacentTermDown(Time, Node, Adjacent).
 _shiftDownTerms(Time, Adjacent)
@@ -362,7 +362,7 @@ _deleteTerm(Time, Node)								% last active node is the only one we delete
 		:-	_shiftDownTerms(Time, Node),
 			_childNum(Parent, Node, Num),
 			_childNum(Parent, AdjacentSibling, Num+1),
-			not _isActive(Time, AdjacentSibling).
+			not __isActive(Time, AdjacentSibling).
 _deleteTerm(Time, Node)								% second case, we are already deleting the last node
 		:-	_shiftDownTerms(Time, Node),
 			_childNum(Parent, Node, Num),
