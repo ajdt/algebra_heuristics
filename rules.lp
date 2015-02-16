@@ -119,14 +119,13 @@ _setResultTo(Time, leftSide)
 %================================================================================
 
 _applicable(Time, _rule(canBeAddedTogether, _operands(LeftMono, RightMono)))
-	:-	_areSiblings(Time, LeftMono, RightMono),
+	:-	_areBeingAdded(Time, LeftMono, RightMono),
 		_haveEqualDegrees(Time, LeftMono, RightMono),
 		__isMono(Time, LeftMono),
 		__isMono(Time, RightMono),
 		not _isZero(Time, LeftMono),	% if either mono is zero, then addZero rule is used instead
 		not _isZero(Time, RightMono),
-		LeftMono < RightMono,
-		_isBeingAdded(Time, LeftMono).
+		LeftMono < RightMono.
 
 _monoOp(Time, tempResultRoot, LeftMono, RightMono, add)
 	:-	_operand(Time, LeftMono, canBeAddedTogether, left),
@@ -139,11 +138,10 @@ _writeBinaryOp(Time)
 % monomult ax^b  * cx^d --> (a*c)x^(b+d)
 %================================================================================
 _applicable(Time, _rule(canBeMultipliedTogether, _operands(LeftMono, RightMono)))
-	:-	_areSiblings(Time, LeftMono, RightMono),
+	:-	_areBeingMultiplied(Time, LeftMono, RightMono),
 		__isMono(Time, LeftMono),
 		__isMono(Time, RightMono),
-		LeftMono < RightMono,
-		_isBeingMultiplied(Time, LeftMono).
+		LeftMono < RightMono.
  
 _monoOp(Time, tempResultRoot, LeftMono, RightMono, mul)
 	:-	_operand(Time, LeftMono, canBeMultipliedTogether, left),
@@ -203,10 +201,9 @@ _setResultTo(Time, Poly)
 %================================================================================
 % NOTE: _sameDenom depends on equals/3 predicate (which applies only to monomials)
 _applicable(Time, _rule(canBeAddedAsOneFraction, _operands(Fst, Snd)))
-	:-	_areSiblings(Time, Fst, Snd),
+	:-	_areBeingAdded(Time, Fst, Snd),
 		_sameDenom(Time, Fst, Snd),
-		Fst < Snd,
-		_isBeingAdded(Time, Fst).
+		Fst < Snd.
 
 % set root to a fraction
 _activateTempAndSetChildren(Time, tempResultRoot, div, 2)
