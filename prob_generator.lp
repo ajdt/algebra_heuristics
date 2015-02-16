@@ -9,7 +9,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM GENERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % every root node (see node.lp) is active initially
 _holds(StartTime, _fact(Node, _nodeField(active,yes)))	
-		:-	_rootNode(Node),
+		:-	__rootNode(Node),
 			_startTime(StartTime).
 
 % 1. assigning type to a node, if we're at max depth node must be a polynomial

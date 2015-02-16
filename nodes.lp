@@ -31,10 +31,10 @@ _maxChildrenAtDepth(4, 2).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DECLARING NODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: _id(...) should not be referenced outside of this code!!
-_rootNode(rightSide;leftSide).	% right and left side nodes explicitly declared. 
+__rootNode(rightSide;leftSide).	% right and left side nodes explicitly declared. 
 								% Remaining nodes generated as children of existing nodes
 _node(Node) 
-		:-	_rootNode(Node).
+		:-	__rootNode(Node).
 
 % defining node properties
 _nodeDepth(_id(Depth, Number), Depth)

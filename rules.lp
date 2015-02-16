@@ -30,7 +30,7 @@ _writeBinaryOp(Time, Fst, Snd)
 % saving the results of an Equation-wide operation
 _deepCopy(Time, RootNode, TempRoot)
     :-	_saveEqnResult(Time),	% output saveEqnResult/1 to save equation-wide operation
-        _rootNode(RootNode),
+        __rootNode(RootNode),
         TempRoot = _temp(RootNode) .
 
 
@@ -533,7 +533,7 @@ _saveEqnResult(Time)
 %================================================================================
 % canBeUsedToMultiplyBothSidesOfEquation
 _applicable(Time, _rule(canBeMultipliedAcrossBothSidesOfTheEquation, _operands(Denom)))
-	:-	_rootNode(EqnSide),
+	:-	__rootNode(EqnSide),
         _isFraction(Time, EqnSide),
         _denominatorOf(Time, EqnSide, Denom).
 _eqnOp(Time, Operand, mul)

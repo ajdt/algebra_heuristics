@@ -292,14 +292,14 @@ _activateTempAndSetChildren(Time, TempRoot, Op, 2)
 % copy root node to be the left child of temproot
 _deepCopy(Time, LeftChild, Root)
 	:-	_eqnMonoOp(Time, Op),
-		_rootNode(Root),
+		__rootNode(Root),
 		MatchingTempRoot = _temp(Root), 
 		_tempChildOnSide(MatchingTempRoot, LeftChild, left).
 	
 % NOTE: if necessary we can add coeff/deg separately to decrease grounding
 _setTempNodeToMono(Time, RightChild, Deg, Coeff)
 	:-	_eqnMonoOp(Time, Coeff, Deg, Op),
-		_rootNode(Root),
+		__rootNode(Root),
 		MatchingTempRoot = _temp(Root), 
 		_tempChildOnSide(MatchingTempRoot, RightChild, right).
 
@@ -312,12 +312,12 @@ _setTempNodeToMono(Time, RightChild, Deg, Coeff)
 % set new root to sum
 _activateTempAndSetChildren(Time, Temp, add, 2)
 	:-	_eqnOp(Time, Operand, sub),
-		_rootNode(RootNode),
+		__rootNode(RootNode),
 		Temp = _temp(RootNode).
 % copy original left/right sides of eqn
 _deepCopy(Time, TempChild, RootNode)
 	:-	_eqnOp(Time, Operand, sub),
-		_rootNode(RootNode),
+		__rootNode(RootNode),
 		Temp = _temp(RootNode),
 		_tempChildNum(Temp, TempChild, 1).
 
@@ -330,25 +330,25 @@ _treeOp(Time, TempSecondChild, Operand, Operand, negate)
 		%%% multiply eqn by operand
 _treeOp(Time, Temp, RootNode, Operand, append(mul))
 	:-	_eqnOp(Time, Operand, mul),
-		_rootNode(RootNode),
+		__rootNode(RootNode),
 		Temp = _temp(RootNode).
 		%%% add operand to eqn 
 _treeOp(Time, Temp, RootNode, Operand, append(add))
 	:-	_eqnOp(Time, Operand, add),
-		_rootNode(RootNode),
+		__rootNode(RootNode),
 		Temp = _temp(RootNode).
 		%%% divide eqn by const
 _activateTempAndSetChildren(Time, Temp, div, 2) % new left(right) side is fraction
 	:-	_eqnOp(Time, Const, divConst),
-		_rootNode(RootNode),
+		__rootNode(RootNode),
 		Temp = _temp(RootNode).
 _deepCopy(Time, TempChild, RootNode)	% numerator is left(right) side
 	:-	_eqnOp(Time, Const, divConst),
-		_rootNode(RootNode),
+		__rootNode(RootNode),
 		Temp = _temp(RootNode),
 		_tempChildNum(Temp, TempChild, 1).
 _setTempNodeToMono(Time, TempChild, 0, Const)	% denom is constant
 	:-	_eqnOp(Time, Const, divConst),
-		_rootNode(RootNode),
+		__rootNode(RootNode),
 		Temp = _temp(RootNode),
 		_tempChildNum(Temp, TempChild, 2).
