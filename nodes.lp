@@ -251,7 +251,7 @@ _parentHasTwoChildren(Time, Child)
 
 % fractions that have same denominator
 % XXX: fractions must be siblings to be considered for sameDenom
-_sameDenom(Time, FstFrac, SndFrac)
+_haveTheSameDenominator(Time, FstFrac, SndFrac)
 	:-	__areSiblings(Time, FstFrac, SndFrac),
 		_denominatorOf(Time, FstFrac, FstDenom),
 		_denominatorOf(Time, SndFrac, SndDenom),

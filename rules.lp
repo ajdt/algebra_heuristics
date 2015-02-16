@@ -201,7 +201,7 @@ _setResultTo(Time, Poly)
 % NOTE: _sameDenom depends on equals/3 predicate (which applies only to monomials)
 _applicable(Time, _rule(canBeAddedAsOneFraction, _operands(Fst, Snd)))
 	:-	_areBeingAdded(Time, Fst, Snd),
-		_sameDenom(Time, Fst, Snd),
+		_haveTheSameDenominator(Time, Fst, Snd),
 		Fst < Snd.
 
 % set root to a fraction
