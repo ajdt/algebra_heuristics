@@ -83,77 +83,77 @@ _heuristic(Name, Priority, Rule)
 
 % NOTE: I've reserved priority = 0 for testing purposes. O.W. highest priority is 1 
 % combine monomials
-_heuristicToApplyRule(cancelAcrossEqn, 1, areTermsThatCanBeCancelled). 
+_heuristicToApplyRule(areTermsThatCanBeCancelled, 1, areTermsThatCanBeCancelled). 
 _heuristicToApplyRule(addUpToZero, 1, addUpToZero). 
-_heuristicToApplyRule(ignoreDenom, 1, canBeReducedToItsNumerator). 
-_heuristicToApplyRule(cancelCommTerms, 1, areFactorsThatCancel). 
-_heuristicToApplyRule(cancelNeg, 1, areBothNegativeOperationsThatCancelOut). 
+_heuristicToApplyRule(canBeReducedToItsNumerator, 1, canBeReducedToItsNumerator). 
+_heuristicToApplyRule(areFactorsThatCancel, 1, areFactorsThatCancel). 
+_heuristicToApplyRule(areBothNegativeOperationsThatCancelOut, 1, areBothNegativeOperationsThatCancelOut). 
 
-_heuristicToApplyRule(combineLikeTerms, 2, canBeAddedTogether). 
-_heuristicToApplyRule(additiveIdentity, 2, canBeCancelled). 
-_heuristicToApplyRule(addFractions, 2, canBeAddedAsOneFraction). 
+_heuristicToApplyRule(canBeAddedTogether, 2, canBeAddedTogether). 
+_heuristicToApplyRule(canBeCancelled, 2, canBeCancelled). 
+_heuristicToApplyRule(canBeAddedAsOneFraction, 2, canBeAddedAsOneFraction). 
 _heuristicToApplyRule(canHaveItsDenominatorCancelled, 2, canHaveItsDenominatorCancelled). 
-_heuristicToApplyRule(multiplyByZero, 2, isEqualToZero). 
-_heuristicToApplyRule(multiplyByOne, 2, canBeIgnored). 
+_heuristicToApplyRule(isEqualToZero, 2, isEqualToZero). 
+_heuristicToApplyRule(canBeIgnored, 2, canBeIgnored). 
 
-_heuristicToApplyRule(applyDistribute, 3, canBeDistributed). 
-_heuristicToApplyRule(multiplyMonoms, 3, canBeMultipliedTogether). 
-_heuristicToApplyRule(substitute, 3, decreaseDeg). 
-_heuristicToApplyRule(multiplyWithFrac, 3, fractionCanBeMultipliedWithNonFraction). 
+_heuristicToApplyRule(canBeDistributed, 3, canBeDistributed). 
+_heuristicToApplyRule(canBeMultipliedTogether, 3, canBeMultipliedTogether). 
+_heuristicToApplyRule(decreaseDeg, 3, decreaseDeg). 
+_heuristicToApplyRule(fractionCanBeMultipliedWithNonFraction, 3, fractionCanBeMultipliedWithNonFraction). 
 
 %%%================================================================================
 %%%					Condition Heuristics
 %%%================================================================================
 
 		%% isolate variables to lhs
-_heuristic(isolateVars, 3, rhsHasVariable).
-_heuristicAction(isolateVars, canBeSubtractedFromTheEquation).
+%%_heuristic(isolateVars, 3, rhsHasVariable).%%
+%%_heuristicAction(isolateVars, canBeSubtractedFromTheEquation).%%
 
-_applicable(Time, _condition(rhsHasVariable, _operands(Child)))
-	:-	_isSumOfTerms(Time, rightSide),
-		_isATermOf(Time, rightSide, Child),
-		_hasVariable(Time, Child).
+%%_applicable(Time, _condition(rhsHasVariable, _operands(Child)))%%
+	%%:-	_isSumOfTerms(Time, rightSide),%%
+		%%_isATermOf(Time, rightSide, Child),%%
+		%%_hasVariable(Time, Child).%%
 
-_hasVariable(Time, Node)
-	:- _isTheDegreeOf(Time, Node, Deg),
-		Deg > 0.
-_hasVariable(Time, Parent)
-	:-	_isATermOf(Time, Parent, Child),
-		_hasVariable(Time, Child).
+%%_hasVariable(Time, Node)%%
+	%%:- _isTheDegreeOf(Time, Node, Deg),%%
+		%%Deg > 0.%%
+%%_hasVariable(Time, Parent)%%
+	%%:-	_isATermOf(Time, Parent, Child),%%
+		%%_hasVariable(Time, Child).%%
 
-_sideOf(leftSide,left;rightSide,right).
-_sideOf(Child, Side)
-	:-	_validChildOf(Parent, Child),
-		_sideOf(Parent, Side).
+%%_sideOf(leftSide,left;rightSide,right).%%
+%%_sideOf(Child, Side)%%
+	%%:-	_validChildOf(Parent, Child),%%
+		%%_sideOf(Parent, Side).%%
 
-		%% move constants to rhs if eqn is linear
-_heuristic(isolateConst, 3, lhsHasConst).
-_heuristicAction(isolateConst, canBeSubtractedFromTheEquation).
+		%%[> move constants to rhs if eqn is linear%%
+%%_heuristic(isolateConst, 3, lhsHasConst).%%
+%%_heuristicAction(isolateConst, canBeSubtractedFromTheEquation).%%
 
-_applicable(Time, _condition(lhsHasConst, _operands(Child)))
-	:-	_hasSuperlinearTerms(Time),
-		_isSumOfTerms(Time, leftSide),
-		_isATermOf(Time, leftSide, Child),
-		_isConstant(Time, Child). % TODO: update to move rationals also
+%%_applicable(Time, _condition(lhsHasConst, _operands(Child)))%%
+	%%:-	_hasSuperlinearTerms(Time),%%
+		%%_isSumOfTerms(Time, leftSide),%%
+		%%_isATermOf(Time, leftSide, Child),%%
+		%%_isConstant(Time, Child). % TODO: update to move rationals also%%
 	
-_hasSuperlinearTerms(Time)
-	:- _isTheDegreeOf(Time, Node, Deg),  Deg >= 2.
+%%_hasSuperlinearTerms(Time)%%
+	%%:- _isTheDegreeOf(Time, Node, Deg),  Deg >= 2.%%
 
-		%% set lhs to zero if eqn has super-linear terms
-		% NOTE: this only subtracts rhs from both sides: other heuristics must simplify
-_heuristic(setRHSZero, 3, rhsIsNotZero).
-_heuristicAction(setRHSZero, canBeSubtractedFromTheEquation).
-_applicable(Time, _condition(rhsIsNotZero, _operands(rightSide)))
-	:-	_hasSuperlinearTerms(Time),
-		not _isZero(Time, rightSide).
+		%%[> set lhs to zero if eqn has super-linear terms%%
+		%%% NOTE: this only subtracts rhs from both sides: other heuristics must simplify%%
+%%_heuristic(setRHSZero, 3, rhsIsNotZero).%%
+%%_heuristicAction(setRHSZero, canBeSubtractedFromTheEquation).%%
+%%_applicable(Time, _condition(rhsIsNotZero, _operands(rightSide)))%%
+	%%:-	_hasSuperlinearTerms(Time),%%
+		%%not _isZero(Time, rightSide).%%
 
-		%% factor quadratic to solve eqn
-_heuristic(factorSimpleQuad, 1, stdQuadSetToZero).
-_heuristicAction(factorSimpleQuad, canBeFactored).
+		%%[> factor quadratic to solve eqn%%
+%%_heuristic(factorSimpleQuad, 1, stdQuadSetToZero).%%
+%%_heuristicAction(factorSimpleQuad, canBeFactored).%%
 
-_applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))
-	:-	_isZero(Time, rightSide),
-		_applicable(Time, _rule(canBeFactored, _operands(leftSide))).
+%%_applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))%%
+	%%:-	_isZero(Time, rightSide),%%
+		%%_applicable(Time, _rule(canBeFactored, _operands(leftSide))).%%
 
 
 
