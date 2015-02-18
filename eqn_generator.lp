@@ -26,19 +26,21 @@
 	%%:-	__isActive(_time(0,1), Node).%%
 %%:- not _selectedHeuristic(_time(0,1), cancelAcrossEqn).%%
 
-typeOfOperand(Type)
-	:-	_operand(Time, Oper, Rule, Side),
-		_hasType(Time, Oper, Type).
+% attempt at generating more varied problems
+%%typeOfOperand(Type)%%
+	%%:-	_operand(Time, Oper, Rule, Side),%%
+		%%_hasType(Time, Oper, Type).%%
 
-selectedOperand(Oper)
-	:-	_operand(Time, Oper, Rule, Side).
+%%selectedOperand(Oper)%%
+	%%:-	_operand(Time, Oper, Rule, Side).%%
 
-usesNode(Node)
-	:-	__isActive(StartTime, Node),
-		_startTime(StartTime).
-eqnHasMonoWithDeg(Deg)
-	:-	_startTime(StartTime),
-		_isTheDegreeOf(StartTime, Mono, Deg).
+%%usesNode(Node)%%
+	%%:-	__isActive(StartTime, Node),%%
+		%%_startTime(StartTime).%%
+%%eqnHasMonoWithDeg(Deg)%%
+	%%:-	_startTime(StartTime),%%
+		%%_isTheDegreeOf(StartTime, Mono, Deg).%%
+
 %%_someNumber(1..10).%%
 %%1 { selectedNum(X) : _someNumber(X) } 1 %%
 	%%:-	_startTime(ST) .%%
@@ -51,7 +53,7 @@ eqnHasMonoWithDeg(Deg)
 	%%:-	__isMono(StartTime, Node),%%
 		%%_startTime(StartTime).%%
 %%_nodeValue(Node, 2)%%
-	%%:-	_isSumOfTerms(StartTime, Node),%%
+	%%:-	_isAdditionOperation(StartTime, Node),%%
 		%%_startTime(StartTime).%%
 %%_nodeValue(Node, 3)%%
 	%%:-	_isMultiplicationOperation(StartTime, Node),%%
@@ -66,4 +68,5 @@ eqnHasMonoWithDeg(Deg)
 
 % trying to generate problems with fewer zeroes
 %%:-  2 { _isZero(StartTime, Node) : _node(Node) } , _startTime(StartTime).%%
-%%_disallowedType(neg).%%
+_disallowedType(neg).
+%%:- not _selectedHeuristic(_time(0,1), canBeMultipliedByInverseOf).%%
