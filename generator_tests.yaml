@@ -7,119 +7,166 @@ Test equations exist:
     Expect: SAT
 
 # note: ensure maxInitialDepth > 2 for the below code
-Test should perform addFractions heuristic:
+Test hasNumeratorAndDenominatorThatCancel:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), addFractions).
+        :- not _selectedHeuristic(_time(0,1), hasNumeratorAndDenominatorThatCancel).
         _disableSolvability.
     Expect: SAT
-
-Test should perform addInverses heuristic:
+Test canBeMultipliedAsFractions:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), addInverses).
+        :- not _selectedHeuristic(_time(0,1), canBeMultipliedAsFractions).
         _disableSolvability.
     Expect: SAT
-
-Test should perform additiveIdentity heuristic:
+Test canBeMultipliedByInverseOf:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), additiveIdentity).
-    Expect: SAT
-
-Test should perform applyDistribute heuristic:
-    Modules: generator
-    Program: |
-        :- not _selectedHeuristic(_time(0,1), applyDistribute).
+        :- not _selectedHeuristic(_time(0,1), canBeMultipliedByInverseOf).
         _disableSolvability.
     Expect: SAT
-
-Test should perform cancelAcrossEqn heuristic:
+Test canBeReducedToItsNumerator:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), cancelAcrossEqn).
-    Expect: SAT
-
-Test should perform cancelCommTerms heuristic:
-    Modules: generator
-    Program: |
-        :- not _selectedHeuristic(_time(0,1), cancelCommTerms).
+        :- not _selectedHeuristic(_time(0,1), canBeReducedToItsNumerator).
         _disableSolvability.
     Expect: SAT
-
-Test should perform cancelNeg heuristic:
+Test canBeAddedTogether:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), cancelNeg).
+        :- not _selectedHeuristic(_time(0,1), canBeAddedTogether).
+        _disableSolvability.
     Expect: SAT
-
-Test should perform combineLikeTerms heuristic:
+Test canBeMultipliedTogether:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), combineLikeTerms).
+        :- not _selectedHeuristic(_time(0,1), canBeMultipliedTogether).
+        _disableSolvability.
     Expect: SAT
-
-Test should perform divByOne heuristic:
+Test areFactorsThatCancel:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), divByOne).
+        :- not _selectedHeuristic(_time(0,1), areFactorsThatCancel).
+        _disableSolvability.
     Expect: SAT
-
-Test should perform factorSimpleQuad heuristic:
+Test canBeFactored:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), factorSimpleQuad).
+        :- not _selectedHeuristic(_time(0,1), canBeFactored).
+        _disableSolvability.
     Expect: SAT
-
-Test should perform ignoreDenom heuristic:
+Test canBeAddedAsOneFraction:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), ignoreDenom).
+        :- not _selectedHeuristic(_time(0,1), canBeAddedAsOneFraction).
+        _disableSolvability.
     Expect: SAT
-Test should perform isolateConst heuristic:
+Test canBeDistributed:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), isolateConst).
-        _disableSolvability.    
+        :- not _selectedHeuristic(_time(0,1), canBeDistributed).
+        _disableSolvability.
     Expect: SAT
-Test should perform isolateVars heuristic:
+Test canHaveItsDenominatorCancelled:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), isolateVars).
-        _disableSolvability.    
+        :- not _selectedHeuristic(_time(0,1), canHaveItsDenominatorCancelled).
+        _disableSolvability.
     Expect: SAT
-Test should perform multiplyByOne heuristic:
+Test canBeCancelled:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), multiplyByOne).
+        :- not _selectedHeuristic(_time(0,1), canBeCancelled).
+        _disableSolvability.
     Expect: SAT
-Test should perform multiplyByZero heuristic:
+Test isATermThatCanBeFactored:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), multiplyByZero).
+        :- not _selectedHeuristic(_time(0,1), isATermThatCanBeFactored).
+        _disableSolvability.
     Expect: SAT
-Test should perform multiplyMonoms heuristic:
+Test hasATermThatCanBeFactoredOut:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), multiplyMonoms).
+        :- not _selectedHeuristic(_time(0,1), hasATermThatCanBeFactoredOut).
+        _disableSolvability.
     Expect: SAT
-
-Test should perform multiplyWithFrac heuristic:
+Test isEqualToZero:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), multiplyWithFrac).
-        _disableSolvability.    
+        :- not _selectedHeuristic(_time(0,1), isEqualToZero).
+        _disableSolvability.
     Expect: SAT
-
-Test should perform setRHSZero heuristic:
+Test canBeIgnored:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), setRHSZero).
-        _disableSolvability.    
+        :- not _selectedHeuristic(_time(0,1), canBeIgnored).
+        _disableSolvability.
     Expect: SAT
-Test should perform substitute heuristic:
+Test numeratorAndDenominatorCanBeMultipliedBySameTerm:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), substitute).
+        :- not _selectedHeuristic(_time(0,1), numeratorAndDenominatorCanBeMultipliedBySameTerm).
+        _disableSolvability.
+    Expect: SAT
+Test areBothNegativeOperationsThatCancelOut:
+    Modules: generator
+    Program: |
+        :- not _selectedHeuristic(_time(0,1), areBothNegativeOperationsThatCancelOut).
+        _disableSolvability.
+    Expect: SAT
+Test negationCanBeDistributed:
+    Modules: generator
+    Program: |
+        :- not _selectedHeuristic(_time(0,1), negationCanBeDistributed).
+        _disableSolvability.
+    Expect: SAT
+Test negativeSignCanBePassedToTermOf:
+    Modules: generator
+    Program: |
+        :- not _selectedHeuristic(_time(0,1), negativeSignCanBePassedToTermOf).
+        _disableSolvability.
+    Expect: SAT
+Test areTermsThatCanBeCancelled:
+    Modules: generator
+    Program: |
+        :- not _selectedHeuristic(_time(0,1), areTermsThatCanBeCancelled).
+        _disableSolvability.
+    Expect: SAT
+Test addUpToZero:
+    Modules: generator
+    Program: |
+        :- not _selectedHeuristic(_time(0,1), addUpToZero).
+        _disableSolvability.
+    Expect: SAT
+Test canBeSubtractedFromTheEquation:
+    Modules: generator
+    Program: |
+        :- not _selectedHeuristic(_time(0,1), canBeSubtractedFromTheEquation).
+        _disableSolvability.
+    Expect: SAT
+Test canBeMultipliedAcrossBothSidesOfTheEquation:
+    Modules: generator
+    Program: |
+        :- not _selectedHeuristic(_time(0,1), canBeMultipliedAcrossBothSidesOfTheEquation).
+        _disableSolvability.
+    Expect: SAT
+Test canDivideBothSidesOfTheEquation:
+    Modules: generator
+    Program: |
+        :- not _selectedHeuristic(_time(0,1), canDivideBothSidesOfTheEquation).
+        _disableSolvability.
+    Expect: SAT
+Test decreaseDeg:
+    Modules: generator
+    Program: |
+        :- not _selectedHeuristic(_time(0,1), decreaseDeg).
+        _disableSolvability.
+    Expect: SAT
+Test fractionCanBeMultipliedWithNonFraction:
+    Modules: generator
+    Program: |
+        :- not _selectedHeuristic(_time(0,1), fractionCanBeMultipliedWithNonFraction).
+        _disableSolvability.
     Expect: SAT
 
