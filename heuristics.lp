@@ -83,23 +83,23 @@ _heuristic(Name, Priority, Rule)
 
 % NOTE: I've reserved priority = 0 for testing purposes. O.W. highest priority is 1 
 % combine monomials
-_heuristicToApplyRule(areTermsThatCanBeCancelled, 1, areTermsThatCanBeCancelled). 
-_heuristicToApplyRule(addUpToZero, 1, addUpToZero). 
-_heuristicToApplyRule(canBeReducedToItsNumerator, 1, canBeReducedToItsNumerator). 
-_heuristicToApplyRule(areFactorsThatCancel, 1, areFactorsThatCancel). 
-_heuristicToApplyRule(areBothNegativeOperationsThatCancelOut, 1, areBothNegativeOperationsThatCancelOut). 
+%%_heuristicToApplyRule(areTermsThatCanBeCancelled, 1, areTermsThatCanBeCancelled). %%
+%%_heuristicToApplyRule(addUpToZero, 1, addUpToZero). %%
+%%_heuristicToApplyRule(canBeReducedToItsNumerator, 1, canBeReducedToItsNumerator). %%
+%%_heuristicToApplyRule(areFactorsThatCancel, 1, areFactorsThatCancel). %%
+%%_heuristicToApplyRule(areBothNegativeOperationsThatCancelOut, 1, areBothNegativeOperationsThatCancelOut). %%
 
-_heuristicToApplyRule(canBeAddedTogether, 2, canBeAddedTogether). 
-_heuristicToApplyRule(canBeCancelled, 2, canBeCancelled). 
-_heuristicToApplyRule(canBeAddedAsOneFraction, 2, canBeAddedAsOneFraction). 
-_heuristicToApplyRule(canHaveItsDenominatorCancelled, 2, canHaveItsDenominatorCancelled). 
-_heuristicToApplyRule(isEqualToZero, 2, isEqualToZero). 
-_heuristicToApplyRule(canBeIgnored, 2, canBeIgnored). 
+%%_heuristicToApplyRule(canBeAddedTogether, 2, canBeAddedTogether). %%
+%%_heuristicToApplyRule(canBeCancelled, 2, canBeCancelled). %%
+%%_heuristicToApplyRule(canBeAddedAsOneFraction, 2, canBeAddedAsOneFraction). %%
+%%_heuristicToApplyRule(canHaveItsDenominatorCancelled, 2, canHaveItsDenominatorCancelled). %%
+%%_heuristicToApplyRule(isEqualToZero, 2, isEqualToZero). %%
+%%_heuristicToApplyRule(canBeIgnored, 2, canBeIgnored). %%
 
-_heuristicToApplyRule(canBeDistributed, 3, canBeDistributed). 
-_heuristicToApplyRule(canBeMultipliedTogether, 3, canBeMultipliedTogether). 
-_heuristicToApplyRule(decreaseDeg, 3, decreaseDeg). 
-_heuristicToApplyRule(fractionCanBeMultipliedWithNonFraction, 3, fractionCanBeMultipliedWithNonFraction). 
+%%_heuristicToApplyRule(canBeDistributed, 3, canBeDistributed). %%
+%%_heuristicToApplyRule(canBeMultipliedTogether, 3, canBeMultipliedTogether). %%
+%%_heuristicToApplyRule(decreaseDeg, 3, decreaseDeg). %%
+%%_heuristicToApplyRule(fractionCanBeMultipliedWithNonFraction, 3, fractionCanBeMultipliedWithNonFraction). %%
 
 %%%================================================================================
 %%%					Condition Heuristics
