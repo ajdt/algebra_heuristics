@@ -90,7 +90,7 @@ _introduce(Time, Node, Field, NewValue)
 												not _higherPriorityIsSelectable(Time, Priority)} 1
 		:-	_time(Step, Stream),
 			Time = _time(Step, Stream),
-			not _previousHeuristicNotFinished(Time),
+			%%not _previousHeuristicNotFinished(Time),%%
 			not _stopTime(Time).
 
 % predicates to ensure we always choose the highest priority first

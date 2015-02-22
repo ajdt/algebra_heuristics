@@ -53,7 +53,7 @@ _monoSiblingsHaveCoeffValuesInOrder(Time, Fst, Snd)
 		Fst < Snd,
 		_isTheCoefficientOf(Time, Fst, FstCoeff),
 		_isTheCoefficientOf(Time, Snd, SndCoeff),
-		SndCoeff > FstCoeff.
+		SndCoeff >= FstCoeff.
 _monosOutOfOrder(Time)
 	:-	_monoSiblings(Time, Fst, Snd),
 		_isTheDegreeOf(Time, Fst, SameDeg),
