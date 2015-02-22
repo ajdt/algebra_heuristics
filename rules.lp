@@ -403,9 +403,9 @@ _cancelTerm(Time, UnitTerm)
 % expression is too large and we get a node overflow.
 % Additionally, we can only multiply expression by a polynomial expression already existing
 % somewhere in the equation
-_applicable(Time, _rule(numeratorAndDenominatorCanBeMultipliedBySameTerm, _operands(Fraction, Poly)))
+_applicable(Time, _rule(numeratorAndDenominatorCanBeMultipliedBySameTerm, _operands(Fraction, Term)))
 	:-	_isFraction(Time, Fraction),
-		_isPolynomial(Time, Poly).
+		__isActive(Time, Term).
 
 % set root to div
 _activateTempAndSetChildren(Time, tempResultRoot, div, 2)
