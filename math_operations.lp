@@ -347,8 +347,8 @@ _deepCopy(Time, TempChild, RootNode)	% numerator is left(right) side
 		__rootNode(RootNode),
 		Temp = _temp(RootNode),
 		_tempChildNum(Temp, TempChild, 1).
-_setTempNodeToMono(Time, TempChild, 0, Const)	% denom is constant
-	:-	_eqnOp(Time, Const, divConst),
+_deepCopy(Time, TempChild, Term)	% denom is some arbitrary term in the equation
+	:-	_eqnOp(Time, Term, divConst),
 		__rootNode(RootNode),
 		Temp = _temp(RootNode),
 		_tempChildNum(Temp, TempChild, 2).
