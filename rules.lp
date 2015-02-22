@@ -390,7 +390,8 @@ _setToZero(Time, Parent)
 %================================================================================
 _applicable(Time, _rule(canBeIgnored, _operands(UnitTerm)))
 	:-	_isOne(Time, UnitTerm),
-		_isBeingMultiplied(Time, UnitTerm).
+        _areBeingMultiplied(Time, OtherTerm, UnitTerm),
+        not __isMono(Time, OtherTerm).  % for monomials we use the mono multiply rule
 _cancelTerm(Time, UnitTerm)
 	:-	_operand(Time, UnitTerm, canBeIgnored, left).
 
