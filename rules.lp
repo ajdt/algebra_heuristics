@@ -282,6 +282,15 @@ _applicable(Time, _rule(isATermThatCanBeFactored, _operands(Mono)))
 		not _isOne(Time, Mono),
 		not _isZero(Time, Mono).
 
+% NOTE: don't want either factor to be 1
+:-  _selectedCoeffFactors(Time, FstFactor, SndFactor), 
+    _selectedDegDecomposition(Time, Fst, Snd),
+    FstFactor == 1,
+    Fst == 1.
+:-  _selectedCoeffFactors(Time, FstFactor, SndFactor), 
+    _selectedDegDecomposition(Time, Fst, Snd),
+    SndFactor == 1,
+    Snd == 1.
 % select coefficient factors,
 1 { _selectedCoeffFactors(Time, FstFactor, SndFactor) 
 		: _factors(FstFactor, SndFactor, FactorSum, Coeff) } 1
