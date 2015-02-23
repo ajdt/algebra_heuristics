@@ -153,6 +153,8 @@ _hasNonBinomialChild(Time, leftSide)
 _isStdBinomial(Time, Poly)	
 	:-	_isPolynomial(Time, Poly), 
 		_hasXTerm(Time, Poly),
+        _hasConstantTerm(Time, Poly),
+        _numChildren(Time, Poly, 2),
 		_isLinear(Time, Poly).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 1-GRAM DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

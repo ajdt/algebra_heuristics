@@ -22,6 +22,10 @@ _hasXTerm(Time, Poly)
 	:-	_isPolynomial(Time, Poly),
 		_isATermOf(Time, Poly, Child),
 		_isXTerm(Time, Child).
+_hasConstantTerm(Time, Poly)
+	:-	_isPolynomial(Time, Poly),
+		_isATermOf(Time, Poly, Child),
+		_isConstant(Time, Child).
 
 _isConstant(Time, Node)
 	:-	__isMono(Time, Node),
