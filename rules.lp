@@ -140,6 +140,8 @@ _applicable(Time, _rule(canBeMultipliedTogether, _operands(LeftMono, RightMono))
 	:-	_areBeingMultiplied(Time, LeftMono, RightMono),
 		__isMono(Time, LeftMono),
 		__isMono(Time, RightMono),
+        not _isOne(Time, LeftMono),
+        not _isOne(Time, RightMono),
 		LeftMono < RightMono.
  
 _monoOp(Time, tempResultRoot, LeftMono, RightMono, mul)
@@ -279,6 +281,7 @@ _applicable(Time, _rule(isATermThatCanBeFactored, _operands(Mono)))
 	:-	__isMono(Time, Mono),
 		not _isOne(Time, Mono),
 		not _isZero(Time, Mono).
+
 % select coefficient factors,
 1 { _selectedCoeffFactors(Time, FstFactor, SndFactor) 
 		: _factors(FstFactor, SndFactor, FactorSum, Coeff) } 1
