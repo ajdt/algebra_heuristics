@@ -119,7 +119,7 @@ class GeneratedAnswerSet(object):
     def getMathProblems(self):
         return self.generated_problems_dict.values()
     def toJSONFormat(self):
-        return dict( [(num, prob.toJSONFormat()) for num, prob in self.generated_problems_dict.items() ])
+        return dict( [(str(num), prob.toJSONFormat()) for num, prob in self.generated_problems_dict.items() ])
 class EquationStepParser:
     """ encapsulates the state of an equation during one step."""
     def __init__(self, model_mgr=None):
@@ -236,8 +236,25 @@ class EquationStepParser:
         template_mgr    = getTemplateManager()
         template        = template_mgr.lookupTemplateFor(template_key)
         sentence_temp   = template.makeExplanation(operands, self.model_mgr, 1)
-        # have to still make explanation
-        return [ temp.getSentenceFragments() for temp in sentence_temp]
+
+        # NOTE: we have to translate the node ids used by the explanation sentences
+        # Nell's code uses a binary tree representation, my ASP representation 
+        # allows for trees with 3 or more children
+        explanations    = [ temp.getSentenceFragments() for temp in sentence_temp]
+        translate_dict  = self.getBinaryTreeTranslation()
+        return [ self.translateSingleExplanation(expl, translate_dict) for expl in explanations]
+
+    def translateSingleExplanation(self, explain_array, translation_dict):
+        # NOTE: we translate a single explanation array
+        # NOTE: we also use str(..) to convert to utf-8 strings instead of unicode so that we don't
+        # get u' prefix on strings during json output
+        translated = []
+        for fragment in explain_array:
+            if fragment in translation_dict.keys():
+                translated.append(str(translation_dict[fragment]))
+            else:
+                translated.append(str(fragment))
+        return translated
 
 
     def makeMonomial(self, node_name):
@@ -263,8 +280,11 @@ class EquationStepParser:
         return [ self.makeEqnString(operand) for operand in self.operands ]
     def getRawOperands(self):
         return list(self.operands)
+    def getTranslatedRawOperands(self):
+        operand_translation = self.getBinaryTreeTranslation()
+        return [operand_translation[oper] for oper in self.operands]
     def addActionPred(self, action_name):
-        self.action = action_name
+        self.action = str(action_name)
 
     def getTreeStructure(self):
         left = self.getTreeStructureOfNode('id(1,1)')
@@ -277,7 +297,64 @@ class EquationStepParser:
             children = [ self.getTreeStructureOfNode(child) for child in self.node_children[node_string]]
             type_symbol = op_symbols[self.node_types[node_string]]
             return {'id' : node_string, 'type': type_symbol, 'children': children }
+    def getAsAlgebraNode(self, node_string):
+        if self.node_types[node_string] == 'mono':
+            return AlgebraNode(node_string, [])
+        else:
+            children = [ self.getAsAlgebraNode(child) for child in self.node_children[node_string]]
+            return AlgebraNode(node_string, children)
+    def getBinaryTreeTranslation(self):
+        left = self.getAsAlgebraNode('id(1,1)')
+        right = self.getAsAlgebraNode('id(1,2)')
+        # convert to binary
+        left.convertTopLevelTreeToBinary()
+        right.convertTopLevelTreeToBinary()
+        # get old and new tags
+        translation = left.oldTagsAndNewTags()
+        translation.update(right.oldTagsAndNewTags())
+        return translation
+        
 
+class AlgebraNode(object):
+    """encodes an algebra expression tree: used to convert node ids to binary tree format"""
+    def __init__(self, node_name, children):
+        super(AlgebraNode, self).__init__()
+        self.node_name, self.children = node_name, children
+    def convertTopLevelTreeToBinary(self):
+        self.toBinaryTree()
+        if self.node_name == 'id(1,1)':
+            self.tagBinaryTree(1, 1)
+        else:
+            self.tagBinaryTree(1,2) # XXX: assumes this is being called at toplevel!! 
+    def toBinaryTree(self):
+        # change tree to a binary tree inplace 
+        while len(self.children) > 2:
+            self.compressTopTwoChildren()
+        for child in self.children:
+            child.toBinaryTree()
+    def compressTopTwoChildren(self):
+        """docstring for compressTopTwoChildren"""
+        if len(self.children) <= 2 :
+            return
+        fst = children[-2]
+        snd = children[-1]
+        self.children = self.children[:-2] + [AlgebraNode(None, None, [fst, snd])]
+
+    def tagBinaryTree(self, current_depth, node_num):
+        self.new_id = 'id(' + str(current_depth) + ',' + str(node_num) + ')'
+        if self.children == []:
+            return
+        self.children[0].tagBinaryTree(current_depth+1, node_num*2 -1 )
+        if len(self.children) < 2:
+            return
+        self.children[1].tagBinaryTree(current_depth+1, node_num*2)
+    def oldTagsAndNewTags(self):
+        tags = {self.node_name : self.new_id}
+        for child in self.children:
+            tags.update(child.oldTagsAndNewTags())
+        return tags
+        
+        
 
 def peelHolds(tokens):
     """ extract time and fact from tokens"""
@@ -317,7 +394,7 @@ class MathProblemParser(object):
         
     def addActionPred(self, step, action_name):
         self.solution_steps[step].addActionPred(action_name)
-        self.actions.append(action_name)
+        self.actions.append(str(action_name))
     def addOperands(self, time, operands):
         step = time[0]
         self.solution_steps[step].addOperands(operands)
@@ -337,13 +414,13 @@ class MathProblemParser(object):
     def getExplanationsForSteps(self):
         return [step.getExplanationSentences() for step in self.solution_steps.values()]
     def addApplicableAction(self, action_name):
-        self.applicable_actions.add(action_name)
+        self.applicable_actions.add(str(action_name))
     def getApplicableActions(self):
         return list(set(self.applicable_actions))
     def jsonFriendlyFormat(self):
         # add necessary equation parameters
         eqn_params = { 'equation_steps': self.getEqnSteps(),
-                         'operands': self.getOperands(),
+                         'operands': self.getTranslatedRawOperands(),
                          'selected_heuristics': self.getActions(),
                          'applicable_heur': self.getApplicableActions(),
                          'expression_trees': self.getEqnTrees(),

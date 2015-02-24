@@ -305,7 +305,7 @@ class TemplateSentence(object):
         else:
             # string will be formatted as 'var1, var2, ... and varN' + sentence
             if len(vars_to_inject) > 1:
-                vars_to_inject[-1] = 'and ' + vars_to_inject[-1]
+                vars_to_inject = vars_to_inject[:-1] + ['and ' , vars_to_inject[-1]]
             return vars_to_inject + [self.sentence]
     def __str__(self):
         return ' '.join(self.getSentenceFragments())
