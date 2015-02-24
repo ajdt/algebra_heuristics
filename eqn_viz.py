@@ -182,7 +182,7 @@ class EquationStepParser:
             if right[0] == '(':
                 right = right[1:-1]
             string = left + '=' + right
-        return string
+        return str(string)
 
     # TODO: simplify getting string for a step
     # getStepString will output both the eqn for a given step as well as operands and heuristic applied
@@ -420,10 +420,10 @@ class MathProblemParser(object):
     def jsonFriendlyFormat(self):
         # add necessary equation parameters
         eqn_params = { 'equation_steps': self.getEqnSteps(),
-                         'operands': self.getTranslatedRawOperands(),
+                         #'operands': self.getOperands(),
                          'selected_heuristics': self.getActions(),
                          'applicable_heur': self.getApplicableActions(),
-                         'expression_trees': self.getEqnTrees(),
+                         #'expression_trees': self.getEqnTrees(),
                          'explanations': self.getExplanationsForSteps()}
         return GeneratedProblem(eqn_params)
 
