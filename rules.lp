@@ -527,7 +527,8 @@ _writeBinaryOp(Time)
 % subtractFromEqn: A = B  --> A - D = B - D
 %================================================================================
 _applicable(Time, _rule(canBeSubtractedFromTheEquation, _operands(Node)))
-	:-	__isActive(Time, Node).
+	:-	__isMono(Time, Node),
+        not _isZero(Time, Node).
 
 _eqnOp(Time, Operand, sub)
 	:-	_operand(Time, Operand, canBeSubtractedFromTheEquation, left).

@@ -234,6 +234,11 @@ _tempHolds(Time, _fact(Dest, _nodeField(coeff, Sum)))
 		Sum = FstCoeff + SndCoeff,
 		_coeff(Sum).
 
+% negating a monomial
+_setTempNodeToMono(Time, Dest, Deg, Coeff*-1)
+    :-  _monoOp(Time, Dest, negate),
+        _monoOpCoeff(Time, Dest, Coeff, left),
+        _monoOpDeg(Time, Dest, Deg, left).
 	% handle coefficient overflow in sum nodes
 _coeffOverflow
 	:-	_monoOp(Time, Dest, add),
@@ -322,7 +327,7 @@ _deepCopy(Time, TempChild, RootNode)
 		_tempChildNum(Temp, TempChild, 1).
 
 % other child of new root node is the negation of subtracted operand
-_treeOp(Time, TempSecondChild, Operand, Operand, negate)
+_monoOp(Time, TempSecondChild, Operand, Operand, negate)
 	:-	_eqnOp(Time, Operand, sub),
 		_tempEqnRoot(TempEqnRoot),
 		_tempChildNum(TempEqnRoot, TempSecondChild, 2).
