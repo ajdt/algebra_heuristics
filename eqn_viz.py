@@ -336,9 +336,9 @@ class AlgebraNode(object):
         """docstring for compressTopTwoChildren"""
         if len(self.children) <= 2 :
             return
-        fst = children[-2]
-        snd = children[-1]
-        self.children = self.children[:-2] + [AlgebraNode(None, None, [fst, snd])]
+        fst = self.children[-2]
+        snd = self.children[-1]
+        self.children = self.children[:-2] + [AlgebraNode(None, [fst, snd])]
 
     def tagBinaryTree(self, current_depth, node_num):
         self.new_id = 'id(' + str(current_depth) + ',' + str(node_num) + ')'
@@ -612,7 +612,7 @@ class AnswerSetManager(json.JSONEncoder):
             # print answer sets as one json object
             all_ans_sets = dict()
             for index, ans_set in enumerate(self.getAnsSetsAsJSON()):
-                all_ans_sets[str(index)] = ans_set
+                all_ans_sets[str(index+1)] = ans_set
             print all_ans_sets
         else:
             for ans_set in self.answer_sets:
