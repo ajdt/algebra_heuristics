@@ -314,22 +314,41 @@ _setTempNodeToMono(Time, RightChild, Deg, Coeff)
 %	Operand	-- left/right side is one operand, this is the other
 
 		%%% subtract a node from both sides of eqn
+        %%% CASE 1: rootNode is appendable
+_deepCopy(Time, Temp, RootNode)
+	:-	_eqnOp(Time, Operand, sub),
+        _appendableEqnOp(Time, Operand, RootNode),
+		Temp = _temp(RootNode).
+_setTempNodeToMono(Time, NewChild, Degree, Coeff*-1)
+	:-	_eqnOp(Time, Operand, sub),
+        _appendableEqnOp(Time, Operand, RootNode),
+        _isTheCoefficientOf(Time, Operand, Coeff),
+        _isTheDegreeOf(Time, Operand, Degree),
+		Temp = _temp(RootNode),
+        _numActiveChildren(Time, RootNode, Num),
+        _tempChildNum(Temp, NewChild, Num+1).
+
+        %%% CASE 2: can't append to existing root operation
 % set new root to sum
 _activateTempAndSetChildren(Time, Temp, add, 2)
 	:-	_eqnOp(Time, Operand, sub),
 		__rootNode(RootNode),
+        not _appendableEqnOp(Time, Operand, RootNode),
 		Temp = _temp(RootNode).
 % copy original left/right sides of eqn
 _deepCopy(Time, TempChild, RootNode)
 	:-	_eqnOp(Time, Operand, sub),
 		__rootNode(RootNode),
+        not _appendableEqnOp(Time, Operand, RootNode),
 		Temp = _temp(RootNode),
 		_tempChildNum(Temp, TempChild, 1).
 
 % other child of new root node is the negation of subtracted operand
 _monoOp(Time, TempSecondChild, Operand, Operand, negate)
 	:-	_eqnOp(Time, Operand, sub),
-		_tempEqnRoot(TempEqnRoot),
+		__rootNode(RootNode),
+		Temp = _temp(RootNode),
+        not _appendableEqnOp(Time, Operand, RootNode),
 		_tempChildNum(TempEqnRoot, TempSecondChild, 2).
 		
 		%%% multiply eqn by operand
@@ -358,3 +377,44 @@ _setTempNodeToMono(Time, TempChild, 0, Coeff)
 		__rootNode(RootNode),
 		Temp = _temp(RootNode),
 		_tempChildNum(Temp, TempChild, 2).
+
+	%%% append eqnOps
+% NOTE: An append tree Op tries to create a result that appends 'right' node to 'left' node
+% 	if possible. Otherwise, it reverts to a typical treeOp.
+_appendableEqnOp(Time, Operand, RootNode)
+	:-	_eqnOp(Time, Operand, sub),
+        __rootNode(RootNode),
+		_hasType(Time, RootNode, add),
+		_numActiveChildren(Time, RootNode, NumActive),
+		_maxNumChildren(RootNode, MaxChildren),
+		NumActive < MaxChildren.
+%%_appendableEqnOp(Time, Operand, RootNode)%%
+	%%:-	_eqnOp(Time, Operand, divConst),%%
+        %%__rootNode(RootNode),%%
+		%%_hasType(Time, RootNode, div),%%
+        %%_numeratorOf(Time, RootNode, RootDenom),%%
+		%%_numActiveChildren(Time, RootDenom, NumActive),%%
+		%%_maxNumChildren(RootDenom, MaxChildren),%%
+		%%NumActive < MaxChildren.%%
+
+%%% if not appendable, then just do the regular treeOp%%
+%%_treeOp(Time, Dest, Oper)	% we've already unpacked the operands so it's enough to declare this%%
+	%%:-	_treeOp(Time, Dest, append(Oper)),%%
+		%%not _appendable(Time, Dest).%%
+%%% handle the append%%
+%%_deepCopy(Time, Dest, Left)%%
+	%%:-	_appendable(Time, Dest),%%
+		%%_treeOp(Time, Dest, append(Oper)),%%
+		%%_treeOp(Time, Dest, Left, left).%%
+%%_appendedChild(Time, Dest, NewChild)%%
+	%%:-	_appendable(Time, Dest),%%
+		%%_treeOp(Time, Dest, append(Oper)),%%
+		%%_treeOp(Time, Dest, Left, left),%%
+		%%_numActiveChildren(Time, Left, Num),%%
+		%%_tempChildNum(Dest, NewChild, Num+1).%%
+%%_activateChild(Time, Dest, NewChild)%%
+	%%:-	_appendedChild(Time, Dest, NewChild).%%
+%%_deepCopy(Time, NewChild, Right)%%
+	%%:-	_appendedChild(Time, Dest, NewChild),%%
+		%%_treeOp(Time, Dest, append(Oper)),%%
+		%%_treeOp(Time, Dest, Right, right).%%
