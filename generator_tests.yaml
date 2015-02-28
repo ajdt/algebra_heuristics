@@ -53,7 +53,6 @@ Test canBeFactored:
     Modules: generator
     Program: |
         :- not _selectedHeuristic(_time(0,1), canBeFactored).
-        _disableSolvability.
     Expect: SAT
 Test canBeAddedAsOneFraction:
     Modules: generator
