@@ -352,8 +352,9 @@ _deepCopy(Time, TempChild, RootNode)	% numerator is left(right) side
 		__rootNode(RootNode),
 		Temp = _temp(RootNode),
 		_tempChildNum(Temp, TempChild, 1).
-_deepCopy(Time, TempChild, Term)	% denom is some arbitrary term in the equation
-	:-	_eqnOp(Time, Term, divConst),
+_setTempNodeToMono(Time, TempChild, 0, Coeff)
+	:-	_eqnOp(Time, Term, divConst),   % NOTE: changed to only divide by a constant: not any variable terms
+        _isTheCoefficientOf(Time, Term, Coeff),
 		__rootNode(RootNode),
 		Temp = _temp(RootNode),
 		_tempChildNum(Temp, TempChild, 2).
