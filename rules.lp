@@ -334,6 +334,8 @@ _applicable(Time, _rule(hasATermThatCanBeFactoredOut, _operands(Poly)))
 	:-	_operand(Time, Poly, hasATermThatCanBeFactoredOut, left).
 1 { _selectedCommonCoeff(Time, Coeff) : _hasCommonCoeff(Time, Poly, Coeff) } 1
 	:-	_operand(Time, Poly, hasATermThatCanBeFactoredOut, left).
+%%% CONSTRAINT: don't allow factoring out a 1
+:-  _selectedCommonDeg(Time, 0), _selectedCommonCoeff(Time, 1).
 
 % setup correct tree structure
 _activateTempAndSetChildren(Time, tempResultRoot, mul, 2)
@@ -543,7 +545,8 @@ _saveEqnResult(Time)
 _applicable(Time, _rule(canBeMultipliedAcrossBothSidesOfTheEquation, _operands(Denom)))
 	:-	__rootNode(EqnSide),
         _isFraction(Time, EqnSide),
-        _denominatorOf(Time, EqnSide, Denom).
+        _denominatorOf(Time, EqnSide, Denom),
+        not _isOne(Time, Denom).
 _eqnOp(Time, Operand, mul)
 	:-	_operand(Time, Operand, canBeMultipliedAcrossBothSidesOfTheEquation, left).
 % save the results
