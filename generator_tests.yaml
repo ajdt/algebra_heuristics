@@ -108,36 +108,36 @@ Test numeratorAndDenominatorCanBeMultipliedBySameTerm:
         :- not _selectedHeuristic(_time(0,1), numeratorAndDenominatorCanBeMultipliedBySameTerm).
         _disableSolvability.
     Expect: SAT
-Test areBothNegativeOperationsThatCancelOut:
-    Modules: generator
-    Program: |
-        :- not _selectedHeuristic(_time(0,1), areBothNegativeOperationsThatCancelOut).
-        _disableSolvability.
-    Expect: SAT
-Test negationCanBeDistributed:
-    Modules: generator
-    Program: |
-        :- not _selectedHeuristic(_time(0,1), negationCanBeDistributed).
-        _disableSolvability.
-    Expect: SAT
-Test negativeSignCanBePassedToTermOf:
-    Modules: generator
-    Program: |
-        :- not _selectedHeuristic(_time(0,1), negativeSignCanBePassedToTermOf).
-        _disableSolvability.
-    Expect: SAT
+#Test areBothNegativeOperationsThatCancelOut:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), areBothNegativeOperationsThatCancelOut).
+        #_disableSolvability.
+    #Expect: SAT
+#Test negationCanBeDistributed:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), negationCanBeDistributed).
+        #_disableSolvability.
+    #Expect: SAT
+#Test negativeSignCanBePassedToTermOf:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), negativeSignCanBePassedToTermOf).
+        #_disableSolvability.
+    #Expect: SAT
 Test areTermsThatCanBeCancelled:
     Modules: generator
     Program: |
         :- not _selectedHeuristic(_time(0,1), areTermsThatCanBeCancelled).
         _disableSolvability.
     Expect: SAT
-Test addUpToZero:
-    Modules: generator
-    Program: |
-        :- not _selectedHeuristic(_time(0,1), addUpToZero).
-        _disableSolvability.
-    Expect: SAT
+#Test addUpToZero:
+    #Modules: generator
+    #Program: |
+        #:- not _selectedHeuristic(_time(0,1), addUpToZero).
+        #_disableSolvability.
+    #Expect: SAT
 Test canBeSubtractedFromTheEquation:
     Modules: generator
     Program: |
