@@ -458,8 +458,24 @@ _cancelTerm(Time, Node)
 % TODO: rewrite to generate better explanation
 % subtractFromEqn: A = B  --> A - D = B - D
 %================================================================================
+_isOnTheLeftSideOfTheEquation(leftSide).
+_isOnTheRightSideOfTheEquation(rightSide).
+_isOnTheLeftSideOfTheEquation(Child)
+    :-  _validChildOf(Parent, Child),
+        _isOnTheLeftSideOfTheEquation(Parent).
+_isOnTheRightSideOfTheEquation(Child)
+    :-  _validChildOf(Parent, Child),
+        _isOnTheRightSideOfTheEquation(Parent).
+%%_equationIsNotLinear(Time)  [> TODO: not sure if we need these%%
+    %%:- _isTheDegreeOf(Time, Node, Deg),%%
+        %%Deg >= 2 .%%
+%%_equationIsLinear(Time)%%
+    %%:-  __validTime(Time),%%
+        %%not _equationIsNotLinear(Time).%%
 _applicable(Time, _rule(canBeSubtractedFromTheEquation, _operands(Node)))
 	:-	__isMono(Time, Node),
+        _isConstant(Time, Node), 
+        _isOnTheRightSideOfTheEquation(Node),
         not _isZero(Time, Node).
 
 _eqnOp(Time, Operand, sub)

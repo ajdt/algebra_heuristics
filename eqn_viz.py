@@ -329,16 +329,15 @@ class AlgebraNode(object):
     def toBinaryTree(self):
         # change tree to a binary tree inplace 
         while len(self.children) > 2:
-            self.compressTopTwoChildren()
+            self.compressBottomTwoChildren()
         for child in self.children:
             child.toBinaryTree()
-    def compressTopTwoChildren(self):
-        """docstring for compressTopTwoChildren"""
+    def compressBottomTwoChildren(self):
         if len(self.children) <= 2 :
             return
-        fst = self.children[-2]
-        snd = self.children[-1]
-        self.children = self.children[:-2] + [AlgebraNode(None, [fst, snd])]
+        fst = self.children[0]
+        snd = self.children[1]
+        self.children = [AlgebraNode(None, [fst, snd])] + self.children[2:]
 
     def tagBinaryTree(self, current_depth, node_num):
         self.new_id = 'id(' + str(current_depth) + ',' + str(node_num) + ')'
