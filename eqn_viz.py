@@ -612,7 +612,7 @@ class AnswerSetManager(json.JSONEncoder):
             all_ans_sets = dict()
             for index, ans_set in enumerate(self.getAnsSetsAsJSON()):
                 all_ans_sets[str(index+1)] = ans_set
-            print all_ans_sets
+            print json.dumps(all_ans_sets)
         else:
             for ans_set in self.answer_sets:
                 for problem in ans_set.getMathProblems():

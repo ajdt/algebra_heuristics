@@ -157,6 +157,15 @@ _isStdBinomial(Time, Poly)
         _numChildren(Time, Poly, 2),
 		_isLinear(Time, Poly).
 
+%%% CONSTRAINT: prohibit negative solutions if took even root 
+:- _evenRootHasBeenTaken,
+    _solution(SolnValue),
+    SolnValue < 0.
+_evenRootHasBeenTaken
+    :-  _selectedHeuristic(Time, decreaseDeg),
+        _smallestNonZeroDeg(Time, DividingDeg),
+        DividingDeg \ 2 == 0.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 1-GRAM DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 _ruleForTimeStream(Stream, Rule)
