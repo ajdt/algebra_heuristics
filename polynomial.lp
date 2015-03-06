@@ -252,3 +252,12 @@ _isImproperRational(Time, Node)
 		_denominatorOf(Time, Node, Denom),
 		_absoluteValueIsOne(Time, Denom).
 
+%%%% Predicates For Better Explanations
+    % these predicates were created to generate more helpful explanations without making drastic rewrites
+    % 
+_thisSideOfTheEquationIsZero(Time, Side)
+    :-  __rootNode(Side),
+        _isZero(Time, Side).
+_thisSideOfTheEquationIsAFraction(Time, Side)
+    :-  __rootNode(Side),
+        _isFraction(Time, Side).

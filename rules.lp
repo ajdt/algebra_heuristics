@@ -101,16 +101,14 @@ _setResultTo(Time, Root)
 %================================================================================
 % ignore denominator: a / b = 0 --> a = 0
 %================================================================================
-_applicable(Time, _rule(canBeReducedToItsNumerator, _operands(leftSide)))
-	:-	_isZero(Time, rightSide),
-		_isFraction(Time, leftSide).
-
-% assumes that fraction is poly/poly
+_applicable(Time, _rule(soTheNumeratorOfThisFractionMustBeEqualToZero, _operands(leftSide)))
+	:-	_thisSideOfTheEquationIsZero(Time, rightSide),
+		_thisSideOfTheEquationIsAFraction(Time, leftSide).
 _deepCopy(Time, tempResultRoot, Numer)
-	:-	_operand(Time, Frac, canBeReducedToItsNumerator, left),
+	:-	_operand(Time, Frac, soTheNumeratorOfThisFractionMustBeEqualToZero, left),
 		_numeratorOf(Time, Frac, Numer).
 _setResultTo(Time, leftSide)
-	:-	_ruleForTimeStep(Time, canBeReducedToItsNumerator).
+	:-	_ruleForTimeStep(Time, soTheNumeratorOfThisFractionMustBeEqualToZero).
 
 
 %================================================================================
@@ -576,7 +574,7 @@ _writeBinaryOp(Time)
 _rule(hasNumeratorAndDenominatorThatCancel).
 _rule(canBeMultipliedAsFractions).
 _rule(canBeMultipliedByInverseOf).
-_rule(canBeReducedToItsNumerator).
+_rule(soTheNumeratorOfThisFractionMustBeEqualToZero).
 _rule(canBeAddedTogether).
 _rule(canBeMultipliedTogether).
 _rule(areFactorsThatCancel).

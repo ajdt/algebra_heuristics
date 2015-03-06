@@ -25,10 +25,10 @@ Test canBeMultipliedByInverseOf:
         :- not _selectedHeuristic(_time(0,1), canBeMultipliedByInverseOf).
         _disableSolvability.
     Expect: SAT
-Test canBeReducedToItsNumerator:
+Test soTheNumeratorOfThisFractionMustBeEqualToZero:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), canBeReducedToItsNumerator).
+        :- not _selectedHeuristic(_time(0,1), soTheNumeratorOfThisFractionMustBeEqualToZero).
         _disableSolvability.
     Expect: SAT
 Test canBeAddedTogether:

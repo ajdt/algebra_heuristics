@@ -85,7 +85,7 @@ _heuristic(Name, Priority, Rule)
 % combine monomials
 %%_heuristicToApplyRule(areTermsThatCanBeCancelled, 1, areTermsThatCanBeCancelled). %%
 %%_heuristicToApplyRule(addUpToZero, 1, addUpToZero). %%
-%%_heuristicToApplyRule(canBeReducedToItsNumerator, 1, canBeReducedToItsNumerator). %%
+%%_heuristicToApplyRule(soTheNumeratorOfThisFractionMustBeEqualToZero, 1, soTheNumeratorOfThisFractionMustBeEqualToZero). %%
 %%_heuristicToApplyRule(areFactorsThatCancel, 1, areFactorsThatCancel). %%
 %%_heuristicToApplyRule(areBothNegativeOperationsThatCancelOut, 1, areBothNegativeOperationsThatCancelOut). %%
 
