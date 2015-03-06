@@ -156,10 +156,10 @@ Test canDivideBothSidesOfTheEquation:
         :- not _selectedHeuristic(_time(0,1), canDivideBothSidesOfTheEquation).
         _disableSolvability.
     Expect: SAT
-Test decreaseDeg:
+Test weCanSimplifyBySubstitutingYForXDEG:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), decreaseDeg).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyBySubstitutingYForXDEG).
         _disableSolvability.
     Expect: SAT
 Test fractionCanBeMultipliedWithNonFraction:

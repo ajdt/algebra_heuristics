@@ -162,7 +162,7 @@ _isStdBinomial(Time, Poly)
     _solution(SolnValue),
     SolnValue < 0.
 _evenRootHasBeenTaken
-    :-  _selectedHeuristic(Time, decreaseDeg),
+    :-  _selectedHeuristic(Time, weCanSimplifyBySubstitutingYForXDEG),
         _smallestNonZeroDeg(Time, DividingDeg),
         DividingDeg \ 2 == 0.
 

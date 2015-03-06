@@ -519,17 +519,17 @@ _saveEqnResult(Time)
 % TODO: rewrite to generate better explanation
 % decreaseDeg: x^4 + x^2= 0  --> x^2 + 1 = 0 (example)
 %================================================================================
-_applicable(Time, _rule(decreaseDeg, _operands(leftSide)))
-	:-	_equationHasNonConstantTerms(Time),
-        _canDivideEveryDegree(Time, Deg).
+_applicable(Time, _rule(weCanSimplifyBySubstitutingYForXDEG, _operands(leftSide)))
+	:-	%_equationHasNonConstantTerms(Time),
+        _theDegreeOfEveryVariableInTheEquationIsDivisibleBy(Time, DEG).
 _update(Time, Node, degree, ResultDeg)
-	:-	_ruleForTimeStep(Time, decreaseDeg),
+	:-	_ruleForTimeStep(Time, weCanSimplifyBySubstitutingYForXDEG),
 		_smallestNonZeroDeg(Time, DividingDeg),
 		_isTheDegreeOf(Time, Node, OrigDeg),
 		OrigDeg != 0,
 		_degProduct(OrigDeg, DividingDeg, ResultDeg).
 
-_canDivideEveryDegree(Time, Deg)
+_theDegreeOfEveryVariableInTheEquationIsDivisibleBy(Time, Deg)
     :-  __validTime(Time),
         not _xVarCannotBeSubstituted(Time),
         _smallestNonZeroDeg(Time, Deg).
@@ -592,6 +592,6 @@ _rule(areTermsThatCanBeCancelled).
 _rule(canBeSubtractedFromTheEquation).
 _rule(canBeMultipliedAcrossBothSidesOfTheEquation).
 _rule(canDivideBothSidesOfTheEquation).
-_rule(decreaseDeg).
+_rule(weCanSimplifyBySubstitutingYForXDEG).
 _rule(fractionCanBeMultipliedWithNonFraction).
 

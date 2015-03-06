@@ -98,7 +98,7 @@ _heuristic(Name, Priority, Rule)
 
 %%_heuristicToApplyRule(canBeDistributed, 3, canBeDistributed). %%
 %%_heuristicToApplyRule(canBeMultipliedTogether, 3, canBeMultipliedTogether). %%
-%%_heuristicToApplyRule(decreaseDeg, 3, decreaseDeg). %%
+%%_heuristicToApplyRule(weCanSimplifyBySubstitutingYForXDEG, 3, weCanSimplifyBySubstitutingYForXDEG). %%
 %%_heuristicToApplyRule(fractionCanBeMultipliedWithNonFraction, 3, fractionCanBeMultipliedWithNonFraction). %%
 
 %%%================================================================================
