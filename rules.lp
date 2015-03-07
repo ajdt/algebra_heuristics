@@ -146,7 +146,10 @@ _writeBinaryOp(Time)
 %================================================================================
 % monomult ax^b  * cx^d --> (a*c)x^(b+d)
 %================================================================================
-_applicable(Time, _rule(canBeMultipliedTogether, _operands(LeftMono, RightMono)))
+_applicable(Time, _rule(weCanSimplifyByCombiningTheseIntoASingleTerm, _operands(LeftMono, RightMono)))
+	:-	_weAreMultiplyingTwoTerms(Time, LeftMono, RightMono).
+
+_weAreMultiplyingTwoTerms(Time, LeftMono, RightMono)
 	:-	_areBeingMultiplied(Time, LeftMono, RightMono),
 		__isMono(Time, LeftMono),
 		__isMono(Time, RightMono),
@@ -155,11 +158,11 @@ _applicable(Time, _rule(canBeMultipliedTogether, _operands(LeftMono, RightMono))
 		LeftMono < RightMono.
  
 _monoOp(Time, tempResultRoot, LeftMono, RightMono, mul)
-	:-	_operand(Time, LeftMono, canBeMultipliedTogether, left),
-		_operand(Time, RightMono, canBeMultipliedTogether, right).
+	:-	_operand(Time, LeftMono, weCanSimplifyByCombiningTheseIntoASingleTerm, left),
+		_operand(Time, RightMono, weCanSimplifyByCombiningTheseIntoASingleTerm, right).
 
 _writeBinaryOp(Time)
-	:-	_ruleForTimeStep(Time, canBeMultipliedTogether).
+	:-	_ruleForTimeStep(Time, weCanSimplifyByCombiningTheseIntoASingleTerm).
 
 %================================================================================
 % fracCancel A*B/C*B --> A/C
@@ -615,7 +618,7 @@ _rule(weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms).
 _rule(weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead).
 _rule(soTheNumeratorOfThisFractionMustBeEqualToZero).
 _rule(canBeAddedTogether).
-_rule(canBeMultipliedTogether).
+_rule(weCanSimplifyByCombiningTheseIntoASingleTerm).
 _rule(areFactorsThatCancel).
 _rule(canBeFactored).
 _rule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction).

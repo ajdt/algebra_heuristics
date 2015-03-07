@@ -97,7 +97,7 @@ _heuristic(Name, Priority, Rule)
 %%_heuristicToApplyRule(canBeIgnored, 2, canBeIgnored). %%
 
 %%_heuristicToApplyRule(weCanSimplifyByDistributingThisConstant, 3, weCanSimplifyByDistributingThisConstant). %%
-%%_heuristicToApplyRule(canBeMultipliedTogether, 3, canBeMultipliedTogether). %%
+%%_heuristicToApplyRule(weCanSimplifyByCombiningTheseIntoASingleTerm, 3, weCanSimplifyByCombiningTheseIntoASingleTerm). %%
 %%_heuristicToApplyRule(weCanSimplifyBySubstitutingYForXDEG, 3, weCanSimplifyBySubstitutingYForXDEG). %%
 %%_heuristicToApplyRule(weCanSimplifyByMultiplyingTheNumeratorByTheTerm, 3, weCanSimplifyByMultiplyingTheNumeratorByTheTerm). %%
 

@@ -37,10 +37,10 @@ Test canBeAddedTogether:
         :- not _selectedHeuristic(_time(0,1), canBeAddedTogether).
         _disableSolvability.
     Expect: SAT
-Test canBeMultipliedTogether:
+Test weCanSimplifyByCombiningTheseIntoASingleTerm:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), canBeMultipliedTogether).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByCombiningTheseIntoASingleTerm).
         _disableSolvability.
     Expect: SAT
 Test areFactorsThatCancel:
