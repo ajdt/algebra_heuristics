@@ -446,14 +446,18 @@ _setResultTo(Time, Fraction)
 %================================================================================
 % cancelSumTerm: A + B = A + C --> B = C
 %================================================================================
-_applicable(Time, _rule(areTermsThatCanBeCancelled, _operands(LeftChild, RightChild)))
+_applicable(Time, _rule(weCanSimplifyByCancellingTheseTerms, _operands(LeftChild, RightChild)))
+	:-	_thisTermIsAddedToBothSidesOfTheEquation(Time, LeftChild, RightChild).
+
+_thisTermIsAddedToBothSidesOfTheEquation(Time, LeftChild, RightChild)
 	:-	_isSumOfTerms(Time, leftSide),
 		_isSumOfTerms(Time, rightSide),
 		_isATermOf(Time, leftSide, LeftChild),
 		_isATermOf(Time, rightSide, RightChild),
 		_areEqual(Time, LeftChild, RightChild).
+
 _cancelTerm(Time, Node)
-	:-	_operand(Time, Node, areTermsThatCanBeCancelled, Side).
+	:-	_operand(Time, Node, weCanSimplifyByCancellingTheseTerms, Side).
 
 %================================================================================
 % TODO: rewrite to generate better explanation
@@ -591,7 +595,7 @@ _rule(hasATermThatCanBeFactoredOut).
 _rule(isEqualToZero).
 _rule(canBeIgnored).
 _rule(numeratorAndDenominatorCanBeMultipliedBySameTerm).
-_rule(areTermsThatCanBeCancelled).
+_rule(weCanSimplifyByCancellingTheseTerms).
 _rule(canBeSubtractedFromTheEquation).
 _rule(canBeMultipliedAcrossBothSidesOfTheEquation).
 _rule(canDivideBothSidesOfTheEquation).

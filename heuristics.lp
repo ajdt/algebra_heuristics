@@ -83,7 +83,7 @@ _heuristic(Name, Priority, Rule)
 
 % NOTE: I've reserved priority = 0 for testing purposes. O.W. highest priority is 1 
 % combine monomials
-%%_heuristicToApplyRule(areTermsThatCanBeCancelled, 1, areTermsThatCanBeCancelled). %%
+%%_heuristicToApplyRule(weCanSimplifyByCancellingTheseTerms, 1, weCanSimplifyByCancellingTheseTerms). %%
 %%_heuristicToApplyRule(addUpToZero, 1, addUpToZero). %%
 %%_heuristicToApplyRule(soTheNumeratorOfThisFractionMustBeEqualToZero, 1, soTheNumeratorOfThisFractionMustBeEqualToZero). %%
 %%_heuristicToApplyRule(areFactorsThatCancel, 1, areFactorsThatCancel). %%

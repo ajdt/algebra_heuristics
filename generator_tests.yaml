@@ -126,10 +126,10 @@ Test numeratorAndDenominatorCanBeMultipliedBySameTerm:
         #:- not _selectedHeuristic(_time(0,1), negativeSignCanBePassedToTermOf).
         #_disableSolvability.
     #Expect: SAT
-Test areTermsThatCanBeCancelled:
+Test weCanSimplifyByCancellingTheseTerms:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), areTermsThatCanBeCancelled).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByCancellingTheseTerms).
         _disableSolvability.
     Expect: SAT
 #Test addUpToZero:
