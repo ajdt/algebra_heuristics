@@ -72,10 +72,10 @@ Test weCanSimplifyByCancellingTheDenominatorOfThisFraction:
         :- not _selectedHeuristic(_time(0,1), weCanSimplifyByCancellingTheDenominatorOfThisFraction).
         _disableSolvability.
     Expect: SAT
-Test canBeCancelled:
+Test weCanSimplifyByCancellingThe0:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), canBeCancelled).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByCancellingThe0).
         _disableSolvability.
     Expect: SAT
 Test isATermThatCanBeFactored:

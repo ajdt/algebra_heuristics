@@ -289,12 +289,15 @@ _deepCopy(Time, Fraction, Numer)
 %================================================================================
 % addZero A + 0 --> A
 %================================================================================
-_applicable(Time, _rule(canBeCancelled, _operands(Mono)))
+_applicable(Time, _rule(weCanSimplifyByCancellingThe0, _operands(Mono)))
+    :-  _weAreAdding0ToASumOfTerms(Time, Mono).
+
+_weAreAdding0ToASumOfTerms(Time, Mono)
 	:-	_isZero(Time, Mono),
 		_isBeingAdded(Time, Mono).
 
 _cancelTerm(Time, ZeroTerm)
-	:-	_operand(Time, ZeroTerm, canBeCancelled, left).
+	:-	_operand(Time, ZeroTerm, weCanSimplifyByCancellingThe0, left).
 
 %================================================================================
 % TODO: rewrite to generate better explanation
@@ -627,7 +630,7 @@ _rule(canBeFactored).
 _rule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction).
 _rule(weCanSimplifyByDistributingThisConstant).
 _rule(weCanSimplifyByCancellingTheDenominatorOfThisFraction).
-_rule(canBeCancelled).
+_rule(weCanSimplifyByCancellingThe0).
 _rule(isATermThatCanBeFactored).
 _rule(weCanSimplifyByFactoringOutAFACTOR).
 _rule(isEqualToZero).
