@@ -171,13 +171,17 @@ _writeBinaryOp(Time)
 % fracCancel A*B/C*B --> A/C
 %================================================================================
 % NOTE: relies on equal/3 predicate to work
-_applicable(Time, _rule(areFactorsThatCancel, _operands(NumerFactor, DenomFactor)))
+_applicable(Time, _rule(weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator, _operands(NumerFactor, DenomFactor)))
+    :-  _thisTermIsInBothTheNumeratorAndDenominatorOfAFraction(Time, NumerFactor, DenomFactor).
+
+_thisTermIsInBothTheNumeratorAndDenominatorOfAFraction(Time, NumerFactor, DenomFactor)
 	:-	_isFraction(Time, Fraction),
 		_isFactorInNumeratorOf(Time, Fraction, NumerFactor),
         _isFactorInDenominatorOf(Time, Fraction, DenomFactor),
         _areEqual(Time, NumerFactor, DenomFactor).
+
 _cancelTerm(Time, Factor)
-	:-	_operand(Time, Factor, areFactorsThatCancel, Side).
+	:-	_operand(Time, Factor, weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator, Side).
 
 %================================================================================
 % factor (x^2 + bx + c) --> (x + e) * (x + d)
@@ -632,7 +636,7 @@ _rule(weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead).
 _rule(soTheNumeratorOfThisFractionMustBeEqualToZero).
 _rule(weCanSimplifyByAddingTheseTwoTermsTogether).
 _rule(weCanSimplifyByCombiningTheseIntoASingleTerm).
-_rule(areFactorsThatCancel).
+_rule(weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator).
 _rule(canBeFactored).
 _rule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction).
 _rule(weCanSimplifyByDistributingThisConstant).

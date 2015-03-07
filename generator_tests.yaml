@@ -43,10 +43,10 @@ Test weCanSimplifyByCombiningTheseIntoASingleTerm:
         :- not _selectedHeuristic(_time(0,1), weCanSimplifyByCombiningTheseIntoASingleTerm).
         _disableSolvability.
     Expect: SAT
-Test areFactorsThatCancel:
+Test weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), areFactorsThatCancel).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator).
         _disableSolvability.
     Expect: SAT
 Test canBeFactored:
