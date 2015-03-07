@@ -202,27 +202,30 @@ _setResultTo(Time, Poly)
 % addSameFrac A/B + C/B --> (A+C)/B
 %================================================================================
 % NOTE: _sameDenom depends on equals/3 predicate (which applies only to monomials)
-_applicable(Time, _rule(canBeAddedAsOneFraction, _operands(Fst, Snd)))
+_applicable(Time, _rule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction, _operands(Fst, Snd)))
+	:-	_theseTwoFractionsAreBeingAddedAndTheyHaveTheSameDenominator(Time, Fst, Snd).
+
+_theseTwoFractionsAreBeingAddedAndTheyHaveTheSameDenominator(Time, Fst, Snd)
 	:-	_areBeingAdded(Time, Fst, Snd),
 		_haveTheSameDenominator(Time, Fst, Snd),
 		Fst < Snd.
 
 % set root to a fraction
 _activateTempAndSetChildren(Time, tempResultRoot, div, 2)
-	:-	_ruleForTimeStep(Time, canBeAddedAsOneFraction).
+	:-	_ruleForTimeStep(Time, weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction).
 
 % set numerator to a sum
 _treeOp(Time, TempNumer, FstNumer, SndNumer, add)
 	:-	_tempChildNum(tempResultRoot, TempNumer, 1),
-		_operandNumer(Time, FstNumer, canBeAddedAsOneFraction, left),
-		_operandNumer(Time, SndNumer, canBeAddedAsOneFraction, right).
+		_operandNumer(Time, FstNumer, weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction, left),
+		_operandNumer(Time, SndNumer, weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction, right).
 % set denom 
 _deepCopy(Time, TempDenom, FstDenom)
 	:-	_tempChildNum(tempResultRoot, TempDenom, 2),
-		_operandDenom(Time, FstDenom, canBeAddedAsOneFraction, left).
+		_operandDenom(Time, FstDenom, weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction, left).
 % save result
 _writeBinaryOp(Time)
-	:-	_ruleForTimeStep(Time, canBeAddedAsOneFraction).
+	:-	_ruleForTimeStep(Time, weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction).
 	
 %================================================================================
 % distribute (a + b) * C --> (a*C + b*C)
@@ -594,7 +597,7 @@ _rule(canBeAddedTogether).
 _rule(canBeMultipliedTogether).
 _rule(areFactorsThatCancel).
 _rule(canBeFactored).
-_rule(canBeAddedAsOneFraction).
+_rule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction).
 _rule(canBeDistributed).
 _rule(canHaveItsDenominatorCancelled).
 _rule(canBeCancelled).

@@ -54,10 +54,10 @@ Test canBeFactored:
     Program: |
         :- not _selectedHeuristic(_time(0,1), canBeFactored).
     Expect: SAT
-Test canBeAddedAsOneFraction:
+Test weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), canBeAddedAsOneFraction).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction).
         _disableSolvability.
     Expect: SAT
 Test canBeDistributed:
