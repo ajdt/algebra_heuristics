@@ -52,7 +52,10 @@ _setToOne(Time, Fraction)
 %================================================================================
 % canBeMultipliedAsFractions: a/b * c/d --> (a*c)/(b*d)
 %================================================================================
-_applicable(Time, _rule(canBeMultipliedAsFractions, _operands(LeftFrac, RightFrac)))
+_applicable(Time, _rule(weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms, _operands(LeftFrac, RightFrac)))
+    :-  _theseTwoFractionsAreBeingMultiplied(Time, LeftFrac, RightFrac).
+
+_theseTwoFractionsAreBeingMultiplied(Time, LeftFrac, RightFrac)
 	:-	_isFraction(Time, LeftFrac),
 		_isFraction(Time, RightFrac),
 		LeftFrac < RightFrac,
@@ -60,18 +63,18 @@ _applicable(Time, _rule(canBeMultipliedAsFractions, _operands(LeftFrac, RightFra
 
 % set result as a fraction with numer and denom as fractions
 _activateTempAndSetChildren(Time, tempResultRoot, div, 2)
-	:-	_ruleForTimeStep(Time, canBeMultipliedAsFractions).
+	:-	_ruleForTimeStep(Time, weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms).
 _treeOp(Time, TempNumer, FstNumer, SndNumer, mul)
 	:-	_tempChildOnSide(tempResultRoot, TempNumer, left),
-		_operandNumer(Time, FstNumer, canBeMultipliedAsFractions, left),
-		_operandNumer(Time, SndNumer, canBeMultipliedAsFractions, right).
+		_operandNumer(Time, FstNumer, weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms, left),
+		_operandNumer(Time, SndNumer, weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms, right).
 _treeOp(Time, TempDenom, FstDenom, SndDenom, mul)
 	:-	_tempChildOnSide(tempResultRoot, TempDenom, right),
-		_operandDenom(Time, FstDenom, canBeMultipliedAsFractions, left),
-		_operandDenom(Time, SndDenom, canBeMultipliedAsFractions, right).
+		_operandDenom(Time, FstDenom, weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms, left),
+		_operandDenom(Time, SndDenom, weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms, right).
 
 _writeBinaryOp(Time)
-	:-	_ruleForTimeStep(Time, canBeMultipliedAsFractions).
+	:-	_ruleForTimeStep(Time, weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms).
 
 %================================================================================
 % canBeMultipliedByInverseOf: a/c / b/d --> a/c * d/b
@@ -599,7 +602,7 @@ _writeBinaryOp(Time)
 
 %% Rules Listed: Used to generate default rule heuristics
 _rule(thisFractionCanBeSimplifiedTo1).
-_rule(canBeMultipliedAsFractions).
+_rule(weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms).
 _rule(weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead).
 _rule(soTheNumeratorOfThisFractionMustBeEqualToZero).
 _rule(canBeAddedTogether).
