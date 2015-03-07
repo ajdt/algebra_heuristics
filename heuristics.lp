@@ -94,7 +94,7 @@ _heuristic(Name, Priority, Rule)
 %%_heuristicToApplyRule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction, 2, weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction). %%
 %%_heuristicToApplyRule(weCanSimplifyByCancellingTheDenominatorOfThisFraction, 2, weCanSimplifyByCancellingTheDenominatorOfThisFraction). %%
 %%_heuristicToApplyRule(theProductOfTheseTermsIs0, 2, theProductOfTheseTermsIs0). %%
-%%_heuristicToApplyRule(canBeIgnored, 2, canBeIgnored). %%
+%%_heuristicToApplyRule(weCanSimplifyByCancellingThe1, 2, weCanSimplifyByCancellingThe1). %%
 
 %%_heuristicToApplyRule(weCanSimplifyByDistributingThisConstant, 3, weCanSimplifyByDistributingThisConstant). %%
 %%_heuristicToApplyRule(weCanSimplifyByCombiningTheseIntoASingleTerm, 3, weCanSimplifyByCombiningTheseIntoASingleTerm). %%

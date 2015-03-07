@@ -440,12 +440,16 @@ _setToZero(Time, Parent)
 %================================================================================
 % multIdentity:	A*1 --> A
 %================================================================================
-_applicable(Time, _rule(canBeIgnored, _operands(UnitTerm)))
+_applicable(Time, _rule(weCanSimplifyByCancellingThe1, _operands(UnitTerm)))
+    :-  _weAreMultiplyingSomeTermsBy1(Time, UnitTerm). 
+
+_weAreMultiplyingSomeTermsBy1(Time, UnitTerm) 
 	:-	_isOne(Time, UnitTerm),
         _areBeingMultiplied(Time, OtherTerm, UnitTerm),
         not __isMono(Time, OtherTerm).  % for monomials we use the mono multiply rule
+
 _cancelTerm(Time, UnitTerm)
-	:-	_operand(Time, UnitTerm, canBeIgnored, left).
+	:-	_operand(Time, UnitTerm, weCanSimplifyByCancellingThe1, left).
 
 %================================================================================
 % TODO: rewrite to generate better explanation
@@ -637,7 +641,7 @@ _rule(weCanSimplifyByCancellingThe0).
 _rule(isATermThatCanBeFactored).
 _rule(weCanSimplifyByFactoringOutAFACTOR).
 _rule(theProductOfTheseTermsIs0).
-_rule(canBeIgnored).
+_rule(weCanSimplifyByCancellingThe1).
 _rule(numeratorAndDenominatorCanBeMultipliedBySameTerm).
 _rule(weCanSimplifyByCancellingTheseTerms).
 _rule(canBeSubtractedFromTheEquation).

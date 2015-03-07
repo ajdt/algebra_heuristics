@@ -96,10 +96,10 @@ Test theProductOfTheseTermsIs0:
         :- not _selectedHeuristic(_time(0,1), theProductOfTheseTermsIs0).
         _disableSolvability.
     Expect: SAT
-Test canBeIgnored:
+Test weCanSimplifyByCancellingThe1:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), canBeIgnored).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByCancellingThe1).
         _disableSolvability.
     Expect: SAT
 Test numeratorAndDenominatorCanBeMultipliedBySameTerm:
