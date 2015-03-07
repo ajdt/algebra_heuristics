@@ -102,10 +102,10 @@ Test weCanSimplifyByCancellingThe1:
         :- not _selectedHeuristic(_time(0,1), weCanSimplifyByCancellingThe1).
         _disableSolvability.
     Expect: SAT
-Test numeratorAndDenominatorCanBeMultipliedBySameTerm:
+Test weCanSimplifyByMultiplyingTheNumeratorAndDenominatorByTERM:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), numeratorAndDenominatorCanBeMultipliedBySameTerm).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByMultiplyingTheNumeratorAndDenominatorByTERM).
         _disableSolvability.
     Expect: SAT
 #Test areBothNegativeOperationsThatCancelOut:

@@ -464,29 +464,31 @@ _cancelTerm(Time, UnitTerm)
 % expression is too large and we get a node overflow.
 % Additionally, we can only multiply expression by a polynomial expression already existing
 % somewhere in the equation
-_applicable(Time, _rule(numeratorAndDenominatorCanBeMultipliedBySameTerm, _operands(Fraction, Term)))
-	:-	_isFraction(Time, Fraction),
-		__isActive(Time, Term).
+_applicable(Time, _rule(weCanSimplifyByMultiplyingTheNumeratorAndDenominatorByTERM, _operands(Fraction, TERM)))
+	:-	_thisIsAFraction(Time, Fraction),
+		__isActive(Time, TERM).
 
+_thisIsAFraction(Time, Fraction)
+	:-	_isFraction(Time, Fraction).
 % set root to div
 _activateTempAndSetChildren(Time, tempResultRoot, div, 2)
-	:-	_ruleForTimeStep(Time, numeratorAndDenominatorCanBeMultipliedBySameTerm).
+	:-	_ruleForTimeStep(Time, weCanSimplifyByMultiplyingTheNumeratorAndDenominatorByTERM).
 
 % multiply numer
 _treeOp(Time, TempNode, Numer, Poly, mul)
-	:-	_operandNumer(Time, Numer, numeratorAndDenominatorCanBeMultipliedBySameTerm, left),
-		_operand(Time, Poly, numeratorAndDenominatorCanBeMultipliedBySameTerm, right),
+	:-	_operandNumer(Time, Numer, weCanSimplifyByMultiplyingTheNumeratorAndDenominatorByTERM, left),
+		_operand(Time, Poly, weCanSimplifyByMultiplyingTheNumeratorAndDenominatorByTERM, right),
 		_tempChildOnSide(tempResultRoot, TempNode, left).
 
 % multiply denom
 _treeOp(Time, TempNode, Denom, Poly, mul)
-	:-	_operandDenom(Time, Denom, numeratorAndDenominatorCanBeMultipliedBySameTerm, left),
-		_operand(Time, Poly, numeratorAndDenominatorCanBeMultipliedBySameTerm, right),
+	:-	_operandDenom(Time, Denom, weCanSimplifyByMultiplyingTheNumeratorAndDenominatorByTERM, left),
+		_operand(Time, Poly, weCanSimplifyByMultiplyingTheNumeratorAndDenominatorByTERM, right),
 		_tempChildOnSide(tempResultRoot, TempNode, right).
 
 % save the result
 _setResultTo(Time, Fraction)
-	:-	_operand(Time, Fraction, numeratorAndDenominatorCanBeMultipliedBySameTerm, left).
+	:-	_operand(Time, Fraction, weCanSimplifyByMultiplyingTheNumeratorAndDenominatorByTERM, left).
 
 %================================================================================
 % cancelSumTerm: A + B = A + C --> B = C
@@ -646,7 +648,7 @@ _rule(isATermThatCanBeFactored).
 _rule(weCanSimplifyByFactoringOutAFACTOR).
 _rule(theProductOfTheseTermsIs0).
 _rule(weCanSimplifyByCancellingThe1).
-_rule(numeratorAndDenominatorCanBeMultipliedBySameTerm).
+_rule(weCanSimplifyByMultiplyingTheNumeratorAndDenominatorByTERM).
 _rule(weCanSimplifyByCancellingTheseTerms).
 _rule(canBeSubtractedFromTheEquation).
 _rule(weCanSimplifyByMultiplyingBothSidesOfTheEquationByThisDenominator).
