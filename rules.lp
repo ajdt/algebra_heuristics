@@ -510,16 +510,19 @@ _saveEqnResult(Time)
 % MulEqn: A = B  --> A * D = B * D
 %================================================================================
 % canBeUsedToMultiplyBothSidesOfEquation
-_applicable(Time, _rule(canBeMultipliedAcrossBothSidesOfTheEquation, _operands(Denom)))
+_applicable(Time, _rule(weCanSimplifyByMultiplyingBothSidesOfTheEquationByThisDenominator, _operands(Denom)))
+	:-	_oneSideOfTheEquationIsAFractionAndThisIsItsDenominator(Time, Denom).
+
+_oneSideOfTheEquationIsAFractionAndThisIsItsDenominator(Time, Denom) 
 	:-	__rootNode(EqnSide),
         _isFraction(Time, EqnSide),
         _denominatorOf(Time, EqnSide, Denom),
         not _isOne(Time, Denom).
 _eqnOp(Time, Operand, mul)
-	:-	_operand(Time, Operand, canBeMultipliedAcrossBothSidesOfTheEquation, left).
+	:-	_operand(Time, Operand, weCanSimplifyByMultiplyingBothSidesOfTheEquationByThisDenominator, left).
 % save the results
 _saveEqnResult(Time)
-	:-	_ruleForTimeStep(Time, canBeMultipliedAcrossBothSidesOfTheEquation).
+	:-	_ruleForTimeStep(Time, weCanSimplifyByMultiplyingBothSidesOfTheEquationByThisDenominator).
 
 %================================================================================
 % TODO: rewrite to generate better explanation
@@ -614,7 +617,7 @@ _rule(canBeIgnored).
 _rule(numeratorAndDenominatorCanBeMultipliedBySameTerm).
 _rule(weCanSimplifyByCancellingTheseTerms).
 _rule(canBeSubtractedFromTheEquation).
-_rule(canBeMultipliedAcrossBothSidesOfTheEquation).
+_rule(weCanSimplifyByMultiplyingBothSidesOfTheEquationByThisDenominator).
 _rule(canDivideBothSidesOfTheEquation).
 _rule(weCanSimplifyBySubstitutingYForXDEG).
 _rule(fractionCanBeMultipliedWithNonFraction).
