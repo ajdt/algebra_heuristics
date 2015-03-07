@@ -162,10 +162,10 @@ Test weCanSimplifyBySubstitutingYForXDEG:
         :- not _selectedHeuristic(_time(0,1), weCanSimplifyBySubstitutingYForXDEG).
         _disableSolvability.
     Expect: SAT
-Test fractionCanBeMultipliedWithNonFraction:
+Test weCanSimplifyByMultiplyingTheNumeratorByTheTerm:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), fractionCanBeMultipliedWithNonFraction).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByMultiplyingTheNumeratorByTheTerm).
         _disableSolvability.
     Expect: SAT
 

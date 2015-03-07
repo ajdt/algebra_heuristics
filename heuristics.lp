@@ -99,7 +99,7 @@ _heuristic(Name, Priority, Rule)
 %%_heuristicToApplyRule(weCanSimplifyByDistributingThisConstant, 3, weCanSimplifyByDistributingThisConstant). %%
 %%_heuristicToApplyRule(canBeMultipliedTogether, 3, canBeMultipliedTogether). %%
 %%_heuristicToApplyRule(weCanSimplifyBySubstitutingYForXDEG, 3, weCanSimplifyBySubstitutingYForXDEG). %%
-%%_heuristicToApplyRule(fractionCanBeMultipliedWithNonFraction, 3, fractionCanBeMultipliedWithNonFraction). %%
+%%_heuristicToApplyRule(weCanSimplifyByMultiplyingTheNumeratorByTheTerm, 3, weCanSimplifyByMultiplyingTheNumeratorByTheTerm). %%
 
 %%%================================================================================
 %%%					Condition Heuristics

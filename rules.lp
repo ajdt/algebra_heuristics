@@ -586,24 +586,28 @@ _equationHasNonConstantTerms(Time)
 % TODO: rewrite to generate better explanation replace not isFraction with isNotFraction
 % mulWithFrac: (A/B) * D --> (A*D)/B
 %================================================================================
-_applicable(Time, _rule(fractionCanBeMultipliedWithNonFraction, _operands(Fraction, NotFraction)))
+_applicable(Time, _rule(weCanSimplifyByMultiplyingTheNumeratorByTheTerm, _operands(Fraction, NotFraction)))
+	:-	_weAreMultiplyingAFractionByATerm(Time, Fraction, NotFraction).
+
+_weAreMultiplyingAFractionByATerm(Time, Fraction, NotFraction)
 	:-	_areBeingMultiplied(Time, Fraction, NotFraction),
 		_isFraction(Time, Fraction),
 		not _isFraction(Time, NotFraction).
+
 _activateTempAndSetChildren(Time, tempResultRoot, div, 2)
-	:-	_ruleForTimeStep(Time, fractionCanBeMultipliedWithNonFraction).
+	:-	_ruleForTimeStep(Time, weCanSimplifyByMultiplyingTheNumeratorByTheTerm).
 _treeOp(Time, FstChild, Numer, NotFraction, append(mul))
-	:-	_operand(Time, Fraction, fractionCanBeMultipliedWithNonFraction, left),
+	:-	_operand(Time, Fraction, weCanSimplifyByMultiplyingTheNumeratorByTheTerm, left),
 		_numeratorOf(Time, Fraction, Numer),
-		_operand(Time, NotFraction, fractionCanBeMultipliedWithNonFraction, right),
+		_operand(Time, NotFraction, weCanSimplifyByMultiplyingTheNumeratorByTheTerm, right),
 		_tempChildNum(tempResultRoot, FstChild, 1).
 _deepCopy(Time, SndChild, Denom)
-	:-	_operand(Time, Fraction, fractionCanBeMultipliedWithNonFraction, left),
+	:-	_operand(Time, Fraction, weCanSimplifyByMultiplyingTheNumeratorByTheTerm, left),
 		_denominatorOf(Time, Fraction, Denom),
 		_tempChildNum(tempResultRoot, SndChild, 2).
 
 _writeBinaryOp(Time)
-	:-	_ruleForTimeStep(Time, fractionCanBeMultipliedWithNonFraction).
+	:-	_ruleForTimeStep(Time, weCanSimplifyByMultiplyingTheNumeratorByTheTerm).
 
 %% Rules Listed: Used to generate default rule heuristics
 _rule(thisFractionCanBeSimplifiedTo1).
@@ -628,5 +632,5 @@ _rule(canBeSubtractedFromTheEquation).
 _rule(weCanSimplifyByMultiplyingBothSidesOfTheEquationByThisDenominator).
 _rule(canDivideBothSidesOfTheEquation).
 _rule(weCanSimplifyBySubstitutingYForXDEG).
-_rule(fractionCanBeMultipliedWithNonFraction).
+_rule(weCanSimplifyByMultiplyingTheNumeratorByTheTerm).
 
