@@ -7,10 +7,10 @@ Test equations exist:
     Expect: SAT
 
 # note: ensure maxInitialDepth > 2 for the below code
-Test hasNumeratorAndDenominatorThatCancel:
+Test thisFractionCanBeSimplifiedTo1:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), hasNumeratorAndDenominatorThatCancel).
+        :- not _selectedHeuristic(_time(0,1), thisFractionCanBeSimplifiedTo1).
         _disableSolvability.
     Expect: SAT
 Test canBeMultipliedAsFractions:

@@ -38,13 +38,16 @@ _deepCopy(Time, RootNode, TempRoot)
 % divIdentity: A / A ----> 1
 %================================================================================
 % NOTE: applicable only to subtrees over which equality is defined
-_applicable(Time, _rule(hasNumeratorAndDenominatorThatCancel, _operands(Fraction)))
+_applicable(Time, _rule(thisFractionCanBeSimplifiedTo1, _operands(Fraction)))
+	:-	_theNumeratorAndDenominatorOfThisFractionAreEqual(Time, Fraction).
+_theNumeratorAndDenominatorOfThisFractionAreEqual(Time, Fraction)
 	:-	_isFraction(Time, Fraction),
 		_numeratorOf(Time, Fraction, Numer),
 		_denominatorOf(Time, Fraction, Denom),
 		_areEqual(Time, Numer, Denom).
+
 _setToOne(Time, Fraction)
-	:-	_operand(Time, Fraction, hasNumeratorAndDenominatorThatCancel, left).
+	:-	_operand(Time, Fraction, thisFractionCanBeSimplifiedTo1, left).
 
 %================================================================================
 % canBeMultipliedAsFractions: a/b * c/d --> (a*c)/(b*d)
@@ -571,7 +574,7 @@ _writeBinaryOp(Time)
 	:-	_ruleForTimeStep(Time, fractionCanBeMultipliedWithNonFraction).
 
 %% Rules Listed: Used to generate default rule heuristics
-_rule(hasNumeratorAndDenominatorThatCancel).
+_rule(thisFractionCanBeSimplifiedTo1).
 _rule(canBeMultipliedAsFractions).
 _rule(canBeMultipliedByInverseOf).
 _rule(soTheNumeratorOfThisFractionMustBeEqualToZero).
