@@ -57,24 +57,24 @@ ruleFeature(isATermThatCanBeFactored, coeffComplexity, 1)
 %================================================================================
 % factorCommTerm:	(a*x^k + b*x^l ) --> (a*x^m + b*x^n ) * x^j
 %================================================================================
-ruleFeature(hasATermThatCanBeFactoredOut, degComplexity, 0)
+ruleFeature(weCanSimplifyByFactoringOutAFACTOR, degComplexity, 0)
 	:-	_selectedCommonDeg(Time, Deg), Deg == 0.
-ruleFeature(hasATermThatCanBeFactoredOut, degComplexity, 1)
+ruleFeature(weCanSimplifyByFactoringOutAFACTOR, degComplexity, 1)
 	:-	_selectedCommonDeg(Time, Deg), Deg == 1.
-ruleFeature(hasATermThatCanBeFactoredOut, degComplexity, 2)
+ruleFeature(weCanSimplifyByFactoringOutAFACTOR, degComplexity, 2)
 	:-	_selectedCommonDeg(Time, Deg), Deg > 1.
 
-ruleFeature(hasATermThatCanBeFactoredOut, coeffComplexity, 0)
+ruleFeature(weCanSimplifyByFactoringOutAFACTOR, coeffComplexity, 0)
 	:-	_selectedCommonCoeff(Time, Coeff), Coeff == 0.
-ruleFeature(hasATermThatCanBeFactoredOut, coeffComplexity, 1)
+ruleFeature(weCanSimplifyByFactoringOutAFACTOR, coeffComplexity, 1)
 	:-	_selectedCommonCoeff(Time, Coeff), |Coeff| == 1.
-ruleFeature(hasATermThatCanBeFactoredOut, coeffComplexity, 1)
+ruleFeature(weCanSimplifyByFactoringOutAFACTOR, coeffComplexity, 1)
 	:-	_selectedCommonCoeff(Time, Coeff), |Coeff| != 1, Coeff != 0.
 
 % size of expression we're factoring from
-ruleFeature(hasATermThatCanBeFactoredOut, exprComplexity, 1)
-	:-	_operand(Time, Poly, hasATermThatCanBeFactoredOut, left),
+ruleFeature(weCanSimplifyByFactoringOutAFACTOR, exprComplexity, 1)
+	:-	_operand(Time, Poly, weCanSimplifyByFactoringOutAFACTOR, left),
 		_numActiveChildren(Time, Poly, 2).
-ruleFeature(hasATermThatCanBeFactoredOut, exprComplexity, 2)
-	:-	_operand(Time, Poly, hasATermThatCanBeFactoredOut, left),
+ruleFeature(weCanSimplifyByFactoringOutAFACTOR, exprComplexity, 2)
+	:-	_operand(Time, Poly, weCanSimplifyByFactoringOutAFACTOR, left),
 		_numActiveChildren(Time, Poly, Num), Num > 2.

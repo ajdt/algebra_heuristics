@@ -84,10 +84,10 @@ Test isATermThatCanBeFactored:
         :- not _selectedHeuristic(_time(0,1), isATermThatCanBeFactored).
         _disableSolvability.
     Expect: SAT
-Test hasATermThatCanBeFactoredOut:
+Test weCanSimplifyByFactoringOutAFACTOR:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), hasATermThatCanBeFactoredOut).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByFactoringOutAFACTOR).
         _disableSolvability.
     Expect: SAT
 Test isEqualToZero:
