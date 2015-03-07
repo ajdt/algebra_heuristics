@@ -127,7 +127,10 @@ _setResultTo(Time, leftSide)
 % canBeAddedTogether: a*x^b + c*x^b ----> (a+c)*x^b
 %================================================================================
 
-_applicable(Time, _rule(canBeAddedTogether, _operands(LeftMono, RightMono)))
+_applicable(Time, _rule(weCanSimplifyByAddingTheseTwoTermsTogether, _operands(LeftMono, RightMono)))
+    :-  _weAreAddingTwoTermsWithVariablesThatHaveTheSameDegree(Time, LeftMono, RightMono).
+
+_weAreAddingTwoTermsWithVariablesThatHaveTheSameDegree(Time, LeftMono, RightMono)
 	:-	_areBeingAdded(Time, LeftMono, RightMono),
 		_haveEqualDegrees(Time, LeftMono, RightMono),
 		__isMono(Time, LeftMono),
@@ -137,11 +140,11 @@ _applicable(Time, _rule(canBeAddedTogether, _operands(LeftMono, RightMono)))
 		LeftMono < RightMono.
 
 _monoOp(Time, tempResultRoot, LeftMono, RightMono, add)
-	:-	_operand(Time, LeftMono, canBeAddedTogether, left),
-		_operand(Time, RightMono, canBeAddedTogether, right).
+	:-	_operand(Time, LeftMono, weCanSimplifyByAddingTheseTwoTermsTogether, left),
+		_operand(Time, RightMono, weCanSimplifyByAddingTheseTwoTermsTogether, right).
 
 _writeBinaryOp(Time)
-	:-	_ruleForTimeStep(Time, canBeAddedTogether).
+	:-	_ruleForTimeStep(Time, weCanSimplifyByAddingTheseTwoTermsTogether).
 
 %================================================================================
 % monomult ax^b  * cx^d --> (a*c)x^(b+d)
@@ -617,7 +620,7 @@ _rule(thisFractionCanBeSimplifiedTo1).
 _rule(weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms).
 _rule(weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead).
 _rule(soTheNumeratorOfThisFractionMustBeEqualToZero).
-_rule(canBeAddedTogether).
+_rule(weCanSimplifyByAddingTheseTwoTermsTogether).
 _rule(weCanSimplifyByCombiningTheseIntoASingleTerm).
 _rule(areFactorsThatCancel).
 _rule(canBeFactored).

@@ -89,7 +89,7 @@ _heuristic(Name, Priority, Rule)
 %%_heuristicToApplyRule(areFactorsThatCancel, 1, areFactorsThatCancel). %%
 %%_heuristicToApplyRule(areBothNegativeOperationsThatCancelOut, 1, areBothNegativeOperationsThatCancelOut). %%
 
-%%_heuristicToApplyRule(canBeAddedTogether, 2, canBeAddedTogether). %%
+%%_heuristicToApplyRule(weCanSimplifyByAddingTheseTwoTermsTogether, 2, weCanSimplifyByAddingTheseTwoTermsTogether). %%
 %%_heuristicToApplyRule(canBeCancelled, 2, canBeCancelled). %%
 %%_heuristicToApplyRule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction, 2, weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction). %%
 %%_heuristicToApplyRule(weCanSimplifyByCancellingTheDenominatorOfThisFraction, 2, weCanSimplifyByCancellingTheDenominatorOfThisFraction). %%

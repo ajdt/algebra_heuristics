@@ -31,10 +31,10 @@ Test soTheNumeratorOfThisFractionMustBeEqualToZero:
         :- not _selectedHeuristic(_time(0,1), soTheNumeratorOfThisFractionMustBeEqualToZero).
         _disableSolvability.
     Expect: SAT
-Test canBeAddedTogether:
+Test weCanSimplifyByAddingTheseTwoTermsTogether:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), canBeAddedTogether).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByAddingTheseTwoTermsTogether).
         _disableSolvability.
     Expect: SAT
 Test weCanSimplifyByCombiningTheseIntoASingleTerm:
