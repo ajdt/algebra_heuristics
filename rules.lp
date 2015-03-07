@@ -268,12 +268,14 @@ _writeBinaryOp(Time)
 %================================================================================
 % divByOne A/1 --> A
 %================================================================================
-_applicable(Time, _rule(canHaveItsDenominatorCancelled, _operands(Fraction)))
+_applicable(Time, _rule(weCanSimplifyByCancellingTheDenominatorOfThisFraction, _operands(Fraction)))
+	:-	_theDenominatorOfThisFractionIs1(Time, Fraction).
+_theDenominatorOfThisFractionIs1(Time, Fraction) 
 	:-	_denominatorOf(Time, Fraction, Denom),
 		_isOne(Time, Denom).
 
 _deepCopy(Time, Fraction, Numer)
-	:-	_operand(Time, Fraction, canHaveItsDenominatorCancelled, left),
+	:-	_operand(Time, Fraction, weCanSimplifyByCancellingTheDenominatorOfThisFraction, left),
 		_numeratorOf(Time, Fraction, Numer).
 %================================================================================
 % addZero A + 0 --> A
@@ -611,7 +613,7 @@ _rule(areFactorsThatCancel).
 _rule(canBeFactored).
 _rule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction).
 _rule(canBeDistributed).
-_rule(canHaveItsDenominatorCancelled).
+_rule(weCanSimplifyByCancellingTheDenominatorOfThisFraction).
 _rule(canBeCancelled).
 _rule(isATermThatCanBeFactored).
 _rule(weCanSimplifyByFactoringOutAFACTOR).

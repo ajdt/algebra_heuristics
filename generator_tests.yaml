@@ -66,10 +66,10 @@ Test canBeDistributed:
         :- not _selectedHeuristic(_time(0,1), canBeDistributed).
         _disableSolvability.
     Expect: SAT
-Test canHaveItsDenominatorCancelled:
+Test weCanSimplifyByCancellingTheDenominatorOfThisFraction:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), canHaveItsDenominatorCancelled).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByCancellingTheDenominatorOfThisFraction).
         _disableSolvability.
     Expect: SAT
 Test canBeCancelled:
