@@ -76,29 +76,35 @@ _writeBinaryOp(Time)
 %================================================================================
 % canBeMultipliedByInverseOf: a/c / b/d --> a/c * d/b
 %================================================================================
-_applicable(Time, _rule(canBeMultipliedByInverseOf, _operands(NumerFrac, DenomFrac)))
-			:-	_formAFraction(Time, NumerFrac, DenomFrac),
-				_isFraction(Time, NumerFrac),
-				_isFraction(Time, DenomFrac),
-				NumerFrac < DenomFrac. % to ensure NumerFrac actually corresponds to numerator
+_applicable(Time, _rule(weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead, _operands(DenomFrac)))
+			:-	_weAreDividingByAFraction(Time, DenomFrac).
+
+
+_weAreDividingByAFraction(Time, DenomFrac) 
+    :-  _weAreDividingByAFraction(Time, NumerTerm, DenomFrac).
+_weAreDividingByAFraction(Time, NumerTerm, DenomFrac) 
+    :-	_formAFraction(Time, NumerTerm, DenomFrac),
+        _isFraction(Time, DenomFrac),
+        NumerTerm < DenomFrac. % to ensure NumerTerm actually corresponds to numerator
 
 % set root node to multiplication node
 _activateTempAndSetChildren(Time, tempResultRoot, mul, 2)
-	:-	_ruleForTimeStep(Time, canBeMultipliedByInverseOf).
-% 'left' fraction remains unchanged
-_deepCopy(Time, LeftTemp, NumerFrac)
+	:-	_ruleForTimeStep(Time, weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead).
+% numerator term remains unchanged
+_deepCopy(Time, LeftTemp, NumerTerm)
 	:-	_tempChildOnSide(tempResultRoot, LeftTemp, left),
-		_ruleForTimeStep(Time, canBeMultipliedByInverseOf),
-		_operand(Time, NumerFrac, canBeMultipliedByInverseOf, left).
+		_ruleForTimeStep(Time, weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead),
+        _weAreDividingByAFraction(Time, NumerTerm, DenomFrac),
+		_operand(Time, DenomFrac, weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead, left).
 % flip numer/denom fields
 _treeOp(Time, RightTemp, Numer, Denom, reciprocal)
-	:-	_operand(Time, DenomFrac, canBeMultipliedByInverseOf, right),
+	:-	_operand(Time, DenomFrac, weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead, left),
 		_numeratorOf(Time, DenomFrac, Numer),
 		_denominatorOf(Time, DenomFrac, Denom),
 		_tempChildOnSide(tempResultRoot, RightTemp, right).
 
 _setResultTo(Time, Root)
-	:-	_operand(Time, DenomFrac, canBeMultipliedByInverseOf, right),
+	:-	_operand(Time, DenomFrac, weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead, left),
 		_isATermOf(Time, Root, DenomFrac).
 
 %================================================================================
@@ -591,7 +597,7 @@ _writeBinaryOp(Time)
 %% Rules Listed: Used to generate default rule heuristics
 _rule(thisFractionCanBeSimplifiedTo1).
 _rule(canBeMultipliedAsFractions).
-_rule(canBeMultipliedByInverseOf).
+_rule(weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead).
 _rule(soTheNumeratorOfThisFractionMustBeEqualToZero).
 _rule(canBeAddedTogether).
 _rule(canBeMultipliedTogether).

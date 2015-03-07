@@ -19,10 +19,10 @@ Test canBeMultipliedAsFractions:
         :- not _selectedHeuristic(_time(0,1), canBeMultipliedAsFractions).
         _disableSolvability.
     Expect: SAT
-Test canBeMultipliedByInverseOf:
+Test weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), canBeMultipliedByInverseOf).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead).
         _disableSolvability.
     Expect: SAT
 Test soTheNumeratorOfThisFractionMustBeEqualToZero:
