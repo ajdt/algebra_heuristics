@@ -90,10 +90,10 @@ Test weCanSimplifyByFactoringOutAFACTOR:
         :- not _selectedHeuristic(_time(0,1), weCanSimplifyByFactoringOutAFACTOR).
         _disableSolvability.
     Expect: SAT
-Test isEqualToZero:
+Test theProductOfTheseTermsIs0:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), isEqualToZero).
+        :- not _selectedHeuristic(_time(0,1), theProductOfTheseTermsIs0).
         _disableSolvability.
     Expect: SAT
 Test canBeIgnored:

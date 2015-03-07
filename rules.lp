@@ -426,12 +426,15 @@ _setResultTo(Time, Poly)
 %================================================================================
 % multByZero:	A*0 --> 0
 %================================================================================
-_applicable(Time, _rule(isEqualToZero, _operands(ZeroTerm)))
+_applicable(Time, _rule(theProductOfTheseTermsIs0, _operands(ZeroTerm)))
+    :-  _weAreMultiplyingSomeTermsBy0(Time, ZeroTerm). 
+
+_weAreMultiplyingSomeTermsBy0(Time, ZeroTerm) 
 	:-	_isZero(Time, ZeroTerm),
 		_isBeingMultiplied(Time, ZeroTerm).
 
 _setToZero(Time, Parent)
-	:-	_operand(Time, ZeroTerm, isEqualToZero, left),
+	:-	_operand(Time, ZeroTerm, theProductOfTheseTermsIs0, left),
 		_isATermOf(Time, Parent, ZeroTerm).
 
 %================================================================================
@@ -633,7 +636,7 @@ _rule(weCanSimplifyByCancellingTheDenominatorOfThisFraction).
 _rule(weCanSimplifyByCancellingThe0).
 _rule(isATermThatCanBeFactored).
 _rule(weCanSimplifyByFactoringOutAFACTOR).
-_rule(isEqualToZero).
+_rule(theProductOfTheseTermsIs0).
 _rule(canBeIgnored).
 _rule(numeratorAndDenominatorCanBeMultipliedBySameTerm).
 _rule(weCanSimplifyByCancellingTheseTerms).
