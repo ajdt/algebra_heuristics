@@ -96,7 +96,7 @@ _heuristic(Name, Priority, Rule)
 %%_heuristicToApplyRule(isEqualToZero, 2, isEqualToZero). %%
 %%_heuristicToApplyRule(canBeIgnored, 2, canBeIgnored). %%
 
-%%_heuristicToApplyRule(canBeDistributed, 3, canBeDistributed). %%
+%%_heuristicToApplyRule(weCanSimplifyByDistributingThisConstant, 3, weCanSimplifyByDistributingThisConstant). %%
 %%_heuristicToApplyRule(canBeMultipliedTogether, 3, canBeMultipliedTogether). %%
 %%_heuristicToApplyRule(weCanSimplifyBySubstitutingYForXDEG, 3, weCanSimplifyBySubstitutingYForXDEG). %%
 %%_heuristicToApplyRule(fractionCanBeMultipliedWithNonFraction, 3, fractionCanBeMultipliedWithNonFraction). %%

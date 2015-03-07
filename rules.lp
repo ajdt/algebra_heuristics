@@ -239,18 +239,21 @@ _writeBinaryOp(Time)
 %================================================================================
 % distribute (a + b) * C --> (a*C + b*C)
 %================================================================================
-_applicable(Time, _rule(canBeDistributed, _operands(PlusTerm, DistribTerm)))
+_applicable(Time, _rule(weCanSimplifyByDistributingThisConstant, _operands(PlusTerm, __DistribTerm)))
+	:-	_weAreMultiplyingASumOfTermsByAConstant(Time, PlusTerm, __DistribTerm).
+
+_weAreMultiplyingASumOfTermsByAConstant(Time, PlusTerm, DistribTerm)
 	:-	_areBeingMultiplied(Time, PlusTerm, DistribTerm),
 		PlusTerm < DistribTerm, % TODO: this is necessary, but prevents distribute if C occurs before (a+b) term
 		_isSumOfTerms(Time, PlusTerm).
 
 % every term in original plus node, is multiplied by distributed term
 _activateTempNode(Time, tempResultRoot, add)
-	:-	_ruleForTimeStep(Time, canBeDistributed).
+	:-	_ruleForTimeStep(Time, weCanSimplifyByDistributingThisConstant).
 
 _treeOp(Time, TempNode, Term, DistribTerm, mul)
-	:-	_operand(Time, DistribTerm, canBeDistributed, right),
-		_operand(Time, PlusTerm, canBeDistributed, left),
+	:-	_operand(Time, DistribTerm, weCanSimplifyByDistributingThisConstant, right),
+		_operand(Time, PlusTerm, weCanSimplifyByDistributingThisConstant, left),
 		_isATermOf(Time, PlusTerm, Term),
 		_childNum(PlusTerm, Term, ChildNum),
 		_tempChildNum(tempResultRoot, TempNode, ChildNum).
@@ -262,7 +265,7 @@ _tempHolds(Time, _fact(tempResultRoot, _nodeField(activechild, Temp)))
 		_validTempChildOf(tempResultRoot, Temp).
 % save result
 _writeBinaryOp(Time)
-	:-	_ruleForTimeStep(Time, canBeDistributed).
+	:-	_ruleForTimeStep(Time, weCanSimplifyByDistributingThisConstant).
 
 
 %================================================================================
@@ -612,7 +615,7 @@ _rule(canBeMultipliedTogether).
 _rule(areFactorsThatCancel).
 _rule(canBeFactored).
 _rule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction).
-_rule(canBeDistributed).
+_rule(weCanSimplifyByDistributingThisConstant).
 _rule(weCanSimplifyByCancellingTheDenominatorOfThisFraction).
 _rule(canBeCancelled).
 _rule(isATermThatCanBeFactored).
