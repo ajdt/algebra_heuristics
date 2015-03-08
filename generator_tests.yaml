@@ -7,10 +7,10 @@ Test equations exist:
     Expect: SAT
 
 # note: ensure maxInitialDepth > 2 for the below code
-Test thisFractionCanBeSimplifiedTo1:
+Test thisFractionCanBeSimplifiedToOne:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), thisFractionCanBeSimplifiedTo1).
+        :- not _selectedHeuristic(_time(0,1), thisFractionCanBeSimplifiedToOne).
         _disableSolvability.
     Expect: SAT
 Test weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms:
@@ -72,10 +72,10 @@ Test weCanSimplifyByCancellingTheDenominatorOfThisFraction:
         :- not _selectedHeuristic(_time(0,1), weCanSimplifyByCancellingTheDenominatorOfThisFraction).
         _disableSolvability.
     Expect: SAT
-Test weCanSimplifyByCancellingThe0:
+Test weCanSimplifyByCancellingTheZero:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByCancellingThe0).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByCancellingTheZero).
         _disableSolvability.
     Expect: SAT
 Test isATermThatCanBeFactored:
@@ -84,22 +84,22 @@ Test isATermThatCanBeFactored:
         :- not _selectedHeuristic(_time(0,1), isATermThatCanBeFactored).
         _disableSolvability.
     Expect: SAT
-Test weCanSimplifyByFactoringOutAFACTOR1:
+Test weCanSimplifyByFactoringOutAFACTORA:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByFactoringOutAFACTOR1).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByFactoringOutAFACTORA).
         _disableSolvability.
     Expect: SAT
-Test theProductOfTheseTermsIs0:
+Test theProductOfTheseTermsIsZero:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), theProductOfTheseTermsIs0).
+        :- not _selectedHeuristic(_time(0,1), theProductOfTheseTermsIsZero).
         _disableSolvability.
     Expect: SAT
-Test weCanSimplifyByCancellingThe1:
+Test weCanSimplifyByCancellingTheOne:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByCancellingThe1).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByCancellingTheOne).
         _disableSolvability.
     Expect: SAT
 Test weCanSimplifyByMultiplyingTheNumeratorAndDenominatorByTERM:

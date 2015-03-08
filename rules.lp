@@ -38,7 +38,7 @@ _deepCopy(Time, RootNode, TempRoot)
 % divIdentity: A / A ----> 1
 %================================================================================
 % NOTE: applicable only to subtrees over which equality is defined
-_applicable(Time, _rule(thisFractionCanBeSimplifiedTo1, _operands(Fraction)))
+_applicable(Time, _rule(thisFractionCanBeSimplifiedToOne, _operands(Fraction)))
 	:-	_theNumeratorAndDenominatorOfThisFractionAreEqual(Time, Fraction).
 _theNumeratorAndDenominatorOfThisFractionAreEqual(Time, Fraction)
 	:-	_isFraction(Time, Fraction),
@@ -47,7 +47,7 @@ _theNumeratorAndDenominatorOfThisFractionAreEqual(Time, Fraction)
 		_areEqual(Time, Numer, Denom).
 
 _setToOne(Time, Fraction)
-	:-	_operand(Time, Fraction, thisFractionCanBeSimplifiedTo1, left).
+	:-	_operand(Time, Fraction, thisFractionCanBeSimplifiedToOne, left).
 
 %================================================================================
 % canBeMultipliedAsFractions: a/b * c/d --> (a*c)/(b*d)
@@ -293,7 +293,7 @@ _deepCopy(Time, Fraction, Numer)
 %================================================================================
 % addZero A + 0 --> A
 %================================================================================
-_applicable(Time, _rule(weCanSimplifyByCancellingThe0, _operands(Mono)))
+_applicable(Time, _rule(weCanSimplifyByCancellingTheZero, _operands(Mono)))
     :-  _weAreAdding0ToASumOfTerms(Time, Mono).
 
 _weAreAdding0ToASumOfTerms(Time, Mono)
@@ -301,13 +301,13 @@ _weAreAdding0ToASumOfTerms(Time, Mono)
 		_isBeingAdded(Time, Mono).
 
 _cancelTerm(Time, ZeroTerm)
-	:-	_operand(Time, ZeroTerm, weCanSimplifyByCancellingThe0, left).
+	:-	_operand(Time, ZeroTerm, weCanSimplifyByCancellingTheZero, left).
 
 %================================================================================
 % TODO: rewrite to generate better explanation
 % factorMonom:	ax^k  --> bx^m * cx^n 
 %================================================================================
-% NOTE: this is the same rule as weCanSimplifyByFactoringOutAFACTOR1, except written specifically for monomials
+% NOTE: this is the same rule as weCanSimplifyByFactoringOutAFACTORA, except written specifically for monomials
 _applicable(Time, _rule(isATermThatCanBeFactored, _operands(Mono)))
 	:-	__isMono(Time, Mono),
 		not _isOne(Time, Mono),
@@ -355,7 +355,7 @@ _setResultTo(Time, Mono)
 %       check if layer 2 explanation is pretty good or not
 % factorCommTerm:	(a*x^k + b*x^l ) --> (a*x^m + b*x^n ) * x^j
 %================================================================================
-_applicable(Time, _rule(weCanSimplifyByFactoringOutAFACTOR1, _operands(Poly)))
+_applicable(Time, _rule(weCanSimplifyByFactoringOutAFACTORA, _operands(Poly)))
 	:-	_thisExpressionIsAPolynomialAndEachOfItsTermsHasFACTOR1AsAFactor(Time, Poly),
         __selectedPoly(Time, Poly).
 
@@ -386,20 +386,20 @@ _factor1(Time, Deg, Coeff)
 
 % setup correct tree structure
 _activateTempAndSetChildren(Time, tempResultRoot, mul, 2)
-	:-	_ruleForTimeStep(Time, weCanSimplifyByFactoringOutAFACTOR1).
+	:-	_ruleForTimeStep(Time, weCanSimplifyByFactoringOutAFACTORA).
 
 % save monomial that we factored out
 _setTempNodeToMono(Time, TempRight, Deg, Coeff)
-	:-	_ruleForTimeStep(Time, weCanSimplifyByFactoringOutAFACTOR1),
+	:-	_ruleForTimeStep(Time, weCanSimplifyByFactoringOutAFACTORA),
 		_tempChildOnSide(tempResultRoot, TempRight, right),
 		_selectedCommonDeg(Time, Deg),
 		_selectedCommonCoeff(Time, Coeff).
 % perform the division
 _activateTempNode(Time, TempLeft, add)
-	:-	_ruleForTimeStep(Time, weCanSimplifyByFactoringOutAFACTOR1),
+	:-	_ruleForTimeStep(Time, weCanSimplifyByFactoringOutAFACTORA),
 		_tempChildOnSide(tempResultRoot, TempLeft, left).
 _originalMonoTerm(Time, Mono, Num)	% isolate monomial terms
-	:-	_operand(Time, Poly, weCanSimplifyByFactoringOutAFACTOR1, left),
+	:-	_operand(Time, Poly, weCanSimplifyByFactoringOutAFACTORA, left),
 		_isATermOf(Time, Poly, Mono),
 		_childNum(Poly, Mono, Num).
 _newMonoTerm(Time, TempChild, Num)
@@ -408,15 +408,15 @@ _newMonoTerm(Time, TempChild, Num)
 		_tempChildNum(TempLeft, TempChild, Num).
 
 _tempHolds(Time, _fact(TempLeft, _nodeField(activechild, TempTerm)))
-	:-	_ruleForTimeStep(Time, weCanSimplifyByFactoringOutAFACTOR1),
+	:-	_ruleForTimeStep(Time, weCanSimplifyByFactoringOutAFACTORA),
 		_tempChildOnSide(tempResultRoot, TempLeft, left),
 		_newMonoTerm(Time, TempTerm, Num).
 _activateTempNode(Time, TempTerm, mono)
-	:-	_ruleForTimeStep(Time, weCanSimplifyByFactoringOutAFACTOR1),
+	:-	_ruleForTimeStep(Time, weCanSimplifyByFactoringOutAFACTORA),
 		_newMonoTerm(Time, TempTerm, Num).
 % set the new coeff and deg values
 _tempHolds(Time, _fact(TempTerm, _nodeField(coeff, NewCoeff)))
-	:-	_ruleForTimeStep(Time, weCanSimplifyByFactoringOutAFACTOR1),
+	:-	_ruleForTimeStep(Time, weCanSimplifyByFactoringOutAFACTORA),
 		_originalMonoTerm(Time, Mono, Num),
 		_newMonoTerm(Time, TempTerm, Num),
 		_isTheCoefficientOf(Time, Mono, MonoCoeff),
@@ -424,7 +424,7 @@ _tempHolds(Time, _fact(TempTerm, _nodeField(coeff, NewCoeff)))
 		_coeffFactorPairOf(CommonCoeff, NewCoeff, MonoCoeff).
 
 _tempHolds(Time, _fact(TempTerm, _nodeField(degree, NewDeg)))
-	:-	_ruleForTimeStep(Time, weCanSimplifyByFactoringOutAFACTOR1),
+	:-	_ruleForTimeStep(Time, weCanSimplifyByFactoringOutAFACTORA),
 		_originalMonoTerm(Time, Mono, Num),
 		_newMonoTerm(Time, TempTerm, Num),
 		_isTheDegreeOf(Time, Mono, MonoDeg),
@@ -433,12 +433,12 @@ _tempHolds(Time, _fact(TempTerm, _nodeField(degree, NewDeg)))
 
 % save result
 _setResultTo(Time, Poly)
-	:-	_operand(Time, Poly, weCanSimplifyByFactoringOutAFACTOR1, left).
+	:-	_operand(Time, Poly, weCanSimplifyByFactoringOutAFACTORA, left).
 
 %================================================================================
 % multByZero:	A*0 --> 0
 %================================================================================
-_applicable(Time, _rule(theProductOfTheseTermsIs0, _operands(ZeroTerm)))
+_applicable(Time, _rule(theProductOfTheseTermsIsZero, _operands(ZeroTerm)))
     :-  _weAreMultiplyingSomeTermsBy0(Time, ZeroTerm). 
 
 _weAreMultiplyingSomeTermsBy0(Time, ZeroTerm) 
@@ -446,13 +446,13 @@ _weAreMultiplyingSomeTermsBy0(Time, ZeroTerm)
 		_isBeingMultiplied(Time, ZeroTerm).
 
 _setToZero(Time, Parent)
-	:-	_operand(Time, ZeroTerm, theProductOfTheseTermsIs0, left),
+	:-	_operand(Time, ZeroTerm, theProductOfTheseTermsIsZero, left),
 		_isATermOf(Time, Parent, ZeroTerm).
 
 %================================================================================
 % multIdentity:	A*1 --> A
 %================================================================================
-_applicable(Time, _rule(weCanSimplifyByCancellingThe1, _operands(UnitTerm)))
+_applicable(Time, _rule(weCanSimplifyByCancellingTheOne, _operands(UnitTerm)))
     :-  _weAreMultiplyingSomeTermsBy1(Time, UnitTerm). 
 
 _weAreMultiplyingSomeTermsBy1(Time, UnitTerm) 
@@ -461,7 +461,7 @@ _weAreMultiplyingSomeTermsBy1(Time, UnitTerm)
         not __isMono(Time, OtherTerm).  % for monomials we use the mono multiply rule
 
 _cancelTerm(Time, UnitTerm)
-	:-	_operand(Time, UnitTerm, weCanSimplifyByCancellingThe1, left).
+	:-	_operand(Time, UnitTerm, weCanSimplifyByCancellingTheOne, left).
 
 %================================================================================
 % TODO: rewrite to generate better explanation
@@ -640,7 +640,7 @@ _writeBinaryOp(Time)
 	:-	_ruleForTimeStep(Time, weCanSimplifyByMultiplyingTheNumeratorByTheTerm).
 
 %% Rules Listed: Used to generate default rule heuristics
-_rule(thisFractionCanBeSimplifiedTo1).
+_rule(thisFractionCanBeSimplifiedToOne).
 _rule(weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms).
 _rule(weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead).
 _rule(soTheNumeratorOfThisFractionMustBeEqualToZero).
@@ -651,11 +651,11 @@ _rule(canBeFactored).
 _rule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction).
 _rule(weCanSimplifyByDistributingThisConstant).
 _rule(weCanSimplifyByCancellingTheDenominatorOfThisFraction).
-_rule(weCanSimplifyByCancellingThe0).
+_rule(weCanSimplifyByCancellingTheZero).
 _rule(isATermThatCanBeFactored).
-_rule(weCanSimplifyByFactoringOutAFACTOR1).
-_rule(theProductOfTheseTermsIs0).
-_rule(weCanSimplifyByCancellingThe1).
+_rule(weCanSimplifyByFactoringOutAFACTORA).
+_rule(theProductOfTheseTermsIsZero).
+_rule(weCanSimplifyByCancellingTheOne).
 _rule(weCanSimplifyByMultiplyingTheNumeratorAndDenominatorByTERM).
 _rule(weCanSimplifyByCancellingTheseTerms).
 _rule(canBeSubtractedFromTheEquation).

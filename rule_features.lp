@@ -1,18 +1,18 @@
 %================================================================================
 % divIdentity: A / A ----> 1
 %================================================================================
-ruleFeature(thisFractionCanBeSimplifiedTo1, complexity, 0)
-	:-	_operandDenom(Time, Denom, thisFractionCanBeSimplifiedTo1, left),
+ruleFeature(thisFractionCanBeSimplifiedToOne, complexity, 0)
+	:-	_operandDenom(Time, Denom, thisFractionCanBeSimplifiedToOne, left),
 		_isConstant(Time, Denom).
-ruleFeature(thisFractionCanBeSimplifiedTo1, complexity, 1)
-	:-	_operandDenom(Time, Denom, thisFractionCanBeSimplifiedTo1, left),
+ruleFeature(thisFractionCanBeSimplifiedToOne, complexity, 1)
+	:-	_operandDenom(Time, Denom, thisFractionCanBeSimplifiedToOne, left),
 		not _isConstant(Time, Denom),
 		__isMono(Time, Denom).
-ruleFeature(thisFractionCanBeSimplifiedTo1, complexity, 2)
-	:-	_operandDenom(Time, Denom, thisFractionCanBeSimplifiedTo1, left),
+ruleFeature(thisFractionCanBeSimplifiedToOne, complexity, 2)
+	:-	_operandDenom(Time, Denom, thisFractionCanBeSimplifiedToOne, left),
 		 _isNeg(Time, Denom).
-ruleFeature(thisFractionCanBeSimplifiedTo1, complexity, 3)
-	:-	_operandDenom(Time, Denom, thisFractionCanBeSimplifiedTo1, left),
+ruleFeature(thisFractionCanBeSimplifiedToOne, complexity, 3)
+	:-	_operandDenom(Time, Denom, thisFractionCanBeSimplifiedToOne, left),
 		 not _isNeg(Time, Denom),
 		 _isOper(Time, Denom).
 
@@ -57,24 +57,24 @@ ruleFeature(isATermThatCanBeFactored, coeffComplexity, 1)
 %================================================================================
 % factorCommTerm:	(a*x^k + b*x^l ) --> (a*x^m + b*x^n ) * x^j
 %================================================================================
-ruleFeature(weCanSimplifyByFactoringOutAFACTOR1, degComplexity, 0)
+ruleFeature(weCanSimplifyByFactoringOutAFACTORA, degComplexity, 0)
 	:-	_selectedCommonDeg(Time, Deg), Deg == 0.
-ruleFeature(weCanSimplifyByFactoringOutAFACTOR1, degComplexity, 1)
+ruleFeature(weCanSimplifyByFactoringOutAFACTORA, degComplexity, 1)
 	:-	_selectedCommonDeg(Time, Deg), Deg == 1.
-ruleFeature(weCanSimplifyByFactoringOutAFACTOR1, degComplexity, 2)
+ruleFeature(weCanSimplifyByFactoringOutAFACTORA, degComplexity, 2)
 	:-	_selectedCommonDeg(Time, Deg), Deg > 1.
 
-ruleFeature(weCanSimplifyByFactoringOutAFACTOR1, coeffComplexity, 0)
+ruleFeature(weCanSimplifyByFactoringOutAFACTORA, coeffComplexity, 0)
 	:-	_selectedCommonCoeff(Time, Coeff), Coeff == 0.
-ruleFeature(weCanSimplifyByFactoringOutAFACTOR1, coeffComplexity, 1)
+ruleFeature(weCanSimplifyByFactoringOutAFACTORA, coeffComplexity, 1)
 	:-	_selectedCommonCoeff(Time, Coeff), |Coeff| == 1.
-ruleFeature(weCanSimplifyByFactoringOutAFACTOR1, coeffComplexity, 1)
+ruleFeature(weCanSimplifyByFactoringOutAFACTORA, coeffComplexity, 1)
 	:-	_selectedCommonCoeff(Time, Coeff), |Coeff| != 1, Coeff != 0.
 
 % size of expression we're factoring from
-ruleFeature(weCanSimplifyByFactoringOutAFACTOR1, exprComplexity, 1)
-	:-	_operand(Time, Poly, weCanSimplifyByFactoringOutAFACTOR1, left),
+ruleFeature(weCanSimplifyByFactoringOutAFACTORA, exprComplexity, 1)
+	:-	_operand(Time, Poly, weCanSimplifyByFactoringOutAFACTORA, left),
 		_numActiveChildren(Time, Poly, 2).
-ruleFeature(weCanSimplifyByFactoringOutAFACTOR1, exprComplexity, 2)
-	:-	_operand(Time, Poly, weCanSimplifyByFactoringOutAFACTOR1, left),
+ruleFeature(weCanSimplifyByFactoringOutAFACTORA, exprComplexity, 2)
+	:-	_operand(Time, Poly, weCanSimplifyByFactoringOutAFACTORA, left),
 		_numActiveChildren(Time, Poly, Num), Num > 2.

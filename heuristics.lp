@@ -90,11 +90,11 @@ _heuristic(Name, Priority, Rule)
 %%_heuristicToApplyRule(areBothNegativeOperationsThatCancelOut, 1, areBothNegativeOperationsThatCancelOut). %%
 
 %%_heuristicToApplyRule(weCanSimplifyByAddingTheseTwoTermsTogether, 2, weCanSimplifyByAddingTheseTwoTermsTogether). %%
-%%_heuristicToApplyRule(weCanSimplifyByCancellingThe0, 2, weCanSimplifyByCancellingThe0). %%
+%%_heuristicToApplyRule(weCanSimplifyByCancellingTheZero, 2, weCanSimplifyByCancellingTheZero). %%
 %%_heuristicToApplyRule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction, 2, weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction). %%
 %%_heuristicToApplyRule(weCanSimplifyByCancellingTheDenominatorOfThisFraction, 2, weCanSimplifyByCancellingTheDenominatorOfThisFraction). %%
-%%_heuristicToApplyRule(theProductOfTheseTermsIs0, 2, theProductOfTheseTermsIs0). %%
-%%_heuristicToApplyRule(weCanSimplifyByCancellingThe1, 2, weCanSimplifyByCancellingThe1). %%
+%%_heuristicToApplyRule(theProductOfTheseTermsIsZero, 2, theProductOfTheseTermsIsZero). %%
+%%_heuristicToApplyRule(weCanSimplifyByCancellingTheOne, 2, weCanSimplifyByCancellingTheOne). %%
 
 %%_heuristicToApplyRule(weCanSimplifyByDistributingThisConstant, 3, weCanSimplifyByDistributingThisConstant). %%
 %%_heuristicToApplyRule(weCanSimplifyByCombiningTheseIntoASingleTerm, 3, weCanSimplifyByCombiningTheseIntoASingleTerm). %%
