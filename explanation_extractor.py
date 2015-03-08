@@ -306,15 +306,7 @@ class TemplateSentence(object):
             else:
                 vars_to_inject.append(variable)
 
-        # predicate name contains 'of', then assume desired string is 'Var1 <predicate description> Var2'
-        if 'of' in self.sentence.split() and len(vars_to_inject) > 1:
-            return [vars_to_inject[1], self.sentence, vars_to_inject[0]]
-            #return ' '.join([vars_to_inject[1], self.sentence,vars_to_inject[0]])
-        else:
-            # string will be formatted as 'var1, var2, ... and varN' + sentence
-            if len(vars_to_inject) > 1:
-                vars_to_inject = vars_to_inject[:-1] + ['and ' , vars_to_inject[-1]]
-            return vars_to_inject + [self.sentence]
+        return [self.sentence, vars_to_inject]
     def __str__(self):
         return ' '.join(self.getSentenceFragments())
         

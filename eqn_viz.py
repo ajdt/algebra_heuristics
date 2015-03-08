@@ -100,14 +100,10 @@ class GeneratedProblem(object):
     def getSolutionStringWithExplanations(self):
         steps               = self.equation_parameters['equation_steps']
         step_explanations   = self.equation_parameters['explanations']
-        merge               =   lambda x : ' '.join(x)
-        # TODO: this code is confusing, rewrite or or change way explanations are
-        #   stored in equation_parameters
-        # step_explanations: contains one list of sentences per step, 
-        # each sentence list is a list of strings
-        # NOTE: sentences is actually a list of fragments that must be joined
-        # to form a sentence. like ['id(2,1)', 'equals' , 'id(3,3)']
-        combined = [ step + '\n' + '\n'.join(map(merge, sentences)) for step, sentences in zip(steps, step_explanations)]
+        # step_explanations is nested as [expl for all steps [ sentences for one step [ single sentence, [ operands]]]]
+        step_with_explanations = zip(steps, step_explanations)
+        condense_one_step_expl = lambda multiple_sent: '\n'.join([ sentence + ':' + ''.join(operands) for sentence, operands in multiple_sent ])
+        combined = [ step +  '\n' + condense_one_step_expl(expl_data) for step, expl_data in step_with_explanations ]
 
         return '\n'.join(combined)
 
@@ -255,13 +251,15 @@ class EquationStepParser:
         # NOTE: we translate a single explanation array
         # NOTE: we also use str(..) to convert to utf-8 strings instead of unicode so that we don't
         # get u' prefix on strings during json output
+
+        # explain_array has form: [sentence, [vars_to_point_to]]
         translated = []
-        for fragment in explain_array:
+        for fragment in explain_array[1]:
             if fragment in translation_dict.keys():
                 translated.append(str(translation_dict[fragment]))
             else:
                 translated.append(str(fragment))
-        return translated
+        return [explain_array[0], translated]
 
 
     @staticmethod
