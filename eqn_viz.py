@@ -54,6 +54,8 @@ deg             =   number_parser
 poly_parser     =   number_parser
 time_parser     =   'time(' + Word(nums) + ',' + Word(nums) + ')'
 action_parser   = 'selectedHeuristic(' +  time_parser + ',' + word_parser + ')'
+factora_parser  =   'factor1(' + time_parser + ',' + number_parser + ',' + number_parser + ')'
+factorb_parser  =   'factor2(' + time_parser + ',' + number_parser + ',' + number_parser + ')'
 #_selectedHeurOperands(_time(0,1),_operands(_id(1,1)))
 binary_operand_parser   = 'selectedHeurOperands(' + time_parser + ',' + 'operands(' + node_parser + ',' + node_parser + ')' + ')'
 unary_operand_parser    = 'selectedHeurOperands(' + time_parser + ',' + 'operands('  + node_parser + ')' + ')'
@@ -82,6 +84,7 @@ child_parser            =   wrapInKeyValueAndFact(word_node_parser)
 applicable_heur_parser  = 'applicableHeuristic(' + time_parser + ',' + word_parser + ')'
 
 all_parsers     =   [ type_parser, child_parser, deg_coeff_parser, action_parser, binary_operand_parser, unary_operand_parser, applicable_heur_parser]
+factor_parsers  =   [factora_parser, factorb_parser]
 op_symbols      =   {'add' : '+' , 'div' : '/' , 'mul' : '*' , 'neg' : '-'}
 
 class GeneratedProblem(object):
@@ -134,6 +137,7 @@ class EquationStepParser:
         self.operands                       = [] 
         self.action                         = None
         self.time                           = None
+        self.factor_data                    = {}
     def parseStepInfo(self, tokens):
         """ given a set of tokens return the node, field and value fields in the token array"""
         # peel fact() predicate first
@@ -169,6 +173,9 @@ class EquationStepParser:
             poly, deg, coeff = (node, field, value)
             self.monoms_of_polys[poly].append((deg, coeff))
 
+    def add_factor_data(self, factor_data):
+        # NOTE: factor data stores deg/coeff info about terms used to factor an equation
+        self.factor_data.update(factor_data)
     def getEqnString(self, as_latex=False, json_output=False):
         left    = self.makeEqnString('id(1,1)')
         right   = self.makeEqnString('id(1,2)')
@@ -235,7 +242,7 @@ class EquationStepParser:
         # get manager and sentence templates
         template_mgr    = getTemplateManager()
         template        = template_mgr.lookupTemplateFor(template_key)
-        sentence_temp   = template.makeExplanation(operands, self.model_mgr, 1)
+        sentence_temp   = template.makeExplanation(operands, self.model_mgr, 1, self.factor_data)
 
         # NOTE: we have to translate the node ids used by the explanation sentences
         # Nell's code uses a binary tree representation, my ASP representation 
@@ -257,10 +264,8 @@ class EquationStepParser:
         return translated
 
 
-    def makeMonomial(self, node_name):
-        """ Given a node name, construct the monomial referenced by that node"""
-        deg     = self.degree_of[node_name]
-        coeff   = self.coeff_of[node_name]
+    @staticmethod
+    def makeMonomialFromData(deg, coeff):
         if coeff == '0' or deg == '0':
             return coeff
         elif deg == '1' and coeff == '1':
@@ -271,6 +276,11 @@ class EquationStepParser:
             return coeff + 'x'
         else:
             return  coeff + 'x^' + deg
+    def makeMonomial(self, node_name):
+        """ Given a node name, construct the monomial referenced by that node"""
+        deg     = self.degree_of[node_name]
+        coeff   = self.coeff_of[node_name]
+        return EquationStepParser.makeMonomialFromData(deg, coeff)
     def addOperands(self, operands):
         self.operands = operands
     def addTime(self, time):
@@ -394,6 +404,9 @@ class MathProblemParser(object):
     def addActionPred(self, step, action_name):
         self.solution_steps[step].addActionPred(action_name)
         self.actions.append(str(action_name))
+
+    def addFactorPred(self, time_step, factor_data):
+        self.solution_steps[time_step].add_factor_data(factor_data)
     def addOperands(self, time, operands):
         step = time[0]
         self.solution_steps[step].addOperands(operands)
@@ -529,12 +542,35 @@ class AnswerSetParser(object):
                 problem_parsers[soln_num].addActionPred(time_step, action_name)
                 # TODO: added time predicate temporarily
                 problem_parsers[soln_num].addTime(time)
+            elif parser == None:    # look for factor predicates
+                parser, tokens = self.parseForFactorPredicates(predicate)
+                if parser == factora_parser:
+                    time_step   = int(tokens[2])
+                    soln_num    = int(tokens[4])
+                    time        = (time_step, soln_num)
+                    factor_data =   {'FACTORA': EquationStepParser.makeMonomialFromData(tokens[7], tokens[9]) }
+                    problem_parsers[soln_num].addFactorPred(time_step, factor_data)
+                if parser == factorb_parser:
+                    time_step   = int(tokens[2])
+                    soln_num    = int(tokens[4])
+                    time        = (time_step, soln_num)
+                    factor_data =   {'FACTORB': EquationStepParser.makeMonomialFromData(tokens[7], tokens[9]) }
+                    problem_parsers[soln_num].addFactorPred(time_step, factor_data)
         # NOTE: important, we don't want to save the parser objects, just the relevant parts of the generated problems
         # So we save GeneratedProblem instances instead
         self.math_problems_dict = dict( [(prob_number, parser.jsonFriendlyFormat() ) for prob_number, parser in problem_parsers.items()])
     def findParserMatchingPredicate(self, predicate, parser_list=all_parsers):
         """ if any parser successfully parses the predicate, return tokens and the parser"""
         for parser in parser_list:
+            try:
+                parse_output = parser.parseString(predicate)
+            except ParseException:
+                continue
+            return (parser, parse_output)
+        return (None, [])
+    def parseForFactorPredicates(self, predicate):
+        """ if any parser successfully parses the predicate, return tokens and the parser"""
+        for parser in factor_parsers:
             try:
                 parse_output = parser.parseString(predicate)
             except ParseException:

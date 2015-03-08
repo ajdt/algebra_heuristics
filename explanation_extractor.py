@@ -207,32 +207,32 @@ class ExplanationTemplate(object):
         #for cond in predicates_only:
             #print cond.name
         return ExplanationTemplate.unify(var_dictionary, predicates_only, model_manager)
-    def makeExplanation(self, var_values, model_manager=None, depth=1):
+    def makeExplanation(self, var_values, model_manager=None, depth=1, factor_data = {}):
         """ return list of template sentences containing explanation"""
         # create mapping from variables used to their values
         var_assignments     = dict(zip(ExplanationTemplate.getPredicateVariables(self.rule.head), var_values))
 
         # generate head/body explanations
-        head_expl           = self.makeHeadExplanation(var_assignments)
-        body_expl           = self.unifyAndMakeBodyExplanation(var_assignments, model_manager, depth)
+        head_expl           = self.makeHeadExplanation(var_assignments, factor_data)
+        body_expl           = self.unifyAndMakeBodyExplanation(var_assignments, model_manager, depth, factor_data)
         return [head_expl] + body_expl
 
-    def makeHeadExplanation(self, var_assignments):
+    def makeHeadExplanation(self, var_assignments, factor_data={}):
         if isHeuristicPredicate(self.rule.head):
             # heuristic predicates have explanation component extracted from nested value
             condition_name  = self.rule.head.args[1].args[0]
-            sentence        = convertFromCamelCase(condition_name)
+            sentence        = self.spliceInFactorData(condition_name, factor_data)
             variables       = ExplanationTemplate.getPredicateVariables(self.rule.head)
             return TemplateSentence(sentence, variables, var_assignments)
         else:
             return self.makePredicateExplanation(self.rule.head, var_assignments)
-    def unifyAndMakeBodyExplanation(self, var_assignments, model_manager=None, depth=1):
+    def unifyAndMakeBodyExplanation(self, var_assignments, model_manager=None, depth=1, factor_data={}):
         # unify variables first, then make explanations
         unified_vars = self.unifyVars(var_assignments, model_manager)
         if unified_vars != None:
             var_assignments = unified_vars
         return self.makeBodyExplanation(var_assignments, model_manager, depth)
-    def makeBodyExplanation(self, var_assignments, model_manager=None, depth=1):
+    def makeBodyExplanation(self, var_assignments, model_manager=None, depth=1, factor_data={}):
         # at desired explanation depth, return body explanations
         if depth <= 1:
             return self.predListToSentences(filterUnusedConditions(self.rule.body), var_assignments)
@@ -263,10 +263,18 @@ class ExplanationTemplate(object):
             return [predicate.args[0]] + predicate.args[1].args[1].args
         else:
             return predicate.args
-    def makePredicateExplanation(self, predicate, var_assignments):
-        sentence    = convertFromCamelCase(predicate.name)
+    def makePredicateExplanation(self, predicate, var_assignments, factor_data={}):
+        sentence    = self.spliceInFactorData(predicate.name, factor_data)
         variables   = ExplanationTemplate.getPredicateVariables(predicate)    
         return TemplateSentence(sentence, variables, var_assignments)
+    def spliceInFactorData(self, raw_predicate_name, factor_data):
+        splitA = raw_predicate_name.split('FACTORA')
+        if len(splitA) > 1:
+            splitA = [splitA[0]] + [ ' ' + factor_data['FACTORA'] + ' ' ]  + [splitA[1]]
+            # TODO: add complexity later for splitB etc
+            return ''.join([convertFromCamelCase(fragment) for fragment in splitA])
+        else:
+            return convertFromCamelCase(raw_predicate_name)
 
 
 
