@@ -270,11 +270,11 @@ class ExplanationTemplate(object):
     def spliceInFactorData(self, raw_predicate_name, factor_data):
         splitA = raw_predicate_name.split('FACTORA')
         if len(splitA) > 1:
-            splitA = [splitA[0]] + [ ' ' + factor_data['FACTORA'] + ' ' ]  + [splitA[1]]
-            # TODO: add complexity later for splitB etc
-            return ''.join([convertFromCamelCase(fragment) for fragment in splitA])
-        else:
-            return convertFromCamelCase(raw_predicate_name)
+            raw_predicate_name = splitA[0] +  ' ' + factor_data['FACTORA'] + ' '   + splitA[1]
+        splitB = raw_predicate_name.split('FACTORB')
+        if len(splitB) > 1:
+            raw_predicate_name = splitB[0] +  ' ' + factor_data['FACTORB'] + ' '   + splitB[1]
+        return convertFromCamelCase(raw_predicate_name)
 
 
 

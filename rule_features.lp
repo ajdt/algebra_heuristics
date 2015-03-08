@@ -33,25 +33,25 @@ ruleFeature(addUpToZero, complexity, 2)
 %================================================================================
 % factorMonom:	ax^k  --> bx^m * cx^n 
 %================================================================================
-ruleFeature(isATermThatCanBeFactored, degComplexity, 0)
+ruleFeature(weCanSimplifyBySubstitutingTheFactorsOfTheTerm, degComplexity, 0)
 	:-	_selectedDegDecomposition(Time, Fst, Snd),
 		Fst == 0, Snd == 0.
-ruleFeature(isATermThatCanBeFactored, degComplexity, 0)
+ruleFeature(weCanSimplifyBySubstitutingTheFactorsOfTheTerm, degComplexity, 0)
 	:-	_selectedDegDecomposition(Time, Fst, Snd),
 		Fst == 0, Snd != 0.
-ruleFeature(isATermThatCanBeFactored, degComplexity, 0)
+ruleFeature(weCanSimplifyBySubstitutingTheFactorsOfTheTerm, degComplexity, 0)
 	:-	_selectedDegDecomposition(Time, Fst, Snd),
 		Fst != 0, Snd == 0.
-ruleFeature(isATermThatCanBeFactored, degComplexity, 1)
+ruleFeature(weCanSimplifyBySubstitutingTheFactorsOfTheTerm, degComplexity, 1)
 	:-	_selectedDegDecomposition(Time, Fst, Snd),
 		Fst != 0, Snd != 0.
-ruleFeature(isATermThatCanBeFactored, coeffComplexity, 0)
+ruleFeature(weCanSimplifyBySubstitutingTheFactorsOfTheTerm, coeffComplexity, 0)
 	:-	_selectedCoeffFactors(Time, FstFactor, SndFactor),
 		|SndFactor| == 1.
-ruleFeature(isATermThatCanBeFactored, coeffComplexity, 0)
+ruleFeature(weCanSimplifyBySubstitutingTheFactorsOfTheTerm, coeffComplexity, 0)
 	:-	_selectedCoeffFactors(Time, FstFactor, SndFactor),
 		|FstFactor| == 1.
-ruleFeature(isATermThatCanBeFactored, coeffComplexity, 1)
+ruleFeature(weCanSimplifyBySubstitutingTheFactorsOfTheTerm, coeffComplexity, 1)
 	:-	_selectedCoeffFactors(Time, FstFactor, SndFactor),
 		|FstFactor| != 1, |SndFactor| != 1.
 %================================================================================

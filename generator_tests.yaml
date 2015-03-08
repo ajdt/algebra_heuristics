@@ -78,10 +78,10 @@ Test weCanSimplifyByCancellingTheZero:
         :- not _selectedHeuristic(_time(0,1), weCanSimplifyByCancellingTheZero).
         _disableSolvability.
     Expect: SAT
-Test isATermThatCanBeFactored:
+Test weCanSimplifyBySubstitutingTheFactorsOfTheTerm:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), isATermThatCanBeFactored).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyBySubstitutingTheFactorsOfTheTerm).
         _disableSolvability.
     Expect: SAT
 Test weCanSimplifyByFactoringOutAFACTORA:

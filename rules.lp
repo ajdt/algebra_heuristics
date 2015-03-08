@@ -308,47 +308,56 @@ _cancelTerm(Time, ZeroTerm)
 % factorMonom:	ax^k  --> bx^m * cx^n 
 %================================================================================
 % NOTE: this is the same rule as weCanSimplifyByFactoringOutAFACTORA, except written specifically for monomials
-_applicable(Time, _rule(isATermThatCanBeFactored, _operands(Mono)))
+_applicable(Time, _rule(weCanSimplifyBySubstitutingTheFactorsOfTheTerm, _operands(Mono)))
+	:-	_thisTermHasFactorsFACTORAAndFACTORB(Time, Mono).
+
+_thisTermHasFactorsFACTORAAndFACTORB(Time, Mono)
 	:-	__isMono(Time, Mono),
 		not _isOne(Time, Mono),
 		not _isZero(Time, Mono).
 
 % NOTE: don't want either factor to be 1
+_factor1(Time, Fst, FstFactor)
+    :-  _selectedDegDecomposition(Time, Fst, Snd), 
+        _selectedCoeffFactors(Time, FstFactor, SndFactor). 
+_factor2(Time, Snd, SndFactor)
+    :-  _selectedDegDecomposition(Time, Fst, Snd), 
+        _selectedCoeffFactors(Time, FstFactor, SndFactor). 
 :-  _selectedCoeffFactors(Time, FstFactor, SndFactor), 
     _selectedDegDecomposition(Time, Fst, Snd),
     FstFactor == 1,
-    Fst == 1.
+    Fst == 0.
 :-  _selectedCoeffFactors(Time, FstFactor, SndFactor), 
     _selectedDegDecomposition(Time, Fst, Snd),
     SndFactor == 1,
-    Snd == 1.
+    Snd == 0.
 % select coefficient factors,
 1 { _selectedCoeffFactors(Time, FstFactor, SndFactor) 
 		: _factors(FstFactor, SndFactor, FactorSum, Coeff) } 1
-	:-	_operand(Time, Mono, isATermThatCanBeFactored, left),
+	:-	_operand(Time, Mono, weCanSimplifyBySubstitutingTheFactorsOfTheTerm, left),
 		_isTheCoefficientOf(Time, Mono, Coeff).
 % select degree factors
 1 { _selectedDegDecomposition(Time, Fst, Snd) 
 		: _degree(Fst), _degree(Snd),
 			MonoDeg = Fst + Snd } 1
-	:-	_operand(Time, Mono, isATermThatCanBeFactored, left),
+	:-	_operand(Time, Mono, weCanSimplifyBySubstitutingTheFactorsOfTheTerm, left),
 		_isTheDegreeOf(Time, Mono, MonoDeg).
 % form product of monomials (careful with code reuse here!!)
 _activateTempAndSetChildren(Time, tempResultRoot, mul, 2)
-	:-	_ruleForTimeStep(Time, isATermThatCanBeFactored).
+	:-	_ruleForTimeStep(Time, weCanSimplifyBySubstitutingTheFactorsOfTheTerm).
 _setTempNodeToMono(Time, LeftChild, FstDeg, FstCoeff)
-	:-	_ruleForTimeStep(Time, isATermThatCanBeFactored),
+	:-	_ruleForTimeStep(Time, weCanSimplifyBySubstitutingTheFactorsOfTheTerm),
 		_tempChildOnSide(tempResultRoot, LeftChild, left),
 		_selectedCoeffFactors(Time, FstCoeff, SndCoeff),
 		_selectedDegDecomposition(Time, FstDeg, SndDeg).
 _setTempNodeToMono(Time, RightChild, SndDeg, SndCoeff)
-	:-	_ruleForTimeStep(Time, isATermThatCanBeFactored),
+	:-	_ruleForTimeStep(Time, weCanSimplifyBySubstitutingTheFactorsOfTheTerm),
 		_tempChildOnSide(tempResultRoot, RightChild, right),
 		_selectedCoeffFactors(Time, FstCoeff, SndCoeff),
 		_selectedDegDecomposition(Time, FstDeg, SndDeg).
 % save result 
 _setResultTo(Time, Mono)
-	:-	_operand(Time, Mono, isATermThatCanBeFactored, left).
+	:-	_operand(Time, Mono, weCanSimplifyBySubstitutingTheFactorsOfTheTerm, left).
 
 %================================================================================
 % TODO: rewrite to generate better explanation
@@ -652,7 +661,7 @@ _rule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction).
 _rule(weCanSimplifyByDistributingThisConstant).
 _rule(weCanSimplifyByCancellingTheDenominatorOfThisFraction).
 _rule(weCanSimplifyByCancellingTheZero).
-_rule(isATermThatCanBeFactored).
+_rule(weCanSimplifyBySubstitutingTheFactorsOfTheTerm).
 _rule(weCanSimplifyByFactoringOutAFACTORA).
 _rule(theProductOfTheseTermsIsZero).
 _rule(weCanSimplifyByCancellingTheOne).
