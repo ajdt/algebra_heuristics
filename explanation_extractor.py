@@ -231,11 +231,11 @@ class ExplanationTemplate(object):
         unified_vars = self.unifyVars(var_assignments, model_manager)
         if unified_vars != None:
             var_assignments = unified_vars
-        return self.makeBodyExplanation(var_assignments, model_manager, depth)
+        return self.makeBodyExplanation(var_assignments, model_manager, depth, factor_data)
     def makeBodyExplanation(self, var_assignments, model_manager=None, depth=1, factor_data={}):
         # at desired explanation depth, return body explanations
         if depth <= 1:
-            return self.predListToSentences(filterUnusedConditions(self.rule.body), var_assignments)
+            return self.predListToSentences(filterUnusedConditions(self.rule.body), var_assignments, factor_data)
         else:
             # recursive case -- go to greater depth if possible
             explanations = []
@@ -249,10 +249,10 @@ class ExplanationTemplate(object):
 
                     explanations += pred_definition.unifyAndMakeBodyExplanation(translated_assign, model_manager, depth - 1)
                 else:
-                    explanations += self.predListToSentences([pred], var_assignments)
+                    explanations += self.predListToSentences([pred], var_assignments, factor_data)
             return explanations
-    def predListToSentences(self, pred_list, var_asignments):
-        return [ self.makePredicateExplanation(pred, var_asignments) for pred in filterUnusedConditions(pred_list)]
+    def predListToSentences(self, pred_list, var_asignments, factor_data):
+        return [ self.makePredicateExplanation(pred, var_asignments, factor_data) for pred in filterUnusedConditions(pred_list)]
     @staticmethod
     def getPredicateVariables(predicate):
         """return a list of variables referenced by given predicate"""

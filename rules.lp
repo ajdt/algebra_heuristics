@@ -356,15 +356,15 @@ _setResultTo(Time, Mono)
 % factorCommTerm:	(a*x^k + b*x^l ) --> (a*x^m + b*x^n ) * x^j
 %================================================================================
 _applicable(Time, _rule(weCanSimplifyByFactoringOutAFACTORA, _operands(Poly)))
-	:-	_thisExpressionIsAPolynomialAndEachOfItsTermsHasFACTOR1AsAFactor(Time, Poly),
+	:-	_thisExpressionIsAPolynomialAndEachOfItsTermsHasFACTORAAsAFactor(Time, Poly),
         __selectedPoly(Time, Poly).
 
-_thisExpressionIsAPolynomialAndEachOfItsTermsHasFACTOR1AsAFactor(Time, Poly)
+_thisExpressionIsAPolynomialAndEachOfItsTermsHasFACTORAAsAFactor(Time, Poly)
 	:-	_isPolynomial(Time, Poly),
 		_hasCommonCoeff(Time, Poly),
 		_hasCommonDeg(Time, Poly).
     
-0 { __selectedPoly(Time, Poly) : _thisExpressionIsAPolynomialAndEachOfItsTermsHasFACTOR1AsAFactor(Time, Poly) } 1
+0 { __selectedPoly(Time, Poly) : _thisExpressionIsAPolynomialAndEachOfItsTermsHasFACTORAAsAFactor(Time, Poly) } 1
     :-  __validTime(Time).
 % select common term to factor our
 % NOTE: we're now forcing selection to happen even if rule isn't applied
