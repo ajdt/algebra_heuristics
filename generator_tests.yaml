@@ -144,6 +144,18 @@ Test weCanSimplifyBySubtractingTheTermFromBothSides:
         :- not _selectedHeuristic(_time(0,1), weCanSimplifyBySubtractingTheTermFromBothSides).
         _disableSolvability.
     Expect: SAT
+Test weCanSimplifyBySubtractingTheVariableTermFromBothSides:
+    Modules: generator
+    Program: |
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyBySubtractingTheVariableTermFromBothSides).
+        _disableSolvability.
+    Expect: SAT
+Test weCanSimplifyBySubtractingTheNonZeroTermFromBothSides:
+    Modules: generator
+    Program: |
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyBySubtractingTheNonZeroTermFromBothSides).
+        _disableSolvability.
+    Expect: SAT
 Test weCanSimplifyByMultiplyingBothSidesOfTheEquationByThisDenominator:
     Modules: generator
     Program: |
