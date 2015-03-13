@@ -578,7 +578,13 @@ _applicable(Time, _rule(weCanSimplifyBySubtractingTheTermFromBothSides, _operand
         _thereIsAConstantOnTheLefthandSideOfTheEquation(Time, Node).
 _applicable(Time, _rule(weCanSimplifyBySubtractingTheVariableTermFromBothSides, _operands(Node)))
     :-  _thereIsAVariableOnTheRighthandSideOfTheEquation(Time, Node).
+_applicable(Time, _rule(weCanSimplifyBySubtractingTheNonZeroTermFromBothSides, _operands(Node)))
+    :-  _theEquationHasAHighDegreeTerm(Time),
+        _thereIsANonZeroTermOnTheRighthandSideOfTheEquation(Time, Node).
 
+_thereIsANonZeroTermOnTheRighthandSideOfTheEquation(Time, Node)
+    :-  _isNonZero(Time, Node),
+        _isOnTheRightSideOfTheEquation(Node).
 _thereIsAVariableOnTheRighthandSideOfTheEquation(Time, Node)
     :-  _isATermWithAVariable(Time, Node),
         _isSumOfTerms(Time, rightSide),
@@ -588,6 +594,9 @@ _isATermWithAVariable(Time, Node)
     :-  __isMono(Time, Node),
         _isTheDegreeOf(Time, Node, Deg),
         Deg >= 1.
+_isNonZero(Time, Node)
+    :-  __isMono(Time, Node),
+        not _isZero(Time, Node).
 _thereIsAConstantOnTheLefthandSideOfTheEquation(Time, Node)
 	:-	_isConstant(Time, Node),
         _isSumOfTerms(Time, leftSide),
@@ -605,6 +614,7 @@ _theEquationHasOnlyLinearTerms(Time)
 % all of these subtraction operations have the same eqnOp
 _subtractOp(weCanSimplifyBySubtractingTheVariableTermFromBothSides).
 _subtractOp(weCanSimplifyBySubtractingTheTermFromBothSides).
+_subtractOp(weCanSimplifyBySubtractingTheNonZeroTermFromBothSides).
 
 _eqnOp(Time, Operand, sub)
 	:-	_operand(Time, Operand, Operation, left),
@@ -747,4 +757,5 @@ _rule(weCanDivideBothSidesByTheCoefficientOfTheLeftSide).
 _rule(weCanSimplifyBySubstitutingYForXDEG).
 _rule(weCanSimplifyByMultiplyingTheNumeratorByTheTerm).
 _rule(weCanSimplifyBySubtractingTheVariableTermFromBothSides).
+_rule(weCanSimplifyBySubtractingTheNonZeroTermFromBothSides).
 
