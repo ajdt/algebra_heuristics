@@ -49,10 +49,10 @@ Test weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator:
         :- not _selectedHeuristic(_time(0,1), weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator).
         _disableSolvability.
     Expect: SAT
-Test canBeFactored:
+Test weCanSimplifyByFactoringThisExpression:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), canBeFactored).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByFactoringThisExpression).
     Expect: SAT
 Test weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction:
     Modules: generator
@@ -138,10 +138,10 @@ Test weCanSimplifyByCancellingTheseTerms:
         #:- not _selectedHeuristic(_time(0,1), addUpToZero).
         #_disableSolvability.
     #Expect: SAT
-Test canBeSubtractedFromTheEquation:
+Test weCanSimplifyBySubtractingTheTermFromBothSides:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), canBeSubtractedFromTheEquation).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyBySubtractingTheTermFromBothSides).
         _disableSolvability.
     Expect: SAT
 Test weCanSimplifyByMultiplyingBothSidesOfTheEquationByThisDenominator:
@@ -150,10 +150,10 @@ Test weCanSimplifyByMultiplyingBothSidesOfTheEquationByThisDenominator:
         :- not _selectedHeuristic(_time(0,1), weCanSimplifyByMultiplyingBothSidesOfTheEquationByThisDenominator).
         _disableSolvability.
     Expect: SAT
-Test canDivideBothSidesOfTheEquation:
+Test weCanDivideBothSidesByTheCoefficientOfTheLeftSide:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), canDivideBothSidesOfTheEquation).
+        :- not _selectedHeuristic(_time(0,1), weCanDivideBothSidesByTheCoefficientOfTheLeftSide).
         _disableSolvability.
     Expect: SAT
 Test weCanSimplifyBySubstitutingYForXDEG:

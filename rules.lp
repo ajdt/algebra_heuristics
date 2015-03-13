@@ -181,28 +181,60 @@ _thisTermIsInBothTheNumeratorAndDenominatorOfAFraction(Time, NumerFactor, DenomF
         _areEqual(Time, NumerFactor, DenomFactor).
 
 _cancelTerm(Time, Factor)
-	:-	_operand(Time, Factor, weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator, Side).
+	:-	_operand(Time, Factor, weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator, Side),
+        not _canCancelWholeFraction(Time).
+_setToOne(Time, Fraction)
+	:-	_operand(Time, Factor, weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator, left),
+        _canCancelWholeFraction(Time),
+        _numeratorOf(Time, Fraction, Factor).
+
+_canCancelWholeNumerator(Time)
+	:-	_operand(Time, Factor, weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator, left),
+        _numeratorOf(Time, Fraction, Factor).
+_canCancelWholeDenominator(Time)
+	:-	_operand(Time, Factor, weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator, right),
+        _denominatorOf(Time, Fraction, Factor).
+_canCancelWholeFraction(Time)
+    :-  _canCancelWholeNumerator(Time),
+        _canCancelWholeDenominator(Time).
 
 %================================================================================
 % factor (x^2 + bx + c) --> (x + e) * (x + d)
 %================================================================================
 % NOTE: squared term must have coeff 1, divide by constant my be required to reach 
 % this form
-_applicable(Time, _rule(canBeFactored, _operands(Node)))
+_applicable(Time, _rule(weCanSimplifyByFactoringThisExpression, _operands(Node)))
+	:-	_thisExpressionIsPolynomialAndQuadratic(Time, Node),
+        _theNumbersFACTORAAndFACTORBHaveASumOfFACTORXAndProductOfFACTORYSoWeCanUseThemToFactor(Time).
+_thisExpressionIsPolynomialAndQuadratic(Time, Node)
 	:-	_isPolynomial(Time, Node),
 		_isQuadratic(Time, Node),
 		_isFactorable(Time, Node).
 
+_theNumbersFACTORAAndFACTORBHaveASumOfFACTORXAndProductOfFACTORYSoWeCanUseThemToFactor(Time)
+    :-  _isFactorable(Time, Node).
+
 % select the factors to use
+_factor1(Time, 0, FstFactor)
+    :-  _factorsForBinomials(Time, FstFactor, SndFactor).
+_factor2(Time, 0, SndFactor)
+    :-  _factorsForBinomials(Time, FstFactor, SndFactor).
+_factor3(Time, 0, LinearTerm)
+	:-	_operand(Time, Poly,  weCanSimplifyByFactoringThisExpression, left),
+		_monoTermOfPoly(Time, Poly, 1, LinearTerm).
+_factor4(Time, 0, ConstTerm)
+	:-	_operand(Time, Poly,  weCanSimplifyByFactoringThisExpression, left),
+		_monoTermOfPoly(Time, Poly, 0, ConstTerm).
+
 _factorsForBinomials(Time, FstFactor, SndFactor)
-	:-	_operand(Time, Poly,  canBeFactored, left),
+	:-	_operand(Time, Poly,  weCanSimplifyByFactoringThisExpression, left),
 		_monoTermOfPoly(Time, Poly, 1, LinearTerm),
 		_monoTermOfPoly(Time, Poly, 0, ConstTerm),
 		_factors(FstFactor, SndFactor, LinearTerm, ConstTerm),
 		FstFactor <= SndFactor. % NOTE: sanity check, ensure this rule is used @ most once per time step
 % result is product of two binomials
 _activateTempAndSetChildren(Time, tempResultRoot, mul, 2)
-	:-	_ruleForTimeStep(Time, canBeFactored).
+	:-	_ruleForTimeStep(Time, weCanSimplifyByFactoringThisExpression).
 
 % initialize binomials
 _setToBinomial(Time, LeftChild, FstFactor)
@@ -214,7 +246,7 @@ _setToBinomial(Time, RightChild, SndFactor)
 
 % save the result of factoring
 _setResultTo(Time, Poly)
-	:-	_operand(Time, Poly,  canBeFactored, left).
+	:-	_operand(Time, Poly,  weCanSimplifyByFactoringThisExpression, left).
 
 
 %================================================================================
@@ -541,17 +573,46 @@ _isOnTheRightSideOfTheEquation(Child)
 %%_equationIsLinear(Time)%%
     %%:-  __validTime(Time),%%
         %%not _equationIsNotLinear(Time).%%
-_applicable(Time, _rule(canBeSubtractedFromTheEquation, _operands(Node)))
-	:-	__isMono(Time, Node),
-        _isConstant(Time, Node), 
-        _isOnTheRightSideOfTheEquation(Node),
+_applicable(Time, _rule(weCanSimplifyBySubtractingTheTermFromBothSides, _operands(Node)))
+    :-  _theEquationHasOnlyLinearTerms(Time),
+        _thereIsAConstantOnTheLefthandSideOfTheEquation(Time, Node).
+_applicable(Time, _rule(weCanSimplifyBySubtractingTheVariableTermFromBothSides, _operands(Node)))
+    :-  _thereIsAVariableOnTheRighthandSideOfTheEquation(Time, Node).
+
+_thereIsAVariableOnTheRighthandSideOfTheEquation(Time, Node)
+    :-  _isATermWithAVariable(Time, Node),
+        _isSumOfTerms(Time, rightSide),
+        _isATermOf(Time, rightSide, Node),
+        not _isZero(Time, Node).
+_isATermWithAVariable(Time, Node)
+    :-  __isMono(Time, Node),
+        _isTheDegreeOf(Time, Node, Deg),
+        Deg >= 1.
+_thereIsAConstantOnTheLefthandSideOfTheEquation(Time, Node)
+	:-	_isConstant(Time, Node),
+        _isSumOfTerms(Time, leftSide),
+        _isATermOf(Time, leftSide, Node),
         not _isZero(Time, Node).
 
+_theEquationHasAHighDegreeTerm(Time) % TODO: Improve these explanations
+    :-  _isTheDegreeOf(Time, Node, Deg),
+        Deg >= 2.
+_theEquationHasOnlyLinearTerms(Time)
+    :-  __validTime(Time),
+        not _theEquationHasAHighDegreeTerm(Time).
+
+
+% all of these subtraction operations have the same eqnOp
+_subtractOp(weCanSimplifyBySubtractingTheVariableTermFromBothSides).
+_subtractOp(weCanSimplifyBySubtractingTheTermFromBothSides).
+
 _eqnOp(Time, Operand, sub)
-	:-	_operand(Time, Operand, canBeSubtractedFromTheEquation, left).
+	:-	_operand(Time, Operand, Operation, left),
+        _subtractOp(Operation).
 % save the results
 _saveEqnResult(Time)
-	:-	_ruleForTimeStep(Time, canBeSubtractedFromTheEquation).
+	:-	_ruleForTimeStep(Time, Operation),
+        _subtractOp(Operation).
 
 %================================================================================
 % MulEqn: A = B  --> A * D = B * D
@@ -576,18 +637,31 @@ _saveEqnResult(Time)
 %       is currently unsatisfiable
 % divEqnByConst: A = B  --> A / d = B / d
 %================================================================================
-_applicable(Time, _rule(canDivideBothSidesOfTheEquation, _operands(Node)))
+_applicable(Time, _rule(weCanDivideBothSidesByTheCoefficientOfTheLeftSide, _operands(leftSide)))
 	:-	%_coeff(Coeff),
-        __isMono(Time, Node).
+        _leftSideIsASingleTermWithAVariable(Time, leftSide),
+        _rightSideIsAConstant(Time, rightSide).
         %%_isMultiplicationOperation(Time, leftSide).%%
         %%_factorOf(Time, leftSide, LeftFactor).%%
         %%_factorOf(Time, rightSide, RightFactor),%%
         %%_areEqual(Time, LeftFactor, RightFactor).%%
+_leftSideIsASingleTermWithAVariable(Time, leftSide)
+    :-  __isMono(Time, leftSide),
+        _isTheDegreeOf(Time, leftSide, Deg),
+        Deg >= 1,
+        _isTheCoefficientOf(Time, leftSide, Coeff),
+        Coeff != 1, 
+        Coeff != 0.
+_rightSideIsAConstant(Time, rightSide)
+    :-  __isMono(Time, rightSide),
+        _isTheDegreeOf(Time, rightSide, Deg),
+        Deg == 0.
+
 _eqnOp(Time, Coeff, divConst)
-	:-	_operand(Time, Coeff, canDivideBothSidesOfTheEquation, left).
+	:-	_operand(Time, Coeff, weCanDivideBothSidesByTheCoefficientOfTheLeftSide, left).
 % save the results
 _saveEqnResult(Time)
-	:-	_ruleForTimeStep(Time, canDivideBothSidesOfTheEquation).
+	:-	_ruleForTimeStep(Time, weCanDivideBothSidesByTheCoefficientOfTheLeftSide).
 
 %================================================================================
 % TODO: rewrite to generate better explanation
@@ -656,7 +730,7 @@ _rule(soTheNumeratorOfThisFractionMustBeEqualToZero).
 _rule(weCanSimplifyByAddingTheseTwoTermsTogether).
 _rule(weCanSimplifyByCombiningTheseIntoASingleTerm).
 _rule(weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator).
-_rule(canBeFactored).
+_rule(weCanSimplifyByFactoringThisExpression).
 _rule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction).
 _rule(weCanSimplifyByDistributingThisConstant).
 _rule(weCanSimplifyByCancellingTheDenominatorOfThisFraction).
@@ -667,9 +741,10 @@ _rule(theProductOfTheseTermsIsZero).
 _rule(weCanSimplifyByCancellingTheOne).
 _rule(weCanSimplifyByMultiplyingTheNumeratorAndDenominatorByTERM).
 _rule(weCanSimplifyByCancellingTheseTerms).
-_rule(canBeSubtractedFromTheEquation).
+_rule(weCanSimplifyBySubtractingTheTermFromBothSides).
 _rule(weCanSimplifyByMultiplyingBothSidesOfTheEquationByThisDenominator).
-_rule(canDivideBothSidesOfTheEquation).
+_rule(weCanDivideBothSidesByTheCoefficientOfTheLeftSide).
 _rule(weCanSimplifyBySubstitutingYForXDEG).
 _rule(weCanSimplifyByMultiplyingTheNumeratorByTheTerm).
+_rule(weCanSimplifyBySubtractingTheVariableTermFromBothSides).
 

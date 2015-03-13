@@ -83,23 +83,23 @@ _heuristic(Name, Priority, Rule)
 
 % NOTE: I've reserved priority = 0 for testing purposes. O.W. highest priority is 1 
 % combine monomials
-%%_heuristicToApplyRule(weCanSimplifyByCancellingTheseTerms, 1, weCanSimplifyByCancellingTheseTerms). %%
-%%_heuristicToApplyRule(addUpToZero, 1, addUpToZero). %%
-%%_heuristicToApplyRule(soTheNumeratorOfThisFractionMustBeEqualToZero, 1, soTheNumeratorOfThisFractionMustBeEqualToZero). %%
-%%_heuristicToApplyRule(weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator, 1, weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator). %%
-%%_heuristicToApplyRule(areBothNegativeOperationsThatCancelOut, 1, areBothNegativeOperationsThatCancelOut). %%
+_heuristicToApplyRule(weCanSimplifyByCancellingTheseTerms, 1, weCanSimplifyByCancellingTheseTerms). 
+_heuristicToApplyRule(addUpToZero, 1, addUpToZero). 
+_heuristicToApplyRule(soTheNumeratorOfThisFractionMustBeEqualToZero, 1, soTheNumeratorOfThisFractionMustBeEqualToZero). 
+_heuristicToApplyRule(weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator, 1, weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator). 
+_heuristicToApplyRule(areBothNegativeOperationsThatCancelOut, 1, areBothNegativeOperationsThatCancelOut). 
 
-%%_heuristicToApplyRule(weCanSimplifyByAddingTheseTwoTermsTogether, 2, weCanSimplifyByAddingTheseTwoTermsTogether). %%
-%%_heuristicToApplyRule(weCanSimplifyByCancellingTheZero, 2, weCanSimplifyByCancellingTheZero). %%
-%%_heuristicToApplyRule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction, 2, weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction). %%
-%%_heuristicToApplyRule(weCanSimplifyByCancellingTheDenominatorOfThisFraction, 2, weCanSimplifyByCancellingTheDenominatorOfThisFraction). %%
-%%_heuristicToApplyRule(theProductOfTheseTermsIsZero, 2, theProductOfTheseTermsIsZero). %%
-%%_heuristicToApplyRule(weCanSimplifyByCancellingTheOne, 2, weCanSimplifyByCancellingTheOne). %%
+_heuristicToApplyRule(weCanSimplifyByAddingTheseTwoTermsTogether, 2, weCanSimplifyByAddingTheseTwoTermsTogether). 
+_heuristicToApplyRule(weCanSimplifyByCancellingTheZero, 2, weCanSimplifyByCancellingTheZero). 
+_heuristicToApplyRule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction, 2, weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction). 
+_heuristicToApplyRule(weCanSimplifyByCancellingTheDenominatorOfThisFraction, 2, weCanSimplifyByCancellingTheDenominatorOfThisFraction). 
+_heuristicToApplyRule(theProductOfTheseTermsIsZero, 2, theProductOfTheseTermsIsZero). 
+_heuristicToApplyRule(weCanSimplifyByCancellingTheOne, 2, weCanSimplifyByCancellingTheOne). 
 
-%%_heuristicToApplyRule(weCanSimplifyByDistributingThisConstant, 3, weCanSimplifyByDistributingThisConstant). %%
-%%_heuristicToApplyRule(weCanSimplifyByCombiningTheseIntoASingleTerm, 3, weCanSimplifyByCombiningTheseIntoASingleTerm). %%
-%%_heuristicToApplyRule(weCanSimplifyBySubstitutingYForXDEG, 3, weCanSimplifyBySubstitutingYForXDEG). %%
-%%_heuristicToApplyRule(weCanSimplifyByMultiplyingTheNumeratorByTheTerm, 3, weCanSimplifyByMultiplyingTheNumeratorByTheTerm). %%
+_heuristicToApplyRule(weCanSimplifyByDistributingThisConstant, 3, weCanSimplifyByDistributingThisConstant). 
+_heuristicToApplyRule(weCanSimplifyByCombiningTheseIntoASingleTerm, 3, weCanSimplifyByCombiningTheseIntoASingleTerm). 
+_heuristicToApplyRule(weCanSimplifyBySubstitutingYForXDEG, 3, weCanSimplifyBySubstitutingYForXDEG). 
+_heuristicToApplyRule(weCanSimplifyByMultiplyingTheNumeratorByTheTerm, 3, weCanSimplifyByMultiplyingTheNumeratorByTheTerm). 
 
 %%%================================================================================
 %%%					Condition Heuristics
@@ -107,7 +107,7 @@ _heuristic(Name, Priority, Rule)
 
 		%% isolate variables to lhs
 %%_heuristic(isolateVars, 3, rhsHasVariable).%%
-%%_heuristicAction(isolateVars, canBeSubtractedFromTheEquation).%%
+%%_heuristicAction(isolateVars, weCanSimplifyBySubtractingTheTermFromBothSides).%%
 
 %%_applicable(Time, _condition(rhsHasVariable, _operands(Child)))%%
 	%%:-	_isSumOfTerms(Time, rightSide),%%
@@ -128,7 +128,7 @@ _heuristic(Name, Priority, Rule)
 
 		%%[> move constants to rhs if eqn is linear%%
 %%_heuristic(isolateConst, 3, lhsHasConst).%%
-%%_heuristicAction(isolateConst, canBeSubtractedFromTheEquation).%%
+%%_heuristicAction(isolateConst, weCanSimplifyBySubtractingTheTermFromBothSides).%%
 
 %%_applicable(Time, _condition(lhsHasConst, _operands(Child)))%%
 	%%:-	_hasSuperlinearTerms(Time),%%
@@ -142,18 +142,18 @@ _heuristic(Name, Priority, Rule)
 		%%[> set lhs to zero if eqn has super-linear terms%%
 		%%% NOTE: this only subtracts rhs from both sides: other heuristics must simplify%%
 %%_heuristic(setRHSZero, 3, rhsIsNotZero).%%
-%%_heuristicAction(setRHSZero, canBeSubtractedFromTheEquation).%%
+%%_heuristicAction(setRHSZero, weCanSimplifyBySubtractingTheTermFromBothSides).%%
 %%_applicable(Time, _condition(rhsIsNotZero, _operands(rightSide)))%%
 	%%:-	_hasSuperlinearTerms(Time),%%
 		%%not _isZero(Time, rightSide).%%
 
 		%%[> factor quadratic to solve eqn%%
 %%_heuristic(factorSimpleQuad, 1, stdQuadSetToZero).%%
-%%_heuristicAction(factorSimpleQuad, canBeFactored).%%
+%%_heuristicAction(factorSimpleQuad, weCanSimplifyByFactoringThisExpression).%%
 
 %%_applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))%%
 	%%:-	_isZero(Time, rightSide),%%
-		%%_applicable(Time, _rule(canBeFactored, _operands(leftSide))).%%
+		%%_applicable(Time, _rule(weCanSimplifyByFactoringThisExpression, _operands(leftSide))).%%
 
 
 

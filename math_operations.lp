@@ -327,6 +327,12 @@ _setTempNodeToMono(Time, NewChild, Degree, Coeff*-1)
 		Temp = _temp(RootNode),
         _numActiveChildren(Time, RootNode, Num),
         _tempChildNum(Temp, NewChild, Num+1).
+_tempHolds(Time, _fact(Temp, _nodeField(activechild, NewChild)))
+	:-	_eqnOp(Time, Operand, sub),
+        _appendableEqnOp(Time, Operand, RootNode),
+		Temp = _temp(RootNode),
+        _numActiveChildren(Time, RootNode, Num),
+        _tempChildNum(Temp, NewChild, Num+1).
 
         %%% CASE 2: can't append to existing root operation
 % set new root to sum
@@ -344,12 +350,14 @@ _deepCopy(Time, TempChild, RootNode)
 		_tempChildNum(Temp, TempChild, 1).
 
 % other child of new root node is the negation of subtracted operand
-_monoOp(Time, TempSecondChild, Operand, Operand, negate)
+_setTempNodeToMono(Time, TempSecondChild, Degree, Coeff*-1)
 	:-	_eqnOp(Time, Operand, sub),
 		__rootNode(RootNode),
 		Temp = _temp(RootNode),
         not _appendableEqnOp(Time, Operand, RootNode),
-		_tempChildNum(TempEqnRoot, TempSecondChild, 2).
+        _isTheCoefficientOf(Time, Operand, Coeff),
+        _isTheDegreeOf(Time, Operand, Degree),
+		_tempChildNum(Temp, TempSecondChild, 2).
 		
 		%%% multiply eqn by operand
 _treeOp(Time, Temp, RootNode, Operand, append(mul))
@@ -365,18 +373,25 @@ _treeOp(Time, Temp, RootNode, Operand, append(add))
 _activateTempAndSetChildren(Time, Temp, div, 2) % new left(right) side is fraction
 	:-	_eqnOp(Time, Const, divConst),
 		__rootNode(RootNode),
+        RootNode == rightSide,
 		Temp = _temp(RootNode).
 _deepCopy(Time, TempChild, RootNode)	% numerator is left(right) side
 	:-	_eqnOp(Time, Const, divConst),
 		__rootNode(RootNode),
+        RootNode == rightSide,
 		Temp = _temp(RootNode),
 		_tempChildNum(Temp, TempChild, 1).
 _setTempNodeToMono(Time, TempChild, 0, Coeff)
 	:-	_eqnOp(Time, Term, divConst),   % NOTE: changed to only divide by a constant: not any variable terms
         _isTheCoefficientOf(Time, Term, Coeff),
 		__rootNode(RootNode),
+        RootNode == rightSide,
 		Temp = _temp(RootNode),
 		_tempChildNum(Temp, TempChild, 2).
+_setTempNodeToMono(Time, Temp, Deg, 1)
+	:-	_eqnOp(Time, Term, divConst), 
+        Temp = _temp(leftSide),
+        _isTheDegreeOf(Time, leftSide, Deg).
 
 	%%% append eqnOps
 % NOTE: An append tree Op tries to create a result that appends 'right' node to 'left' node
