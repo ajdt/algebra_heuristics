@@ -69,7 +69,7 @@ def convertFromCamelCase(name):
     s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
     s2 = re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
     s3 = re.sub('_', ' ', s2)
-    return s3
+    return s3.replace('is1', 'is 1') # XXX: quick bandaid fix, I'll do something better later
 
 
                         ### EXPLANATION CLASSES ###
@@ -274,6 +274,12 @@ class ExplanationTemplate(object):
         splitB = raw_predicate_name.split('FACTORB')
         if len(splitB) > 1:
             raw_predicate_name = splitB[0] +  ' ' + factor_data['FACTORB'] + ' '   + splitB[1]
+        splitX = raw_predicate_name.split('FACTORX')
+        if len(splitX) > 1:
+            raw_predicate_name = splitX[0] +  ' ' + factor_data['FACTORX'] + ' '   + splitX[1]
+        splitY = raw_predicate_name.split('FACTORY')
+        if len(splitY) > 1:
+            raw_predicate_name = splitY[0] +  ' ' + factor_data['FACTORY'] + ' '   + splitY[1]
         return convertFromCamelCase(raw_predicate_name)
 
 

@@ -56,6 +56,8 @@ time_parser     =   'time(' + Word(nums) + ',' + Word(nums) + ')'
 action_parser   = 'selectedHeuristic(' +  time_parser + ',' + word_parser + ')'
 factora_parser  =   'factor1(' + time_parser + ',' + number_parser + ',' + number_parser + ')'
 factorb_parser  =   'factor2(' + time_parser + ',' + number_parser + ',' + number_parser + ')'
+factorc_parser  =   'factor3(' + time_parser + ',' + number_parser + ',' + number_parser + ')'
+factord_parser  =   'factor4(' + time_parser + ',' + number_parser + ',' + number_parser + ')'
 #_selectedHeurOperands(_time(0,1),_operands(_id(1,1)))
 binary_operand_parser   = 'selectedHeurOperands(' + time_parser + ',' + 'operands(' + node_parser + ',' + node_parser + ')' + ')'
 unary_operand_parser    = 'selectedHeurOperands(' + time_parser + ',' + 'operands('  + node_parser + ')' + ')'
@@ -84,7 +86,7 @@ child_parser            =   wrapInKeyValueAndFact(word_node_parser)
 applicable_heur_parser  = 'applicableHeuristic(' + time_parser + ',' + word_parser + ')'
 
 all_parsers     =   [ type_parser, child_parser, deg_coeff_parser, action_parser, binary_operand_parser, unary_operand_parser, applicable_heur_parser]
-factor_parsers  =   [factora_parser, factorb_parser]
+factor_parsers  =   [factora_parser, factorb_parser, factorc_parser, factord_parser]
 op_symbols      =   {'add' : '+' , 'div' : '/' , 'mul' : '*' , 'neg' : '-'}
 
 class GeneratedProblem(object):
@@ -119,6 +121,8 @@ class GeneratedAnswerSet(object):
         return self.generated_problems_dict.values()
     def toJSONFormat(self):
         return dict( [(str(num), prob.toJSONFormat()) for num, prob in self.generated_problems_dict.items() ])
+        # used for eric output
+        #return self.generated_problems_dict.items()[0][1].toJSONFormat()
 class EquationStepParser:
     """ encapsulates the state of an equation during one step."""
     def __init__(self, model_mgr=None):
@@ -431,8 +435,8 @@ class MathProblemParser(object):
         # add necessary equation parameters
         eqn_params = { 'equation_steps': self.getEqnSteps(),
                          #'operands': self.getOperands(),
-                         'selected_heuristics': self.getActions(),
-                         'applicable_heur': self.getApplicableActions(),
+                         #'selected_heuristics': self.getActions(),
+                         #'applicable_heur': self.getApplicableActions(),
                          #'expression_trees': self.getEqnTrees(),
                          'explanations': self.getExplanationsForSteps()}
         return GeneratedProblem(eqn_params)
@@ -554,6 +558,18 @@ class AnswerSetParser(object):
                     time        = (time_step, soln_num)
                     factor_data =   {'FACTORB': EquationStepParser.makeMonomialFromData(tokens[7], tokens[9]) }
                     problem_parsers[soln_num].addFactorPred(time_step, factor_data)
+                if parser == factorc_parser:
+                    time_step   = int(tokens[2])
+                    soln_num    = int(tokens[4])
+                    time        = (time_step, soln_num)
+                    factor_data =   {'FACTORX': EquationStepParser.makeMonomialFromData(tokens[7], tokens[9]) }
+                    problem_parsers[soln_num].addFactorPred(time_step, factor_data)
+                if parser == factord_parser:
+                    time_step   = int(tokens[2])
+                    soln_num    = int(tokens[4])
+                    time        = (time_step, soln_num)
+                    factor_data =   {'FACTORY': EquationStepParser.makeMonomialFromData(tokens[7], tokens[9]) }
+                    problem_parsers[soln_num].addFactorPred(time_step, factor_data)
         # NOTE: important, we don't want to save the parser objects, just the relevant parts of the generated problems
         # So we save GeneratedProblem instances instead
         self.math_problems_dict = dict( [(prob_number, parser.jsonFriendlyFormat() ) for prob_number, parser in problem_parsers.items()])
@@ -654,6 +670,8 @@ class AnswerSetManager(json.JSONEncoder):
                         print problem.getSolutionStringWithExplanations() + '\n\n'
                     else:
                         print problem.getSolutionString(as_latex=False, json_output=json_printing) + '\n\n'
+                    # TODO: remove, this is used to print answer set in both formats at once
+                    #print json.dumps(ans_set.toJSONFormat())
             print 30*"-"
 
 def main(cmd_line_args):
