@@ -60,10 +60,10 @@ Test weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction:
         :- not _selectedHeuristic(_time(0,1), weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction).
         _disableSolvability.
     Expect: SAT
-Test weCanSimplifyByDistributingThisConstant:
+Test weCanSimplifyByDistributingTheSingleFactor:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByDistributingThisConstant).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyByDistributingTheSingleFactor).
         _disableSolvability.
     Expect: SAT
 Test weCanSimplifyByCancellingTheDenominatorOfThisFraction:

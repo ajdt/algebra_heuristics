@@ -281,21 +281,21 @@ _writeBinaryOp(Time)
 %================================================================================
 % distribute (a + b) * C --> (a*C + b*C)
 %================================================================================
-_applicable(Time, _rule(weCanSimplifyByDistributingThisConstant, _operands(PlusTerm, __DistribTerm)))
-	:-	_weAreMultiplyingASumOfTermsByAConstant(Time, PlusTerm, __DistribTerm).
+_applicable(Time, _rule(weCanSimplifyByDistributingTheSingleFactor, _operands(PlusTerm, __DistribTerm)))
+	:-	_weAreMultiplyingASumOfTermsByASingleFactor(Time, PlusTerm, __DistribTerm).
 
-_weAreMultiplyingASumOfTermsByAConstant(Time, PlusTerm, DistribTerm)
+_weAreMultiplyingASumOfTermsByASingleFactor(Time, PlusTerm, DistribTerm)
 	:-	_areBeingMultiplied(Time, PlusTerm, DistribTerm),
 		PlusTerm < DistribTerm, % TODO: this is necessary, but prevents distribute if C occurs before (a+b) term
 		_isSumOfTerms(Time, PlusTerm).
 
 % every term in original plus node, is multiplied by distributed term
 _activateTempNode(Time, tempResultRoot, add)
-	:-	_ruleForTimeStep(Time, weCanSimplifyByDistributingThisConstant).
+	:-	_ruleForTimeStep(Time, weCanSimplifyByDistributingTheSingleFactor).
 
 _treeOp(Time, TempNode, Term, DistribTerm, mul)
-	:-	_operand(Time, DistribTerm, weCanSimplifyByDistributingThisConstant, right),
-		_operand(Time, PlusTerm, weCanSimplifyByDistributingThisConstant, left),
+	:-	_operand(Time, DistribTerm, weCanSimplifyByDistributingTheSingleFactor, right),
+		_operand(Time, PlusTerm, weCanSimplifyByDistributingTheSingleFactor, left),
 		_isATermOf(Time, PlusTerm, Term),
 		_childNum(PlusTerm, Term, ChildNum),
 		_tempChildNum(tempResultRoot, TempNode, ChildNum).
@@ -307,7 +307,7 @@ _tempHolds(Time, _fact(tempResultRoot, _nodeField(activechild, Temp)))
 		_validTempChildOf(tempResultRoot, Temp).
 % save result
 _writeBinaryOp(Time)
-	:-	_ruleForTimeStep(Time, weCanSimplifyByDistributingThisConstant).
+	:-	_ruleForTimeStep(Time, weCanSimplifyByDistributingTheSingleFactor).
 
 
 %================================================================================
@@ -756,7 +756,7 @@ _rule(weCanSimplifyByCombiningTheseIntoASingleTerm).
 _rule(weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator).
 _rule(weCanSimplifyByFactoringThisExpression).
 _rule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction).
-_rule(weCanSimplifyByDistributingThisConstant).
+_rule(weCanSimplifyByDistributingTheSingleFactor).
 _rule(weCanSimplifyByCancellingTheDenominatorOfThisFraction).
 _rule(weCanSimplifyByCancellingTheZero).
 _rule(weCanSimplifyBySubstitutingTheFactorsOfTheTerm).

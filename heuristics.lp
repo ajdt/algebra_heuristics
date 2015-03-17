@@ -96,7 +96,7 @@ _heuristicToApplyRule(weCanSimplifyByCancellingTheDenominatorOfThisFraction, 2, 
 _heuristicToApplyRule(theProductOfTheseTermsIsZero, 2, theProductOfTheseTermsIsZero). 
 _heuristicToApplyRule(weCanSimplifyByCancellingTheOne, 2, weCanSimplifyByCancellingTheOne). 
 
-_heuristicToApplyRule(weCanSimplifyByDistributingThisConstant, 3, weCanSimplifyByDistributingThisConstant). 
+_heuristicToApplyRule(weCanSimplifyByDistributingTheSingleFactor, 3, weCanSimplifyByDistributingTheSingleFactor). 
 _heuristicToApplyRule(weCanSimplifyByCombiningTheseIntoASingleTerm, 3, weCanSimplifyByCombiningTheseIntoASingleTerm). 
 _heuristicToApplyRule(weCanSimplifyBySubstitutingYForFACTORA, 3, weCanSimplifyBySubstitutingYForFACTORA). 
 _heuristicToApplyRule(weCanSimplifyByMultiplyingTheNumeratorByTheTerm, 3, weCanSimplifyByMultiplyingTheNumeratorByTheTerm). 
