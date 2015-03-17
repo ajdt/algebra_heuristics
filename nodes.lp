@@ -155,23 +155,6 @@ _holds(Time, _fact(Parent, _nodeField(numer, Child)))
 _holds(Time, _fact(Parent, _nodeField(denom, Child)))
 		:-	_denominatorOf(Time, Parent, Child).
 
-% deriving numChildren predicate for other time steps
-_childNumberIsActive(Time, Node, Number)
-        :-  _childNum(Node, Child, Number),
-            __isActive(Time, Child),
-            not _startTime(Time).
-_numChildren(Time, Node, Number)    % finding highest numbered active child
-        :-  __isActive(Time, Node),
-            not _startTime(Time),
-            not __isMono(Time, Node),
-            _childNumberIsActive(Time, Node, Number),
-            not _childNumberIsActive(Time, Node, Number+1).
-%%% CONSTRAINT: children must be used up in order!
-:-  _childNumberIsActive(Time, Node, Number),
-    _startTime(Time),
-    Number > 1,
-    not _childNumberIsActive(Time, Node, Number-1).
-
 					%%% Properties Derived From Tree Structure %%%
 % NOTE: a nested grouping: is an operator node nested inside another of the same type that can be ungrouped
 % as in (x+b)+c --> x + b + c
