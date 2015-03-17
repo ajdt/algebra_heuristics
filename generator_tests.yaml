@@ -168,10 +168,10 @@ Test weCanDivideBothSidesByTheCoefficientOfTheLeftSide:
         :- not _selectedHeuristic(_time(0,1), weCanDivideBothSidesByTheCoefficientOfTheLeftSide).
         _disableSolvability.
     Expect: SAT
-Test weCanSimplifyBySubstitutingYForXDEG:
+Test weCanSimplifyBySubstitutingYForFACTORA:
     Modules: generator
     Program: |
-        :- not _selectedHeuristic(_time(0,1), weCanSimplifyBySubstitutingYForXDEG).
+        :- not _selectedHeuristic(_time(0,1), weCanSimplifyBySubstitutingYForFACTORA).
         _disableSolvability.
     Expect: SAT
 Test weCanSimplifyByMultiplyingTheNumeratorByTheTerm:

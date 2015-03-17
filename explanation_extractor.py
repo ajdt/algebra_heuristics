@@ -69,7 +69,7 @@ def convertFromCamelCase(name):
     s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
     s2 = re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
     s3 = re.sub('_', ' ', s2)
-    return s3.replace('is1', 'is 1') # XXX: quick bandaid fix, I'll do something better later
+    return s3.replace('1', ' 1').replace('0', ' 0') # XXX: quick bandaid fix, I'll do something better later
 
 
                         ### EXPLANATION CLASSES ###

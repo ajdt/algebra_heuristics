@@ -98,7 +98,7 @@ _heuristicToApplyRule(weCanSimplifyByCancellingTheOne, 2, weCanSimplifyByCancell
 
 _heuristicToApplyRule(weCanSimplifyByDistributingThisConstant, 3, weCanSimplifyByDistributingThisConstant). 
 _heuristicToApplyRule(weCanSimplifyByCombiningTheseIntoASingleTerm, 3, weCanSimplifyByCombiningTheseIntoASingleTerm). 
-_heuristicToApplyRule(weCanSimplifyBySubstitutingYForXDEG, 3, weCanSimplifyBySubstitutingYForXDEG). 
+_heuristicToApplyRule(weCanSimplifyBySubstitutingYForFACTORA, 3, weCanSimplifyBySubstitutingYForFACTORA). 
 _heuristicToApplyRule(weCanSimplifyByMultiplyingTheNumeratorByTheTerm, 3, weCanSimplifyByMultiplyingTheNumeratorByTheTerm). 
 
 %%%================================================================================

@@ -58,6 +58,7 @@ factora_parser  =   'factor1(' + time_parser + ',' + number_parser + ',' + numbe
 factorb_parser  =   'factor2(' + time_parser + ',' + number_parser + ',' + number_parser + ')'
 factorc_parser  =   'factor3(' + time_parser + ',' + number_parser + ',' + number_parser + ')'
 factord_parser  =   'factor4(' + time_parser + ',' + number_parser + ',' + number_parser + ')'
+refer_to_Parser =   'referTo(' + time_parser + ',' + number_parser + ',' + node_parser + ')'
 #_selectedHeurOperands(_time(0,1),_operands(_id(1,1)))
 binary_operand_parser   = 'selectedHeurOperands(' + time_parser + ',' + 'operands(' + node_parser + ',' + node_parser + ')' + ')'
 unary_operand_parser    = 'selectedHeurOperands(' + time_parser + ',' + 'operands('  + node_parser + ')' + ')'
@@ -86,7 +87,7 @@ child_parser            =   wrapInKeyValueAndFact(word_node_parser)
 applicable_heur_parser  = 'applicableHeuristic(' + time_parser + ',' + word_parser + ')'
 
 all_parsers     =   [ type_parser, child_parser, deg_coeff_parser, action_parser, binary_operand_parser, unary_operand_parser, applicable_heur_parser]
-factor_parsers  =   [factora_parser, factorb_parser, factorc_parser, factord_parser]
+factor_parsers  =   [factora_parser, factorb_parser, factorc_parser, factord_parser, refer_to_Parser]
 op_symbols      =   {'add' : '+' , 'div' : '/' , 'mul' : '*' , 'neg' : '-'}
 
 class GeneratedProblem(object):
@@ -173,6 +174,12 @@ class EquationStepParser:
             poly, deg, coeff = (node, field, value)
             self.monoms_of_polys[poly].append((deg, coeff))
 
+    def add_reference(self, pred_num, node_id):
+        # NOTE: factor data stores deg/coeff info about terms used to factor an equation
+        if node_id in self.factor_data.keys():
+            self.factor_data[pred_num].append(node_id)
+        else:
+            self.factor_data[pred_num] = [node_id]
     def add_factor_data(self, factor_data):
         # NOTE: factor data stores deg/coeff info about terms used to factor an equation
         self.factor_data.update(factor_data)
@@ -248,6 +255,13 @@ class EquationStepParser:
         # Nell's code uses a binary tree representation, my ASP representation 
         # allows for trees with 3 or more children
         explanations    = [ temp.getSentenceFragments() for temp in sentence_temp]
+
+        # add factor_data to explanations
+        # TODO: this should be done by explanation extractor and parser, not here!!
+        for index, sentence_frag in enumerate(explanations):
+            if index in self.factor_data.keys(): # there are references to be attached to explanation
+                sentence_frag[1] += self.factor_data[index]
+
         translate_dict  = self.getBinaryTreeTranslation()
         return [ self.translateSingleExplanation(expl, translate_dict) for expl in explanations]
 
@@ -407,6 +421,8 @@ class MathProblemParser(object):
         self.solution_steps[step].addActionPred(action_name)
         self.actions.append(str(action_name))
 
+    def addReference(self, time_step, pred_num, node_id):
+        self.solution_steps[time_step].add_reference(pred_num, node_id)
     def addFactorPred(self, time_step, factor_data):
         self.solution_steps[time_step].add_factor_data(factor_data)
     def addOperands(self, time, operands):
@@ -570,6 +586,13 @@ class AnswerSetParser(object):
                     time        = (time_step, soln_num)
                     factor_data =   {'FACTORY': EquationStepParser.makeMonomialFromData(tokens[7], tokens[9]) }
                     problem_parsers[soln_num].addFactorPred(time_step, factor_data)
+                if parser == refer_to_Parser:
+                    time_step   = int(tokens[2])
+                    soln_num    = int(tokens[4])
+                    time        = (time_step, soln_num)
+                    pred_num    = int(tokens[7])
+                    id_value    = ''.join(tokens[9:-1])
+                    problem_parsers[soln_num].addReference(time_step, pred_num, id_value)
         # NOTE: important, we don't want to save the parser objects, just the relevant parts of the generated problems
         # So we save GeneratedProblem instances instead
         self.math_problems_dict = dict( [(prob_number, parser.jsonFriendlyFormat() ) for prob_number, parser in problem_parsers.items()])

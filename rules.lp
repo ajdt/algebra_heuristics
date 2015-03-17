@@ -585,6 +585,16 @@ _applicable(Time, _rule(weCanSimplifyBySubtractingTheNonZeroTermFromBothSides, _
 _thereIsANonZeroTermOnTheRighthandSideOfTheEquation(Time, Node)
     :-  _isNonZero(Time, Node),
         _isOnTheRightSideOfTheEquation(Node).
+
+% create predicates for additional tags!!
+__referTo(Time, 1, Node)
+        :-  _thereIsAVariableOnTheRighthandSideOfTheEquation(Time, Node),
+            _ruleForTimeStep(Time, weCanSimplifyBySubtractingTheVariableTermFromBothSides).
+
+__referTo(Time, 1, Node)
+    :-  _theEquationHasAHighDegreeTerm(Time, Node),
+        _ruleForTimeStep(Time, weCanSimplifyBySubtractingTheNonZeroTermFromBothSides).
+
 _thereIsAVariableOnTheRighthandSideOfTheEquation(Time, Node)
     :-  _isATermWithAVariable(Time, Node),
         _isSumOfTerms(Time, rightSide),
@@ -603,7 +613,9 @@ _thereIsAConstantOnTheLefthandSideOfTheEquation(Time, Node)
         _isATermOf(Time, leftSide, Node),
         not _isZero(Time, Node).
 
-_theEquationHasAHighDegreeTerm(Time) % TODO: Improve these explanations
+_theEquationHasAHighDegreeTerm(Time) 
+    :-  _theEquationHasAHighDegreeTerm(Time, Node).
+_theEquationHasAHighDegreeTerm(Time, Node) % TODO: Improve these explanations
     :-  _isTheDegreeOf(Time, Node, Deg),
         Deg >= 2.
 _theEquationHasOnlyLinearTerms(Time)
@@ -677,15 +689,17 @@ _saveEqnResult(Time)
 % TODO: rewrite to generate better explanation
 % decreaseDeg: x^4 + x^2= 0  --> x^2 + 1 = 0 (example)
 %================================================================================
-_applicable(Time, _rule(weCanSimplifyBySubstitutingYForXDEG, _operands(leftSide)))
+_applicable(Time, _rule(weCanSimplifyBySubstitutingYForFACTORA, _operands(leftSide)))
 	:-	%_equationHasNonConstantTerms(Time),
         _theDegreeOfEveryVariableInTheEquationIsDivisibleBy(Time, DEG).
 _update(Time, Node, degree, ResultDeg)
-	:-	_ruleForTimeStep(Time, weCanSimplifyBySubstitutingYForXDEG),
+	:-	_ruleForTimeStep(Time, weCanSimplifyBySubstitutingYForFACTORA),
 		_smallestNonZeroDeg(Time, DividingDeg),
 		_isTheDegreeOf(Time, Node, OrigDeg),
 		OrigDeg != 0,
 		_degProduct(OrigDeg, DividingDeg, ResultDeg).
+_factor1(Time, Degree, 1)
+    :-  _theDegreeOfEveryVariableInTheEquationIsDivisibleBy(Time, Degree).
 
 _theDegreeOfEveryVariableInTheEquationIsDivisibleBy(Time, Deg)
     :-  __validTime(Time),
@@ -754,7 +768,7 @@ _rule(weCanSimplifyByCancellingTheseTerms).
 _rule(weCanSimplifyBySubtractingTheTermFromBothSides).
 _rule(weCanSimplifyByMultiplyingBothSidesOfTheEquationByThisDenominator).
 _rule(weCanDivideBothSidesByTheCoefficientOfTheLeftSide).
-_rule(weCanSimplifyBySubstitutingYForXDEG).
+_rule(weCanSimplifyBySubstitutingYForFACTORA).
 _rule(weCanSimplifyByMultiplyingTheNumeratorByTheTerm).
 _rule(weCanSimplifyBySubtractingTheVariableTermFromBothSides).
 _rule(weCanSimplifyBySubtractingTheNonZeroTermFromBothSides).
