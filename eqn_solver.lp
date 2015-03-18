@@ -159,13 +159,35 @@ _isStdBinomial(Time, Poly)
 
 %%% CONSTRAINT: prohibit negative solutions if took even root 
 :- _evenRootHasBeenTaken,
-    _solution(SolnValue),
+    _solutionValue(Time, SolnValue, 1),
     SolnValue < 0.
 _evenRootHasBeenTaken
     :-  _selectedHeuristic(Time, weCanSimplifyBySubstitutingYForFACTORA),
         _smallestNonZeroDeg(Time, DividingDeg),
         DividingDeg \ 2 == 0.
 
+% extracting solutionValues from a solution
+% a solutionValue is a rational number _solutionValue(numer, denom)
+_solutionValue(Time, Coeff, 1)	
+	:-	_isXTerm(Time, leftSide),
+		_isConstant(Time, rightSide),
+        _isTheCoefficientOf(Time, rightSide, Coeff),
+        _stopTime(Time).
+_solutionValue(Time, NumerCoeff, DenomCoeff)	
+	:-	_isXTerm(Time, leftSide),
+		_isProperRational(Time, rightSide),
+        _numeratorOf(Time, rightSide, Numer),
+        _isTheCoefficientOf(Time, Numer, NumerCoeff),
+        _denominatorOf(Time, rightSide, Denom),
+        _isTheCoefficientOf(Time, Denom, DenomCoeff),
+        _stopTime(Time).
+
+_solutionValue(Time, ConstTerm, 1)	% solved if (x+c_1) * (x + c_2) ... = 0 
+	:-	_isProductOfLinearBinomials(Time, leftSide),
+        _isATermOf(Time, leftSide, Poly),
+		_monoTermOfPoly(Time, Poly, 0, ConstTerm),
+        _stopTime(Time).
+    
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 1-GRAM DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 _ruleForTimeStream(Stream, Rule)

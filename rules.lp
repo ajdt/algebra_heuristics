@@ -692,6 +692,7 @@ _saveEqnResult(Time)
 _applicable(Time, _rule(weCanSimplifyBySubstitutingYForFACTORA, _operands(leftSide)))
 	:-	%_equationHasNonConstantTerms(Time),
         _theDegreeOfEveryVariableInTheEquationIsDivisibleBy(Time, DEG).
+
 _update(Time, Node, degree, ResultDeg)
 	:-	_ruleForTimeStep(Time, weCanSimplifyBySubstitutingYForFACTORA),
 		_smallestNonZeroDeg(Time, DividingDeg),
@@ -719,6 +720,9 @@ _equationHasNonConstantTerms(Time)
 		Coeff != 0,
 		Deg > 0.
 
+_substitutedDegree(Time, Deg)
+    :-  _ruleForTimeStep(Time, weCanSimplifyBySubstitutingYForFACTORA),
+        _theDegreeOfEveryVariableInTheEquationIsDivisibleBy(Time, Deg).
 %================================================================================
 % TODO: rewrite to generate better explanation replace not isFraction with isNotFraction
 % mulWithFrac: (A/B) * D --> (A*D)/B

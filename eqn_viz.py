@@ -59,6 +59,8 @@ factorb_parser  =   'factor2(' + time_parser + ',' + number_parser + ',' + numbe
 factorc_parser  =   'factor3(' + time_parser + ',' + number_parser + ',' + number_parser + ')'
 factord_parser  =   'factor4(' + time_parser + ',' + number_parser + ',' + number_parser + ')'
 refer_to_Parser =   'referTo(' + time_parser + ',' + number_parser + ',' + node_parser + ')'
+soln_parser     =   'solutionValue('  + time_parser + ',' + number_parser + ',' + number_parser + ')'
+substitute_parser     =   'substitutedDegree(' + time_parser + ',' + number_parser + ')'
 #_selectedHeurOperands(_time(0,1),_operands(_id(1,1)))
 binary_operand_parser   = 'selectedHeurOperands(' + time_parser + ',' + 'operands(' + node_parser + ',' + node_parser + ')' + ')'
 unary_operand_parser    = 'selectedHeurOperands(' + time_parser + ',' + 'operands('  + node_parser + ')' + ')'
@@ -87,7 +89,7 @@ child_parser            =   wrapInKeyValueAndFact(word_node_parser)
 applicable_heur_parser  = 'applicableHeuristic(' + time_parser + ',' + word_parser + ')'
 
 all_parsers     =   [ type_parser, child_parser, deg_coeff_parser, action_parser, binary_operand_parser, unary_operand_parser, applicable_heur_parser]
-factor_parsers  =   [factora_parser, factorb_parser, factorc_parser, factord_parser, refer_to_Parser]
+factor_parsers  =   [factora_parser, factorb_parser, factorc_parser, factord_parser, refer_to_Parser, soln_parser, substitute_parser]
 op_symbols      =   {'add' : '+' , 'div' : '/' , 'mul' : '*' , 'neg' : '-'}
 
 class GeneratedProblem(object):
@@ -107,6 +109,7 @@ class GeneratedProblem(object):
         step_with_explanations = zip(steps, step_explanations)
         condense_one_step_expl = lambda multiple_sent: '\n'.join([ sentence + ':' + ''.join(operands) for sentence, operands in multiple_sent ])
         combined = [ step +  '\n' + condense_one_step_expl(expl_data) for step, expl_data in step_with_explanations ]
+
 
         return '\n'.join(combined)
 
@@ -399,6 +402,11 @@ class MathProblemParser(object):
         self.solution_steps = defaultdict(lambda : EquationStepParser(model_mgr))
         self.actions = []
         self.applicable_actions = set()
+        # data members used to store solutions and info about substitutions
+        self.substitution_happened     = False
+        self.substitution_degree       = None
+        self.substitution_time_step    = -1
+        self.solutions = []
     def addPredicate(self, time, pred_array):
         step = time[0]
         self.solution_steps[step].addPredicate(pred_array)
@@ -436,13 +444,42 @@ class MathProblemParser(object):
     def getOperands(self):
         return [step_parser.getOperands() for step_number, step_parser in self.solution_steps.items()]
     def getEqnSteps(self):
-        return [step.getEqnString() for step in self.solution_steps.values()]
+        solution_steps = [step.getEqnString() for step in self.solution_steps.values()]
+        y_substituted =  self.useYVariable(solution_steps)
+        if self.substitution_happened :
+            return self.appendXSolutions(y_substituted)
+        return y_substituted
+    def useYVariable(self, solution_steps):
+        # if substitution rule is applied need to use y-variable instead of x variable
+        # for every subsequent step
+        if 'weCanSimplifyBySubstitutingYForFACTORA' in self.getActions():
+            index = self.getActions().index('weCanSimplifyBySubstitutingYForFACTORA')
+            return solution_steps[:index+1] + [ step.replace('x', 'y') for step in solution_steps[index+1:]]
+        else:
+            return solution_steps
+    def appendXSolutions(self, solution_steps):
+        # if y was substituted for x, append solutions for x
+
+        # root prefixes used to express root order
+        root_prefixes = {'2': '2nd', '3':'3rd' }
+        root_prefixes.update(dict([(l, l+'th') for l in list('456789')]))
+        
+        prefix = root_prefixes[self.substitution_degree] + ' root of '
+        x_solutions = ', '.join([prefix + s for s in self.solutions])
+        solution_steps.append('x = ' + x_solutions)
+        return solution_steps
+    
     def getEqnTrees(self):
         return [step.getTreeStructure() for step in self.solution_steps.values()]
     def getActions(self):
         return list(self.actions)
     def getExplanationsForSteps(self):
-        return [step.getExplanationSentences() for step in self.solution_steps.values()]
+        expl_sentences = [step.getExplanationSentences() for step in self.solution_steps.values()]
+        # NOTE: zip operation in GeneratedProblem will truncate eqn_steps unless I insert a NULL explanation
+        # this only happens when y substitution occurs
+        if self.substitution_happened:
+            expl_sentences.append([])
+        return expl_sentences
     def addApplicableAction(self, action_name):
         self.applicable_actions.add(str(action_name))
     def getApplicableActions(self):
@@ -593,6 +630,23 @@ class AnswerSetParser(object):
                     pred_num    = int(tokens[7])
                     id_value    = ''.join(tokens[9:-1])
                     problem_parsers[soln_num].addReference(time_step, pred_num, id_value)
+                if parser == substitute_parser:
+                    time_step   = int(tokens[2])
+                    soln_num    = int(tokens[4])
+                    degree      = tokens[-2]
+                    problem_parsers[soln_num].substitution_happened     = True
+                    problem_parsers[soln_num].substitution_degree       = degree
+                    problem_parsers[soln_num].substitution_time_step    = time_step
+                if parser == soln_parser:
+                    time_step   = int(tokens[2])
+                    soln_num    = int(tokens[4])
+                    numer       = tokens[7]
+                    denom       = tokens[9]
+                    soln_value  = numer
+                    if denom != '1':
+                        soln_value += '/' + denom
+                    problem_parsers[soln_num].solutions.append(soln_value)
+                    
         # NOTE: important, we don't want to save the parser objects, just the relevant parts of the generated problems
         # So we save GeneratedProblem instances instead
         self.math_problems_dict = dict( [(prob_number, parser.jsonFriendlyFormat() ) for prob_number, parser in problem_parsers.items()])
