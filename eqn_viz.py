@@ -427,7 +427,7 @@ class MathProblemParser(object):
         
     def addActionPred(self, step, action_name):
         self.solution_steps[step].addActionPred(action_name)
-        self.actions.append(str(action_name))
+        self.actions.append((step, str(action_name)))
 
     def addReference(self, time_step, pred_num, node_id):
         self.solution_steps[time_step].add_reference(pred_num, node_id)
@@ -472,7 +472,8 @@ class MathProblemParser(object):
     def getEqnTrees(self):
         return [step.getTreeStructure() for step in self.solution_steps.values()]
     def getActions(self):
-        return list(self.actions)
+        sorted_actions = sorted(self.actions)
+        return [ action for step, action in sorted_actions]
     def getExplanationsForSteps(self):
         expl_sentences = [step.getExplanationSentences() for step in self.solution_steps.values()]
         # NOTE: zip operation in GeneratedProblem will truncate eqn_steps unless I insert a NULL explanation
