@@ -16,6 +16,14 @@ import tempfile
 import os       # for file deletion at the end 
 import parse_asp_rules as par
 
+# Singleton explanation manager exposed outside this module
+TEMPLATE_MANAGER = None
+def getTemplateManager(): # used to manage singleton template_manager
+    global TEMPLATE_MANAGER
+    if TEMPLATE_MANAGER == None:
+        TEMPLATE_MANAGER = parseRules()
+    return TEMPLATE_MANAGER
+
                         ### HELPER FUNCTIONS ###
 def makeSanitizedFile(file_name):
     """remove comments. Save to new file"""
