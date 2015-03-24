@@ -175,11 +175,86 @@ _heuristicToApplyRule(RuleName, defaultRulePriority, RuleName)
 	:-	_rule(RuleName),
 		not _ruleAlreadyHasHigherPriority(RuleName).
 
+%% heuristic categories
+_heuristicCategory(cancelHeuristic).
+_heuristicCategory(combineHeuristic).
+_heuristicCategory(recombineHeuristic).
+_heuristicCategory(rearrangeHeuristic).
+_heuristicCategory(miscHeuristic).
 
-% TODO: fix this bug
-%%:- not _numActiveChildren(_time(0,1), leftSide, 3).%%
+_topPriority(cancelHeuristic).
 
-%%:- not _numActiveChildren(_time(0,1), leftSide, 3).%%
-%%:- not _selectedHeuristic(_time(0,1), cancelAcrossEqn).%%
-%%:- not _selectedHeuristic(_time(1,1), factorSimpleQuad).%%
-%%:-	not _isPolynomial(_time(0,1), leftSide).%%
+% (heuristicToTry, heuristicThatIsntApplicable)
+_tryIfNotApplicable(combineHeuristic, cancelHeuristic).
+_tryIfNotApplicable(recombineHeuristic, combineHeuristic).
+_tryIfNotApplicable(rearrangeHeuristic, recombineHeuristic).
+_tryIfNotApplicable(miscHeuristic, rearrangeHeuristic).
+
+% selecting the highest applicable category!!
+_applicableCategory(Time, Category)
+    :-  _applicableHeuristic(Time, HeurName),
+        _theCategoryOfHeuristicIs(HeurName, Category).
+
+_highestApplicableCategory(Time, Category)
+    :-  _topPriority(Category),
+        _applicableCategory(Time, Category).
+_noCategoryAppliesUpTo(Time, Category)
+    :-  _topPriority(Category),
+        __validTime(Time),
+        not _applicableCategory(Time, Category).
+
+_noCategoryAppliesUpTo(Time, CategoryToTry)
+    :-  _noCategoryAppliesUpTo(Time, Category),
+        _tryIfNotApplicable(CategoryToTry, Category),
+        not _applicableCategory(Time, CategoryToTry).
+
+_highestApplicableCategory(Time, CategoryToTry)
+    :-  _noCategoryAppliesUpTo(Time, Category),
+        _tryIfNotApplicable(CategoryToTry, Category),
+        _applicableCategory(Time, CategoryToTry).
+
+%%% subtree sizes
+_subtreeSize(Time, Mono, 1)
+    :-  __isMono(Time, Mono).
+
+_sizeOfChildSubtree(Time, Node, Child, Size)
+    :-  _subtreeSize(Time, Child, Size),
+        _isATermOf(Time, Node, Child).
+_subtreeSize(Time, Node, SubtreeSize)
+    :-  _isOper(Time, Node),
+        SubtreeSize = #sum { Size,Child: _sizeOfChildSubtree(Time, Node, Child, Size)}.
+
+%%% selecting based on subtree size
+
+% associate size with each operation of highest category
+_sizeOfSubExpressionsForHeuristicApplication(Time, _rule(Heuristic, _operands(LeftOper, RightOper)), LeftSize)
+    :-  _applicable(Time, _rule(Heuristic, _operands(LeftOper, RightOper))),
+        _subtreeSize(Time, LeftOper, LeftSize),
+        _subtreeSize(Time, RightOper, RightSize),
+        _highestApplicableCategory(Time, HighestCategory),
+        _theCategoryOfHeuristicIs(Heuristic, HighestCategory).
+
+_sizeOfSubExpressionsForHeuristicApplication(Time, _rule(Heuristic, _operands(LeftOper)), LeftSize)
+    :-  _applicable(Time, _rule(Heuristic, _operands(LeftOper))),
+        _subtreeSize(Time, LeftOper, LeftSize),
+        _highestApplicableCategory(Time, HighestCategory),
+        _theCategoryOfHeuristicIs(Heuristic, HighestCategory).
+
+% find largest operand size for current time step
+_sizeOfPossibleOperandForTimeStep(Time, Size)
+    :-  _sizeOfSubExpressionsForHeuristicApplication(Time, HeurApp, Size).
+
+_largestSubexpressionForTimeStep(Time, Max)
+    :-  __validTime(Time), not _stopTime(Time),
+        Max = #max { Size : _sizeOfPossibleOperandForTimeStep(Time, Size) }.
+
+% select a heuristic application of the selected strategy
+% and that has the largest size operands possible
+1 { _alternateSelectedHeuristic(Time, _rule(HeurName, Oper)) : 
+        _sizeOfSubExpressionsForHeuristicApplication(Time, _rule(HeurName, Oper), Size),
+        _theCategoryOfHeuristicIs(HeurName, HighestCategory),
+        _highestApplicableCategory(Time, HighestCategory),
+        _largestSubexpressionForTimeStep(Time, Size)
+    } 1
+    :-  __validTime(Time), not _stopTime(Time).
+
