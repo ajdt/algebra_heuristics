@@ -37,19 +37,19 @@ _performRule(Time, _rule(HeurName, Oper))
 % a partial ordering on the strategies too. 
 
 %% heuristic categories
-_heuristicCategory(cancelHeuristic).
-_heuristicCategory(combineHeuristic).
-_heuristicCategory(recombineHeuristic).
-_heuristicCategory(rearrangeHeuristic).
-_heuristicCategory(miscHeuristic).
+_heuristicCategory(cancel).
+_heuristicCategory(combine).
+_heuristicCategory(rearrange).
+_heuristicCategory(move).
+_heuristicCategory(expand).
 
-_topPriority(cancelHeuristic).
+_topPriority(cancel).
 
 % (heuristicToTry, heuristicThatIsntApplicable)
-_tryIfNotApplicable(combineHeuristic, cancelHeuristic).
-_tryIfNotApplicable(recombineHeuristic, combineHeuristic).
-_tryIfNotApplicable(rearrangeHeuristic, recombineHeuristic).
-_tryIfNotApplicable(miscHeuristic, rearrangeHeuristic).
+_tryIfNotApplicable(combine, cancel).
+_tryIfNotApplicable(rearrange, combine).
+_tryIfNotApplicable(move, rearrange).
+_tryIfNotApplicable(expand, move).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% HEURISTIC SELECTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % a heuristic is applicable if it's trigger is applicable

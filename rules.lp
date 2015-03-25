@@ -37,7 +37,7 @@ _deepCopy(Time, RootNode, TempRoot)
 %================================================================================
 % divIdentity: A / A ----> 1
 %================================================================================
-_theCategoryOfHeuristicIs(thisFractionCanBeSimplifiedToOne, cancelHeuristic).
+_theCategoryOfHeuristicIs(thisFractionCanBeSimplifiedToOne, cancel).
 % NOTE: applicable only to subtrees over which equality is defined
 _applicable(Time, _rule(thisFractionCanBeSimplifiedToOne, _operands(Fraction)))
 	:-	_theNumeratorAndDenominatorOfThisFractionAreEqual(Time, Fraction).
@@ -53,7 +53,7 @@ _setToOne(Time, Fraction)
 %================================================================================
 % canBeMultipliedAsFractions: a/b * c/d --> (a*c)/(b*d)
 %================================================================================
-_theCategoryOfHeuristicIs(weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms, recombineHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms, rearrange).
 _applicable(Time, _rule(weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms, _operands(LeftFrac, RightFrac)))
     :-  _theseTwoFractionsAreBeingMultiplied(Time, LeftFrac, RightFrac).
 
@@ -81,7 +81,7 @@ _writeBinaryOp(Time)
 %================================================================================
 % canBeMultipliedByInverseOf: a/c / b/d --> a/c * d/b
 %================================================================================
-_theCategoryOfHeuristicIs(weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead, recombineHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead, rearrange).
 _applicable(Time, _rule(weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead, _operands(DenomFrac)))
 			:-	_weAreDividingByAFraction(Time, DenomFrac).
 
@@ -116,7 +116,7 @@ _setResultTo(Time, Root)
 %================================================================================
 % ignore denominator: a / b = 0 --> a = 0
 %================================================================================
-_theCategoryOfHeuristicIs(soTheNumeratorOfThisFractionMustBeEqualToZero, cancelHeuristic).
+_theCategoryOfHeuristicIs(soTheNumeratorOfThisFractionMustBeEqualToZero, cancel).
 _applicable(Time, _rule(soTheNumeratorOfThisFractionMustBeEqualToZero, _operands(leftSide)))
 	:-	_thisSideOfTheEquationIsZero(Time, rightSide),
 		_thisSideOfTheEquationIsAFraction(Time, leftSide).
@@ -130,7 +130,7 @@ _setResultTo(Time, leftSide)
 %================================================================================
 % canBeAddedTogether: a*x^b + c*x^b ----> (a+c)*x^b
 %================================================================================
-_theCategoryOfHeuristicIs(weCanSimplifyByAddingTheseTwoTermsTogether, combineHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyByAddingTheseTwoTermsTogether, combine).
 _applicable(Time, _rule(weCanSimplifyByAddingTheseTwoTermsTogether, _operands(LeftMono, RightMono)))
     :-  _weAreAddingTwoTermsWithVariablesThatHaveTheSameDegree(Time, LeftMono, RightMono).
 
@@ -153,7 +153,7 @@ _writeBinaryOp(Time)
 %================================================================================
 % monomult ax^b  * cx^d --> (a*c)x^(b+d)
 %================================================================================
-_theCategoryOfHeuristicIs(weCanSimplifyByCombiningTheseIntoASingleTerm, combineHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyByCombiningTheseIntoASingleTerm, combine).
 _applicable(Time, _rule(weCanSimplifyByCombiningTheseIntoASingleTerm, _operands(LeftMono, RightMono)))
 	:-	_weAreMultiplyingTwoTerms(Time, LeftMono, RightMono).
 
@@ -176,7 +176,7 @@ _writeBinaryOp(Time)
 % fracCancel A*B/C*B --> A/C
 %================================================================================
 % NOTE: relies on equal/3 predicate to work
-_theCategoryOfHeuristicIs(weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator, cancelHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator, cancel).
 _applicable(Time, _rule(weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator, _operands(NumerFactor, DenomFactor)))
     :-  _thisTermIsInBothTheNumeratorAndDenominatorOfAFraction(Time, NumerFactor, DenomFactor).
 
@@ -209,7 +209,7 @@ _canCancelWholeFraction(Time)
 %================================================================================
 % NOTE: squared term must have coeff 1, divide by constant my be required to reach 
 % this form
-_theCategoryOfHeuristicIs(weCanSimplifyByFactoringThisExpression, miscHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyByFactoringThisExpression, expand).
 _applicable(Time, _rule(weCanSimplifyByFactoringThisExpression, _operands(Node)))
 	:-	_thisExpressionIsPolynomialAndQuadratic(Time, Node),
         _theNumbersFACTORAAndFACTORBHaveASumOfFACTORXAndProductOfFACTORYSoWeCanUseThemToFactor(Time).
@@ -260,7 +260,7 @@ _setResultTo(Time, Poly)
 % addSameFrac A/B + C/B --> (A+C)/B
 %================================================================================
 % NOTE: _sameDenom depends on equals/3 predicate (which applies only to monomials)
-_theCategoryOfHeuristicIs(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction, recombineHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction, rearrange).
 _applicable(Time, _rule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction, _operands(Fst, Snd)))
 	:-	_theseTwoFractionsAreBeingAddedAndTheyHaveTheSameDenominator(Time, Fst, Snd).
 
@@ -289,7 +289,7 @@ _writeBinaryOp(Time)
 %================================================================================
 % distribute (a + b) * C --> (a*C + b*C)
 %================================================================================
-_theCategoryOfHeuristicIs(weCanSimplifyByDistributingTheSingleFactor, miscHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyByDistributingTheSingleFactor, expand).
 _applicable(Time, _rule(weCanSimplifyByDistributingTheSingleFactor, _operands(PlusTerm, __DistribTerm)))
 	:-	_weAreMultiplyingASumOfTermsByASingleFactor(Time, PlusTerm, __DistribTerm).
 
@@ -322,7 +322,7 @@ _writeBinaryOp(Time)
 %================================================================================
 % divByOne A/1 --> A
 %================================================================================
-_theCategoryOfHeuristicIs(weCanSimplifyByCancellingTheDenominatorOfThisFraction, cancelHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyByCancellingTheDenominatorOfThisFraction, cancel).
 _applicable(Time, _rule(weCanSimplifyByCancellingTheDenominatorOfThisFraction, _operands(Fraction)))
 	:-	_theDenominatorOfThisFractionIs1(Time, Fraction).
 _theDenominatorOfThisFractionIs1(Time, Fraction) 
@@ -335,7 +335,7 @@ _deepCopy(Time, Fraction, Numer)
 %================================================================================
 % addZero A + 0 --> A
 %================================================================================
-_theCategoryOfHeuristicIs(weCanSimplifyByCancellingTheZero, cancelHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyByCancellingTheZero, cancel).
 _applicable(Time, _rule(weCanSimplifyByCancellingTheZero, _operands(Mono)))
     :-  _weAreAdding0ToASumOfTerms(Time, Mono).
 
@@ -351,7 +351,7 @@ _cancelTerm(Time, ZeroTerm)
 % factorMonom:	ax^k  --> bx^m * cx^n 
 %================================================================================
 % NOTE: this is the same rule as weCanSimplifyByFactoringOutAFACTORA, except written specifically for monomials
-_theCategoryOfHeuristicIs(weCanSimplifyBySubstitutingTheFactorsOfTheTerm, miscHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyBySubstitutingTheFactorsOfTheTerm, expand).
 _applicable(Time, _rule(weCanSimplifyBySubstitutingTheFactorsOfTheTerm, _operands(Mono)))
 	:-	_thisTermHasFactorsFACTORAAndFACTORB(Time, Mono).
 
@@ -408,7 +408,7 @@ _setResultTo(Time, Mono)
 %       check if layer 2 explanation is pretty good or not
 % factorCommTerm:	(a*x^k + b*x^l ) --> (a*x^m + b*x^n ) * x^j
 %================================================================================
-_theCategoryOfHeuristicIs(weCanSimplifyByFactoringOutAFACTORA, miscHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyByFactoringOutAFACTORA, expand).
 _applicable(Time, _rule(weCanSimplifyByFactoringOutAFACTORA, _operands(Poly)))
 	:-	_thisExpressionIsAPolynomialAndEachOfItsTermsHasFACTORAAsAFactor(Time, Poly),
         __selectedPoly(Time, Poly).
@@ -492,7 +492,7 @@ _setResultTo(Time, Poly)
 %================================================================================
 % multByZero:	A*0 --> 0
 %================================================================================
-_theCategoryOfHeuristicIs(theProductOfTheseTermsIsZero, combineHeuristic).
+_theCategoryOfHeuristicIs(theProductOfTheseTermsIsZero, combine).
 _applicable(Time, _rule(theProductOfTheseTermsIsZero, _operands(ZeroTerm)))
     :-  _weAreMultiplyingSomeTermsBy0(Time, ZeroTerm). 
 
@@ -507,7 +507,7 @@ _setToZero(Time, Parent)
 %================================================================================
 % multIdentity:	A*1 --> A
 %================================================================================
-_theCategoryOfHeuristicIs(weCanSimplifyByCancellingTheOne, combineHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyByCancellingTheOne, combine).
 _applicable(Time, _rule(weCanSimplifyByCancellingTheOne, _operands(UnitTerm)))
     :-  _weAreMultiplyingSomeTermsBy1(Time, UnitTerm). 
 
@@ -528,7 +528,7 @@ _cancelTerm(Time, UnitTerm)
 % expression is too large and we get a node overflow.
 % Additionally, we can only multiply expression by a polynomial expression already existing
 % somewhere in the equation
-_theCategoryOfHeuristicIs(weCanSimplifyByMultiplyingTheNumeratorAndDenominatorByTERM, miscHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyByMultiplyingTheNumeratorAndDenominatorByTERM, expand).
 _applicable(Time, _rule(weCanSimplifyByMultiplyingTheNumeratorAndDenominatorByTERM, _operands(Fraction, TERM)))
 	:-	_thisIsAFraction(Time, Fraction),
 		__isActive(Time, TERM).
@@ -558,7 +558,7 @@ _setResultTo(Time, Fraction)
 %================================================================================
 % cancelSumTerm: A + B = A + C --> B = C
 %================================================================================
-_theCategoryOfHeuristicIs(weCanSimplifyByCancellingTheseTerms, cancelHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyByCancellingTheseTerms, cancel).
 _applicable(Time, _rule(weCanSimplifyByCancellingTheseTerms, _operands(LeftChild, RightChild)))
 	:-	_thisTermIsAddedToBothSidesOfTheEquation(Time, LeftChild, RightChild).
 
@@ -590,14 +590,14 @@ _isOnTheRightSideOfTheEquation(Child)
 %%_equationIsLinear(Time)%%
     %%:-  __validTime(Time),%%
         %%not _equationIsNotLinear(Time).%%
-_theCategoryOfHeuristicIs(weCanSimplifyBySubtractingTheTermFromBothSides, rearrangeHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyBySubtractingTheTermFromBothSides, move).
 _applicable(Time, _rule(weCanSimplifyBySubtractingTheTermFromBothSides, _operands(Node)))
     :-  _theEquationHasOnlyLinearTerms(Time),
         _thereIsAConstantOnTheLefthandSideOfTheEquation(Time, Node).
-_theCategoryOfHeuristicIs(weCanSimplifyBySubtractingTheVariableTermFromBothSides, rearrangeHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyBySubtractingTheVariableTermFromBothSides, move).
 _applicable(Time, _rule(weCanSimplifyBySubtractingTheVariableTermFromBothSides, _operands(Node)))
     :-  _thereIsAVariableOnTheRighthandSideOfTheEquation(Time, Node).
-_theCategoryOfHeuristicIs(weCanSimplifyBySubtractingTheNonZeroTermFromBothSides, rearrangeHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyBySubtractingTheNonZeroTermFromBothSides, move).
 _applicable(Time, _rule(weCanSimplifyBySubtractingTheNonZeroTermFromBothSides, _operands(Node)))
     :-  _theEquationHasAHighDegreeTerm(Time),
         _thereIsANonZeroTermOnTheRighthandSideOfTheEquation(Time, Node).
@@ -660,7 +660,7 @@ _saveEqnResult(Time)
 % MulEqn: A = B  --> A * D = B * D
 %================================================================================
 % canBeUsedToMultiplyBothSidesOfEquation
-_theCategoryOfHeuristicIs(weCanSimplifyByMultiplyingBothSidesOfTheEquationByThisDenominator, miscHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyByMultiplyingBothSidesOfTheEquationByThisDenominator, expand).
 _applicable(Time, _rule(weCanSimplifyByMultiplyingBothSidesOfTheEquationByThisDenominator, _operands(Denom)))
 	:-	_oneSideOfTheEquationIsAFractionAndThisIsItsDenominator(Time, Denom).
 
@@ -680,7 +680,7 @@ _saveEqnResult(Time)
 %       is currently unsatisfiable
 % divEqnByConst: A = B  --> A / d = B / d
 %================================================================================
-_theCategoryOfHeuristicIs(weCanDivideBothSidesByTheCoefficientOfTheLeftSide, miscHeuristic).
+_theCategoryOfHeuristicIs(weCanDivideBothSidesByTheCoefficientOfTheLeftSide, expand).
 _applicable(Time, _rule(weCanDivideBothSidesByTheCoefficientOfTheLeftSide, _operands(leftSide)))
 	:-	%_coeff(Coeff),
         _leftSideIsASingleTermWithAVariable(Time, leftSide),
@@ -711,7 +711,7 @@ _saveEqnResult(Time)
 % TODO: rewrite to generate better explanation
 % decreaseDeg: x^4 + x^2= 0  --> x^2 + 1 = 0 (example)
 %================================================================================
-_theCategoryOfHeuristicIs(weCanSimplifyBySubstitutingYForFACTORA, miscHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyBySubstitutingYForFACTORA, expand).
 _applicable(Time, _rule(weCanSimplifyBySubstitutingYForFACTORA, _operands(leftSide)))
 	:-	%_equationHasNonConstantTerms(Time),
         _theDegreeOfEveryVariableInTheEquationIsDivisibleBy(Time, DEG).
@@ -750,7 +750,7 @@ _substitutedDegree(Time, Deg)
 % TODO: rewrite to generate better explanation replace not isFraction with isNotFraction
 % mulWithFrac: (A/B) * D --> (A*D)/B
 %================================================================================
-_theCategoryOfHeuristicIs(weCanSimplifyByMultiplyingTheNumeratorByTheTerm, recombineHeuristic).
+_theCategoryOfHeuristicIs(weCanSimplifyByMultiplyingTheNumeratorByTheTerm, rearrange).
 _applicable(Time, _rule(weCanSimplifyByMultiplyingTheNumeratorByTheTerm, _operands(Fraction, NotFraction)))
 	:-	_weAreMultiplyingAFractionByATerm(Time, Fraction, NotFraction).
 
