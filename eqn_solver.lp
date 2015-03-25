@@ -84,30 +84,8 @@ _introduce(Time, Node, Field, NewValue)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Selecting Rules %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% for each time step we can perform at most one applicable action
-0 { _selectedHeuristic(Time, HeuristicName)	:	_applicableHeuristic(Time, HeuristicName),
-												_heuristicPriority(HeuristicName, Priority),
-												not _higherPriorityIsSelectable(Time, Priority)} 1
-		:-	_time(Step, Stream),
-			Time = _time(Step, Stream),
-			%%not _previousHeuristicNotFinished(Time),%%
-			not _stopTime(Time).
-
-% predicates to ensure we always choose the highest priority first
-_heuristicPriority(Name, Priority)
-	:-	_heuristic(Name, Priority, Condition).
-
-_applicablePriority(Time, Priority)
-	:-	_applicableHeuristic(Time, Name),
-		_heuristicPriority(Name, Priority).
-
-_higherPriorityIsSelectable(Time, SndPriority)
-	:-	_applicablePriority(Time, FstPriority),
-		_applicablePriority(Time, SndPriority),
-		FstPriority < SndPriority.
-
+% TODO: support selectedHeuristic and selectedHeurOperands, but remove this code
 % action name performed at particular step
-% TODO: this may become unnecessary
 _ruleForTimeStep(Time, RuleName)
 		:-	_performRule(Time, _rule(RuleName, Operands)).
 

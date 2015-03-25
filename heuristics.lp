@@ -14,166 +14,27 @@
 % Naturally, a heuristic must also have operands on which the actions are applied. These are obtained from
 % the Trigger, which not only indicates that a condition holds, but also over which objects.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SELECTING HEURISTICS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Heuristics can have one of two types of triggers.
-% rule heuristics 		-- apply whenever a rule is applicable
-% condition heuristics	-- apply when other conditions not captured by rules are applicable
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DEFINING HEURISTICS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTE: I've collapsed heuristics so they're the same thing as rules for 
+% the sake of simplicity. Previously a rule just described applicable actions on an
+% equation and heuristics encoded reasonable strategies.
+%
+% The reasonable strategies are now encoded at the level of rules. 
 
-_applicableHeuristic(Time, Name)
-	:-	_heuristic(Name, Priority, Trigger),
-		_applicable(Time, _condition(Trigger, Operands)).	% triggers can be conditions...
-_applicableHeuristic(Time, Name)
-	:-	_heuristic(Name, Priority, Trigger),
-		_applicable(Time, _rule(Trigger, Operands)).		% ... or they can be rules
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SELECTING OPERANDS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Once a heuristic is selected, we must select operands to apply that heuristic
-% NOTE: two versions needed because some heuristics have complicated conditions
-% while others only require that a particular rule be applicable 
-
-1 { _selectedHeurOperands(Time, Oper) : _applicable(Time, _condition(Trigger, Oper)) } 1
-	:-	_selectedHeuristic(Time, Name),
-		_heuristic(Name, Priority, Trigger),
-		not _heuristicToApplyRule(Name, Priority, Trigger). 	% condition heuristic
-
-1 { _selectedHeurOperands(Time, Oper) : _applicable(Time, _rule(Trigger, Oper)) } 1
-	:-	_selectedHeuristic(Time, Name),
-		_heuristicToApplyRule(Name, Priority, Trigger). 		% rule heuristic
+_heuristic(RuleName, RuleName) :- _rule(RuleName).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PERFORM THE SELECTED HEURISTIC %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-_performRule(Time, _rule(RuleToApply, Oper))
-	:-	_selectedHeuristic(Time, Name),
-		_selectedHeurOperands(Time, Oper),
-		_heuristicAction(Name, RuleToApply).
+_performRule(Time, _rule(HeurName, Oper))
+	:-	_selectedHeuristic(Time, HeurName),
+		_selectedHeurOperands(Time, Oper).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MULTI-STEP HEURISTICS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% NOTE: this code may be removed later. It's possible all multistep heuristics
-% can be written as single step heuristics depending on how priorities are assigned
-%%_performHeuristicStep(Time, Name, 1)%%
-	%%:-	_selectedHeuristic(Time, Name),%%
-		%%_heuristicActionSequence(Name, Action, 1).%%
-%%_performHeuristicStep(NextTime, Name, NextStep)%%
-	%%:-	_performHeuristicStep(Time, Name, Step),%%
-		%%_nextTimeTick(Time, NextTime),%%
-		%%NextStep = Step+1.%%
-
-%%% prevent other heuristics from being selected%%
-%%_previousHeuristicNotFinished(Time)%%
-	%%:-	_performHeuristicStep(Time, Name, StepNum),%%
-		%%StepNum > 1.	% at step 1, the current heuristic is selected, so don't generate predicate for step 1%%
-
-%%_performRule(Time, _rule(RuleToApply, Oper))%%
-	%%:-	_performHeuristicStep(Time, Name, Step),%%
-		%%_heuristicActionSequence(Name, RuleToApply, Step),%%
-		%%_selectedHeurOperands(Time, Oper).%%
-%%% TODO: way to selectHeurOperands for next time step will depend on particular actions that are used%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% HEURISTICS THAT APPLY RULES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% To define a rule heuristic, simply define _heuristicToApplyRule/3 as below.
-% The following rules extract additional heuristic predicates that are needed
-_heuristicAction(Name, Rule)
-	:-	_heuristicToApplyRule(Name, Priority, Rule).
-_heuristic(Name, Priority, Rule)
-	:-	_heuristicToApplyRule(Name, Priority, Rule).
-
-%%%================================================================================
-%%%					Heuristic Definitions
-%%%================================================================================
-
-% NOTE: I've reserved priority = 0 for testing purposes. O.W. highest priority is 1 
-% combine monomials
-_heuristicToApplyRule(weCanSimplifyByCancellingTheseTerms, 1, weCanSimplifyByCancellingTheseTerms). 
-_heuristicToApplyRule(addUpToZero, 1, addUpToZero). 
-_heuristicToApplyRule(soTheNumeratorOfThisFractionMustBeEqualToZero, 1, soTheNumeratorOfThisFractionMustBeEqualToZero). 
-_heuristicToApplyRule(weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator, 1, weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator). 
-_heuristicToApplyRule(areBothNegativeOperationsThatCancelOut, 1, areBothNegativeOperationsThatCancelOut). 
-
-_heuristicToApplyRule(weCanSimplifyByAddingTheseTwoTermsTogether, 2, weCanSimplifyByAddingTheseTwoTermsTogether). 
-_heuristicToApplyRule(weCanSimplifyByCancellingTheZero, 2, weCanSimplifyByCancellingTheZero). 
-_heuristicToApplyRule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction, 2, weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction). 
-_heuristicToApplyRule(weCanSimplifyByCancellingTheDenominatorOfThisFraction, 2, weCanSimplifyByCancellingTheDenominatorOfThisFraction). 
-_heuristicToApplyRule(theProductOfTheseTermsIsZero, 2, theProductOfTheseTermsIsZero). 
-_heuristicToApplyRule(weCanSimplifyByCancellingTheOne, 2, weCanSimplifyByCancellingTheOne). 
-
-_heuristicToApplyRule(weCanSimplifyByDistributingTheSingleFactor, 3, weCanSimplifyByDistributingTheSingleFactor). 
-_heuristicToApplyRule(weCanSimplifyByCombiningTheseIntoASingleTerm, 3, weCanSimplifyByCombiningTheseIntoASingleTerm). 
-_heuristicToApplyRule(weCanSimplifyBySubstitutingYForFACTORA, 3, weCanSimplifyBySubstitutingYForFACTORA). 
-_heuristicToApplyRule(weCanSimplifyByMultiplyingTheNumeratorByTheTerm, 3, weCanSimplifyByMultiplyingTheNumeratorByTheTerm). 
-
-%%%================================================================================
-%%%					Condition Heuristics
-%%%================================================================================
-
-		%% isolate variables to lhs
-%%_heuristic(isolateVars, 3, rhsHasVariable).%%
-%%_heuristicAction(isolateVars, weCanSimplifyBySubtractingTheTermFromBothSides).%%
-
-%%_applicable(Time, _condition(rhsHasVariable, _operands(Child)))%%
-	%%:-	_isSumOfTerms(Time, rightSide),%%
-		%%_isATermOf(Time, rightSide, Child),%%
-		%%_hasVariable(Time, Child).%%
-
-%%_hasVariable(Time, Node)%%
-	%%:- _isTheDegreeOf(Time, Node, Deg),%%
-		%%Deg > 0.%%
-%%_hasVariable(Time, Parent)%%
-	%%:-	_isATermOf(Time, Parent, Child),%%
-		%%_hasVariable(Time, Child).%%
-
-%%_sideOf(leftSide,left;rightSide,right).%%
-%%_sideOf(Child, Side)%%
-	%%:-	_validChildOf(Parent, Child),%%
-		%%_sideOf(Parent, Side).%%
-
-		%%[> move constants to rhs if eqn is linear%%
-%%_heuristic(isolateConst, 3, lhsHasConst).%%
-%%_heuristicAction(isolateConst, weCanSimplifyBySubtractingTheTermFromBothSides).%%
-
-%%_applicable(Time, _condition(lhsHasConst, _operands(Child)))%%
-	%%:-	_hasSuperlinearTerms(Time),%%
-		%%_isSumOfTerms(Time, leftSide),%%
-		%%_isATermOf(Time, leftSide, Child),%%
-		%%_isConstant(Time, Child). % TODO: update to move rationals also%%
-	
-%%_hasSuperlinearTerms(Time)%%
-	%%:- _isTheDegreeOf(Time, Node, Deg),  Deg >= 2.%%
-
-		%%[> set lhs to zero if eqn has super-linear terms%%
-		%%% NOTE: this only subtracts rhs from both sides: other heuristics must simplify%%
-%%_heuristic(setRHSZero, 3, rhsIsNotZero).%%
-%%_heuristicAction(setRHSZero, weCanSimplifyBySubtractingTheTermFromBothSides).%%
-%%_applicable(Time, _condition(rhsIsNotZero, _operands(rightSide)))%%
-	%%:-	_hasSuperlinearTerms(Time),%%
-		%%not _isZero(Time, rightSide).%%
-
-		%%[> factor quadratic to solve eqn%%
-%%_heuristic(factorSimpleQuad, 1, stdQuadSetToZero).%%
-%%_heuristicAction(factorSimpleQuad, weCanSimplifyByFactoringThisExpression).%%
-
-%%_applicable(Time, _condition(stdQuadSetToZero, _operands(leftSide)))%%
-	%%:-	_isZero(Time, rightSide),%%
-		%%_applicable(Time, _rule(weCanSimplifyByFactoringThisExpression, _operands(leftSide))).%%
-
-
-
-%%%================================================================================
-%%%					Misc Rule Heuristics
-%%%================================================================================
-% any rules not explicitly given higher priority are given the lowest priority possible
-% This repesents the idea that when we don't how to proceed, we try any rule that's
-% applicable
-
-#const defaultRulePriority = 5.
-
-_ruleAlreadyHasHigherPriority(RuleName) 
-	:-	_heuristic(HeurName, Priority, RuleName),
-		_rule(RuleName),
-		Priority < defaultRulePriority. 
-
-_heuristicToApplyRule(RuleName, defaultRulePriority, RuleName)
-	:-	_rule(RuleName),
-		not _ruleAlreadyHasHigherPriority(RuleName).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% HEURISTIC STRATEGIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Each heuristic should be declared with a _rule() instance, 
+% with applicable instances of the heuristic being declared as: 
+%   _applicable(Time, _rule(HeuristicName, Operands))
+% 
+% the following declarations define the heuristics into strategies, and establish
+% a partial ordering on the strategies too. 
 
 %% heuristic categories
 _heuristicCategory(cancelHeuristic).
@@ -190,11 +51,19 @@ _tryIfNotApplicable(recombineHeuristic, combineHeuristic).
 _tryIfNotApplicable(rearrangeHeuristic, recombineHeuristic).
 _tryIfNotApplicable(miscHeuristic, rearrangeHeuristic).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% HEURISTIC SELECTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% a heuristic is applicable if it's trigger is applicable
+% (Name = Trigger in my application, but they may be different
+_applicableHeuristic(Time, Name)
+	:-	_heuristic(Name, Trigger),
+		_applicable(Time, _rule(Trigger, Operands)).		
+
 % selecting the highest applicable category!!
 _applicableCategory(Time, Category)
     :-  _applicableHeuristic(Time, HeurName),
         _theCategoryOfHeuristicIs(HeurName, Category).
 
+%%% finding the highest applicable category
 _highestApplicableCategory(Time, Category)
     :-  _topPriority(Category),
         _applicableCategory(Time, Category).
@@ -250,11 +119,17 @@ _largestSubexpressionForTimeStep(Time, Max)
 
 % select a heuristic application of the selected strategy
 % and that has the largest size operands possible
-1 { _alternateSelectedHeuristic(Time, _rule(HeurName, Oper)) : 
+1 { _selectedHeuristicInstance(Time, _rule(HeurName, Oper)) : 
         _sizeOfSubExpressionsForHeuristicApplication(Time, _rule(HeurName, Oper), Size),
         _theCategoryOfHeuristicIs(HeurName, HighestCategory),
         _highestApplicableCategory(Time, HighestCategory),
         _largestSubexpressionForTimeStep(Time, Size)
     } 1
     :-  __validTime(Time), not _stopTime(Time).
+
+% NOTE: necessary for compatibility with old heuristic selection code
+_selectedHeuristic(Time, HeurName)
+    :-  _selectedHeuristicInstance(Time, _rule(HeurName, Oper)).
+_selectedHeurOperands(Time, Oper)
+    :-  _selectedHeuristicInstance(Time, _rule(HeurName, Oper)).
 
