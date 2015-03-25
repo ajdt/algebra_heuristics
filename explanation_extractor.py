@@ -28,16 +28,27 @@ def getTemplateManager(): # used to manage singleton template_manager
 # using the data in the strategy dictionary, return a list 
 # of strings explaining why the heuristic for a given time step was selected
 def makeStrategyExplanation(strategy_dict):
+    # TODO: simplify this code, it's gotten too complex
     explanations = []
+    strategy_sentences = []
     if 'weCannot' in strategy_dict.keys():
-        for strategy in strategy_dict['weCannot']:
-            explanations.append('we cannot ' + strategy)
+        cannot_sent = 'we cannot '
+
+        if len(strategy_dict['weCannot']) > 1:
+            cannot_sent += ', '.join(strategy_dict['weCannot'][:-1] )
+            cannot_sent += ' or ' + strategy_dict['weCannot'][-1]
+        elif len(strategy_dict['weCannot']) == 1:
+            cannot_sent += strategy_dict['weCannot'][0]
+        strategy_sentences.append(cannot_sent)
     if 'weCan' in strategy_dict.keys():
         for strategy in strategy_dict['weCan']:
-            explanations.append('we can ' + strategy)
-    if 'theseAretheLargestOperandsWeCanApplyOurStrategyTo' in strategy_dict.keys():
-        explanations.append(convertFromCamelCase('theseAretheLargestOperandsWeCanApplyOurStrategyTo') + ' operands go here')
-    return explanations
+            strategy_sentences.append('we can ' + strategy)
+    if 'theseAreTheLargestOperandsWeCanApplyOurStrategyTo' in strategy_dict.keys():
+        explanations.append([convertFromCamelCase('theseAreTheLargestOperandsWeCanApplyOurStrategyTo'), strategy_dict['theseAreTheLargestOperandsWeCanApplyOurStrategyTo']])
+
+    # strategy sentences don't 'point' to anything, so second element is []
+    # each explanation is in format [sentence, [list_of_things_to_point_to]]
+    return [[strategy_sentences, []]] + explanations
 
 def makeSanitizedFile(file_name):
     """remove comments. Save to new file"""

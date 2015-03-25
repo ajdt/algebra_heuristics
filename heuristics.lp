@@ -140,5 +140,5 @@ _weCannot(Time, Category)
     :-  _noCategoryAppliesUpTo(Time, Category).
 _weCan(Time, Category)
     :-  _highestApplicableCategory(Time, Category).
-_theseAretheLargestOperandsWeCanApplyOurStrategyTo(Time, Oper)
+_theseAreTheLargestOperandsWeCanApplyOurStrategyTo(Time, Oper)
     :-  _selectedHeurOperands(Time, Oper).
