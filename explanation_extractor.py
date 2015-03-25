@@ -25,6 +25,20 @@ def getTemplateManager(): # used to manage singleton template_manager
     return TEMPLATE_MANAGER
 
                         ### HELPER FUNCTIONS ###
+# using the data in the strategy dictionary, return a list 
+# of strings explaining why the heuristic for a given time step was selected
+def makeStrategyExplanation(strategy_dict):
+    explanations = []
+    if 'weCannot' in strategy_dict.keys():
+        for strategy in strategy_dict['weCannot']:
+            explanations.append('we cannot ' + strategy)
+    if 'weCan' in strategy_dict.keys():
+        for strategy in strategy_dict['weCan']:
+            explanations.append('we can ' + strategy)
+    if 'theseAretheLargestOperandsWeCanApplyOurStrategyTo' in strategy_dict.keys():
+        explanations.append(convertFromCamelCase('theseAretheLargestOperandsWeCanApplyOurStrategyTo') + ' operands go here')
+    return explanations
+
 def makeSanitizedFile(file_name):
     """remove comments. Save to new file"""
     file_obj    = open(file_name, 'r')

@@ -72,6 +72,7 @@ _noCategoryAppliesUpTo(Time, Category)
         __validTime(Time),
         not _applicableCategory(Time, Category).
 
+
 _noCategoryAppliesUpTo(Time, CategoryToTry)
     :-  _noCategoryAppliesUpTo(Time, Category),
         _tryIfNotApplicable(CategoryToTry, Category),
@@ -81,6 +82,7 @@ _highestApplicableCategory(Time, CategoryToTry)
     :-  _noCategoryAppliesUpTo(Time, Category),
         _tryIfNotApplicable(CategoryToTry, Category),
         _applicableCategory(Time, CategoryToTry).
+
 
 %%% subtree sizes
 _subtreeSize(Time, Mono, 1)
@@ -133,3 +135,10 @@ _selectedHeuristic(Time, HeurName)
 _selectedHeurOperands(Time, Oper)
     :-  _selectedHeuristicInstance(Time, _rule(HeurName, Oper)).
 
+% these predicates are written to get good explanations
+_weCannot(Time, Category)
+    :-  _noCategoryAppliesUpTo(Time, Category).
+_weCan(Time, Category)
+    :-  _highestApplicableCategory(Time, Category).
+_theseAretheLargestOperandsWeCanApplyOurStrategyTo(Time, Oper)
+    :-  _selectedHeurOperands(Time, Oper).

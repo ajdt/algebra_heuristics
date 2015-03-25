@@ -84,7 +84,6 @@ _introduce(Time, Node, Field, NewValue)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Selecting Rules %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% TODO: support selectedHeuristic and selectedHeurOperands, but remove this code
 % action name performed at particular step
 _ruleForTimeStep(Time, RuleName)
 		:-	_performRule(Time, _rule(RuleName, Operands)).
