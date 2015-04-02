@@ -329,3 +329,41 @@ _weCan(Time, Category)
     :-  _highestApplicableCategory(Time, Category).
 _theseAreTheLargestOperandsWeCanApplyOurStrategyTo(Time, Oper)
     :-  _selectedHeurOperands(Time, Oper).
+
+
+%%% EXPLANATIONS FOR STRATEGY SELECTION
+
+% strategy cannot be used
+_strategyExplanation(Time, _noWeCannot(Strategy))
+    :-  _weCannot(Time, Strategy),
+        not _stopTime(Time).
+
+% alternate operations using dominant strategy
+_strategyExplanation(Time, _yesWeCanStrategyMultipleTerms(Strategy, _rule(HeurName, Oper)))
+    :-  _applicable(Time, _rule(HeurName, Oper)),
+        not _selectedHeuristicInstance(Time, _rule(HeurName, Oper)),
+        _theCategoryOfHeuristicIs(HeurName, Strategy),
+        _highestApplicableCategory(Time, Strategy),
+        not _stopTime(Time).
+
+_oneOpForTopStrategy(Time)
+    :-  __validTime(Time), 
+        not _stopTime(Time),
+        0 { _strategyExplanation(Time, _yesWeCanStrategyMultipleTerms(Strategy, Operation)) } 0.
+
+% only one operation for selected strategy
+_strategyExplanation(Time, _yesWeCanStrategyTheseTerms(Strategy, Oper))
+    :-  _selectedHeuristicInstance(Time, _rule(HeurName, Oper)),
+        _highestApplicableCategory(Time, Strategy),
+        _oneOpForTopStrategy(Time),
+        not _stopTime(Time).
+
+% more than one operation for selected strategy
+_strategyExplanation(Time, _weStrategyTheseTermsFirstBecauseTheyAreTheBiggest(Strategy, _rule(HeurName, Oper)))
+    :-  __validTime(Time),
+        not _oneOpForTopStrategy(Time),
+        _highestApplicableCategory(Time, Strategy),
+        _selectedHeuristicInstance(Time, _rule(HeurName, Oper)),
+        not _stopTime(Time).
+
+
