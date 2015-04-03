@@ -39,13 +39,15 @@ class EquationStepParser:
         # miscellaneous step information that will be recorded/saved
         # TODO: misc_data initialization getting too complex, change it?
         self.misc_data      = {'operands':[], 'action':'', 'factor_data': {}, 'explanation':[], 'time':''}
-        self.strategy_data  =  {'weCan':[], 'weCannot':[]} 
+        self.strategy_data  = defaultdict(list)
 
     def updateVariable(self, new_var):
         self.var_str = new_var
     # EquationStepParser contains lots of data we don't need after parsing
     # this method returns a GeneratedStep instance that has only what we want to save
     def toGeneratedStep(self):
+        # add strategy_data and return generated step instance
+        self.misc_data['strategy_data'] = dict(self.strategy_data)
         return GeneratedStep(self.getEqnString(), self.misc_data)
     # save field/value info for a node
     def addHoldsPredicate(self, holds_pred):
@@ -60,7 +62,22 @@ class EquationStepParser:
         else:
             node_data_dict[field] = value
 
-    # save argument predicate
+    # add a predicate of the type 'strategyExplanation'
+    def addStrategyPredicate(self, pred_obj):
+            strategy_pred = pred_obj.args[1]
+            strategy_name = strategy_pred.args[0].name
+            strategy_desc = explain.convertFromCamelCase(strategy_pred.name).replace('strategy', strategy_name)
+            has_heur_instance = len(strategy_pred.args) == 2
+
+            if has_heur_instance:
+                heur_obj    = pred_parser.findInArgList(strategy_pred, 'rule')
+                operand_obj = pred_parser.findInArgList(heur_obj, 'operands')
+                operand_list = pred_parser.argsToListOfStrings(operand_obj)
+                self.strategy_data[strategy_name].append([strategy_desc, operand_list])
+            else:
+                # predicate indicates what we cannot do for the given time step
+                self.strategy_data[strategy_name].append([strategy_desc + ' ' + strategy_name, []])
+
     def addParsedPredicate(self, pred_obj):
         if pred_obj.name == 'selectedHeurOperands':
             # get time object and operands as strings, then add to relevant time step
@@ -78,19 +95,13 @@ class EquationStepParser:
             factor_data_key = factor_name_dict[pred_obj.name]
             monomial_factor = EquationStepParser.makeMonomialFromData(degree, coeff)
             self.misc_data['factor_data'][factor_data_key] = monomial_factor
-        elif pred_obj.name in ['weCannot', 'weCan']:
-            time, strategy_name = pred_parser.argsToListOfStrings(pred_obj)
-            self.strategy_data[pred_obj.name].append(strategy_name)
-        elif pred_obj.name == 'theseAreTheLargestOperandsWeCanApplyOurStrategyTo':
-            operands_obj    = pred_parser.findInArgList(pred_obj, 'operands')
-            operand_strings = pred_parser.argsToListOfStrings(operands_obj) 
-            self.strategy_data[pred_obj.name] = operand_strings
+        elif pred_obj.name == 'strategyExplanation':
+            self.addStrategyPredicate(pred_obj)
 
     # handles all post-processing after step parser
     # has received all predicates for this step
     def postProcessStepData(self, model_mgr):
-        # create strategy explanation
-        self.misc_data['strategy_expl'] = explain.makeStrategyExplanation(self.strategy_data)
+        self.translateStrategyData()
         self.makeExplanation(model_mgr)
     def getEqnString(self, as_latex=False, json_output=False):
         left    = self.makeEqnString('id(1,1)')
@@ -102,6 +113,15 @@ class EquationStepParser:
             right = right[1:-1]
         string = left + '=' + right
         return str(string)
+
+    def translateStrategyData(self): 
+        trans = translator.getTranslationsForNodeData(self.node_data)
+        for strategy, explanation in self.strategy_data.items():
+            # NOTE: sort so that when multiple terms can be operated on, the selected
+            # terms are last
+            new_sentences = self.translateSingleExplanation(explanation, trans) 
+            new_sentences.sort(reverse=True)
+            self.strategy_data[strategy] = new_sentences
 
     def makeExplanation(self, model_mgr):
         if self.misc_data['action'] == '': # final step has no explanation
@@ -127,8 +147,6 @@ class EquationStepParser:
         translation_dict = translator.getTranslationsForNodeData(self.node_data)
         self.misc_data['explanation'] = self.translateSingleExplanation(explanation, translation_dict)
         self.misc_data['operands'] = self.translateListOfStrings(self.misc_data['operands'], translation_dict)
-        strat_operands = self.strategy_data['theseAreTheLargestOperandsWeCanApplyOurStrategyTo'] 
-        self.strategy_data['theseAreTheLargestOperandsWeCanApplyOurStrategyTo'] = self.translateListOfStrings(strat_operands, translation_dict)
 
     # translates a single explanation array to use binary nodes
     def translateSingleExplanation(self, explanation_sentences, translations):
@@ -169,8 +187,12 @@ class EquationStepParser:
             return coeff
         elif deg == '1' and coeff == '1':
             return var_str
+        elif deg == '1' and coeff == '-1':
+            return '-'+var_str
         elif coeff == '1':
             return var_str + '^' + deg
+        elif coeff == '-1':
+            return '-'+var_str + '^' + deg
         elif deg == '1':
             return coeff + var_str
         else:
