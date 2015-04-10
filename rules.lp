@@ -53,7 +53,7 @@ _setToOne(Time, Fraction)
 %================================================================================
 % canBeMultipliedAsFractions: a/b * c/d --> (a*c)/(b*d)
 %================================================================================
-_theCategoryOfHeuristicIs(weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms, rearrange).
+_theCategoryOfHeuristicIs(weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms, combine).
 _applicable(Time, _rule(weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms, _operands(LeftFrac, RightFrac)))
     :-  _theseTwoFractionsAreBeingMultiplied(Time, LeftFrac, RightFrac).
 
@@ -83,11 +83,8 @@ _writeBinaryOp(Time)
 %================================================================================
 _theCategoryOfHeuristicIs(weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead, rearrange).
 _applicable(Time, _rule(weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead, _operands(DenomFrac)))
-			:-	_weAreDividingByAFraction(Time, DenomFrac).
+			:-	_weAreDividingByAFraction(Time, NumerTerm, DenomFrac).
 
-
-_weAreDividingByAFraction(Time, DenomFrac) 
-    :-  _weAreDividingByAFraction(Time, NumerTerm, DenomFrac).
 _weAreDividingByAFraction(Time, NumerTerm, DenomFrac) 
     :-	_formAFraction(Time, NumerTerm, DenomFrac),
         _isFraction(Time, DenomFrac),
@@ -125,6 +122,13 @@ _deepCopy(Time, tempResultRoot, Numer)
 		_numeratorOf(Time, Frac, Numer).
 _setResultTo(Time, leftSide)
 	:-	_ruleForTimeStep(Time, soTheNumeratorOfThisFractionMustBeEqualToZero).
+
+_thisSideOfTheEquationIsZero(Time, Side)
+    :-  __rootNode(Side),
+        _isZero(Time, Side).
+_thisSideOfTheEquationIsAFraction(Time, Side)
+    :-  __rootNode(Side),
+        _isFraction(Time, Side).
 
 
 %================================================================================
@@ -260,7 +264,7 @@ _setResultTo(Time, Poly)
 % addSameFrac A/B + C/B --> (A+C)/B
 %================================================================================
 % NOTE: _sameDenom depends on equals/3 predicate (which applies only to monomials)
-_theCategoryOfHeuristicIs(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction, rearrange).
+_theCategoryOfHeuristicIs(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction, combine).
 _applicable(Time, _rule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction, _operands(Fst, Snd)))
 	:-	_theseTwoFractionsAreBeingAddedAndTheyHaveTheSameDenominator(Time, Fst, Snd).
 
@@ -290,8 +294,8 @@ _writeBinaryOp(Time)
 % distribute (a + b) * C --> (a*C + b*C)
 %================================================================================
 _theCategoryOfHeuristicIs(weCanSimplifyByDistributingTheSingleFactor, expand).
-_applicable(Time, _rule(weCanSimplifyByDistributingTheSingleFactor, _operands(PlusTerm, __DistribTerm)))
-	:-	_weAreMultiplyingASumOfTermsByASingleFactor(Time, PlusTerm, __DistribTerm).
+_applicable(Time, _rule(weCanSimplifyByDistributingTheSingleFactor, _operands(PlusTerm, DistribTerm)))
+	:-	_weAreMultiplyingASumOfTermsByASingleFactor(Time, PlusTerm, DistribTerm).
 
 _weAreMultiplyingASumOfTermsByASingleFactor(Time, PlusTerm, DistribTerm)
 	:-	_areBeingMultiplied(Time, PlusTerm, DistribTerm),
@@ -680,7 +684,7 @@ _saveEqnResult(Time)
 %       is currently unsatisfiable
 % divEqnByConst: A = B  --> A / d = B / d
 %================================================================================
-_theCategoryOfHeuristicIs(weCanDivideBothSidesByTheCoefficientOfTheLeftSide, expand).
+_theCategoryOfHeuristicIs(weCanDivideBothSidesByTheCoefficientOfTheLeftSide, rearrange).
 _applicable(Time, _rule(weCanDivideBothSidesByTheCoefficientOfTheLeftSide, _operands(leftSide)))
 	:-	%_coeff(Coeff),
         _leftSideIsASingleTermWithAVariable(Time, leftSide),
@@ -750,7 +754,7 @@ _substitutedDegree(Time, Deg)
 % TODO: rewrite to generate better explanation replace not isFraction with isNotFraction
 % mulWithFrac: (A/B) * D --> (A*D)/B
 %================================================================================
-_theCategoryOfHeuristicIs(weCanSimplifyByMultiplyingTheNumeratorByTheTerm, rearrange).
+_theCategoryOfHeuristicIs(weCanSimplifyByMultiplyingTheNumeratorByTheTerm, combine).
 _applicable(Time, _rule(weCanSimplifyByMultiplyingTheNumeratorByTheTerm, _operands(Fraction, NotFraction)))
 	:-	_weAreMultiplyingAFractionByATerm(Time, Fraction, NotFraction).
 

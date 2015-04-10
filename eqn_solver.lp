@@ -238,89 +238,15 @@ _stepUsesHeuristic(Time)
 	not _stopTime(Time),
 	not _stepUsesHeuristic(Time).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% HEURISTIC SELECTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% a heuristic is applicable if it's trigger is applicable
-% (Name = Trigger in my application, but they may be different
-_applicableHeuristic(Time, Name)
-	:-	_heuristic(Name, Trigger),
-		_applicable(Time, _rule(Trigger, Operands)).		
 
-% selecting the highest applicable category!!
-_applicableCategory(Time, Category)
-    :-  _applicableHeuristic(Time, HeurName),
-        _theCategoryOfHeuristicIs(HeurName, Category).
-
-%%% finding the highest applicable category
-_highestApplicableCategory(Time, Category)
-    :-  _topPriority(Category),
-        _applicableCategory(Time, Category).
-_noCategoryAppliesUpTo(Time, Category)
-    :-  _topPriority(Category),
-        __validTime(Time),
-        not _applicableCategory(Time, Category).
-
-
-_noCategoryAppliesUpTo(Time, CategoryToTry)
-    :-  _noCategoryAppliesUpTo(Time, Category),
-        _tryIfNotApplicable(CategoryToTry, Category),
-        not _applicableCategory(Time, CategoryToTry).
-
-_highestApplicableCategory(Time, CategoryToTry)
-    :-  _noCategoryAppliesUpTo(Time, Category),
-        _tryIfNotApplicable(CategoryToTry, Category),
-        _applicableCategory(Time, CategoryToTry).
-
-
-%%% subtree sizes
-_subtreeSize(Time, Mono, 1)
-    :-  __isMono(Time, Mono).
-
-_sizeOfChildSubtree(Time, Node, Child, Size)
-    :-  _subtreeSize(Time, Child, Size),
-        _isATermOf(Time, Node, Child).
-_subtreeSize(Time, Node, SubtreeSize)
-    :-  _isOper(Time, Node),
-        SubtreeSize = #sum { Size,Child: _sizeOfChildSubtree(Time, Node, Child, Size)}.
-
-%%% selecting based on subtree size
-
-% associate size with each operation of highest category
-_sizeOfSubExpressionsForHeuristicApplication(Time, _rule(Heuristic, _operands(LeftOper, RightOper)), LeftSize)
-    :-  _applicable(Time, _rule(Heuristic, _operands(LeftOper, RightOper))),
-        _subtreeSize(Time, LeftOper, LeftSize),
-        _subtreeSize(Time, RightOper, RightSize),
-        _highestApplicableCategory(Time, HighestCategory),
-        _theCategoryOfHeuristicIs(Heuristic, HighestCategory).
-
-_sizeOfSubExpressionsForHeuristicApplication(Time, _rule(Heuristic, _operands(LeftOper)), LeftSize)
-    :-  _applicable(Time, _rule(Heuristic, _operands(LeftOper))),
-        _subtreeSize(Time, LeftOper, LeftSize),
-        _highestApplicableCategory(Time, HighestCategory),
-        _theCategoryOfHeuristicIs(Heuristic, HighestCategory).
-
-% find largest operand size for current time step
-_sizeOfPossibleOperandForTimeStep(Time, Size)
-    :-  _sizeOfSubExpressionsForHeuristicApplication(Time, HeurApp, Size).
-
-_largestSubexpressionForTimeStep(Time, Max)
-    :-  __validTime(Time), not _stopTime(Time),
-        Max = #max { Size : _sizeOfPossibleOperandForTimeStep(Time, Size) }.
-
-% select a heuristic application of the selected strategy
-% and that has the largest size operands possible
-1 { _selectedHeuristicInstance(Time, _rule(HeurName, Oper)) : 
-        _sizeOfSubExpressionsForHeuristicApplication(Time, _rule(HeurName, Oper), Size),
-        _theCategoryOfHeuristicIs(HeurName, HighestCategory),
-        _highestApplicableCategory(Time, HighestCategory),
-        _largestSubexpressionForTimeStep(Time, Size)
-    } 1
-    :-  __validTime(Time), not _stopTime(Time).
+%%% PERFORM THE OPTIMAL OPERATION
+%   (see heuristics.lp for code to find optimal operation)
 
 % NOTE: necessary for compatibility with old heuristic selection code
 _selectedHeuristic(Time, HeurName)
-    :-  _selectedHeuristicInstance(Time, _rule(HeurName, Oper)).
+    :-  _optimalHeuristicInstance(Time, _rule(HeurName, Oper)).
 _selectedHeurOperands(Time, Oper)
-    :-  _selectedHeuristicInstance(Time, _rule(HeurName, Oper)).
+    :-  _optimalHeuristicInstance(Time, _rule(HeurName, Oper)).
 
 % these predicates are written to get good explanations
 _weCannot(Time, Category)
@@ -331,39 +257,5 @@ _theseAreTheLargestOperandsWeCanApplyOurStrategyTo(Time, Oper)
     :-  _selectedHeurOperands(Time, Oper).
 
 
-%%% EXPLANATIONS FOR STRATEGY SELECTION
-
-% strategy cannot be used
-_strategyExplanation(Time, _noWeCannot(Strategy))
-    :-  _weCannot(Time, Strategy),
-        not _stopTime(Time).
-
-% alternate operations using dominant strategy
-_strategyExplanation(Time, _yesWeCanStrategyMultipleTerms(Strategy, _rule(HeurName, Oper)))
-    :-  _applicable(Time, _rule(HeurName, Oper)),
-        not _selectedHeuristicInstance(Time, _rule(HeurName, Oper)),
-        _theCategoryOfHeuristicIs(HeurName, Strategy),
-        _highestApplicableCategory(Time, Strategy),
-        not _stopTime(Time).
-
-_oneOpForTopStrategy(Time)
-    :-  __validTime(Time), 
-        not _stopTime(Time),
-        0 { _strategyExplanation(Time, _yesWeCanStrategyMultipleTerms(Strategy, Operation)) } 0.
-
-% only one operation for selected strategy
-_strategyExplanation(Time, _yesWeCanStrategyTheseTerms(Strategy, Oper))
-    :-  _selectedHeuristicInstance(Time, _rule(HeurName, Oper)),
-        _highestApplicableCategory(Time, Strategy),
-        _oneOpForTopStrategy(Time),
-        not _stopTime(Time).
-
-% more than one operation for selected strategy
-_strategyExplanation(Time, _weStrategyTheseTermsFirstBecauseTheyAreTheBiggest(Strategy, _rule(HeurName, Oper)))
-    :-  __validTime(Time),
-        not _oneOpForTopStrategy(Time),
-        _highestApplicableCategory(Time, Strategy),
-        _selectedHeuristicInstance(Time, _rule(HeurName, Oper)),
-        not _stopTime(Time).
 
 
