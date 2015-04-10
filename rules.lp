@@ -60,7 +60,7 @@ _applicable(Time, _rule(weCanSimplifyByPerformingFractionMultiplicationOnTheseTw
 _theseTwoFractionsAreBeingMultiplied(Time, LeftFrac, RightFrac)
 	:-	_isFraction(Time, LeftFrac),
 		_isFraction(Time, RightFrac),
-		LeftFrac < RightFrac,
+        __isLessThan(LeftFrac, RightFrac),
 		_areBeingMultiplied(Time, LeftFrac, RightFrac).
 
 % set result as a fraction with numer and denom as fractions
@@ -88,7 +88,7 @@ _applicable(Time, _rule(weCanSimplifyByMultiplyingByTheInverseOfThisFractionInst
 _weAreDividingByAFraction(Time, NumerTerm, DenomFrac) 
     :-	_formAFraction(Time, NumerTerm, DenomFrac),
         _isFraction(Time, DenomFrac),
-        NumerTerm < DenomFrac. % to ensure NumerTerm actually corresponds to numerator
+        __isLessThan(NumerTerm, DenomFrac).  % to ensure NumerTerm actually corresponds to numerator
 
 % set root node to multiplication node
 _activateTempAndSetChildren(Time, tempResultRoot, mul, 2)
@@ -143,9 +143,9 @@ _weAreAddingTwoTermsWithVariablesThatHaveTheSameDegree(Time, LeftMono, RightMono
 		_haveEqualDegrees(Time, LeftMono, RightMono),
 		__isMono(Time, LeftMono),
 		__isMono(Time, RightMono),
-		not _isZero(Time, LeftMono),	% if either mono is zero, then addZero rule is used instead
-		not _isZero(Time, RightMono),
-		LeftMono < RightMono.
+        _isNotZero(Time, LeftMono), % if either mono is zero, then addZero rule is used instead
+		_isNotZero(Time, RightMono),
+        __isLessThan(LeftMono, RightMono).
 
 _monoOp(Time, tempResultRoot, LeftMono, RightMono, add)
 	:-	_operand(Time, LeftMono, weCanSimplifyByAddingTheseTwoTermsTogether, left),
@@ -165,9 +165,9 @@ _weAreMultiplyingTwoTerms(Time, LeftMono, RightMono)
 	:-	_areBeingMultiplied(Time, LeftMono, RightMono),
 		__isMono(Time, LeftMono),
 		__isMono(Time, RightMono),
-        not _isOne(Time, LeftMono),
-        not _isOne(Time, RightMono),
-		LeftMono < RightMono.
+        _isNotOne(Time, LeftMono),
+        _isNotOne(Time, RightMono),
+        __isLessThan(LeftMono, RightMono).
  
 _monoOp(Time, tempResultRoot, LeftMono, RightMono, mul)
 	:-	_operand(Time, LeftMono, weCanSimplifyByCombiningTheseIntoASingleTerm, left),
@@ -271,7 +271,7 @@ _applicable(Time, _rule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFrac
 _theseTwoFractionsAreBeingAddedAndTheyHaveTheSameDenominator(Time, Fst, Snd)
 	:-	_areBeingAdded(Time, Fst, Snd),
 		_haveTheSameDenominator(Time, Fst, Snd),
-		Fst < Snd.
+        __isLessThan(Fst, Snd).
 
 % set root to a fraction
 _activateTempAndSetChildren(Time, tempResultRoot, div, 2)
@@ -299,7 +299,7 @@ _applicable(Time, _rule(weCanSimplifyByDistributingTheSingleFactor, _operands(Pl
 
 _weAreMultiplyingASumOfTermsByASingleFactor(Time, PlusTerm, DistribTerm)
 	:-	_areBeingMultiplied(Time, PlusTerm, DistribTerm),
-		PlusTerm < DistribTerm, % TODO: this is necessary, but prevents distribute if C occurs before (a+b) term
+        __isLessThan(PlusTerm, DistribTerm), % TODO: this is necessary, but prevents distribute if C occurs before (a+b) term
 		_isSumOfTerms(Time, PlusTerm).
 
 % every term in original plus node, is multiplied by distributed term
@@ -361,8 +361,8 @@ _applicable(Time, _rule(weCanSimplifyBySubstitutingTheFactorsOfTheTerm, _operand
 
 _thisTermHasFactorsFACTORAAndFACTORB(Time, Mono)
 	:-	__isMono(Time, Mono),
-		not _isOne(Time, Mono),
-		not _isZero(Time, Mono).
+        _isNotOne(Time, Mono),
+        _isNotZero(Time, Mono).
 
 % NOTE: don't want either factor to be 1
 _factor1(Time, Fst, FstFactor)
@@ -518,7 +518,7 @@ _applicable(Time, _rule(weCanSimplifyByCancellingTheOne, _operands(UnitTerm)))
 _weAreMultiplyingSomeTermsBy1(Time, UnitTerm) 
 	:-	_isOne(Time, UnitTerm),
         _areBeingMultiplied(Time, OtherTerm, UnitTerm),
-        not __isMono(Time, OtherTerm).  % for monomials we use the mono multiply rule
+        __isNotMono(Time, OtherTerm).  % for monomials we use the mono multiply rule
 
 _cancelTerm(Time, UnitTerm)
 	:-	_operand(Time, UnitTerm, weCanSimplifyByCancellingTheOne, left).
@@ -672,7 +672,7 @@ _oneSideOfTheEquationIsAFractionAndThisIsItsDenominator(Time, Denom)
 	:-	__rootNode(EqnSide),
         _isFraction(Time, EqnSide),
         _denominatorOf(Time, EqnSide, Denom),
-        not _isOne(Time, Denom).
+        _isNotOne(Time, Denom).
 _eqnOp(Time, Operand, mul)
 	:-	_operand(Time, Operand, weCanSimplifyByMultiplyingBothSidesOfTheEquationByThisDenominator, left).
 % save the results
@@ -693,6 +693,8 @@ _applicable(Time, _rule(weCanDivideBothSidesByTheCoefficientOfTheLeftSide, _oper
         %%_factorOf(Time, leftSide, LeftFactor).%%
         %%_factorOf(Time, rightSide, RightFactor),%%
         %%_areEqual(Time, LeftFactor, RightFactor).%%
+
+% NOTE: for almost fires explanation, use depth=1 in this case?
 _leftSideIsASingleTermWithAVariable(Time, leftSide)
     :-  __isMono(Time, leftSide),
         _isTheDegreeOf(Time, leftSide, Deg),
@@ -724,7 +726,7 @@ _update(Time, Node, degree, ResultDeg)
 	:-	_ruleForTimeStep(Time, weCanSimplifyBySubstitutingYForFACTORA),
 		_smallestNonZeroDeg(Time, DividingDeg),
 		_isTheDegreeOf(Time, Node, OrigDeg),
-		OrigDeg != 0,
+		_degreeIsNotZero(OrigDeg),
 		_degProduct(OrigDeg, DividingDeg, ResultDeg).
 _factor1(Time, Degree, 1)
     :-  _theDegreeOfEveryVariableInTheEquationIsDivisibleBy(Time, Degree).
@@ -761,7 +763,7 @@ _applicable(Time, _rule(weCanSimplifyByMultiplyingTheNumeratorByTheTerm, _operan
 _weAreMultiplyingAFractionByATerm(Time, Fraction, NotFraction)
 	:-	_areBeingMultiplied(Time, Fraction, NotFraction),
 		_isFraction(Time, Fraction),
-		not _isFraction(Time, NotFraction).
+		_isNotFraction(Time, NotFraction).
 
 _activateTempAndSetChildren(Time, tempResultRoot, div, 2)
 	:-	_ruleForTimeStep(Time, weCanSimplifyByMultiplyingTheNumeratorByTheTerm).

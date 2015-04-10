@@ -76,6 +76,12 @@ _childOnSide(Node, Child, right)
 :- _holds(Time, _fact(Parent, _nodeField(activechild, Child))),
 	_node(Parent), _node(Child),
 	not _validChildOf(Parent, Child).
+
+% node ordering
+__isLessThan(FstNode, SndNode)
+    :-  _node(FstNode),
+        _node(SndNode),
+        FstNode < SndNode.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NODE PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  types of nodeField's 
 _type(div;mul;add;mono;neg).
@@ -98,6 +104,9 @@ _hasType(Time, Node, Type)
 
 _isFraction(Time, Node)
 		:-	_hasType(Time, Node, div).
+_isNotFraction(Time, Node)
+		:-	__isActive(Time, Node),
+            not _hasType(Time, Node, div).
 _isMultiplicationOperation(Time, Node)
 		:-	_hasType(Time, Node, mul).
 _isSumOfTerms(Time, Node)
@@ -106,6 +115,9 @@ _isNeg(Time, Node)
 		:-	_hasType(Time, Node, neg).
 __isMono(Time, Node)
 		:-	_hasType(Time, Node, mono).
+__isNotMono(Time, Node)
+		:-	__isActive(Time, Node),
+            not _hasType(Time, Node, mono).
 _isOper(Time, Node)
 		:-	__isActive(Time, Node),
 			_hasType(Time, Node, Type),
@@ -123,6 +135,10 @@ _isASingleTermOrSumOfTerms(Time, Node)	:-	_isSumOfTerms(Time, Node).
 _mulOrDiv(Time, Node)	:-	_isFraction(Time, Node).
 _mulOrDiv(Time, Node)	:-	_isMultiplicationOperation(Time, Node).
 
+% predicates relating to degree/coeff values
+_degreeIsNotZero(Deg)
+    :-  _degree(Deg),
+        Deg != 0.
 					%%% Derived Properties %%%
 % Useful, secondary properties of tree nodes.
 % Derived from holds() predicates or their aliases
@@ -138,8 +154,14 @@ _isOne(Time, Node)
 	:-	__isMono(Time, Node),
 		_isTheCoefficientOf(Time, Node, 1),
 		_isTheDegreeOf(Time, Node, 0).
+_isNotOne(Time, Node)
+		:-	__isActive(Time, Node),
+            not _isOne(Time, Node).
 _isZero(Time, Node)
 		:-	_isTheCoefficientOf(Time, Node, 0).
+_isNotZero(Time, Node)
+		:-	__isActive(Time, Node),
+            not _isZero(Time, Node).
 % node fields
 _numeratorOf(Time, Parent, Child)
 		:-	_isFraction(Time, Parent),
