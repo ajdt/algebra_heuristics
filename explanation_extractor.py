@@ -15,6 +15,7 @@ import re
 import tempfile
 import os       # for file deletion at the end 
 import parse_asp_rules as par
+from model_manager import ModelManager
 
 # Singleton explanation manager exposed outside this module
 TEMPLATE_MANAGER = None
@@ -326,13 +327,128 @@ class TemplateSentence(object):
         return ' '.join(self.getSentenceFragments())
         
         
-# extract predicate and variables from a given
-# I've written this function mostly to verify that everything works
+# TODO: code borrowed form explanation_extractor to avoid mutual dependency of files
+def isPredicate(condition):
+    return isinstance(condition, par.Predicate)
+def isSkippedPredicate(predicate):
+    return isPredicate(predicate) and '__' in predicate.name
+def isNotPredicate(condition): 
+    return not isPredicate(condition)
+
+# return true if variable assignment is a ground instances
+def condIsTrueUnderAssignment(cond, assign_dict, mgr):
+    var_assign = [assign_dict[variable] for variable in cond.args]
+    pred_key = ExplanationManager.makePredKey(cond)
+    ground_instances = mgr.getAllGroundInstancesOf(pred_key)
+    return var_assign in ground_instances
+
+# TODO: combine with existing code
+# to test use: (weCanSimplifyByDistributingTheSingleFactor, 2)
+def getLevelTwoPredicates(pred_key):
+    template    = getTemplateManager().lookupTemplateFor(pred_key)
+
+    # get template for each body predicate, then extract rules
+    body_templates = getBodyTemplateObjects(template)
+    body_rules = [b.rule for b in body_templates]
+    
+    # from the body rules, extract all conditions 
+    if len(body_rules) == 1:
+        level_two_preds = body_rules[0].body
+    else:
+        level_two_preds = reduce(lambda x,y: x.body + y.body, body_rules)
+
+    return level_two_preds
+
+def findAlmostMatchesPredicates(pred_key, model_mgr):
+    level_two_preds = getLevelTwoPredicates(pred_key) 
+    for excluded, other_cond in makeListOfAlmostFireConditions(level_two_preds):
+        for assign in getAllSatisfyingAssignments(other_cond, model_mgr):
+            if condIsTrueUnderAssignment(excluded, assign, model_mgr):
+                print 'not an almost fires case:', assign
+                continue
+            else:
+                print 'found an almost matches case!', assign
+
+
+# return a hashmap of satisfying variable --> value mappings
+# for the condition list, based on predicates in model_mgr
+def getAllSatisfyingAssignments(conditions, model_mgr):
+    all_assignments = []
+    findAssign(conditions, model_mgr, {}, all_assignments)
+    return all_assignments
+
+# find a all assignments that satisfy condition list recursively
+def findAssign(cond_list, mgr, assign, all_assign):
+    if cond_list == []:
+        all_assign.append(assign)
+        return
+    for match in getAllCompatibleMatches(cond_list[0], mgr, assign):
+        new_assign =    dict(assign)
+        match_dict =    dict(zip(cond_list[0].args, match))
+        new_assign.update(match_dict)
+        findAssign(cond_list[1:], mgr, new_assign, all_assign)
+
+# generator function that yields every grounding of a condition 
+# that is compatible with existing variable assignments 
+def getAllCompatibleMatches(cond, mgr, assign):
+    pred_key = ExplanationManager.makePredKey(cond)
+    for ground_pred in mgr.getAllGroundInstancesOf(pred_key):
+        # convert grounding to variable_name --> value mapping
+        ground_dict = dict(zip(cond.args, ground_pred))
+        if isCompatibleWith(ground_dict, assign):
+            yield ground_pred
+
+# return true if there are no assignment conflicts
+# between variables in both dictionaries
+def isCompatibleWith(ground_dict, assign_dict):
+    for common_key in set(ground_dict.keys()).intersection( set(assign_dict.keys())):
+        if ground_dict[common_key] != assign_dict[common_key]:
+            return False
+    return True
+
+
+# Given a template object return list of templates for it's
+# body explanations
+def getBodyTemplateObjects(template):
+    template_obj = []
+    #print template.rule.head
+    for pred_obj in filterUnusedConditions(template.rule.body):
+        if not template.manager.hasExplanationForPredicate(pred_obj):
+            continue
+        pred_key    = ExplanationManager.makePredKey(pred_obj)
+        pred_temp   = template.manager.lookupTemplateFor(pred_key)
+        template_obj.append(pred_temp)
+    return template_obj
+
+# given a list of conditions
+# return a list of tuples, each tuple is an excluded
+# condition and the remaining conditions
+# TODO: make this a generator function
+def makeListOfAlmostFireConditions(list_of_conditions):
+    for index in range(0, len(list_of_conditions)):
+        excluded_cond = list_of_conditions[index]
+        if isNotPredicate(excluded_cond) or isSkippedPredicate(excluded_cond) : 
+            continue
+        other_cond = list_of_conditions[:index] + list_of_conditions[index+1:]
+        yield (excluded_cond, other_cond)
+
+
+# TODO: test code delete later        
+def getTestModelMgr():
+    mgr = ModelManager()
+    mgr.addPredicate('_areBeingMultiplied(_time(0,1), _id(2,1), _id(2,2))')
+    mgr.addPredicate('__isLessThan(_id(2,1), _id(2,2))')
+    mgr.addPredicate('_isSumOfTerms(_time(0,1), _id(2,1))')
+
+    return mgr
+
 def main(files):
     parseFiles(files)
+    # TODO: delete this, for testing purposes only
+    findAlmostMatchesPredicates(('weCanSimplifyByDistributingTheSingleFactor', 3), getTestModelMgr())
 if __name__ == '__main__':
-    files_to_parse = ['rules.lp', 'eqn_generator.lp', 'nodes.lp', 'polynomial.lp', 'heuristics.lp']
+    files_to_parse = ['rules.lp']
+    #files_to_parse = ['rules.lp', 'eqn_generator.lp', 'nodes.lp', 'polynomial.lp', 'heuristics.lp']
     #files_to_parse = ['rules.lp', 'nodes.lp']
     main(files_to_parse)
-
 
