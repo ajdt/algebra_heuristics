@@ -16,6 +16,7 @@ import tempfile
 import os       # for file deletion at the end 
 import parse_asp_rules as par
 from model_manager import ModelManager
+from collections import defaultdict
 
 # 
 heuristic_to_strategy = {
@@ -45,6 +46,13 @@ heuristic_to_strategy = {
 'weCanSimplifyBySubstitutingYForFACTORA': 'expand',
 'weCanSimplifyByMultiplyingTheNumeratorByTheTerm': 'combine'
 }
+
+# make heuristics also accessible by the strategy the belong to 
+strategy_to_heuristic = defaultdict(list)
+for heur, strategy in heuristic_to_strategy.items():
+    strategy_to_heuristic[strategy].append(heur)
+list_of_heuristics = heuristic_to_strategy.keys()
+
 # Singleton explanation manager exposed outside this module
 TEMPLATE_MANAGER = None
 def getTemplateManager(): # used to manage singleton template_manager
@@ -127,6 +135,7 @@ class ExplanationManager(object):
     def __init__(self):
         super(ExplanationManager, self).__init__()
         self.templates = {} # (predicate_name, arity) --> ExplanationTemplate instance
+        self.heuristic_to_heur_key = {}
 
     def addExplanationTemplate(self, rule):
         """instantiate new ExplanationTemplate instance for given predicate """
@@ -135,6 +144,14 @@ class ExplanationManager(object):
             self.templates[rule_key].addAdditionalExplanation(rule)
         else:
             self.templates[rule_key] = ExplanationTemplate(rule, self)
+        
+        # TODO: ugly fix, required to store heuristic --> heur_key mapping
+        if rule_key[0] in list_of_heuristics:
+            self.heuristic_to_heur_key[rule_key[0]] = rule_key
+
+    # TODO: I want to handle these lookups more cleanly, rewrite later
+    def lookupHeuristicKey(self, heur_string):
+        return self.heuristic_to_heur_key[heur_string]
 
     def lookupTemplateFor(self, predicate_key):
         """Return an ExplanationTemplate instance for given predicate_key
@@ -363,12 +380,16 @@ def isSkippedPredicate(predicate):
 def isNotPredicate(condition): 
     return not isPredicate(condition)
 
-# return true if variable assignment is a ground instances
+# return true if variable assignment can be used to make
+# a ground instance of cond that is in the mgr
 def condIsTrueUnderAssignment(cond, assign_dict, mgr):
-    var_assign = [assign_dict[variable] for variable in cond.args]
+    # NOTE: None will be inserted if there is no assignment of a variable
+    var_assign = [assign_dict.get(variable) for variable in cond.args]
     pred_key = ExplanationManager.makePredKey(cond)
-    ground_instances = mgr.getAllGroundInstancesOf(pred_key)
-    return var_assign in ground_instances
+    for grounding in mgr.getAllGroundInstancesOf(pred_key):
+        if mgr.matches(grounding, var_assign):
+            return True
+    return False
 
 # TODO: combine with existing code
 # to test use: (weCanSimplifyByDistributingTheSingleFactor, 2)
@@ -428,7 +449,8 @@ def getAllSatisfyingAssignments(conditions, model_mgr):
 # find a all assignments that satisfy condition list recursively
 def findAssign(cond_list, mgr, assign, all_assign):
     if cond_list == []:
-        all_assign.append(assign)
+        if assign != {}: # make sure we actually found a satisfying assignment
+            all_assign.append(assign)
         return
     for match in getAllCompatibleMatches(cond_list[0], mgr, assign):
         new_assign =    dict(assign)

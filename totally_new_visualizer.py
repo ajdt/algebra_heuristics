@@ -28,6 +28,8 @@ op_symbols      =   {'add' : '+' , 'div' : '/' , 'mul' : '*' , 'neg' : '-'}
 factor_predicates = ['factor' + n for n in list('1234')]
 factor_name_dict = {'factor1':'FACTORA' , 'factor2':'FACTORB', 'factor3':'FACTORX', 'factor4':'FACTORY' }
 
+# list of strategies
+all_strategies = ['cancel', 'combine', 'rearrange', 'move', 'expand']
 # contains associated methods for parsing a single math problem 
 # and its solution (same as a single answer set)
 GeneratedStep = namedtuple('GeneratedStep', ['equation_string', 'step_data'])
@@ -40,6 +42,8 @@ class EquationStepParser:
         # TODO: misc_data initialization getting too complex, change it?
         self.misc_data      = {'operands':[], 'action':'', 'factor_data': {}, 'explanation':[], 'time':''}
         self.strategy_data  = defaultdict(list)
+        self.optimal_action = ''
+        self.optimal_operands = []
 
     def updateVariable(self, new_var):
         self.var_str = new_var
@@ -47,7 +51,16 @@ class EquationStepParser:
     # this method returns a GeneratedStep instance that has only what we want to save
     def toGeneratedStep(self):
         # add strategy_data and return generated step instance
-        self.misc_data['strategy_data'] = dict(self.strategy_data)
+
+        uses_optimal_action = self.optimal_action == self.misc_data['action']
+        uses_optimal_operands = self.optimal_operands == self.misc_data['operands']
+        if uses_optimal_action and uses_optimal_operands:
+            self.misc_data['strategy_data'] = dict(self.strategy_data)
+        else:
+            a = 'optimal strategy is: ' + str(self.optimal_action) + str(self.optimal_operands)
+            b = 'instead we are: ' + self.misc_data['action']+ str( self.misc_data['operands'])
+            #self.misc_data['strategy_data'] = {'suboptimal':[a,b]}
+            self.misc_data['strategy_data'] = {}
         return GeneratedStep(self.getEqnString(), self.misc_data)
     # save field/value info for a node
     def addHoldsPredicate(self, holds_pred):
@@ -64,19 +77,26 @@ class EquationStepParser:
 
     # add a predicate of the type 'strategyExplanation'
     def addStrategyPredicate(self, pred_obj):
-            strategy_pred = pred_obj.args[1]
-            strategy_name = strategy_pred.args[0].name
-            strategy_desc = explain.convertFromCamelCase(strategy_pred.name).replace('strategy', strategy_name)
-            has_heur_instance = len(strategy_pred.args) == 2
+        strategy_pred = pred_obj.args[1]
+        strategy_name = strategy_pred.args[0].name
+        strategy_desc = explain.convertFromCamelCase(strategy_pred.name).replace('strategy', strategy_name)
+        has_heur_instance = len(strategy_pred.args) == 2
 
-            if has_heur_instance:
-                heur_obj    = pred_parser.findInArgList(strategy_pred, 'rule')
+        if has_heur_instance:
+            heur_obj    = pred_parser.findInArgList(strategy_pred, 'rule')
+            try:
                 operand_obj = pred_parser.findInArgList(heur_obj, 'operands')
-                operand_list = pred_parser.argsToListOfStrings(operand_obj)
-                self.strategy_data[strategy_name].append([strategy_desc, operand_list])
+            except AttributeError:
+                print 'error with operands of:', pred_obj
+                sys.exit()
+            operand_list = pred_parser.argsToListOfStrings(operand_obj)
+            if 'yes' in strategy_pred.name:
+                self.strategy_data[strategy_name].insert(0, [strategy_desc, operand_list])
             else:
-                # predicate indicates what we cannot do for the given time step
-                self.strategy_data[strategy_name].append([strategy_desc + ' ' + strategy_name, []])
+                self.strategy_data[strategy_name].append([strategy_desc, operand_list])
+        else:
+            # predicate indicates what we cannot do for the given time step
+            self.strategy_data[strategy_name].append([strategy_desc + ' ' + strategy_name, []])
 
     def addParsedPredicate(self, pred_obj):
         if pred_obj.name == 'selectedHeurOperands':
@@ -97,12 +117,44 @@ class EquationStepParser:
             self.misc_data['factor_data'][factor_data_key] = monomial_factor
         elif pred_obj.name == 'strategyExplanation':
             self.addStrategyPredicate(pred_obj)
+        elif pred_obj.name == 'optimalHeuristicInstance':
+            #print 'fancy fancy', pred_obj
+            heur_inst = pred_parser.findInArgList(pred_obj, 'rule')
+            self.optimal_action = heur_inst.args[0].name
+            self.optimal_operands = pred_parser.argsToListOfStrings(heur_inst.args[1])
+
+    def makeAlmostFireExplanations(self, model_mgr):
+        # check almost-fire status for any strategy that doesn't have any explanation data
+        for strat in all_strategies:
+            if strat not in self.strategy_data.keys():
+                self.makeAlmostFireExplanationFor(strat, model_mgr)
+    def makeAlmostFireExplanationFor(self, strategy, model_mgr):
+        # do a key for heur name lookup need a key/
+        # for each heuristic in the strategy class see if it almost fires
+        for heur in explain.strategy_to_heuristic[strategy]:
+            pred_key    = explain.getTemplateManager().lookupHeuristicKey(heur)
+            almost_fire = explain.makeAlmostFireExplanations(pred_key, model_mgr)
+            # add almost_fires explanation
+            self.strategy_data[strategy] += almost_fire
+            if almost_fire != [] :
+                print 'this heuristic almost fired: ', heur
+
+
 
     # handles all post-processing after step parser
     # has received all predicates for this step
     def postProcessStepData(self, model_mgr):
+        self.makeAlmostFireExplanations(model_mgr)
         self.translateStrategyData()
         self.makeExplanation(model_mgr)
+        # TODO: translate almost fire stuff
+
+        # XXX: hacky bug fix get rid of duplicates in strategy data explanations
+        for key in self.strategy_data.keys():
+            expl = [ (s, tuple(op)) for s, op in self.strategy_data[key] ]
+            tup_expl = list(set(expl))
+            self.strategy_data[key] = [ [s, list(op)] for s, op in tup_expl]
+
     def getEqnString(self, as_latex=False, json_output=False):
         left    = self.makeEqnString('id(1,1)')
         right   = self.makeEqnString('id(1,2)')
@@ -122,6 +174,17 @@ class EquationStepParser:
             new_sentences = self.translateSingleExplanation(explanation, trans) 
             new_sentences.sort(reverse=True)
             self.strategy_data[strategy] = new_sentences
+
+        # XXX:
+        # NOTE: remove this is a hacky solution to dealing with explanations for
+        # suboptimal problems
+        translated_optimal = [] 
+        for node in self.optimal_operands:
+            if node in trans.keys():
+                translated_optimal.append(trans[node])
+            else:
+                translated_optimal.append(node)
+        self.optimal_operands = translated_optimal
 
     def makeExplanation(self, model_mgr):
         if self.misc_data['action'] == '': # final step has no explanation
@@ -342,6 +405,7 @@ class AnswerSetManager:
         for problem in self.answer_sets_dict.values():
             for generated_solution in problem:
                 self.printSingleAnswerSet(generated_solution)
+                print '$'*40
     def printSingleAnswerSet(self, generated_prob):
         for step in generated_prob.solution_steps:
             print step.equation_string + '\n\n'
