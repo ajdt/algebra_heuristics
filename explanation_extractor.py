@@ -17,6 +17,34 @@ import os       # for file deletion at the end
 import parse_asp_rules as par
 from model_manager import ModelManager
 
+# 
+heuristic_to_strategy = {
+'thisFractionCanBeSimplifiedToOne': 'cancel',
+'weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms': 'combine',
+'weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead': 'rearrange',
+'soTheNumeratorOfThisFractionMustBeEqualToZero': 'cancel',
+'weCanSimplifyByAddingTheseTwoTermsTogether': 'combine',
+'weCanSimplifyByCombiningTheseIntoASingleTerm': 'combine',
+'weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator': 'cancel',
+'weCanSimplifyByFactoringThisExpression': 'expand',
+'weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction': 'combine',
+'weCanSimplifyByDistributingTheSingleFactor': 'expand',
+'weCanSimplifyByCancellingTheDenominatorOfThisFraction': 'cancel',
+'weCanSimplifyByCancellingTheZero': 'cancel',
+'weCanSimplifyBySubstitutingTheFactorsOfTheTerm': 'expand',
+'weCanSimplifyByFactoringOutAFACTORA': 'expand',
+'theProductOfTheseTermsIsZero': 'combine',
+'weCanSimplifyByCancellingTheOne': 'combine',
+'weCanSimplifyByMultiplyingTheNumeratorAndDenominatorByTERM': 'expand',
+'weCanSimplifyByCancellingTheseTerms': 'cancel',
+'weCanSimplifyBySubtractingTheTermFromBothSides': 'move',
+'weCanSimplifyBySubtractingTheVariableTermFromBothSides': 'move',
+'weCanSimplifyBySubtractingTheNonZeroTermFromBothSides': 'move',
+'weCanSimplifyByMultiplyingBothSidesOfTheEquationByThisDenominator': 'expand',
+'weCanDivideBothSidesByTheCoefficientOfTheLeftSide': 'rearrange',
+'weCanSimplifyBySubstitutingYForFACTORA': 'expand',
+'weCanSimplifyByMultiplyingTheNumeratorByTheTerm': 'combine'
+}
 # Singleton explanation manager exposed outside this module
 TEMPLATE_MANAGER = None
 def getTemplateManager(): # used to manage singleton template_manager
@@ -359,16 +387,36 @@ def getLevelTwoPredicates(pred_key):
 
     return level_two_preds
 
+# return a list of assignments along with the one predicate that isn't satisfied
 def findAlmostMatchesPredicates(pred_key, model_mgr):
     level_two_preds = getLevelTwoPredicates(pred_key) 
+    almost_fire     = []
     for excluded, other_cond in makeListOfAlmostFireConditions(level_two_preds):
         for assign in getAllSatisfyingAssignments(other_cond, model_mgr):
             if condIsTrueUnderAssignment(excluded, assign, model_mgr):
-                print 'not an almost fires case:', assign
                 continue
             else:
-                print 'found an almost matches case!', assign
+                almost_fire.append((excluded, assign))
+    return almost_fire
 
+def makeAlmostFireExplanations(pred_key, model_mgr):
+    rule_obj    = getTemplateManager().lookupTemplateFor(pred_key).rule
+    explanations = []
+    for excluded, assign in findAlmostMatchesPredicates(pred_key, model_mgr):
+        # rule head looks like : _applicable(T, _rule(HeurName, _operands(..)))
+        heur_name       = rule_obj.head.args[1].args[0] 
+        operand_vars    = rule_obj.head.args[1].args[1].args
+        sent = 'it looks like we can ' 
+        sent += heuristic_to_strategy[heur_name] + ' these terms'
+        operands = ExplanationTemplate.substituteVariableValues(operand_vars, assign)
+        explanations.append([sent, operands])
+
+        snd_sent = "but we cannot because this condition is untrue:" 
+        snd_sent += convertFromCamelCase(excluded.name) 
+        snd_oper = ExplanationTemplate.substituteVariableValues(excluded.args, assign)
+        explanations.append([snd_sent, snd_oper])
+
+    return explanations
 
 # return a hashmap of satisfying variable --> value mappings
 # for the condition list, based on predicates in model_mgr
@@ -438,14 +486,14 @@ def getTestModelMgr():
     mgr = ModelManager()
     mgr.addPredicate('_areBeingMultiplied(_time(0,1), _id(2,1), _id(2,2))')
     mgr.addPredicate('__isLessThan(_id(2,1), _id(2,2))')
-    mgr.addPredicate('_isSumOfTerms(_time(0,1), _id(2,1))')
+    #mgr.addPredicate('_isSumOfTerms(_time(0,1), _id(2,1))')
 
     return mgr
 
 def main(files):
     parseFiles(files)
     # TODO: delete this, for testing purposes only
-    findAlmostMatchesPredicates(('weCanSimplifyByDistributingTheSingleFactor', 3), getTestModelMgr())
+    print makeAlmostFireExplanations(('weCanSimplifyByDistributingTheSingleFactor', 3), getTestModelMgr())
 if __name__ == '__main__':
     files_to_parse = ['rules.lp']
     #files_to_parse = ['rules.lp', 'eqn_generator.lp', 'nodes.lp', 'polynomial.lp', 'heuristics.lp']
