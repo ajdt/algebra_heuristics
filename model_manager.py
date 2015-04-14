@@ -6,6 +6,7 @@
 #           when we generate explanations.
 #
 from collections import defaultdict
+
 class ModelManager(object):
     """records every atom for a generated model (answer set)"""
     # NOTE: I actually use a different ModelManager for each time step within a given model
@@ -68,3 +69,18 @@ class ModelManager(object):
                 operands.append(operand_str[start_idx:])
                 
         return (pred_name, operands)
+
+    # TODO: figure out how this code is used externally
+    # TODO: any redundant code above is depricated
+
+    # XXX: the code below uses pred objects as defined in pred_parser.py
+    #       and rule objects defined in parse_asp_rules.py.
+
+    # get all ground instances of a certain predicate key
+    def getAllGroundInstancesOf(self, pred_key):
+        return list(self.model_predicates[pred_key])
+
+        
+
+
+

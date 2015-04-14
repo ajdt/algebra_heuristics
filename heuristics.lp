@@ -83,6 +83,8 @@ _highestApplicableCategory(Time, CategoryToTry)
         _tryIfNotApplicable(CategoryToTry, Category),
         _applicableCategory(Time, CategoryToTry).
 
+_weCannot(Time, CategoryToTry)
+    :-  _noCategoryAppliesUpTo(Time, CategoryToTry).
 
 %%% subtree sizes
 _subtreeSize(Time, Mono, 1)
@@ -137,21 +139,27 @@ _onlyOneOpOfMaxSize(Time)
     1 { _sizeOfSubExpressionsForHeuristicApplication(Time, _rule(HeurName, Oper), Max) 
         : _theCategoryOfHeuristicIs(HeurName, HighestCategory) } 1.
 %%% EXPLANATIONS FOR STRATEGY SELECTION
+% NOTE: we only output strategy explanations if the selected operation is
+% optimal so _selectedOperationIsOptimal(Time) is a condition for all such rules
 
 % strategy cannot be used
 _strategyExplanation(Time, _noWeCannot(Strategy))
     :-  _weCannot(Time, Strategy),
+        _selectedOperationIsOptimal(Time),
         not _stopTime(Time).
 
 % alternate operations using dominant strategy
 _strategyExplanation(Time, _yesWeCanStrategyMultipleTerms(Strategy, _rule(HeurName, Oper)))
     :-  _applicable(Time, _rule(HeurName, Oper)),
         %%not _optimalHeuristicInstance(Time, _rule(HeurName, Oper)),%%
+        _selectedOperationIsOptimal(Time),
         not _oneOpForTopStrategy(Time),
         _theCategoryOfHeuristicIs(HeurName, Strategy),
         _highestApplicableCategory(Time, Strategy),
         not _stopTime(Time).
 
+% even if other operations are on 'smaller' operands
+% they might still be of the optimal strategy type
 _oneOpForTopStrategy(Time)
     :-  __validTime(Time),
         not _stopTime(Time),
@@ -169,6 +177,7 @@ _strategyExplanation(Time, _yesWeCanStrategyTheseTerms(Strategy, _rule(HeurName,
     :-  _optimalHeuristicInstance(Time, _rule(HeurName, Oper)),
         _highestApplicableCategory(Time, Strategy),
         _oneOpForTopStrategy(Time),
+        _selectedOperationIsOptimal(Time),
         not _stopTime(Time).
 
 % more than one operation for selected strategy
@@ -176,8 +185,10 @@ _strategyExplanation(Time, _weStrategyTheseTermsFirstBecauseTheyAreTheBiggest(St
     :-  __validTime(Time),
         not _oneOpForTopStrategy(Time),
         _onlyOneOpOfMaxSize(Time),
+        _selectedOperationIsOptimal(Time),
+        _selectedHeuristic(Time, HeurName),
+        _selectedHeurOperands(Time, Oper),
         _highestApplicableCategory(Time, Strategy),
-        _optimalHeuristicInstance(Time, _rule(HeurName, Oper)),
         not _stopTime(Time).
 
 _strategyExplanation(Time, _weWillStrategyTheseTermsFirst(Strategy, _rule(HeurName, Oper)))
@@ -185,5 +196,19 @@ _strategyExplanation(Time, _weWillStrategyTheseTermsFirst(Strategy, _rule(HeurNa
         not _oneOpForTopStrategy(Time),
         not _onlyOneOpOfMaxSize(Time),
         _highestApplicableCategory(Time, Strategy),
-        _optimalHeuristicInstance(Time, _rule(HeurName, Oper)),
+        _selectedOperationIsOptimal(Time),
+        _selectedHeuristic(Time, HeurName),
+        _selectedHeurOperands(Time, Oper),
         not _stopTime(Time).
+
+%%% selected heuristic is optimal
+% this is almost by definition true if we use the 
+%   _optimalHeuristicInstance(Time, _rule(HeurName, Oper))
+%   to select the operands and heuristics used
+_selectedOperationIsOptimal(Time)
+    :-  _selectedHeuristic(Time, HeurName),
+        _selectedHeurOperands(Time, Oper),
+        _sizeOfSubExpressionsForHeuristicApplication(Time, _rule(HeurName, Oper), Size),
+        _theCategoryOfHeuristicIs(HeurName, Strategy),
+        _highestApplicableCategory(Time, Strategy),
+        _largestSubexpressionForTimeStep(Time, Size).
