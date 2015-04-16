@@ -7,6 +7,8 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% EXTRACTING RULE OPERANDS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Extract operands from a rule application. Unary operations only have a 'left' operand 
+% Here we extract the operands, numerator and denominator of the chosen rule application
+% for a time step
 _operand(Time, OnlyOper, RuleName, left)
 	:-	_performRule(Time, _rule(RuleName, _operands(OnlyOper))).
 _operand(Time, Fst, RuleName, left)
@@ -21,7 +23,12 @@ _operandNumer(Time, Numer, RuleName, Side)
 		_numeratorOf(Time, Frac, Numer).
 
 % writing result of a binary operation
-% _writeBinaryOp/1. must be generated explicitly to write result as a binary operation
+% If any rule application below generates the predicate writeBinaryOp(Time)
+% then this code will generate a writeBinaryOp/3 predicate to save the 
+% results.
+
+%_writeBinaryOp/1. must be generated explicitly to write result as a binary operation
+%
 _writeBinaryOp(Time, Fst, Snd)
 	:-	_operand(Time, Fst, Operation, left),
 		_operand(Time, Snd, Operation, right),
@@ -34,6 +41,12 @@ _deepCopy(Time, RootNode, TempRoot)
         TempRoot = _temp(RootNode) .
 
 
+% THE RULES
+% every rule has three components
+% _theCategoryOfHeuristicIs -- tells us what strategy class the rule belongs in
+% _applicable/2 -- an ASP rule telling us when the heuristic is applicable
+% operations to modify the expression tree if the rule is selected with 
+% a given set of operands
 %================================================================================
 % divIdentity: A / A ----> 1
 %================================================================================

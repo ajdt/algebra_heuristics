@@ -82,12 +82,6 @@ _remove(Time, Fluent)
 _introduce(Time, Node, Field, NewValue)			
 		:-	_update(Time, Node, Field, NewValue).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Selecting Rules %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% action name performed at particular step
-_ruleForTimeStep(Time, RuleName)
-		:-	_performRule(Time, _rule(RuleName, Operands)).
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% solvability constraints %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: all solvability constraints have x-term on leftSide
 % 		This is to avoid redundancy of producing results like x=4 and 4=x as two different answer sets
@@ -105,11 +99,6 @@ _solved(Time)	% solved if x = rational constant
 _solved(Time)	% solved if (x+c_1) * (x + c_2) ... = 0 
 	:-	_isProductOfLinearBinomials(Time, leftSide),
 		_isZero(Time, rightSide).
-
-%%[>_solved(Time)	% solved if c = c<]%%
-	%%[>:-	_polyProperty(Time, leftSide, is_const),<]%%
-		%%[>_polyProperty(Time, rightSide, is_const),<]%%
-		%%[>_areEqual(Time, leftSide, rightSide).<]%%
 
 _solved(SndTime)
 	:-	_solved(FstTime),
@@ -165,30 +154,6 @@ _solutionValue(Time, ConstTerm, 1)	% solved if (x+c_1) * (x + c_2) ... = 0
 		_monoTermOfPoly(Time, Poly, 0, ConstTerm),
         _stopTime(Time).
     
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 1-GRAM DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-_ruleForTimeStream(Stream, Rule)
-	:-	_ruleForTimeStep(Time, Rule),
-		_streamOf(Time, Stream).
-_diffTimeStreams(Fst, Snd)
-	:-	_timeStream(Fst),
-		_timeStream(Snd),
-		Fst != Snd,
-		_ruleForTimeStream(Fst, Rule),
-		not _ruleForTimeStream(Snd, Rule).
-
-%%% CONSTRAINT: first time stream does not equal second
-:-	_timeStream(Fst),
-	_timeStream(Snd),
-	Fst != Snd,
-	not _diffTimeStreams(Fst, Snd).
-
-
-%%_ruleOccursInOneTimeStream%%
-	%%:- _rule(Rule), 1 { _ruleForTimeStream(Stream, Rule) : _timeStream(Stream) } 1.%%
-
-%%:-	not _ruleOccursInOneTimeStream.%%
- 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% AVOID REDUNDANT STEPS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _stepHasRuleApplication(Time)
 	:-	_ruleForTimeStep(Time, Name).
@@ -239,7 +204,8 @@ _stepUsesHeuristic(Time)
 	not _stepUsesHeuristic(Time).
 
 
-%%% PERFORM THE OPTIMAL OPERATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PERFORM THE OPTIMAL OPERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %   (see heuristics.lp for code to find optimal operation)
 
 % NOTE: necessary for compatibility with old heuristic selection code
@@ -256,6 +222,9 @@ _weCan(Time, Category)
 _theseAreTheLargestOperandsWeCanApplyOurStrategyTo(Time, Oper)
     :-  _selectedHeurOperands(Time, Oper).
 
+% indicate what rule was applied at a given step
+_ruleForTimeStep(Time, RuleName)
+		:-	_performRule(Time, _rule(RuleName, Operands)).
 
 
 

@@ -58,6 +58,10 @@ _monoSiblingsHaveCoeffValuesInOrder(Time, Fst, Snd)
 		_isTheCoefficientOf(Time, Fst, FstCoeff),
 		_isTheCoefficientOf(Time, Snd, SndCoeff),
 		SndCoeff >= FstCoeff.
+
+% we enforce a canonical ordering on monomials (order 1st by degree, then
+% by coefficient) to avoid some redundancies in the problem space
+% _monosOutOfOrder indicates that this ordering doesn't hold for some monomial siblings
 _monosOutOfOrder(Time)
 	:-	_monoSiblings(Time, Fst, Snd),
 		_isTheDegreeOf(Time, Fst, SameDeg),

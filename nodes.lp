@@ -16,7 +16,7 @@
 _depthValue(1..maxDepth).
 
 _childCount(2..maxChildren).	% childCount defines upper and lower limit on number of children allowable
-								% maxChildrenAtDepth defines a more constraining upper limit depending on node depth
+% maxChildrenAtDepth defines specifically how many children a node of a certain depth may have
 _maxChildrenAtDepth(1, 3).	%(depth, numChildren)
 _maxChildrenAtDepth(2, 3).
 _maxChildrenAtDepth(3, 3).
@@ -501,6 +501,7 @@ _deepCopy(Time, CopyChild, OrigChild)
 
 
 % detecting insufficient nodes: 
+%   occurs when we try to assign more children to a node than it can have
 _insufficientNodesError % copying from tempnode to regular node
 		:-	_deepCopyChildren(Time, Copy, Original),
 			_tempNode(Original), _node(Copy),
@@ -532,6 +533,11 @@ _deepCopy(Time, Parent, Node)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DEFINING TEMPNODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: predicates for temp Nodes are different to avoid integrity 
 % constraints being applied to tempNodes
+%
+% each tempNode corresponds to a regular node. 
+% Rather than modifying the existing expression tree, when an operation is done,
+% we save the result to the tempNode tree, clear the regular Nodes, and copy
+% the tempNodes attributes onto the regular Nodes.
 _tempNode(_temp(Node))
 		:-	_node(Node).
 

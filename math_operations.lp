@@ -1,3 +1,14 @@
+% Armando Diaz Tolentino <ajdt@cs.washington.edu> 
+% 
+% This file encodes math operations that can be performed on the 
+% algebra expression tree
+% Operations are of type treeOp, eqnOp, or monoOp, depending on whether
+% they operate on subrees on the same side of the equation, 
+% across an equation, or on individual monomials respectively.
+%
+% other operations can be used in multiple settings, like setting a monomial to 1, 
+% so they aren't part of any operation type.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SETTING NODE TO 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 _setToMono(Time, Node, 0, 1)
 	:-	_setToOne(Time, Node).
@@ -6,6 +17,9 @@ _setToMono(Time, Node, 0, 0)
 _setToMono(Time, Node, 0, -1)
 	:-	_setToNegOne(Time, Node).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SETTING RESULT OF BINARY OPERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% a convenient bit of code to save the result of a binary operation by overwritting
+% one of the operands.
 
 % XXX: assumes each time step we're setting only using setResultTo(...) at most once
 % NOTE: 2-ary version ignore RightPoly to limit grounding size; still works correctly
@@ -279,7 +293,6 @@ _degOverflow
 		not _degree(DegSum).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% eqn operations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TODO: not sure if this will need to be generalized 
 
 % define the left and right temp roots
 _tempEqnRoot(tempLeftRoot;tempRightRoot).	
@@ -403,33 +416,3 @@ _appendableEqnOp(Time, Operand, RootNode)
 		_numActiveChildren(Time, RootNode, NumActive),
 		_maxNumChildren(RootNode, MaxChildren),
 		NumActive < MaxChildren.
-%%_appendableEqnOp(Time, Operand, RootNode)%%
-	%%:-	_eqnOp(Time, Operand, divConst),%%
-        %%__rootNode(RootNode),%%
-		%%_hasType(Time, RootNode, div),%%
-        %%_numeratorOf(Time, RootNode, RootDenom),%%
-		%%_numActiveChildren(Time, RootDenom, NumActive),%%
-		%%_maxNumChildren(RootDenom, MaxChildren),%%
-		%%NumActive < MaxChildren.%%
-
-%%% if not appendable, then just do the regular treeOp%%
-%%_treeOp(Time, Dest, Oper)	% we've already unpacked the operands so it's enough to declare this%%
-	%%:-	_treeOp(Time, Dest, append(Oper)),%%
-		%%not _appendable(Time, Dest).%%
-%%% handle the append%%
-%%_deepCopy(Time, Dest, Left)%%
-	%%:-	_appendable(Time, Dest),%%
-		%%_treeOp(Time, Dest, append(Oper)),%%
-		%%_treeOp(Time, Dest, Left, left).%%
-%%_appendedChild(Time, Dest, NewChild)%%
-	%%:-	_appendable(Time, Dest),%%
-		%%_treeOp(Time, Dest, append(Oper)),%%
-		%%_treeOp(Time, Dest, Left, left),%%
-		%%_numActiveChildren(Time, Left, Num),%%
-		%%_tempChildNum(Dest, NewChild, Num+1).%%
-%%_activateChild(Time, Dest, NewChild)%%
-	%%:-	_appendedChild(Time, Dest, NewChild).%%
-%%_deepCopy(Time, NewChild, Right)%%
-	%%:-	_appendedChild(Time, Dest, NewChild),%%
-		%%_treeOp(Time, Dest, append(Oper)),%%
-		%%_treeOp(Time, Dest, Right, right).%%

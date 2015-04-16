@@ -14,13 +14,13 @@
 % Naturally, a heuristic must also have operands on which the actions are applied. These are obtained from
 % the Trigger, which not only indicates that a condition holds, but also over which objects.
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DEFINING HEURISTICS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% NOTE: I've collapsed heuristics so they're the same thing as rules for 
+% IMPORTANT: I've collapsed heuristics so they're the same thing as rules for 
 % the sake of simplicity. Previously a rule just described applicable actions on an
 % equation and heuristics encoded reasonable strategies.
 %
-% The reasonable strategies are now encoded at the level of rules. 
-
+% The reasonable strategies are now encoded at the level of rules (see rules.lp). 
 _heuristic(RuleName, RuleName) :- _rule(RuleName).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PERFORM THE SELECTED HEURISTIC %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -138,6 +138,7 @@ _onlyOneOpOfMaxSize(Time)
         _largestSubexpressionForTimeStep(Time, Max),
     1 { _sizeOfSubExpressionsForHeuristicApplication(Time, _rule(HeurName, Oper), Max) 
         : _theCategoryOfHeuristicIs(HeurName, HighestCategory) } 1.
+
 %%% EXPLANATIONS FOR STRATEGY SELECTION
 % NOTE: we only output strategy explanations if the selected operation is
 % optimal so _selectedOperationIsOptimal(Time) is a condition for all such rules

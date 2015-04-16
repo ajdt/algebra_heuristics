@@ -4,7 +4,8 @@
 % Equations are represented in an expression tree, where internal nodes are
 % operators (add/mul/div) and leaf nodes are monomials.
 % 
-%
+% Will generate an arbitrary algebra expression unless other constraints are
+% included
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM GENERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % every root node (see node.lp) is active initially
