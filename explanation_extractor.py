@@ -462,6 +462,8 @@ def findAssign(cond_list, mgr, assign, all_assign):
 # that is compatible with existing variable assignments 
 def getAllCompatibleMatches(cond, mgr, assign):
     pred_key = ExplanationManager.makePredKey(cond)
+    # NOTE: lazy bug fix, some modules expect predicates without '_'; model_manager does
+    pred_key = (pred_key[0].replace('_',''), pred_key[1])
     for ground_pred in mgr.getAllGroundInstancesOf(pred_key):
         # convert grounding to variable_name --> value mapping
         ground_dict = dict(zip(cond.args, ground_pred))
