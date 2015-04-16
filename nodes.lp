@@ -29,6 +29,22 @@ _maxChildrenAtDepth(4, 2).
 #const tempRightRoot	= _temp(_id(1,2)).
 #const tempResultRoot	= tempLeftRoot.		% convention: operation results are rooted on tempLeftRoot
 
+% define what side of equation each node is on
+_onSide(leftSide, left).
+_onSide(rightSide, right).
+_onSide(Child, Side)
+    :-  _validChildOf(Parent, Child),
+        _onSide(Parent, Side).
+
+% NOTE: I've added this predicate because many 'almost fire' instances
+%   refer to nodes on opposite sides of the equation.
+%   it's a hidden predicate because we don't want to 'almost fire' if
+%   a pair of operands meet every condition for a rule except being on the same side
+%   it should be fairly obvious that you can't 'combine' things on opposite sides
+%   of the equation (for example).
+__areOnTheSameSideOfTheEquation(Fst, Snd)
+    :-  _onSide(Fst, Side),
+        _onSide(Snd, Side).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DECLARING NODES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: _id(...) should not be referenced outside of this code!!
 __rootNode(rightSide;leftSide).	% right and left side nodes explicitly declared. 

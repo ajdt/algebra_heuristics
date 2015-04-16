@@ -60,6 +60,7 @@ _applicable(Time, _rule(weCanSimplifyByPerformingFractionMultiplicationOnTheseTw
 _theseTwoFractionsAreBeingMultiplied(Time, LeftFrac, RightFrac)
 	:-	_isFraction(Time, LeftFrac),
 		_isFraction(Time, RightFrac),
+        __areOnTheSameSideOfTheEquation(LeftFrac, RightFrac),
         __isLessThan(LeftFrac, RightFrac),
 		_areBeingMultiplied(Time, LeftFrac, RightFrac).
 
@@ -88,6 +89,7 @@ _applicable(Time, _rule(weCanSimplifyByMultiplyingByTheInverseOfThisFractionInst
 _weAreDividingByAFraction(Time, NumerTerm, DenomFrac) 
     :-	_formAFraction(Time, NumerTerm, DenomFrac),
         _isFraction(Time, DenomFrac),
+        __areOnTheSameSideOfTheEquation(NumerTerm, DenomFrac),
         __isLessThan(NumerTerm, DenomFrac).  % to ensure NumerTerm actually corresponds to numerator
 
 % set root node to multiplication node
@@ -143,6 +145,7 @@ _weAreAddingTwoTermsWithVariablesThatHaveTheSameDegree(Time, LeftMono, RightMono
 		_haveEqualDegrees(Time, LeftMono, RightMono),
 		__isMono(Time, LeftMono),
 		__isMono(Time, RightMono),
+        __areOnTheSameSideOfTheEquation(LeftMono, RightMono),
         _isNotZero(Time, LeftMono), % if either mono is zero, then addZero rule is used instead
 		_isNotZero(Time, RightMono),
         __isLessThan(LeftMono, RightMono).
@@ -165,6 +168,7 @@ _weAreMultiplyingTwoTerms(Time, LeftMono, RightMono)
 	:-	_areBeingMultiplied(Time, LeftMono, RightMono),
 		__isMono(Time, LeftMono),
 		__isMono(Time, RightMono),
+        __areOnTheSameSideOfTheEquation(LeftMono, RightMono),
         _isNotOne(Time, LeftMono),
         _isNotOne(Time, RightMono),
         __isLessThan(LeftMono, RightMono).
@@ -271,6 +275,7 @@ _applicable(Time, _rule(weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFrac
 _theseTwoFractionsAreBeingAddedAndTheyHaveTheSameDenominator(Time, Fst, Snd)
 	:-	_areBeingAdded(Time, Fst, Snd),
 		_haveTheSameDenominator(Time, Fst, Snd),
+        __areOnTheSameSideOfTheEquation(Fst, Snd),
         __isLessThan(Fst, Snd).
 
 % set root to a fraction
@@ -299,6 +304,7 @@ _applicable(Time, _rule(weCanSimplifyByDistributingTheSingleFactor, _operands(Pl
 
 _weAreMultiplyingASumOfTermsByASingleFactor(Time, PlusTerm, DistribTerm)
 	:-	_areBeingMultiplied(Time, PlusTerm, DistribTerm),
+        __areOnTheSameSideOfTheEquation(PlusTerm, DistribTerm),
         __isLessThan(PlusTerm, DistribTerm), % TODO: this is necessary, but prevents distribute if C occurs before (a+b) term
 		_isSumOfTerms(Time, PlusTerm).
 
