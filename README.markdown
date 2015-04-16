@@ -7,22 +7,27 @@ heuristics), having a certain solution length, etc.
 
 The code provided serves the following functions
 1. encode a description of what algebra problems look like
-2. encode basic manipulation rules for algebra problems
+2. encode basic manipulation rules for algebra problems (NOTE: basic rules are no longer encoded!)
 3. encode human solving techniques (heuristics)
 4. generate algebra problems having certain characteristics
 5. generate a step-by-step nominal solution to a given algebra problem
 
 
-Files
-=====
+Bash and Python Files
+=====================
+Note: this project supports doxygen documentation (see the doc/ subdirectory).
+
+ASP Files
+=========
 * config\_params.lp		--	contains declared constants that limit size of expression trees, and affect solver run time
-* eqn\_generator.lp		--	generates algebra problems. Note: to generate problems with specific properties, must run eqn\_solver too
+* eqn\_generator.lp		-- a 'header' file that includes all other relevant .lp files
+* prob\_generator.lp    -- generates an arbitrary algebra problem.
 * eqn\_solver.lp		--	selects applicable rules or heuristics to produce a solution for generated algebra problem
 * math\_operations.lp	--	code used by algebra rewrite rules to modify expression tree when a rule is applied to it
 * nodes.lp				--	defines nodes, which make up expression trees, and operations on them
 * polynomial.lp			--	defines operations, and properties specifically having to do with polynomials
-* rules.lp				--	Basic algebra rules. Each rule defines conditions under which it applies and actions performed
-							if the rule is selected.
+* rules.lp				-- encodes algegbra heuristics. NOTE: this file no longer contains rule implementations, just heuristics.
+* heuristics.lp         -- contains logic to organize heuristics into classes of strategies, logic to select an operation, and to generate 'strategy explanations' for selected operation
 
 
 Algebraic Equation Encoding
@@ -47,11 +52,10 @@ Installation Dependencies
     4. json
     5. sympy
     6. pyparsing 
-    7. antlr4 
-    8. clingo
-    9. pygraphviz
+    7. clingo
+    8. pygraphviz
 * antlr4 
     * version 4.4
 * clingo 
-    version 4.3
+    * version 4.3
 

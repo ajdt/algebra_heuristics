@@ -16,7 +16,7 @@
 #const maxChildren	=	4.	% limit on children of operator nodes
 #const maxInitialChildren	=	3. 	% limit on number of children a node can start with
 #const maxDepth		=	3.	% limits number of layers used during generation
-#const maxInitialDepth		=	2.	
+#const maxInitialDepth		=	3.	
 
 % solver params
 #const maxSteps = 1.
@@ -32,3 +32,5 @@
 % allow/disallow specific operators in initial expression.
 % by default all types are allowed. To disallow a type use _disallowedType(Type)
 %%_disallowedType(neg).%%
+
+
