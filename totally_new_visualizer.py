@@ -66,7 +66,9 @@ class EquationStepParser:
         # add strategy_data and return generated step instance
         self.misc_data['strategy_data'] = dict(self.strategy_data)
         return GeneratedStep(self.getEqnString(), self.misc_data)
-    # save field/value info for a node
+
+    ## 
+    # save field/value info for a node that is expressed as a holds/2 predicate
     def addHoldsPredicate(self, holds_pred):
         node_id, field, value   = pred_parser.holdsObjectToNodeFieldValue(holds_pred)
         node_data_dict          = self.node_data[node_id]
@@ -79,7 +81,10 @@ class EquationStepParser:
         else:
             node_data_dict[field] = value
 
-    # add a predicate of the type 'strategyExplanation'
+    ##
+    # Add a predicate of the type 'strategyExplanation'.
+    # These predicates help explain why a certain operation was chosen over others
+    # @param[in] pred_obj an instance of Predicate namedtuple in pred_parser module
     def addStrategyPredicate(self, pred_obj):
         strategy_pred = pred_obj.args[1]
         strategy_name = strategy_pred.args[0].name
@@ -99,6 +104,9 @@ class EquationStepParser:
             # predicate indicates what we cannot do for the given time step
             self.strategy_data[strategy_name].append([strategy_desc + ' ' + strategy_name, []])
 
+    ##
+    # Top level method called externally to add any predicate related to this time step
+    # @param[in] pred_obj an instance of Predicate namedtuple in pred_parser module
     def addParsedPredicate(self, pred_obj):
         if pred_obj.name == 'selectedHeurOperands':
             # get time object and operands as strings, then add to relevant time step
@@ -124,33 +132,38 @@ class EquationStepParser:
             self.optimal_action = heur_inst.args[0].name
             self.optimal_operands = pred_parser.argsToListOfStrings(heur_inst.args[1])
 
+    ##
+    # For every strategy we don't have an explanation for, see if we have any 
+    # 'almost fire' explanations
+    # @param[in] model_mgr manages all predicates true for this time step
     def makeAlmostFireExplanations(self, model_mgr):
-        # check almost-fire status for any strategy that doesn't have any explanation data
         for strat in all_strategies:
-            if strat not in self.strategy_data.keys():
+            if strat not in self.strategy_data.keys(): # strategy type has no explanation
                 self.makeAlmostFireExplanationFor(strat, model_mgr)
+
+    ##
+    # For a given strategy check all heuristics in that strategy type
+    # to see if any of them almost fire
+    # @param[in] strategy string representing strategy class
+    # @param[in] model_mgr manages all predicates true for this time step
     def makeAlmostFireExplanationFor(self, strategy, model_mgr):
-        # do a key for heur name lookup need a key/
         # for each heuristic in the strategy class see if it almost fires
         for heur in explain.strategy_to_heuristic[strategy]:
             pred_key    = explain.getTemplateManager().lookupHeuristicKey(heur)
             almost_fire = explain.makeAlmostFireExplanations(pred_key, model_mgr)
             # add almost_fires explanation
             self.strategy_data[strategy] += almost_fire
-            if almost_fire != [] :
-                print 'this heuristic almost fired: ', heur
 
-
-
+    ## 
     # handles all post-processing after step parser
     # has received all predicates for this step
+    # NOTE: must be called externally
     def postProcessStepData(self, model_mgr):
         self.makeAlmostFireExplanations(model_mgr)
         self.translateStrategyData()
         self.makeExplanation(model_mgr)
-        # TODO: translate almost fire stuff
 
-        # XXX: hacky bug fix get rid of duplicates in strategy data explanations
+        # XXX: hacky bug fix: get rid of duplicates in strategy data explanations
         for key in self.strategy_data.keys():
             expl = [ (s, tuple(op)) for s, op in self.strategy_data[key] ]
             tup_expl = list(set(expl))
@@ -160,6 +173,10 @@ class EquationStepParser:
             # 'yes we can' explanations
             self.strategy_data[key] = sorted(temp, reverse=True)
 
+    ##
+    # @param[in] as_latex depricated
+    # @param[in] json_output depricated
+    # @return a string representation of the equation at this step
     def getEqnString(self, as_latex=False, json_output=False):
         left    = self.makeEqnString('id(1,1)')
         right   = self.makeEqnString('id(1,2)')
@@ -171,6 +188,11 @@ class EquationStepParser:
         string = left + '=' + right
         return str(string)
 
+    ##
+    # use translator from translate_tree_nodes module to convert the
+    # node id's in node_data to a binary tree representation
+    # NOTE: this is necessary b/c Nell uses a binary tree to represent an equation
+    # but the internal nodes in my expression trees can have any number of children
     def translateStrategyData(self): 
         trans = translator.getTranslationsForNodeData(self.node_data)
         for strategy, explanation in self.strategy_data.items():
@@ -191,6 +213,9 @@ class EquationStepParser:
                 translated_optimal.append(node)
         self.optimal_operands = translated_optimal
 
+    ##
+    # uses model manager to lookup an explanation template for the action taken
+    # in this step, to explain why we can perform the selected operation for this step
     def makeExplanation(self, model_mgr):
         if self.misc_data['action'] == '': # final step has no explanation
             return
@@ -216,18 +241,29 @@ class EquationStepParser:
         self.misc_data['explanation'] = self.translateSingleExplanation(explanation, translation_dict)
         self.misc_data['operands'] = self.translateListOfStrings(self.misc_data['operands'], translation_dict)
 
+    ## 
     # translates a single explanation array to use binary nodes
+    # an explanation array is a list of elements that look like:
+    # [explanation_string, [list_of_operands]]
+    # @param[in] explanation_sentences a list of [explanation_string, [list_of_operands]] elements
+    # @param[in] translations a hashmap with mappings old_node_id --> new_node_id
+    # @return a list of explanation sentences with the nodes changed to Nell's format
     def translateSingleExplanation(self, explanation_sentences, translations):
         # a single sentence looks like ['string explanation', [list_of_node_id_strings]]
         # explanation_sentences contains several such entries
         translate_sentence = lambda sent_data: [sent_data[0], self.translateListOfStrings(sent_data[1], translations)]
         return map(translate_sentence, explanation_sentences)
 
+    ##
     # translate a list of strings so nodes match a binary tree representation
     def translateListOfStrings(self, string_list, translations):
         transform_fnc = lambda st : translations[st] if st in translations.keys() else st
         return map(transform_fnc, string_list)
 
+    ##
+    # generates the string representation of a subexpression
+    # @param[in] root_node the node id (ex: 'id(1,2)' ) of the subexpression's root
+    # @return a string representing the subexpression
     def makeEqnString(self, root_node):
         node_type = self.node_data[root_node]['type']
         if node_type == 'mono':
@@ -249,6 +285,11 @@ class EquationStepParser:
             else: 
                 return '(' + oper_symbol.join(child_strings) + ')'
 
+    ##
+    # make a monomial string
+    # @param[in] deg string representing degree
+    # @param[in] coeff string representing coefficient
+    # @param[in] var_str string representing what variable name to use
     @staticmethod
     def makeMonomialFromData(deg, coeff, var_str='x'):
         if coeff == '0' or deg == '0':
@@ -266,6 +307,9 @@ class EquationStepParser:
         else:
             return  coeff + var_str + '^' + deg
 
+    ##
+    # @param[in] node_name the node id to get a monomial string for
+    # @return the monomial string representing the given node id
     def makeMonomial(self, node_name):
         """ Given a node name, construct the monomial referenced by that node"""
         deg     = self.node_data[node_name]['degree']
@@ -273,7 +317,13 @@ class EquationStepParser:
         return EquationStepParser.makeMonomialFromData(deg, coeff, self.var_str)
 
 GeneratedSolution = namedtuple('GeneratedSolution', ['problem_string', 'solution_steps'])
+
+##
+# Handles the parsing of a single generated problem.
+# This is the same as a single generated answer set.
 class ProblemParser(object):
+    ##
+    # @param[in] answer_set_predicates a list of strings, each string is a predicate
     def __init__(self, answer_set_predicates):
         super(ProblemParser, self).__init__()
         self.solution_steps = defaultdict(EquationStepParser)
@@ -286,6 +336,7 @@ class ProblemParser(object):
         # parse all the incoming predicates
         self.parseAnsSetFromPredicates(answer_set_predicates)
 
+    ##
     # EquationStepParser contains lots of data we don't need after parsing
     # this method returns a GeneratedStep instance that has only what we want to save
     def toGeneratedSolution(self):
@@ -296,9 +347,16 @@ class ProblemParser(object):
         #if x_soln != None:
             #generated_steps.append(x_soln)
         return GeneratedSolution(self.getProblem(), generated_steps)
+
+    ##
+    # @param[in] pred_obj a predicate object to add to an EquationStepParser
+    # @param[in] time an instance of pred_parser.Time the time step of the predicate
     def addPredicateForTimeStep(self, time, pred_obj):
         self.solution_steps[time.step].addParsedPredicate(pred_obj)
 
+    ##
+    # parse the given predicates into the steps the describe
+    # @param[in] predicates_list a list of predicate strings
     def parseAnsSetFromPredicates(self, predicates_list):
         """ compose as a string every solution in the predicate list given"""
         model_mgr = ModelManager()
@@ -330,12 +388,15 @@ class ProblemParser(object):
         for eqn_step in self.solution_steps.values():
             eqn_step.postProcessStepData(model_mgr)
 
+    ##
+    # After all predicates are parsed, see if any post-processing needs to be done
     def solutionLevelPostProcessing(self):
         self.updateVariablesIfSubstitutionOccurs()
 
-    # add soulutions for x if y-substitution is used
+    ## 
+    # Add soulutions for x if y-substitution is used; solver only solves for y
+    # if y substitution is used
     def getXSolnIfSubstitutionOccurs(self):
-        # TODO: discuss with Nell how best to handle this
         if self.sub_data == {}:
             return None
         # root prefixes used to express root order
@@ -348,6 +409,7 @@ class ProblemParser(object):
         x_soln_str ='x = ' + x_solutions
         return GeneratedStep(x_soln_str, {})
 
+    ## 
     # if y-substitution is used, update the variable used for each 
     # step after the substitution
     def updateVariablesIfSubstitutionOccurs(self):
@@ -357,6 +419,7 @@ class ProblemParser(object):
             for step in to_change:
                 self.solution_steps[step].updateVariable('y')
 
+    ##
     # TODO: for debugging purposes only, remove later!!
     def getSolutionString(self, as_latex=False, json_output=False):
         soln_trace = '\n'.join([step_obj.getEqnString() for step, step_obj in self.solution_steps.items()])
@@ -372,8 +435,6 @@ class AnswerSetJSONEncoder(json.JSONEncoder):
             ans_set_dict[index] = self.encodeSingleProblem(problem)
         return json.JSONEncoder().encode(ans_set_dict) 
 
-    # a problem is (possibly) composed of multiple solutions
-    # TODO: can we remove some of the nesting????
     def encodeSingleProblem(self, problem):
         return [self.encodeSingleSolution(soln) for soln in problem] # encode all steps
     def encodeSingleSolution(self, solution):
@@ -381,6 +442,8 @@ class AnswerSetJSONEncoder(json.JSONEncoder):
         step_list = [ [step_obj.equation_string, step_obj.step_data] for step_obj in solution.solution_steps]
         return step_list
 
+##
+# Store and separate all the answer sets in the input provided
 class AnswerSetManager:
     """This class parses answer sets from stdin or json file, outputs to file in json format or user-friendly format"""
     def __init__(self, cmdline_args):
@@ -416,7 +479,7 @@ class AnswerSetManager:
             print step.equation_string + '\n\n'
             print step.step_data
 
-#  TODO: shrink the size of this code later!!
+#  TODO: DRY out this code later
 def main(cmd_line_args):
     """ get cmd line args, initialize manager, set stdout if needed """
     # get cmd line args as dictionary

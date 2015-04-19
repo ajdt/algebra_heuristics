@@ -717,10 +717,20 @@ _applicable(Time, _rule(weCanDivideBothSidesByTheCoefficientOfTheLeftSide, _oper
 _leftSideIsASingleTermWithAVariable(Time, leftSide)
     :-  __isMono(Time, leftSide),
         _isTheDegreeOf(Time, leftSide, Deg),
-        Deg >= 1,
+        __degreeIsGreaterThanOrEqualToOne(Deg),
         _isTheCoefficientOf(Time, leftSide, Coeff),
-        Coeff != 1, 
+        __coefficientIsNotZero(Coeff), 
+        __coefficientIsNotOne(Coeff).
+
+__degreeIsGreaterThanOrEqualToOne(Deg)
+    :-  _degree(Deg),
+        Deg >= 1.
+__coefficientIsNotZero(Coeff)
+    :-  _coeff(Coeff),
         Coeff != 0.
+__coefficientIsNotOne(Coeff)
+    :-  _coeff(Coeff),
+        Coeff != 1.
 _rightSideIsAConstant(Time, rightSide)
     :-  __isMono(Time, rightSide),
         _isTheDegreeOf(Time, rightSide, Deg),

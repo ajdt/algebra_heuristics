@@ -63,6 +63,9 @@ def getTemplateManager(): # used to manage singleton template_manager
 
                         ### HELPER FUNCTIONS ###
 
+##
+# remove preprocessing directives line beginning with '#' and comments (begin with '%')
+# from files that are parsed for explanations
 def makeSanitizedFile(file_name):
     """remove comments. Save to new file"""
     file_obj    = open(file_name, 'r')
@@ -77,12 +80,17 @@ def makeSanitizedFile(file_name):
     new_file_obj.close()
     return new_file_obj.name
 
+##
+# @param file_name an ASP file containing rules
+# @return a list of parsed rules 
 def getRulesListFromFile(file_name):
     temp_file_name  = makeSanitizedFile(file_name)
     rules_list      = par.parseRulesFromFile(temp_file_name)
     os.remove(temp_file_name)
     return rules_list
 
+##
+# parse a list of files into rule objects
 def parseFiles(file_list):
     rules_list = []
     for rule_file in file_list:
@@ -104,11 +112,14 @@ def parseFiles(file_list):
             #print str(sentence)
     return template_mgr
 
+##
+# parse rules.lp to obtain explanations for the heuristics used by ASP
 def parseRules():
     """ parse rules file and initialize an explanation manager for the parsed rules"""
     return parseFiles(['rules.lp'])
 
-## convert predicate name from camelcase to proper explanation
+## 
+# convert predicate name from camelcase to proper explanation
 def convertFromCamelCase(name):
     """ Takes a string like 'ILikePuppies' and returns 'i like puppies' """
     # NOTE: this code is not mine!!
@@ -130,6 +141,9 @@ def filterUnusedConditions(condition_list):
     pred_filter = lambda cond: isPredicate(cond) and not isSkippedPredicate(cond)
     return filter(pred_filter, condition_list)
 
+##
+# manages a set of explanation objects and handles lookups
+# of those objects based on predicate key
 class ExplanationManager(object):
     """manages a set of explanations extracted from ASP gringo files"""
     def __init__(self):
@@ -137,8 +151,9 @@ class ExplanationManager(object):
         self.templates = {} # (predicate_name, arity) --> ExplanationTemplate instance
         self.heuristic_to_heur_key = {}
 
+    ##
+    # instantiate new ExplanationTemplate instance for given predicate 
     def addExplanationTemplate(self, rule):
-        """instantiate new ExplanationTemplate instance for given predicate """
         rule_key = ExplanationManager.makeRuleKey(rule)
         if self.templates.has_key(rule_key):
             self.templates[rule_key].addAdditionalExplanation(rule)
@@ -153,25 +168,28 @@ class ExplanationManager(object):
     def lookupHeuristicKey(self, heur_string):
         return self.heuristic_to_heur_key[heur_string]
 
+    ##
+    # Return an ExplanationTemplate instance for given predicate_key
+    # predicate_ key = (predicate_name, arity)
+    # NOTE: predicate_key  should be generated using ExplanationManager.makeRuleKey(rule) 
+    #           or makePredKey()
     def lookupTemplateFor(self, predicate_key):
-        """Return an ExplanationTemplate instance for given predicate_key
-        predicate_ key = (predicate_name, arity)
-        NOTE: predicate_key  should be generated using ExplanationManager.makeRuleKey(rule) or makePredKey()
-        """
         if predicate_key in self.templates.keys():
             return self.templates[predicate_key]
         else:
             return None
 
+    ##
+    # return predicate key for given rule
     @staticmethod
     def makeRuleKey(rule):
-        """ return predicate key for given rule """
         return ExplanationManager.makePredKey(rule.head)
 
+    ##
+    # heuristics have a key determined by condition and arity of their operands. 
+    # Other predicates are indexed by their own predicate name and arity
     @staticmethod
     def makePredKey(predicate):
-        """ heuristics have a key determined by condition and arity of their operands. Other predicates
-        are indexed by their own predicate name and arity"""
         if predicate.name != '_applicable':
             return (predicate.name, predicate.arity)
 
@@ -183,13 +201,18 @@ class ExplanationManager(object):
         heur_key        = (condition_name, operands.arity+1)
         return heur_key
 
+    ##
+    # @return true if an explanation object is stored for the given predicate
     def hasExplanationForPredicate(self, predicate):
         predicate_key = ExplanationManager.makePredKey(predicate)
         return predicate_key in self.templates.keys()
         
+##
+# contains the logic to generate an explanation for one predicate from 
+# the rule that derives it
 class ExplanationTemplate(object):
-    """stores the explanation logic for a single predicate type. A predicate type
-    is defined by both predicate name and arity."""
+    ##
+    # @param manager the ExplanationManager storing this object
     def __init__(self, rule, manager):
         super(ExplanationTemplate, self).__init__()
         self.rule       = rule
@@ -199,12 +222,20 @@ class ExplanationTemplate(object):
         """Some predicates can be derived in more than one way"""
         pass
 
+    ##
+    # @param condition a Predicate object
+    # @param var_assignment a hashmap (var_name --> var_value)
+    # @return true if every variable in the condition is defined in var_assignment
     @staticmethod
     def isUnified(condition, var_assignment):
         variables = ExplanationTemplate.getPredicateVariables(condition)
         # ensure every variable has an assignment
         return all(map(lambda x: x in var_assignment.keys(), variables))
 
+    ##
+    # @param var_names a list of variable names
+    # @param var_assignment a hashmap (var_name --> var_value) 
+    # @return a list where every var_name is replaced with its value or None
     @staticmethod
     def substituteVariableValues(var_names, var_assignment):
         # returns a list where variables are substitued for with values where possible
@@ -217,12 +248,13 @@ class ExplanationTemplate(object):
                 values.append(None)
         return values
     
+    ##
+    # the template for a predicate p1 may use different variable names than
+    # when p1 is used as a condition for another rule
+    # This method changes the names to the template naming system
+    # @return a new dictionary of variable assignments
     @staticmethod
     def translateVarsToTemplateNames(template, var_assignment, old_variables):
-        # the template for a predicate p1 may use different variable names than
-        # when p1 is used as a condition for another rule
-        # This method changes the names to the template naming system
-        # @return a new dictionary of variable assignments
         substituted             = ExplanationTemplate.substituteVariableValues(old_variables, var_assignment)
         new_vars_with_values    = zip(ExplanationTemplate.getPredicateVariables(template.rule.head), substituted)
         
@@ -257,11 +289,13 @@ class ExplanationTemplate(object):
             if new_assign != None:
                 return new_assign
         return None
+
     def unifyVars(self, var_dictionary, model_manager):
         predicates_only = filterUnusedConditions(self.rule.body)
         #for cond in predicates_only:
             #print cond.name
         return ExplanationTemplate.unify(var_dictionary, predicates_only, model_manager)
+
     def makeExplanation(self, var_values, model_manager=None, depth=1, factor_data = {}):
         """ return list of template sentences containing explanation"""
         # create mapping from variables used to their values
@@ -281,12 +315,20 @@ class ExplanationTemplate(object):
             return TemplateSentence(sentence, variables, var_assignments)
         else:
             return self.makePredicateExplanation(self.rule.head, var_assignments)
+
     def unifyAndMakeBodyExplanation(self, var_assignments, model_manager=None, depth=1, factor_data={}):
         # unify variables first, then make explanations
         unified_vars = self.unifyVars(var_assignments, model_manager)
         if unified_vars != None:
             var_assignments = unified_vars
         return self.makeBodyExplanation(var_assignments, model_manager, depth, factor_data)
+    ##
+    # make explanation for the body of self.rule
+    # @param var_assignments hashmap containing values of variables
+    # @param depth explanation depth
+    # @param model_manager a ModelManager instance containing all predicates true for this step
+    # @param factor_data used only if we factored in this step
+    # @return a list of explanations for this step
     def makeBodyExplanation(self, var_assignments, model_manager=None, depth=1, factor_data={}):
         # at desired explanation depth, return body explanations
         if depth <= 1:
@@ -306,8 +348,17 @@ class ExplanationTemplate(object):
                 else:
                     explanations += self.predListToSentences([pred], var_assignments, factor_data)
             return explanations
+    ##
+    # @param pred_list a list of predicate objects
+    # @param var_assignments a hashmap of variable assignments
+    # @param factor_data hashmap containing data (used only if we factored during this step)
+    # @return a list of TemplateSentence objects
     def predListToSentences(self, pred_list, var_asignments, factor_data):
         return [ self.makePredicateExplanation(pred, var_asignments, factor_data) for pred in filterUnusedConditions(pred_list)]
+
+    ##
+    # @param predicate a predicate object
+    # @return the variables used by the predicate
     @staticmethod
     def getPredicateVariables(predicate):
         """return a list of variables referenced by given predicate"""
@@ -318,10 +369,18 @@ class ExplanationTemplate(object):
             return [predicate.args[0]] + predicate.args[1].args[1].args
         else:
             return predicate.args
+
+    ##
+    # @return a TemplateSentence instance for the give predicate using the 
+    # given hashmap of var_assignments
     def makePredicateExplanation(self, predicate, var_assignments, factor_data={}):
         sentence    = self.spliceInFactorData(predicate.name, factor_data)
         variables   = ExplanationTemplate.getPredicateVariables(predicate)    
         return TemplateSentence(sentence, variables, var_assignments)
+    ##
+    # splice Factor predicates into the explanations generated with predicate names
+    # NOTE: for some predicates we need auxillary information to form a good explanation
+    # this auxillary explanation is provided by factor(..) predicates
     def spliceInFactorData(self, raw_predicate_name, factor_data):
         splitA = raw_predicate_name.split('FACTORA')
         if len(splitA) > 1:
@@ -339,10 +398,10 @@ class ExplanationTemplate(object):
 
 
 
+##
+# Encapsulates a single sentence of a template along with var substitution functionality.
+# Also decides order of vars w.r.t. explanation
 class TemplateSentence(object):
-    """encapsulates a single sentence of a template along with var substitution functionality
-    Also decides order of vars w.r.t. explanation
-    """
     def __init__(self, sentence, variables, var_assignments = {}):
         super(TemplateSentence, self).__init__()
         self.sentence, self.variables   = sentence, list(variables)
@@ -352,13 +411,15 @@ class TemplateSentence(object):
         if 'Time' in self.variables:
             self.variables.remove('Time')
 
+    ##
+    # @return list containing variables and strings to be joined
     def updateVariables(self, var_assignments={}):
-        """ returns list containing variables and strings to be joined """
         self.var_values = var_assignments
+
+    ##
+    # @return a list of variables and explanation extracted from predicate name
+    # that must be joined to obtain a full explanation
     def getSentenceFragments(self):
-        """ returns a list of variables and explanation extracted from predicate name
-            that must be joined to obtain a full explanation
-        """
         # substitute values for assigned variables, keep unassigned variables same
         vars_to_inject = []
         for variable in self.variables:
@@ -368,6 +429,7 @@ class TemplateSentence(object):
                 vars_to_inject.append(variable)
 
         return [self.sentence, vars_to_inject]
+
     def __str__(self):
         return ' '.join(self.getSentenceFragments())
         
@@ -380,7 +442,8 @@ def isSkippedPredicate(predicate):
 def isNotPredicate(condition): 
     return not isPredicate(condition)
 
-# return true if variable assignment can be used to make
+##
+# @return true if variable assignment can be used to make
 # a ground instance of cond that is in the mgr
 def condIsTrueUnderAssignment(cond, assign_dict, mgr):
     # NOTE: None will be inserted if there is no assignment of a variable
@@ -392,7 +455,7 @@ def condIsTrueUnderAssignment(cond, assign_dict, mgr):
     return False
 
 # TODO: combine with existing code
-# to test use: (weCanSimplifyByDistributingTheSingleFactor, 2)
+# returns all predicates constituting level two explanation of pred_key
 def getLevelTwoPredicates(pred_key):
     template    = getTemplateManager().lookupTemplateFor(pred_key)
 
@@ -408,7 +471,8 @@ def getLevelTwoPredicates(pred_key):
 
     return level_two_preds
 
-# return a list of assignments along with the one predicate that isn't satisfied
+##
+# @return a list of assignments along with the one predicate that isn't satisfied
 def findAlmostMatchesPredicates(pred_key, model_mgr):
     level_two_preds = getLevelTwoPredicates(pred_key) 
     almost_fire     = []
@@ -420,6 +484,9 @@ def findAlmostMatchesPredicates(pred_key, model_mgr):
                 almost_fire.append((excluded, assign))
     return almost_fire
 
+##
+# for a given predicate key see find all instances of 'almost firing' and
+# return any associated explanations in a list
 def makeAlmostFireExplanations(pred_key, model_mgr):
     rule_obj    = getTemplateManager().lookupTemplateFor(pred_key).rule
     explanations = []
@@ -439,6 +506,7 @@ def makeAlmostFireExplanations(pred_key, model_mgr):
 
     return explanations
 
+##
 # return a hashmap of satisfying variable --> value mappings
 # for the condition list, based on predicates in model_mgr
 def getAllSatisfyingAssignments(conditions, model_mgr):
@@ -446,6 +514,7 @@ def getAllSatisfyingAssignments(conditions, model_mgr):
     findAssign(conditions, model_mgr, {}, all_assignments)
     return all_assignments
 
+##
 # find a all assignments that satisfy condition list recursively
 def findAssign(cond_list, mgr, assign, all_assign):
     if cond_list == []:
@@ -458,6 +527,7 @@ def findAssign(cond_list, mgr, assign, all_assign):
         new_assign.update(match_dict)
         findAssign(cond_list[1:], mgr, new_assign, all_assign)
 
+##
 # generator function that yields every grounding of a condition 
 # that is compatible with existing variable assignments 
 def getAllCompatibleMatches(cond, mgr, assign):
@@ -470,7 +540,8 @@ def getAllCompatibleMatches(cond, mgr, assign):
         if isCompatibleWith(ground_dict, assign):
             yield ground_pred
 
-# return true if there are no assignment conflicts
+##
+# @return true if there are no assignment conflicts
 # between variables in both dictionaries
 def isCompatibleWith(ground_dict, assign_dict):
     for common_key in set(ground_dict.keys()).intersection( set(assign_dict.keys())):
@@ -479,8 +550,9 @@ def isCompatibleWith(ground_dict, assign_dict):
     return True
 
 
-# Given a template object return list of templates for it's
-# body explanations
+##
+# Given a template object 
+# @return list of templates for it's body explanations
 def getBodyTemplateObjects(template):
     template_obj = []
     #print template.rule.head
@@ -492,8 +564,9 @@ def getBodyTemplateObjects(template):
         template_obj.append(pred_temp)
     return template_obj
 
+##
 # given a list of conditions
-# return a list of tuples, each tuple is an excluded
+# @return a list of tuples, each tuple is an excluded
 # condition and the remaining conditions
 # TODO: make this a generator function
 def makeListOfAlmostFireConditions(list_of_conditions):

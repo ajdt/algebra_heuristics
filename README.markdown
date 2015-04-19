@@ -15,7 +15,8 @@ The code provided serves the following functions
 
 Bash and Python Files
 =====================
-Note: this project supports doxygen documentation (see the doc/ subdirectory).
+Note: this project supports doxygen documentation 
+(load up doc/html/index.html in a browser).
 
 ASP Files
 =========
