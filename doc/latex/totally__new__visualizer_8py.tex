@@ -1,0 +1,40 @@
+\hypertarget{totally__new__visualizer_8py}{}\section{totally\+\_\+new\+\_\+visualizer.\+py File Reference}
+\label{totally__new__visualizer_8py}\index{totally\+\_\+new\+\_\+visualizer.\+py@{totally\+\_\+new\+\_\+visualizer.\+py}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser}{totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser}
+\begin{DoxyCompactList}\small\item\em Parses predicates related to one step of a solution trace contains the data members\+: var\+\_\+str -- what variable an equation should be expressed with node\+\_\+data -- dictionary containing all node info parsed strategy\+\_\+data -- parsed explanations for the different strategy classes. \end{DoxyCompactList}\item 
+class \hyperlink{classtotally__new__visualizer_1_1_problem_parser}{totally\+\_\+new\+\_\+visualizer.\+Problem\+Parser}
+\begin{DoxyCompactList}\small\item\em Handles the parsing of a single generated problem. \end{DoxyCompactList}\item 
+class \hyperlink{classtotally__new__visualizer_1_1_answer_set_j_s_o_n_encoder}{totally\+\_\+new\+\_\+visualizer.\+Answer\+Set\+J\+S\+O\+N\+Encoder}
+\item 
+class \hyperlink{classtotally__new__visualizer_1_1_answer_set_manager}{totally\+\_\+new\+\_\+visualizer.\+Answer\+Set\+Manager}
+\begin{DoxyCompactList}\small\item\em Store and separate all the answer sets in the input provided. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacetotally__new__visualizer}{totally\+\_\+new\+\_\+visualizer}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{namespacetotally__new__visualizer_aa58bcbc4c3c0a513fa8d58155d9d6e46}{totally\+\_\+new\+\_\+visualizer.\+main} (cmd\+\_\+line\+\_\+args)
+\item 
+def \hyperlink{namespacetotally__new__visualizer_a5ed81f6c9d94b6894d3ba36844436f9e}{totally\+\_\+new\+\_\+visualizer.\+get\+Cmd\+Line\+Args} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+dictionary \hyperlink{namespacetotally__new__visualizer_a3dd0f4daa013b2acf2fbd1f7aa0ad07c}{totally\+\_\+new\+\_\+visualizer.\+op\+\_\+symbols} = \{\textquotesingle{}add\textquotesingle{} \+: \textquotesingle{}+\textquotesingle{} , \textquotesingle{}div\textquotesingle{} \+: \textquotesingle{}/\textquotesingle{} , \textquotesingle{}mul\textquotesingle{} \+: \textquotesingle{}$\ast$\textquotesingle{} , \textquotesingle{}neg\textquotesingle{} \+: \textquotesingle{}-\/\textquotesingle{}\}
+\item 
+list \hyperlink{namespacetotally__new__visualizer_ab706e5502043e33aaccc4cd5db3a11a8}{totally\+\_\+new\+\_\+visualizer.\+factor\+\_\+predicates} = \mbox{[}\textquotesingle{}factor\textquotesingle{} + n for n in list(\textquotesingle{}1234\textquotesingle{})\mbox{]}
+\item 
+dictionary \hyperlink{namespacetotally__new__visualizer_ac35b4d88f3973e9437d26d620f6404d3}{totally\+\_\+new\+\_\+visualizer.\+factor\+\_\+name\+\_\+dict} = \{\textquotesingle{}factor1\textquotesingle{}\+:\textquotesingle{}F\+A\+C\+T\+O\+R\+A\textquotesingle{} , \textquotesingle{}factor2\textquotesingle{}\+:\textquotesingle{}F\+A\+C\+T\+O\+R\+B\textquotesingle{}, \textquotesingle{}factor3\textquotesingle{}\+:\textquotesingle{}F\+A\+C\+T\+O\+R\+X\textquotesingle{}, \textquotesingle{}factor4\textquotesingle{}\+:\textquotesingle{}F\+A\+C\+T\+O\+R\+Y\textquotesingle{} \}
+\item 
+list \hyperlink{namespacetotally__new__visualizer_a0336db197e4d6b0cc49dd792fa21d890}{totally\+\_\+new\+\_\+visualizer.\+all\+\_\+strategies} = \mbox{[}\textquotesingle{}cancel\textquotesingle{}, \textquotesingle{}combine\textquotesingle{}, \textquotesingle{}rearrange\textquotesingle{}, \textquotesingle{}move\textquotesingle{}, \textquotesingle{}expand\textquotesingle{}\mbox{]}
+\item 
+tuple \hyperlink{namespacetotally__new__visualizer_a69a6b4328317f3ea8abc150eafbda370}{totally\+\_\+new\+\_\+visualizer.\+Generated\+Step} = namedtuple(\textquotesingle{}Generated\+Step\textquotesingle{}, \mbox{[}\textquotesingle{}equation\+\_\+string\textquotesingle{}, \textquotesingle{}step\+\_\+data\textquotesingle{}\mbox{]})
+\item 
+tuple \hyperlink{namespacetotally__new__visualizer_ab9dc95295259f8165e1fdf15f954d2b1}{totally\+\_\+new\+\_\+visualizer.\+Generated\+Solution} = namedtuple(\textquotesingle{}Generated\+Solution\textquotesingle{}, \mbox{[}\textquotesingle{}problem\+\_\+string\textquotesingle{}, \textquotesingle{}solution\+\_\+steps\textquotesingle{}\mbox{]})
+\end{DoxyCompactItemize}

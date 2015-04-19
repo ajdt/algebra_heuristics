@@ -1,0 +1,113 @@
+\hypertarget{classtotally__new__visualizer_1_1_answer_set_manager}{}\section{totally\+\_\+new\+\_\+visualizer.\+Answer\+Set\+Manager Class Reference}
+\label{classtotally__new__visualizer_1_1_answer_set_manager}\index{totally\+\_\+new\+\_\+visualizer.\+Answer\+Set\+Manager@{totally\+\_\+new\+\_\+visualizer.\+Answer\+Set\+Manager}}
+
+
+Store and separate all the answer sets in the input provided.  
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classtotally__new__visualizer_1_1_answer_set_manager_a6b6b2a2f3d8393f883b0f6e4846fb975}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self, \hyperlink{classtotally__new__visualizer_1_1_answer_set_manager_a6720cc83312d81427e09bb5b3f7ceb02}{cmdline\+\_\+args})
+\item 
+def \hyperlink{classtotally__new__visualizer_1_1_answer_set_manager_a3717e2b3bf3f520ba8d66bfd4e884aa7}{init\+From\+S\+T\+D\+I\+N} (self)
+\item 
+def \hyperlink{classtotally__new__visualizer_1_1_answer_set_manager_a5db35c9928d6ff2894ab0fec0dc2b940}{print\+Answer\+Sets}
+\item 
+def \hyperlink{classtotally__new__visualizer_1_1_answer_set_manager_a9a77846f767cce9d64b75a8c7f4db6fd}{print\+Single\+Answer\+Set} (self, generated\+\_\+prob)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classtotally__new__visualizer_1_1_answer_set_manager_a6720cc83312d81427e09bb5b3f7ceb02}{cmdline\+\_\+args}
+\item 
+\hyperlink{classtotally__new__visualizer_1_1_answer_set_manager_add0e559366b050e585d2ba3f6f78def2}{answer\+\_\+sets\+\_\+dict}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Store and separate all the answer sets in the input provided. 
+
+\begin{DoxyVerb}This class parses answer sets from stdin or json file, outputs to file in json format or user-friendly format\end{DoxyVerb}
+ 
+
+Definition at line 449 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classtotally__new__visualizer_1_1_answer_set_manager_a6b6b2a2f3d8393f883b0f6e4846fb975}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager@{totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager@{totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Answer\+Set\+Manager.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{cmdline\+\_\+args}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_answer_set_manager_a6b6b2a2f3d8393f883b0f6e4846fb975}
+
+
+Definition at line 451 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classtotally__new__visualizer_1_1_answer_set_manager_a3717e2b3bf3f520ba8d66bfd4e884aa7}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager@{totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager}!init\+From\+S\+T\+D\+I\+N@{init\+From\+S\+T\+D\+I\+N}}
+\index{init\+From\+S\+T\+D\+I\+N@{init\+From\+S\+T\+D\+I\+N}!totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager@{totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager}}
+\subsubsection[{init\+From\+S\+T\+D\+I\+N}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Answer\+Set\+Manager.\+init\+From\+S\+T\+D\+I\+N (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_answer_set_manager_a3717e2b3bf3f520ba8d66bfd4e884aa7}
+\begin{DoxyVerb}load answer sets from stdin NOTE: expects JSON input via clingo --outf=2\end{DoxyVerb}
+ 
+
+Definition at line 456 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_answer_set_manager_a5db35c9928d6ff2894ab0fec0dc2b940}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager@{totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager}!print\+Answer\+Sets@{print\+Answer\+Sets}}
+\index{print\+Answer\+Sets@{print\+Answer\+Sets}!totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager@{totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager}}
+\subsubsection[{print\+Answer\+Sets}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Answer\+Set\+Manager.\+print\+Answer\+Sets (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{json\+\_\+printing = {\ttfamily False}, }
+\item[{}]{with\+\_\+explanation = {\ttfamily False}}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_answer_set_manager_a5db35c9928d6ff2894ab0fec0dc2b940}
+\begin{DoxyVerb}display all answer sets in user-friendly way\end{DoxyVerb}
+ 
+
+Definition at line 473 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_answer_set_manager_a9a77846f767cce9d64b75a8c7f4db6fd}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager@{totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager}!print\+Single\+Answer\+Set@{print\+Single\+Answer\+Set}}
+\index{print\+Single\+Answer\+Set@{print\+Single\+Answer\+Set}!totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager@{totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager}}
+\subsubsection[{print\+Single\+Answer\+Set}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Answer\+Set\+Manager.\+print\+Single\+Answer\+Set (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{generated\+\_\+prob}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_answer_set_manager_a9a77846f767cce9d64b75a8c7f4db6fd}
+
+
+Definition at line 479 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classtotally__new__visualizer_1_1_answer_set_manager_add0e559366b050e585d2ba3f6f78def2}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager@{totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager}!answer\+\_\+sets\+\_\+dict@{answer\+\_\+sets\+\_\+dict}}
+\index{answer\+\_\+sets\+\_\+dict@{answer\+\_\+sets\+\_\+dict}!totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager@{totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager}}
+\subsubsection[{answer\+\_\+sets\+\_\+dict}]{\setlength{\rightskip}{0pt plus 5cm}totally\+\_\+new\+\_\+visualizer.\+Answer\+Set\+Manager.\+answer\+\_\+sets\+\_\+dict}\label{classtotally__new__visualizer_1_1_answer_set_manager_add0e559366b050e585d2ba3f6f78def2}
+
+
+Definition at line 454 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_answer_set_manager_a6720cc83312d81427e09bb5b3f7ceb02}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager@{totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager}!cmdline\+\_\+args@{cmdline\+\_\+args}}
+\index{cmdline\+\_\+args@{cmdline\+\_\+args}!totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager@{totally\+\_\+new\+\_\+visualizer\+::\+Answer\+Set\+Manager}}
+\subsubsection[{cmdline\+\_\+args}]{\setlength{\rightskip}{0pt plus 5cm}totally\+\_\+new\+\_\+visualizer.\+Answer\+Set\+Manager.\+cmdline\+\_\+args}\label{classtotally__new__visualizer_1_1_answer_set_manager_a6720cc83312d81427e09bb5b3f7ceb02}
+
+
+Definition at line 452 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{totally__new__visualizer_8py}{totally\+\_\+new\+\_\+visualizer.\+py}\end{DoxyCompactItemize}

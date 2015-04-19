@@ -1,0 +1,234 @@
+\hypertarget{classtotally__new__visualizer_1_1_problem_parser}{}\section{totally\+\_\+new\+\_\+visualizer.\+Problem\+Parser Class Reference}
+\label{classtotally__new__visualizer_1_1_problem_parser}\index{totally\+\_\+new\+\_\+visualizer.\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer.\+Problem\+Parser}}
+
+
+Handles the parsing of a single generated problem.  
+
+
+Inheritance diagram for totally\+\_\+new\+\_\+visualizer.\+Problem\+Parser\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classtotally__new__visualizer_1_1_problem_parser}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classtotally__new__visualizer_1_1_problem_parser_a8c74392fb4a04b5c3215fa594c1a223d}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self, answer\+\_\+set\+\_\+predicates)
+\item 
+def \hyperlink{classtotally__new__visualizer_1_1_problem_parser_ada04c87da73191c9d9dd21f4bc7adbb9}{to\+Generated\+Solution} (self)
+\begin{DoxyCompactList}\small\item\em \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser}{Equation\+Step\+Parser} contains lots of data we don\textquotesingle{}t need after parsing this method returns a Generated\+Step instance that has only what we want to save. \end{DoxyCompactList}\item 
+def \hyperlink{classtotally__new__visualizer_1_1_problem_parser_a3c480d50bf72818a2db48543b431bcbc}{add\+Predicate\+For\+Time\+Step} (self, time, pred\+\_\+obj)
+\item 
+def \hyperlink{classtotally__new__visualizer_1_1_problem_parser_a9ebe340d4c51febfe4b32a167d97e353}{parse\+Ans\+Set\+From\+Predicates} (self, predicates\+\_\+list)
+\begin{DoxyCompactList}\small\item\em parse the given predicates into the steps the describe \end{DoxyCompactList}\item 
+def \hyperlink{classtotally__new__visualizer_1_1_problem_parser_ae641da32655919b48a93bb263a565157}{solution\+Level\+Post\+Processing} (self)
+\begin{DoxyCompactList}\small\item\em After all predicates are parsed, see if any post-\/processing needs to be done. \end{DoxyCompactList}\item 
+def \hyperlink{classtotally__new__visualizer_1_1_problem_parser_aac1f2db24f810523852a67dbb69bfe5f}{get\+X\+Soln\+If\+Substitution\+Occurs} (self)
+\begin{DoxyCompactList}\small\item\em Add soulutions for x if y-\/substitution is used; solver only solves for y if y substitution is used. \end{DoxyCompactList}\item 
+def \hyperlink{classtotally__new__visualizer_1_1_problem_parser_afcfb1a63e8fe352e8e9a2737ea1654f5}{update\+Variables\+If\+Substitution\+Occurs} (self)
+\begin{DoxyCompactList}\small\item\em if y-\/substitution is used, update the variable used for each step after the substitution \end{DoxyCompactList}\item 
+def \hyperlink{classtotally__new__visualizer_1_1_problem_parser_a922001a638e085fc2ab3e08254eb60de}{get\+Solution\+String}
+\begin{DoxyCompactList}\small\item\em T\+O\+D\+O\+: for debugging purposes only, remove later!! \end{DoxyCompactList}\item 
+def \hyperlink{classtotally__new__visualizer_1_1_problem_parser_a07434850dc97a708cd945df0e3be195d}{get\+Problem} (self)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classtotally__new__visualizer_1_1_problem_parser_a2922e97837374aee68052070231aa978}{solution\+\_\+steps}
+\item 
+\hyperlink{classtotally__new__visualizer_1_1_problem_parser_a63fff6bd2c3015c278433317fc7c8e32}{sub\+\_\+data}
+\item 
+\hyperlink{classtotally__new__visualizer_1_1_problem_parser_a27138f0c72c9ab44f6e951b63159b05f}{soln\+\_\+list}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Handles the parsing of a single generated problem. 
+
+This is the same as a single generated answer set. 
+
+Definition at line 326 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classtotally__new__visualizer_1_1_problem_parser_a8c74392fb4a04b5c3215fa594c1a223d}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Problem\+Parser.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{answer\+\_\+set\+\_\+predicates}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_problem_parser_a8c74392fb4a04b5c3215fa594c1a223d}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em answer\+\_\+set\+\_\+predicates} & a list of strings, each string is a predicate \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 329 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classtotally__new__visualizer_1_1_problem_parser_a3c480d50bf72818a2db48543b431bcbc}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}!add\+Predicate\+For\+Time\+Step@{add\+Predicate\+For\+Time\+Step}}
+\index{add\+Predicate\+For\+Time\+Step@{add\+Predicate\+For\+Time\+Step}!totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}}
+\subsubsection[{add\+Predicate\+For\+Time\+Step}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Problem\+Parser.\+add\+Predicate\+For\+Time\+Step (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{time, }
+\item[{}]{pred\+\_\+obj}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_problem_parser_a3c480d50bf72818a2db48543b431bcbc}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em pred\+\_\+obj} & a predicate object to add to an \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser}{Equation\+Step\+Parser} \\
+\hline
+\mbox{\tt in}  & {\em time} & an instance of \hyperlink{namespacepred__parser_af458c74fe479675c5d30a1dbd7375bed}{pred\+\_\+parser.\+Time} the time step of the predicate \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 356 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_problem_parser_a07434850dc97a708cd945df0e3be195d}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}!get\+Problem@{get\+Problem}}
+\index{get\+Problem@{get\+Problem}!totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}}
+\subsubsection[{get\+Problem}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Problem\+Parser.\+get\+Problem (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_problem_parser_a07434850dc97a708cd945df0e3be195d}
+
+
+Definition at line 430 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_problem_parser_a922001a638e085fc2ab3e08254eb60de}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}!get\+Solution\+String@{get\+Solution\+String}}
+\index{get\+Solution\+String@{get\+Solution\+String}!totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}}
+\subsubsection[{get\+Solution\+String}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Problem\+Parser.\+get\+Solution\+String (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{as\+\_\+latex = {\ttfamily False}, }
+\item[{}]{json\+\_\+output = {\ttfamily False}}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_problem_parser_a922001a638e085fc2ab3e08254eb60de}
+
+
+T\+O\+D\+O\+: for debugging purposes only, remove later!! 
+
+
+
+Definition at line 426 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_problem_parser_aac1f2db24f810523852a67dbb69bfe5f}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}!get\+X\+Soln\+If\+Substitution\+Occurs@{get\+X\+Soln\+If\+Substitution\+Occurs}}
+\index{get\+X\+Soln\+If\+Substitution\+Occurs@{get\+X\+Soln\+If\+Substitution\+Occurs}!totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}}
+\subsubsection[{get\+X\+Soln\+If\+Substitution\+Occurs}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Problem\+Parser.\+get\+X\+Soln\+If\+Substitution\+Occurs (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_problem_parser_aac1f2db24f810523852a67dbb69bfe5f}
+
+
+Add soulutions for x if y-\/substitution is used; solver only solves for y if y substitution is used. 
+
+
+
+Definition at line 401 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_problem_parser_a9ebe340d4c51febfe4b32a167d97e353}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}!parse\+Ans\+Set\+From\+Predicates@{parse\+Ans\+Set\+From\+Predicates}}
+\index{parse\+Ans\+Set\+From\+Predicates@{parse\+Ans\+Set\+From\+Predicates}!totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}}
+\subsubsection[{parse\+Ans\+Set\+From\+Predicates}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Problem\+Parser.\+parse\+Ans\+Set\+From\+Predicates (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{predicates\+\_\+list}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_problem_parser_a9ebe340d4c51febfe4b32a167d97e353}
+
+
+parse the given predicates into the steps the describe 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em predicates\+\_\+list} & a list of predicate strings \begin{DoxyVerb}compose as a string every solution in the predicate list given\end{DoxyVerb}
+ \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 362 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_problem_parser_ae641da32655919b48a93bb263a565157}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}!solution\+Level\+Post\+Processing@{solution\+Level\+Post\+Processing}}
+\index{solution\+Level\+Post\+Processing@{solution\+Level\+Post\+Processing}!totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}}
+\subsubsection[{solution\+Level\+Post\+Processing}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Problem\+Parser.\+solution\+Level\+Post\+Processing (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_problem_parser_ae641da32655919b48a93bb263a565157}
+
+
+After all predicates are parsed, see if any post-\/processing needs to be done. 
+
+
+
+Definition at line 395 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_problem_parser_ada04c87da73191c9d9dd21f4bc7adbb9}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}!to\+Generated\+Solution@{to\+Generated\+Solution}}
+\index{to\+Generated\+Solution@{to\+Generated\+Solution}!totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}}
+\subsubsection[{to\+Generated\+Solution}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Problem\+Parser.\+to\+Generated\+Solution (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_problem_parser_ada04c87da73191c9d9dd21f4bc7adbb9}
+
+
+\hyperlink{classtotally__new__visualizer_1_1_equation_step_parser}{Equation\+Step\+Parser} contains lots of data we don\textquotesingle{}t need after parsing this method returns a Generated\+Step instance that has only what we want to save. 
+
+
+
+Definition at line 344 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_problem_parser_afcfb1a63e8fe352e8e9a2737ea1654f5}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}!update\+Variables\+If\+Substitution\+Occurs@{update\+Variables\+If\+Substitution\+Occurs}}
+\index{update\+Variables\+If\+Substitution\+Occurs@{update\+Variables\+If\+Substitution\+Occurs}!totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}}
+\subsubsection[{update\+Variables\+If\+Substitution\+Occurs}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Problem\+Parser.\+update\+Variables\+If\+Substitution\+Occurs (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_problem_parser_afcfb1a63e8fe352e8e9a2737ea1654f5}
+
+
+if y-\/substitution is used, update the variable used for each step after the substitution 
+
+
+
+Definition at line 417 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classtotally__new__visualizer_1_1_problem_parser_a27138f0c72c9ab44f6e951b63159b05f}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}!soln\+\_\+list@{soln\+\_\+list}}
+\index{soln\+\_\+list@{soln\+\_\+list}!totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}}
+\subsubsection[{soln\+\_\+list}]{\setlength{\rightskip}{0pt plus 5cm}totally\+\_\+new\+\_\+visualizer.\+Problem\+Parser.\+soln\+\_\+list}\label{classtotally__new__visualizer_1_1_problem_parser_a27138f0c72c9ab44f6e951b63159b05f}
+
+
+Definition at line 336 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_problem_parser_a2922e97837374aee68052070231aa978}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}!solution\+\_\+steps@{solution\+\_\+steps}}
+\index{solution\+\_\+steps@{solution\+\_\+steps}!totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}}
+\subsubsection[{solution\+\_\+steps}]{\setlength{\rightskip}{0pt plus 5cm}totally\+\_\+new\+\_\+visualizer.\+Problem\+Parser.\+solution\+\_\+steps}\label{classtotally__new__visualizer_1_1_problem_parser_a2922e97837374aee68052070231aa978}
+
+
+Definition at line 331 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_problem_parser_a63fff6bd2c3015c278433317fc7c8e32}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}!sub\+\_\+data@{sub\+\_\+data}}
+\index{sub\+\_\+data@{sub\+\_\+data}!totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Problem\+Parser}}
+\subsubsection[{sub\+\_\+data}]{\setlength{\rightskip}{0pt plus 5cm}totally\+\_\+new\+\_\+visualizer.\+Problem\+Parser.\+sub\+\_\+data}\label{classtotally__new__visualizer_1_1_problem_parser_a63fff6bd2c3015c278433317fc7c8e32}
+
+
+Definition at line 335 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{totally__new__visualizer_8py}{totally\+\_\+new\+\_\+visualizer.\+py}\end{DoxyCompactItemize}

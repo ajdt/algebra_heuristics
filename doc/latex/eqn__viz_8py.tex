@@ -1,0 +1,118 @@
+\hypertarget{eqn__viz_8py}{}\section{eqn\+\_\+viz.\+py File Reference}
+\label{eqn__viz_8py}\index{eqn\+\_\+viz.\+py@{eqn\+\_\+viz.\+py}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classeqn__viz_1_1_generated_problem}{eqn\+\_\+viz.\+Generated\+Problem}
+\item 
+class \hyperlink{classeqn__viz_1_1_generated_answer_set}{eqn\+\_\+viz.\+Generated\+Answer\+Set}
+\item 
+class \hyperlink{classeqn__viz_1_1_equation_step_parser}{eqn\+\_\+viz.\+Equation\+Step\+Parser}
+\item 
+class \hyperlink{classeqn__viz_1_1_algebra_node}{eqn\+\_\+viz.\+Algebra\+Node}
+\item 
+class \hyperlink{classeqn__viz_1_1_math_problem_parser}{eqn\+\_\+viz.\+Math\+Problem\+Parser}
+\item 
+class \hyperlink{classeqn__viz_1_1_model_manager}{eqn\+\_\+viz.\+Model\+Manager}
+\item 
+class \hyperlink{classeqn__viz_1_1_answer_set_parser}{eqn\+\_\+viz.\+Answer\+Set\+Parser}
+\item 
+class \hyperlink{classeqn__viz_1_1_answer_set_manager}{eqn\+\_\+viz.\+Answer\+Set\+Manager}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceeqn__viz}{eqn\+\_\+viz}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{namespaceeqn__viz_a09faf0d0395a3e4f6075cce89ff0285d}{eqn\+\_\+viz.\+get\+Template\+Manager} ()
+\item 
+def \hyperlink{namespaceeqn__viz_a77840944e82440038b71417a8d7204b1}{eqn\+\_\+viz.\+compose\+Parsers} (left, middle, right)
+\item 
+def \hyperlink{namespaceeqn__viz_a993af6aa282c460f53ded3ad8c8b0b93}{eqn\+\_\+viz.\+peel\+Holds} (tokens)
+\item 
+def \hyperlink{namespaceeqn__viz_afb82e11030ed8435793bb5958189540d}{eqn\+\_\+viz.\+main} (cmd\+\_\+line\+\_\+args)
+\item 
+def \hyperlink{namespaceeqn__viz_a1ced7888f4e1050beff42555639b94ef}{eqn\+\_\+viz.\+get\+Cmd\+Line\+Args} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+tuple \hyperlink{namespaceeqn__viz_a0e6b1a683d662dd566b0cece84265fae}{eqn\+\_\+viz.\+Heuristic} = namedtuple(\textquotesingle{}Heuristic\textquotesingle{}, \mbox{[}\textquotesingle{}name\textquotesingle{}, \textquotesingle{}priority\textquotesingle{}, \textquotesingle{}trigger\textquotesingle{}\mbox{]})
+\item 
+tuple \hyperlink{namespaceeqn__viz_a1bea532f61715c9742cbbe0bef8e5121}{eqn\+\_\+viz.\+heur\+\_\+file} = open(\textquotesingle{}list\+\_\+of\+\_\+heuristics.\+txt\textquotesingle{}, \textquotesingle{}r\textquotesingle{})
+\item 
+dictionary \hyperlink{namespaceeqn__viz_a8017c4f105a541309fcf639e7925a88b}{eqn\+\_\+viz.\+H\+E\+U\+R\+\_\+\+I\+N\+F\+O} = \{\}
+\item 
+\hyperlink{namespaceeqn__viz_af2da9273cfc3d8dc9ce1f05558cbc838}{eqn\+\_\+viz.\+T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+M\+A\+N\+A\+G\+E\+R} = None
+\item 
+tuple \hyperlink{namespaceeqn__viz_a5e65c3435a54324008033d990d858e72}{eqn\+\_\+viz.\+number\+\_\+parser} = Word(nums + \textquotesingle{}-\/\textquotesingle{})
+\item 
+tuple \hyperlink{namespaceeqn__viz_ad9dc00d4b3c0b288d0f204937297b179}{eqn\+\_\+viz.\+word\+\_\+parser} = Word(alphas)
+\item 
+string \hyperlink{namespaceeqn__viz_aa3f9b7373809e0e391e1383fd878b616}{eqn\+\_\+viz.\+node\+\_\+parser} = \textquotesingle{}id(\textquotesingle{}
+\item 
+\hyperlink{namespaceeqn__viz_ae1292d980053c2a15be129430ee3ebb1}{eqn\+\_\+viz.\+coeff} = number\+\_\+parser
+\item 
+\hyperlink{namespaceeqn__viz_a1376f5d1deece596253f6876d746a500}{eqn\+\_\+viz.\+deg} = number\+\_\+parser
+\item 
+\hyperlink{namespaceeqn__viz_aa45f3f597ca3ecacab90d141137afe1c}{eqn\+\_\+viz.\+poly\+\_\+parser} = number\+\_\+parser
+\item 
+string \hyperlink{namespaceeqn__viz_a7bf2f0fb75b2d7a493e3ebf9cf2f580e}{eqn\+\_\+viz.\+time\+\_\+parser} = \textquotesingle{}time(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_ab821f1efc209d98cc2cbfce1f818acbc}{eqn\+\_\+viz.\+action\+\_\+parser} = \textquotesingle{}selected\+Heuristic(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_a854e9036019062010a0620dca4adcf5f}{eqn\+\_\+viz.\+factora\+\_\+parser} = \textquotesingle{}factor1(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_a830b341130da6861c90efd9ac0858486}{eqn\+\_\+viz.\+factorb\+\_\+parser} = \textquotesingle{}factor2(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_addfe6dbd1f7e4817decc2f392291d743}{eqn\+\_\+viz.\+factorc\+\_\+parser} = \textquotesingle{}factor3(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_a17e1b80ac39bb02b3448c7cc9e5e7821}{eqn\+\_\+viz.\+factord\+\_\+parser} = \textquotesingle{}factor4(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_a28dbd804760bc7a217c14254976e5575}{eqn\+\_\+viz.\+refer\+\_\+to\+\_\+\+Parser} = \textquotesingle{}refer\+To(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_ab4bb266f8ba35459c0d095bcffadbad4}{eqn\+\_\+viz.\+soln\+\_\+parser} = \textquotesingle{}solution\+Value(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_aacd332e3c02218eb9ae4ec66a3e31fd0}{eqn\+\_\+viz.\+substitute\+\_\+parser} = \textquotesingle{}substituted\+Degree(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_a7a7eda2f6b22edf43034366ee5b0e433}{eqn\+\_\+viz.\+binary\+\_\+operand\+\_\+parser} = \textquotesingle{}selected\+Heur\+Operands(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_a0eb89bf8984a1b19989d2031cae402a6}{eqn\+\_\+viz.\+unary\+\_\+operand\+\_\+parser} = \textquotesingle{}selected\+Heur\+Operands(\textquotesingle{}
+\item 
+tuple \hyperlink{namespaceeqn__viz_a716255e5870a531e1bfc6d184278bc8d}{eqn\+\_\+viz.\+wrap\+Node\+Fact} = lambdaparser\+:compose\+Parsers(\textquotesingle{}fact(\textquotesingle{}+ node\+\_\+parser + \textquotesingle{},\textquotesingle{}, parser, \textquotesingle{})\textquotesingle{})
+\item 
+tuple \hyperlink{namespaceeqn__viz_aa72fea76ddf1127d6dbcb77d7c76c63d}{eqn\+\_\+viz.\+wrap\+Poly\+Fact} = lambdaparser\+:compose\+Parsers(\textquotesingle{}fact(\textquotesingle{}+ poly\+\_\+parser + \textquotesingle{},\textquotesingle{}, parser, \textquotesingle{})\textquotesingle{})
+\item 
+tuple \hyperlink{namespaceeqn__viz_adf51f57cbfcd953ec98550b85dcc3d0c}{eqn\+\_\+viz.\+wrap\+Key\+Value\+Pair} = lambdaparser\+:compose\+Parsers(\textquotesingle{}node\+Field(\textquotesingle{}, parser, \textquotesingle{})\textquotesingle{})
+\item 
+tuple \hyperlink{namespaceeqn__viz_afead5f7b23dd83ce8d2c7092b9887606}{eqn\+\_\+viz.\+wrap\+With\+Monomial} = lambdaparser\+:compose\+Parsers(\textquotesingle{}mono(\textquotesingle{}, parser, \textquotesingle{})\textquotesingle{})
+\item 
+tuple \hyperlink{namespaceeqn__viz_a66245c2eeb429b7809bc02fc6852d0ec}{eqn\+\_\+viz.\+wrap\+With\+Holds} = lambdafluent\+:compose\+Parsers(\textquotesingle{}holds(\textquotesingle{},time\+\_\+parser, \textquotesingle{},\textquotesingle{} + fluent + \textquotesingle{})\textquotesingle{})
+\item 
+tuple \hyperlink{namespaceeqn__viz_aaabd8c0ea3860c55e9022abed90dab61}{eqn\+\_\+viz.\+word\+\_\+word\+\_\+parser} = compose\+Parsers(word\+\_\+parser, \textquotesingle{},\textquotesingle{} , word\+\_\+parser)
+\item 
+tuple \hyperlink{namespaceeqn__viz_ae9d46b4030dff778fd4a908af15b1461}{eqn\+\_\+viz.\+number\+\_\+number\+\_\+parser} = compose\+Parsers(number\+\_\+parser, \textquotesingle{},\textquotesingle{} , number\+\_\+parser)
+\item 
+tuple \hyperlink{namespaceeqn__viz_a125896c7d7db5d4f150b2b6699176c2a}{eqn\+\_\+viz.\+word\+\_\+number\+\_\+parser} = compose\+Parsers(word\+\_\+parser, \textquotesingle{},\textquotesingle{} , number\+\_\+parser)
+\item 
+tuple \hyperlink{namespaceeqn__viz_ade698a80074d34a48d27d50b0b6faafc}{eqn\+\_\+viz.\+word\+\_\+node\+\_\+parser} = compose\+Parsers(word\+\_\+parser, \textquotesingle{},\textquotesingle{} , node\+\_\+parser)
+\item 
+tuple \hyperlink{namespaceeqn__viz_aff7c3fc95453270d356d2c9fef5be210}{eqn\+\_\+viz.\+wrap\+In\+Key\+Value\+And\+Fact} = lambdaparser\+:wrap\+With\+Holds(wrap\+Node\+Fact(wrap\+Key\+Value\+Pair(parser)))
+\item 
+tuple \hyperlink{namespaceeqn__viz_a80772625f40909e83c3baefb38694d27}{eqn\+\_\+viz.\+type\+\_\+parser} = wrap\+In\+Key\+Value\+And\+Fact(word\+\_\+word\+\_\+parser)
+\item 
+tuple \hyperlink{namespaceeqn__viz_aa7fc0cae83db0b5d1e6d5c5842cea401}{eqn\+\_\+viz.\+deg\+\_\+coeff\+\_\+parser} = wrap\+In\+Key\+Value\+And\+Fact(word\+\_\+number\+\_\+parser)
+\item 
+tuple \hyperlink{namespaceeqn__viz_a333b4ac72b3d28145584b60f44dc5230}{eqn\+\_\+viz.\+child\+\_\+parser} = wrap\+In\+Key\+Value\+And\+Fact(word\+\_\+node\+\_\+parser)
+\item 
+string \hyperlink{namespaceeqn__viz_adb85cfac07b72248b7de0626b8e31bff}{eqn\+\_\+viz.\+applicable\+\_\+heur\+\_\+parser} = \textquotesingle{}applicable\+Heuristic(\textquotesingle{}
+\item 
+list \hyperlink{namespaceeqn__viz_a7be3eddfb6de11856410a9b26fc4a701}{eqn\+\_\+viz.\+all\+\_\+parsers} = \mbox{[} type\+\_\+parser, child\+\_\+parser, deg\+\_\+coeff\+\_\+parser, action\+\_\+parser, binary\+\_\+operand\+\_\+parser, unary\+\_\+operand\+\_\+parser, applicable\+\_\+heur\+\_\+parser\mbox{]}
+\item 
+list \hyperlink{namespaceeqn__viz_a87c2b92574d4b106ac2b4a2627a5824b}{eqn\+\_\+viz.\+factor\+\_\+parsers} = \mbox{[}factora\+\_\+parser, factorb\+\_\+parser, factorc\+\_\+parser, factord\+\_\+parser, refer\+\_\+to\+\_\+\+Parser, soln\+\_\+parser, substitute\+\_\+parser\mbox{]}
+\item 
+dictionary \hyperlink{namespaceeqn__viz_a9377a4d68a694cfe5b8fd887d7d4f045}{eqn\+\_\+viz.\+op\+\_\+symbols} = \{\textquotesingle{}add\textquotesingle{} \+: \textquotesingle{}+\textquotesingle{} , \textquotesingle{}div\textquotesingle{} \+: \textquotesingle{}/\textquotesingle{} , \textquotesingle{}mul\textquotesingle{} \+: \textquotesingle{}$\ast$\textquotesingle{} , \textquotesingle{}neg\textquotesingle{} \+: \textquotesingle{}-\/\textquotesingle{}\}
+\end{DoxyCompactItemize}

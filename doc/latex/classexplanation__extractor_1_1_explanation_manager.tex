@@ -1,0 +1,160 @@
+\hypertarget{classexplanation__extractor_1_1_explanation_manager}{}\section{explanation\+\_\+extractor.\+Explanation\+Manager Class Reference}
+\label{classexplanation__extractor_1_1_explanation_manager}\index{explanation\+\_\+extractor.\+Explanation\+Manager@{explanation\+\_\+extractor.\+Explanation\+Manager}}
+Inheritance diagram for explanation\+\_\+extractor.\+Explanation\+Manager\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classexplanation__extractor_1_1_explanation_manager}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classexplanation__extractor_1_1_explanation_manager_a200693544d5c773571a0c0068a428439}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self)
+\item 
+def \hyperlink{classexplanation__extractor_1_1_explanation_manager_a595b2b449442a170122c2526a78ed3fd}{add\+Explanation\+Template} (self, rule)
+\item 
+def \hyperlink{classexplanation__extractor_1_1_explanation_manager_a11bc69dcaf562b5107f353692969ac25}{lookup\+Heuristic\+Key} (self, heur\+\_\+string)
+\item 
+def \hyperlink{classexplanation__extractor_1_1_explanation_manager_a13d8dadd73b2acfa1ad2b4ffee9c6d39}{lookup\+Template\+For} (self, predicate\+\_\+key)
+\item 
+def \hyperlink{classexplanation__extractor_1_1_explanation_manager_a42a90b38813341194d28bb718b62de83}{has\+Explanation\+For\+Predicate} (self, predicate)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classexplanation__extractor_1_1_explanation_manager_a04299eda21809209efe46537820daf41}{make\+Rule\+Key} (rule)
+\item 
+def \hyperlink{classexplanation__extractor_1_1_explanation_manager_ae4bf9fd7c6fe136b02d1700bcfff3f52}{make\+Pred\+Key} (predicate)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classexplanation__extractor_1_1_explanation_manager_a721b8077c8e3704a56e19de566f9dbda}{templates}
+\item 
+\hyperlink{classexplanation__extractor_1_1_explanation_manager_ad528733dbb33f6d033a3ee7738bfe91e}{heuristic\+\_\+to\+\_\+heur\+\_\+key}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}manages a set of explanations extracted from ASP gringo files\end{DoxyVerb}
+ 
+
+Definition at line 133 of file explanation\+\_\+extractor.\+py.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classexplanation__extractor_1_1_explanation_manager_a200693544d5c773571a0c0068a428439}{}\index{explanation\+\_\+extractor\+::\+Explanation\+Manager@{explanation\+\_\+extractor\+::\+Explanation\+Manager}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!explanation\+\_\+extractor\+::\+Explanation\+Manager@{explanation\+\_\+extractor\+::\+Explanation\+Manager}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+Explanation\+Manager.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classexplanation__extractor_1_1_explanation_manager_a200693544d5c773571a0c0068a428439}
+
+
+Definition at line 135 of file explanation\+\_\+extractor.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classexplanation__extractor_1_1_explanation_manager_a595b2b449442a170122c2526a78ed3fd}{}\index{explanation\+\_\+extractor\+::\+Explanation\+Manager@{explanation\+\_\+extractor\+::\+Explanation\+Manager}!add\+Explanation\+Template@{add\+Explanation\+Template}}
+\index{add\+Explanation\+Template@{add\+Explanation\+Template}!explanation\+\_\+extractor\+::\+Explanation\+Manager@{explanation\+\_\+extractor\+::\+Explanation\+Manager}}
+\subsubsection[{add\+Explanation\+Template}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+Explanation\+Manager.\+add\+Explanation\+Template (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{rule}
+\end{DoxyParamCaption}
+)}\label{classexplanation__extractor_1_1_explanation_manager_a595b2b449442a170122c2526a78ed3fd}
+\begin{DoxyVerb}instantiate new ExplanationTemplate instance for given predicate \end{DoxyVerb}
+ 
+
+Definition at line 140 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{classexplanation__extractor_1_1_explanation_manager_a42a90b38813341194d28bb718b62de83}{}\index{explanation\+\_\+extractor\+::\+Explanation\+Manager@{explanation\+\_\+extractor\+::\+Explanation\+Manager}!has\+Explanation\+For\+Predicate@{has\+Explanation\+For\+Predicate}}
+\index{has\+Explanation\+For\+Predicate@{has\+Explanation\+For\+Predicate}!explanation\+\_\+extractor\+::\+Explanation\+Manager@{explanation\+\_\+extractor\+::\+Explanation\+Manager}}
+\subsubsection[{has\+Explanation\+For\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+Explanation\+Manager.\+has\+Explanation\+For\+Predicate (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{predicate}
+\end{DoxyParamCaption}
+)}\label{classexplanation__extractor_1_1_explanation_manager_a42a90b38813341194d28bb718b62de83}
+
+
+Definition at line 186 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{classexplanation__extractor_1_1_explanation_manager_a11bc69dcaf562b5107f353692969ac25}{}\index{explanation\+\_\+extractor\+::\+Explanation\+Manager@{explanation\+\_\+extractor\+::\+Explanation\+Manager}!lookup\+Heuristic\+Key@{lookup\+Heuristic\+Key}}
+\index{lookup\+Heuristic\+Key@{lookup\+Heuristic\+Key}!explanation\+\_\+extractor\+::\+Explanation\+Manager@{explanation\+\_\+extractor\+::\+Explanation\+Manager}}
+\subsubsection[{lookup\+Heuristic\+Key}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+Explanation\+Manager.\+lookup\+Heuristic\+Key (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{heur\+\_\+string}
+\end{DoxyParamCaption}
+)}\label{classexplanation__extractor_1_1_explanation_manager_a11bc69dcaf562b5107f353692969ac25}
+
+
+Definition at line 153 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{classexplanation__extractor_1_1_explanation_manager_a13d8dadd73b2acfa1ad2b4ffee9c6d39}{}\index{explanation\+\_\+extractor\+::\+Explanation\+Manager@{explanation\+\_\+extractor\+::\+Explanation\+Manager}!lookup\+Template\+For@{lookup\+Template\+For}}
+\index{lookup\+Template\+For@{lookup\+Template\+For}!explanation\+\_\+extractor\+::\+Explanation\+Manager@{explanation\+\_\+extractor\+::\+Explanation\+Manager}}
+\subsubsection[{lookup\+Template\+For}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+Explanation\+Manager.\+lookup\+Template\+For (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{predicate\+\_\+key}
+\end{DoxyParamCaption}
+)}\label{classexplanation__extractor_1_1_explanation_manager_a13d8dadd73b2acfa1ad2b4ffee9c6d39}
+\begin{DoxyVerb}Return an ExplanationTemplate instance for given predicate_key
+predicate_ key = (predicate_name, arity)
+NOTE: predicate_key  should be generated using ExplanationManager.makeRuleKey(rule) or makePredKey()
+\end{DoxyVerb}
+ 
+
+Definition at line 156 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{classexplanation__extractor_1_1_explanation_manager_ae4bf9fd7c6fe136b02d1700bcfff3f52}{}\index{explanation\+\_\+extractor\+::\+Explanation\+Manager@{explanation\+\_\+extractor\+::\+Explanation\+Manager}!make\+Pred\+Key@{make\+Pred\+Key}}
+\index{make\+Pred\+Key@{make\+Pred\+Key}!explanation\+\_\+extractor\+::\+Explanation\+Manager@{explanation\+\_\+extractor\+::\+Explanation\+Manager}}
+\subsubsection[{make\+Pred\+Key}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+Explanation\+Manager.\+make\+Pred\+Key (
+\begin{DoxyParamCaption}
+\item[{}]{predicate}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classexplanation__extractor_1_1_explanation_manager_ae4bf9fd7c6fe136b02d1700bcfff3f52}
+\begin{DoxyVerb}heuristics have a key determined by condition and arity of their operands. Other predicates
+are indexed by their own predicate name and arity\end{DoxyVerb}
+ 
+
+Definition at line 172 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{classexplanation__extractor_1_1_explanation_manager_a04299eda21809209efe46537820daf41}{}\index{explanation\+\_\+extractor\+::\+Explanation\+Manager@{explanation\+\_\+extractor\+::\+Explanation\+Manager}!make\+Rule\+Key@{make\+Rule\+Key}}
+\index{make\+Rule\+Key@{make\+Rule\+Key}!explanation\+\_\+extractor\+::\+Explanation\+Manager@{explanation\+\_\+extractor\+::\+Explanation\+Manager}}
+\subsubsection[{make\+Rule\+Key}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+Explanation\+Manager.\+make\+Rule\+Key (
+\begin{DoxyParamCaption}
+\item[{}]{rule}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classexplanation__extractor_1_1_explanation_manager_a04299eda21809209efe46537820daf41}
+\begin{DoxyVerb}return predicate key for given rule \end{DoxyVerb}
+ 
+
+Definition at line 167 of file explanation\+\_\+extractor.\+py.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classexplanation__extractor_1_1_explanation_manager_ad528733dbb33f6d033a3ee7738bfe91e}{}\index{explanation\+\_\+extractor\+::\+Explanation\+Manager@{explanation\+\_\+extractor\+::\+Explanation\+Manager}!heuristic\+\_\+to\+\_\+heur\+\_\+key@{heuristic\+\_\+to\+\_\+heur\+\_\+key}}
+\index{heuristic\+\_\+to\+\_\+heur\+\_\+key@{heuristic\+\_\+to\+\_\+heur\+\_\+key}!explanation\+\_\+extractor\+::\+Explanation\+Manager@{explanation\+\_\+extractor\+::\+Explanation\+Manager}}
+\subsubsection[{heuristic\+\_\+to\+\_\+heur\+\_\+key}]{\setlength{\rightskip}{0pt plus 5cm}explanation\+\_\+extractor.\+Explanation\+Manager.\+heuristic\+\_\+to\+\_\+heur\+\_\+key}\label{classexplanation__extractor_1_1_explanation_manager_ad528733dbb33f6d033a3ee7738bfe91e}
+
+
+Definition at line 138 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{classexplanation__extractor_1_1_explanation_manager_a721b8077c8e3704a56e19de566f9dbda}{}\index{explanation\+\_\+extractor\+::\+Explanation\+Manager@{explanation\+\_\+extractor\+::\+Explanation\+Manager}!templates@{templates}}
+\index{templates@{templates}!explanation\+\_\+extractor\+::\+Explanation\+Manager@{explanation\+\_\+extractor\+::\+Explanation\+Manager}}
+\subsubsection[{templates}]{\setlength{\rightskip}{0pt plus 5cm}explanation\+\_\+extractor.\+Explanation\+Manager.\+templates}\label{classexplanation__extractor_1_1_explanation_manager_a721b8077c8e3704a56e19de566f9dbda}
+
+
+Definition at line 137 of file explanation\+\_\+extractor.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{explanation__extractor_8py}{explanation\+\_\+extractor.\+py}\end{DoxyCompactItemize}

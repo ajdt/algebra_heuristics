@@ -1,0 +1,116 @@
+\hypertarget{classexplanation__extractor_1_1_template_sentence}{}\section{explanation\+\_\+extractor.\+Template\+Sentence Class Reference}
+\label{classexplanation__extractor_1_1_template_sentence}\index{explanation\+\_\+extractor.\+Template\+Sentence@{explanation\+\_\+extractor.\+Template\+Sentence}}
+Inheritance diagram for explanation\+\_\+extractor.\+Template\+Sentence\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classexplanation__extractor_1_1_template_sentence}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classexplanation__extractor_1_1_template_sentence_a22ddd1b4767a1c72969c5c930cbda078}{\+\_\+\+\_\+init\+\_\+\+\_\+}
+\item 
+def \hyperlink{classexplanation__extractor_1_1_template_sentence_a927b2a0ebda999c61956ae2a86871051}{update\+Variables}
+\item 
+def \hyperlink{classexplanation__extractor_1_1_template_sentence_a375ab886f8b7e3c675f092af6bae1c9b}{get\+Sentence\+Fragments} (self)
+\item 
+def \hyperlink{classexplanation__extractor_1_1_template_sentence_ae5bcc65ffabbe8b633249977f7aa6be1}{\+\_\+\+\_\+str\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classexplanation__extractor_1_1_template_sentence_a32d502eb8958b05bc1bcd24711a88bef}{variables}
+\item 
+\hyperlink{classexplanation__extractor_1_1_template_sentence_a767650d37189470a42a43f23917ceafb}{var\+\_\+values}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}encapsulates a single sentence of a template along with var substitution functionality
+Also decides order of vars w.r.t. explanation
+\end{DoxyVerb}
+ 
+
+Definition at line 342 of file explanation\+\_\+extractor.\+py.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classexplanation__extractor_1_1_template_sentence_a22ddd1b4767a1c72969c5c930cbda078}{}\index{explanation\+\_\+extractor\+::\+Template\+Sentence@{explanation\+\_\+extractor\+::\+Template\+Sentence}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!explanation\+\_\+extractor\+::\+Template\+Sentence@{explanation\+\_\+extractor\+::\+Template\+Sentence}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+Template\+Sentence.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{sentence, }
+\item[{}]{variables, }
+\item[{}]{var\+\_\+assignments = {\ttfamily \{\}}}
+\end{DoxyParamCaption}
+)}\label{classexplanation__extractor_1_1_template_sentence_a22ddd1b4767a1c72969c5c930cbda078}
+
+
+Definition at line 346 of file explanation\+\_\+extractor.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classexplanation__extractor_1_1_template_sentence_ae5bcc65ffabbe8b633249977f7aa6be1}{}\index{explanation\+\_\+extractor\+::\+Template\+Sentence@{explanation\+\_\+extractor\+::\+Template\+Sentence}!\+\_\+\+\_\+str\+\_\+\+\_\+@{\+\_\+\+\_\+str\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+str\+\_\+\+\_\+@{\+\_\+\+\_\+str\+\_\+\+\_\+}!explanation\+\_\+extractor\+::\+Template\+Sentence@{explanation\+\_\+extractor\+::\+Template\+Sentence}}
+\subsubsection[{\+\_\+\+\_\+str\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+Template\+Sentence.\+\_\+\+\_\+str\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classexplanation__extractor_1_1_template_sentence_ae5bcc65ffabbe8b633249977f7aa6be1}
+
+
+Definition at line 371 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{classexplanation__extractor_1_1_template_sentence_a375ab886f8b7e3c675f092af6bae1c9b}{}\index{explanation\+\_\+extractor\+::\+Template\+Sentence@{explanation\+\_\+extractor\+::\+Template\+Sentence}!get\+Sentence\+Fragments@{get\+Sentence\+Fragments}}
+\index{get\+Sentence\+Fragments@{get\+Sentence\+Fragments}!explanation\+\_\+extractor\+::\+Template\+Sentence@{explanation\+\_\+extractor\+::\+Template\+Sentence}}
+\subsubsection[{get\+Sentence\+Fragments}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+Template\+Sentence.\+get\+Sentence\+Fragments (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classexplanation__extractor_1_1_template_sentence_a375ab886f8b7e3c675f092af6bae1c9b}
+\begin{DoxyVerb}returns a list of variables and explanation extracted from predicate name
+    that must be joined to obtain a full explanation
+\end{DoxyVerb}
+ 
+
+Definition at line 358 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{classexplanation__extractor_1_1_template_sentence_a927b2a0ebda999c61956ae2a86871051}{}\index{explanation\+\_\+extractor\+::\+Template\+Sentence@{explanation\+\_\+extractor\+::\+Template\+Sentence}!update\+Variables@{update\+Variables}}
+\index{update\+Variables@{update\+Variables}!explanation\+\_\+extractor\+::\+Template\+Sentence@{explanation\+\_\+extractor\+::\+Template\+Sentence}}
+\subsubsection[{update\+Variables}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+Template\+Sentence.\+update\+Variables (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{var\+\_\+assignments = {\ttfamily \{\}}}
+\end{DoxyParamCaption}
+)}\label{classexplanation__extractor_1_1_template_sentence_a927b2a0ebda999c61956ae2a86871051}
+\begin{DoxyVerb}returns list containing variables and strings to be joined \end{DoxyVerb}
+ 
+
+Definition at line 355 of file explanation\+\_\+extractor.\+py.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classexplanation__extractor_1_1_template_sentence_a767650d37189470a42a43f23917ceafb}{}\index{explanation\+\_\+extractor\+::\+Template\+Sentence@{explanation\+\_\+extractor\+::\+Template\+Sentence}!var\+\_\+values@{var\+\_\+values}}
+\index{var\+\_\+values@{var\+\_\+values}!explanation\+\_\+extractor\+::\+Template\+Sentence@{explanation\+\_\+extractor\+::\+Template\+Sentence}}
+\subsubsection[{var\+\_\+values}]{\setlength{\rightskip}{0pt plus 5cm}explanation\+\_\+extractor.\+Template\+Sentence.\+var\+\_\+values}\label{classexplanation__extractor_1_1_template_sentence_a767650d37189470a42a43f23917ceafb}
+
+
+Definition at line 349 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{classexplanation__extractor_1_1_template_sentence_a32d502eb8958b05bc1bcd24711a88bef}{}\index{explanation\+\_\+extractor\+::\+Template\+Sentence@{explanation\+\_\+extractor\+::\+Template\+Sentence}!variables@{variables}}
+\index{variables@{variables}!explanation\+\_\+extractor\+::\+Template\+Sentence@{explanation\+\_\+extractor\+::\+Template\+Sentence}}
+\subsubsection[{variables}]{\setlength{\rightskip}{0pt plus 5cm}explanation\+\_\+extractor.\+Template\+Sentence.\+variables}\label{classexplanation__extractor_1_1_template_sentence_a32d502eb8958b05bc1bcd24711a88bef}
+
+
+Definition at line 348 of file explanation\+\_\+extractor.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{explanation__extractor_8py}{explanation\+\_\+extractor.\+py}\end{DoxyCompactItemize}

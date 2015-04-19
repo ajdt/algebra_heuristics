@@ -1,0 +1,147 @@
+\hypertarget{classmodel__manager_1_1_model_manager}{}\section{model\+\_\+manager.\+Model\+Manager Class Reference}
+\label{classmodel__manager_1_1_model_manager}\index{model\+\_\+manager.\+Model\+Manager@{model\+\_\+manager.\+Model\+Manager}}
+Inheritance diagram for model\+\_\+manager.\+Model\+Manager\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classmodel__manager_1_1_model_manager}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classmodel__manager_1_1_model_manager_ac4022bf288503dbe0c4244bd6030665a}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self)
+\item 
+def \hyperlink{classmodel__manager_1_1_model_manager_a8ee1b63e780706cf70c09771b394ad74}{add\+Predicate} (self, predicate\+\_\+string)
+\item 
+def \hyperlink{classmodel__manager_1_1_model_manager_a5b455d9f9ea6fd8fe8929e5c0722cf40}{unify} (self, pred\+\_\+key, partial\+\_\+assign)
+\item 
+def \hyperlink{classmodel__manager_1_1_model_manager_ac655a140d67621098366316e8615b7a8}{matches} (self, grounding, partial\+\_\+assign)
+\item 
+def \hyperlink{classmodel__manager_1_1_model_manager_adaf953996847c9994f329949b31aacdd}{print\+Model} (self)
+\item 
+def \hyperlink{classmodel__manager_1_1_model_manager_ac3ed4387e5e5d451bc8f145192f43251}{get\+All\+Ground\+Instances\+Of} (self, pred\+\_\+key)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classmodel__manager_1_1_model_manager_a36cc10dbad36fe9d92633cbef7a94a20}{split\+Predicate} (pred\+\_\+string)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classmodel__manager_1_1_model_manager_af557b050f1181ef829814605a35fdad0}{model\+\_\+predicates}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}records every atom for a generated model (answer set)\end{DoxyVerb}
+ 
+
+Definition at line 10 of file model\+\_\+manager.\+py.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classmodel__manager_1_1_model_manager_ac4022bf288503dbe0c4244bd6030665a}{}\index{model\+\_\+manager\+::\+Model\+Manager@{model\+\_\+manager\+::\+Model\+Manager}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!model\+\_\+manager\+::\+Model\+Manager@{model\+\_\+manager\+::\+Model\+Manager}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def model\+\_\+manager.\+Model\+Manager.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classmodel__manager_1_1_model_manager_ac4022bf288503dbe0c4244bd6030665a}
+
+
+Definition at line 13 of file model\+\_\+manager.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classmodel__manager_1_1_model_manager_a8ee1b63e780706cf70c09771b394ad74}{}\index{model\+\_\+manager\+::\+Model\+Manager@{model\+\_\+manager\+::\+Model\+Manager}!add\+Predicate@{add\+Predicate}}
+\index{add\+Predicate@{add\+Predicate}!model\+\_\+manager\+::\+Model\+Manager@{model\+\_\+manager\+::\+Model\+Manager}}
+\subsubsection[{add\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}def model\+\_\+manager.\+Model\+Manager.\+add\+Predicate (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{predicate\+\_\+string}
+\end{DoxyParamCaption}
+)}\label{classmodel__manager_1_1_model_manager_a8ee1b63e780706cf70c09771b394ad74}
+\begin{DoxyVerb}add grounded predicate to model\end{DoxyVerb}
+ 
+
+Definition at line 16 of file model\+\_\+manager.\+py.
+
+\hypertarget{classmodel__manager_1_1_model_manager_ac3ed4387e5e5d451bc8f145192f43251}{}\index{model\+\_\+manager\+::\+Model\+Manager@{model\+\_\+manager\+::\+Model\+Manager}!get\+All\+Ground\+Instances\+Of@{get\+All\+Ground\+Instances\+Of}}
+\index{get\+All\+Ground\+Instances\+Of@{get\+All\+Ground\+Instances\+Of}!model\+\_\+manager\+::\+Model\+Manager@{model\+\_\+manager\+::\+Model\+Manager}}
+\subsubsection[{get\+All\+Ground\+Instances\+Of}]{\setlength{\rightskip}{0pt plus 5cm}def model\+\_\+manager.\+Model\+Manager.\+get\+All\+Ground\+Instances\+Of (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{pred\+\_\+key}
+\end{DoxyParamCaption}
+)}\label{classmodel__manager_1_1_model_manager_ac3ed4387e5e5d451bc8f145192f43251}
+
+
+Definition at line 80 of file model\+\_\+manager.\+py.
+
+\hypertarget{classmodel__manager_1_1_model_manager_ac655a140d67621098366316e8615b7a8}{}\index{model\+\_\+manager\+::\+Model\+Manager@{model\+\_\+manager\+::\+Model\+Manager}!matches@{matches}}
+\index{matches@{matches}!model\+\_\+manager\+::\+Model\+Manager@{model\+\_\+manager\+::\+Model\+Manager}}
+\subsubsection[{matches}]{\setlength{\rightskip}{0pt plus 5cm}def model\+\_\+manager.\+Model\+Manager.\+matches (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{grounding, }
+\item[{}]{partial\+\_\+assign}
+\end{DoxyParamCaption}
+)}\label{classmodel__manager_1_1_model_manager_ac655a140d67621098366316e8615b7a8}
+
+
+Definition at line 28 of file model\+\_\+manager.\+py.
+
+\hypertarget{classmodel__manager_1_1_model_manager_adaf953996847c9994f329949b31aacdd}{}\index{model\+\_\+manager\+::\+Model\+Manager@{model\+\_\+manager\+::\+Model\+Manager}!print\+Model@{print\+Model}}
+\index{print\+Model@{print\+Model}!model\+\_\+manager\+::\+Model\+Manager@{model\+\_\+manager\+::\+Model\+Manager}}
+\subsubsection[{print\+Model}]{\setlength{\rightskip}{0pt plus 5cm}def model\+\_\+manager.\+Model\+Manager.\+print\+Model (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classmodel__manager_1_1_model_manager_adaf953996847c9994f329949b31aacdd}
+
+
+Definition at line 33 of file model\+\_\+manager.\+py.
+
+\hypertarget{classmodel__manager_1_1_model_manager_a36cc10dbad36fe9d92633cbef7a94a20}{}\index{model\+\_\+manager\+::\+Model\+Manager@{model\+\_\+manager\+::\+Model\+Manager}!split\+Predicate@{split\+Predicate}}
+\index{split\+Predicate@{split\+Predicate}!model\+\_\+manager\+::\+Model\+Manager@{model\+\_\+manager\+::\+Model\+Manager}}
+\subsubsection[{split\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}def model\+\_\+manager.\+Model\+Manager.\+split\+Predicate (
+\begin{DoxyParamCaption}
+\item[{}]{pred\+\_\+string}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classmodel__manager_1_1_model_manager_a36cc10dbad36fe9d92633cbef7a94a20}
+\begin{DoxyVerb}return predicate name and list of operands from predicate string\end{DoxyVerb}
+ 
+
+Definition at line 40 of file model\+\_\+manager.\+py.
+
+\hypertarget{classmodel__manager_1_1_model_manager_a5b455d9f9ea6fd8fe8929e5c0722cf40}{}\index{model\+\_\+manager\+::\+Model\+Manager@{model\+\_\+manager\+::\+Model\+Manager}!unify@{unify}}
+\index{unify@{unify}!model\+\_\+manager\+::\+Model\+Manager@{model\+\_\+manager\+::\+Model\+Manager}}
+\subsubsection[{unify}]{\setlength{\rightskip}{0pt plus 5cm}def model\+\_\+manager.\+Model\+Manager.\+unify (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{pred\+\_\+key, }
+\item[{}]{partial\+\_\+assign}
+\end{DoxyParamCaption}
+)}\label{classmodel__manager_1_1_model_manager_a5b455d9f9ea6fd8fe8929e5c0722cf40}
+
+
+Definition at line 22 of file model\+\_\+manager.\+py.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classmodel__manager_1_1_model_manager_af557b050f1181ef829814605a35fdad0}{}\index{model\+\_\+manager\+::\+Model\+Manager@{model\+\_\+manager\+::\+Model\+Manager}!model\+\_\+predicates@{model\+\_\+predicates}}
+\index{model\+\_\+predicates@{model\+\_\+predicates}!model\+\_\+manager\+::\+Model\+Manager@{model\+\_\+manager\+::\+Model\+Manager}}
+\subsubsection[{model\+\_\+predicates}]{\setlength{\rightskip}{0pt plus 5cm}model\+\_\+manager.\+Model\+Manager.\+model\+\_\+predicates}\label{classmodel__manager_1_1_model_manager_af557b050f1181ef829814605a35fdad0}
+
+
+Definition at line 15 of file model\+\_\+manager.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{model__manager_8py}{model\+\_\+manager.\+py}\end{DoxyCompactItemize}

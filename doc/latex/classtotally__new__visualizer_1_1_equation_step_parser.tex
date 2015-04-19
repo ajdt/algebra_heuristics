@@ -1,0 +1,462 @@
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser}{}\section{totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser Class Reference}
+\label{classtotally__new__visualizer_1_1_equation_step_parser}\index{totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser}}
+
+
+Parses predicates related to one step of a solution trace contains the data members\+: var\+\_\+str -- what variable an equation should be expressed with node\+\_\+data -- dictionary containing all node info parsed strategy\+\_\+data -- parsed explanations for the different strategy classes.  
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_a025ac2e5112841d4b340029c120412f2}{\+\_\+\+\_\+init\+\_\+\+\_\+}
+\item 
+def \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_a7fd1c20efb5a99c2198f0731c9c9aba1}{update\+Variable} (self, new\+\_\+var)
+\item 
+def \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_acdeafbce50645287ac85046e93191c5a}{to\+Generated\+Step} (self)
+\begin{DoxyCompactList}\small\item\em \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser}{Equation\+Step\+Parser} contains lots of data we don\textquotesingle{}t need after parsing this method returns a Generated\+Step instance that has only what we want to save. \end{DoxyCompactList}\item 
+def \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_a8e28e68df8ed9c7a34890d4ae6a6e2b9}{add\+Holds\+Predicate} (self, holds\+\_\+pred)
+\begin{DoxyCompactList}\small\item\em save field/value info for a node that is expressed as a holds/2 predicate \end{DoxyCompactList}\item 
+def \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_a0ea8c9f9125d10c34db60080cb98087e}{add\+Strategy\+Predicate} (self, pred\+\_\+obj)
+\begin{DoxyCompactList}\small\item\em Add a predicate of the type \textquotesingle{}strategy\+Explanation\textquotesingle{}. \end{DoxyCompactList}\item 
+def \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_ae60e437d9daae3ce0a8dae2fd8e60260}{add\+Parsed\+Predicate} (self, pred\+\_\+obj)
+\begin{DoxyCompactList}\small\item\em Top level method called externally to add any predicate related to this time step. \end{DoxyCompactList}\item 
+def \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_a0a9f53c1c140fecd4e5d6bd6bda9ae7e}{make\+Almost\+Fire\+Explanations} (self, model\+\_\+mgr)
+\begin{DoxyCompactList}\small\item\em For every strategy we don\textquotesingle{}t have an explanation for, see if we have any \textquotesingle{}almost fire\textquotesingle{} explanations. \end{DoxyCompactList}\item 
+def \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_a51372d5ce7c1fec1c4a1a7f7f8bfe3de}{make\+Almost\+Fire\+Explanation\+For} (self, strategy, model\+\_\+mgr)
+\begin{DoxyCompactList}\small\item\em For a given strategy check all heuristics in that strategy type to see if any of them almost fire. \end{DoxyCompactList}\item 
+def \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_aef1f6ba0922d50500fcf66e026effede}{post\+Process\+Step\+Data} (self, model\+\_\+mgr)
+\begin{DoxyCompactList}\small\item\em handles all post-\/processing after step parser has received all predicates for this step N\+O\+T\+E\+: must be called externally \end{DoxyCompactList}\item 
+def \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_ad4a30f362747a194b4f3e36ca5ddc238}{get\+Eqn\+String}
+\item 
+def \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_a25048323c9f80cbb0ea140985dfc1333}{translate\+Strategy\+Data} (self)
+\begin{DoxyCompactList}\small\item\em use translator from \hyperlink{namespacetranslate__tree__nodes}{translate\+\_\+tree\+\_\+nodes} module to convert the node id\textquotesingle{}s in node\+\_\+data to a binary tree representation N\+O\+T\+E\+: this is necessary b/c Nell uses a binary tree to represent an equation but the internal nodes in my expression trees can have any number of children \end{DoxyCompactList}\item 
+def \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_a3c973167ae47c603bf5f6ed2e04eea10}{make\+Explanation} (self, model\+\_\+mgr)
+\begin{DoxyCompactList}\small\item\em uses model manager to lookup an explanation template for the action taken in this step, to explain why we can perform the selected operation for this step \end{DoxyCompactList}\item 
+def \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_aef7a56859ca1922b836ddd56370288bb}{translate\+Single\+Explanation} (self, explanation\+\_\+sentences, translations)
+\begin{DoxyCompactList}\small\item\em translates a single explanation array to use binary nodes an explanation array is a list of elements that look like\+: \mbox{[}explanation\+\_\+string, \mbox{[}list\+\_\+of\+\_\+operands\mbox{]}\mbox{]} \end{DoxyCompactList}\item 
+def \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_aee458203f9e3923538d93d619a09894c}{translate\+List\+Of\+Strings} (self, string\+\_\+list, translations)
+\begin{DoxyCompactList}\small\item\em translate a list of strings so nodes match a binary tree representation \end{DoxyCompactList}\item 
+def \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_a4d4b598b9a729895cdaadae73f407d83}{make\+Eqn\+String} (self, root\+\_\+node)
+\begin{DoxyCompactList}\small\item\em generates the string representation of a subexpression \end{DoxyCompactList}\item 
+def \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_a2eb2f89d46d274c80c7930a5f5fc9623}{make\+Monomial} (self, node\+\_\+name)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_a8aaaf60180dffc7f531cd56df9bcc891}{make\+Monomial\+From\+Data}
+\begin{DoxyCompactList}\small\item\em make a monomial string \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_a021358bd55a4cea135012d4a83138711}{var\+\_\+str}
+\item 
+\hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_ad7bb7147eedff025bb568ecb8826ce08}{node\+\_\+data}
+\item 
+\hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_a9fd629de7e40b3f7764fb91e9d1c7962}{misc\+\_\+data}
+\item 
+\hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_ac5cad9ea5ae6ed0d1c86a506b0a0e76e}{strategy\+\_\+data}
+\item 
+\hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_a1d2445c87a6b9d8400ef8c78ea2e5919}{optimal\+\_\+action}
+\item 
+\hyperlink{classtotally__new__visualizer_1_1_equation_step_parser_adcf8eb027974aa76205cbd1e42604919}{optimal\+\_\+operands}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Parses predicates related to one step of a solution trace contains the data members\+: var\+\_\+str -- what variable an equation should be expressed with node\+\_\+data -- dictionary containing all node info parsed strategy\+\_\+data -- parsed explanations for the different strategy classes. 
+
+Definition at line 43 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_a025ac2e5112841d4b340029c120412f2}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{var\+\_\+str = {\ttfamily \textquotesingle{}x\textquotesingle{}}}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_equation_step_parser_a025ac2e5112841d4b340029c120412f2}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em var\+\_\+str} & variable to use when constructing equation (typically it\textquotesingle{}s \textquotesingle{}x\textquotesingle{} or \textquotesingle{}y\textquotesingle{}) \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 46 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_a8e28e68df8ed9c7a34890d4ae6a6e2b9}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!add\+Holds\+Predicate@{add\+Holds\+Predicate}}
+\index{add\+Holds\+Predicate@{add\+Holds\+Predicate}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{add\+Holds\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+add\+Holds\+Predicate (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{holds\+\_\+pred}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_equation_step_parser_a8e28e68df8ed9c7a34890d4ae6a6e2b9}
+
+
+save field/value info for a node that is expressed as a holds/2 predicate 
+
+
+
+Definition at line 72 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_ae60e437d9daae3ce0a8dae2fd8e60260}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!add\+Parsed\+Predicate@{add\+Parsed\+Predicate}}
+\index{add\+Parsed\+Predicate@{add\+Parsed\+Predicate}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{add\+Parsed\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+add\+Parsed\+Predicate (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{pred\+\_\+obj}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_equation_step_parser_ae60e437d9daae3ce0a8dae2fd8e60260}
+
+
+Top level method called externally to add any predicate related to this time step. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em pred\+\_\+obj} & an instance of Predicate namedtuple in \hyperlink{namespacepred__parser}{pred\+\_\+parser} module \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 110 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_a0ea8c9f9125d10c34db60080cb98087e}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!add\+Strategy\+Predicate@{add\+Strategy\+Predicate}}
+\index{add\+Strategy\+Predicate@{add\+Strategy\+Predicate}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{add\+Strategy\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+add\+Strategy\+Predicate (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{pred\+\_\+obj}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_equation_step_parser_a0ea8c9f9125d10c34db60080cb98087e}
+
+
+Add a predicate of the type \textquotesingle{}strategy\+Explanation\textquotesingle{}. 
+
+These predicates help explain why a certain operation was chosen over others 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em pred\+\_\+obj} & an instance of Predicate namedtuple in \hyperlink{namespacepred__parser}{pred\+\_\+parser} module \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 88 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_ad4a30f362747a194b4f3e36ca5ddc238}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!get\+Eqn\+String@{get\+Eqn\+String}}
+\index{get\+Eqn\+String@{get\+Eqn\+String}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{get\+Eqn\+String}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+get\+Eqn\+String (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{as\+\_\+latex = {\ttfamily False}, }
+\item[{}]{json\+\_\+output = {\ttfamily False}}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_equation_step_parser_ad4a30f362747a194b4f3e36ca5ddc238}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em as\+\_\+latex} & depricated \\
+\hline
+\mbox{\tt in}  & {\em json\+\_\+output} & depricated \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a string representation of the equation at this step 
+\end{DoxyReturn}
+
+
+Definition at line 182 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_a51372d5ce7c1fec1c4a1a7f7f8bfe3de}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!make\+Almost\+Fire\+Explanation\+For@{make\+Almost\+Fire\+Explanation\+For}}
+\index{make\+Almost\+Fire\+Explanation\+For@{make\+Almost\+Fire\+Explanation\+For}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{make\+Almost\+Fire\+Explanation\+For}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+make\+Almost\+Fire\+Explanation\+For (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{strategy, }
+\item[{}]{model\+\_\+mgr}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_equation_step_parser_a51372d5ce7c1fec1c4a1a7f7f8bfe3de}
+
+
+For a given strategy check all heuristics in that strategy type to see if any of them almost fire. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em strategy} & string representing strategy class \\
+\hline
+\mbox{\tt in}  & {\em model\+\_\+mgr} & manages all predicates true for this time step \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 149 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_a0a9f53c1c140fecd4e5d6bd6bda9ae7e}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!make\+Almost\+Fire\+Explanations@{make\+Almost\+Fire\+Explanations}}
+\index{make\+Almost\+Fire\+Explanations@{make\+Almost\+Fire\+Explanations}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{make\+Almost\+Fire\+Explanations}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+make\+Almost\+Fire\+Explanations (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{model\+\_\+mgr}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_equation_step_parser_a0a9f53c1c140fecd4e5d6bd6bda9ae7e}
+
+
+For every strategy we don\textquotesingle{}t have an explanation for, see if we have any \textquotesingle{}almost fire\textquotesingle{} explanations. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em model\+\_\+mgr} & manages all predicates true for this time step \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 139 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_a4d4b598b9a729895cdaadae73f407d83}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!make\+Eqn\+String@{make\+Eqn\+String}}
+\index{make\+Eqn\+String@{make\+Eqn\+String}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{make\+Eqn\+String}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+make\+Eqn\+String (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{root\+\_\+node}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_equation_step_parser_a4d4b598b9a729895cdaadae73f407d83}
+
+
+generates the string representation of a subexpression 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em root\+\_\+node} & the node id (ex\+: \textquotesingle{}id(1,2)\textquotesingle{} ) of the subexpression\textquotesingle{}s root \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a string representing the subexpression 
+\end{DoxyReturn}
+
+
+Definition at line 269 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_a3c973167ae47c603bf5f6ed2e04eea10}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!make\+Explanation@{make\+Explanation}}
+\index{make\+Explanation@{make\+Explanation}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{make\+Explanation}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+make\+Explanation (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{model\+\_\+mgr}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_equation_step_parser_a3c973167ae47c603bf5f6ed2e04eea10}
+
+
+uses model manager to lookup an explanation template for the action taken in this step, to explain why we can perform the selected operation for this step 
+
+
+
+Definition at line 221 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_a2eb2f89d46d274c80c7930a5f5fc9623}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!make\+Monomial@{make\+Monomial}}
+\index{make\+Monomial@{make\+Monomial}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{make\+Monomial}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+make\+Monomial (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{node\+\_\+name}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_equation_step_parser_a2eb2f89d46d274c80c7930a5f5fc9623}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em node\+\_\+name} & the node id to get a monomial string for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the monomial string representing the given node id\begin{DoxyVerb}Given a node name, construct the monomial referenced by that node\end{DoxyVerb}
+ 
+\end{DoxyReturn}
+
+
+Definition at line 315 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_a8aaaf60180dffc7f531cd56df9bcc891}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!make\+Monomial\+From\+Data@{make\+Monomial\+From\+Data}}
+\index{make\+Monomial\+From\+Data@{make\+Monomial\+From\+Data}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{make\+Monomial\+From\+Data}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+make\+Monomial\+From\+Data (
+\begin{DoxyParamCaption}
+\item[{}]{deg, }
+\item[{}]{coeff, }
+\item[{}]{var\+\_\+str = {\ttfamily \textquotesingle{}x\textquotesingle{}}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classtotally__new__visualizer_1_1_equation_step_parser_a8aaaf60180dffc7f531cd56df9bcc891}
+
+
+make a monomial string 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em deg} & string representing degree \\
+\hline
+\mbox{\tt in}  & {\em coeff} & string representing coefficient \\
+\hline
+\mbox{\tt in}  & {\em var\+\_\+str} & string representing what variable name to use \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 296 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_aef1f6ba0922d50500fcf66e026effede}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!post\+Process\+Step\+Data@{post\+Process\+Step\+Data}}
+\index{post\+Process\+Step\+Data@{post\+Process\+Step\+Data}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{post\+Process\+Step\+Data}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+post\+Process\+Step\+Data (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{model\+\_\+mgr}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_equation_step_parser_aef1f6ba0922d50500fcf66e026effede}
+
+
+handles all post-\/processing after step parser has received all predicates for this step N\+O\+T\+E\+: must be called externally 
+
+
+
+Definition at line 163 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_acdeafbce50645287ac85046e93191c5a}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!to\+Generated\+Step@{to\+Generated\+Step}}
+\index{to\+Generated\+Step@{to\+Generated\+Step}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{to\+Generated\+Step}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+to\+Generated\+Step (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_equation_step_parser_acdeafbce50645287ac85046e93191c5a}
+
+
+\hyperlink{classtotally__new__visualizer_1_1_equation_step_parser}{Equation\+Step\+Parser} contains lots of data we don\textquotesingle{}t need after parsing this method returns a Generated\+Step instance that has only what we want to save. 
+
+
+
+Definition at line 65 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_aee458203f9e3923538d93d619a09894c}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!translate\+List\+Of\+Strings@{translate\+List\+Of\+Strings}}
+\index{translate\+List\+Of\+Strings@{translate\+List\+Of\+Strings}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{translate\+List\+Of\+Strings}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+translate\+List\+Of\+Strings (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{string\+\_\+list, }
+\item[{}]{translations}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_equation_step_parser_aee458203f9e3923538d93d619a09894c}
+
+
+translate a list of strings so nodes match a binary tree representation 
+
+
+
+Definition at line 261 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_aef7a56859ca1922b836ddd56370288bb}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!translate\+Single\+Explanation@{translate\+Single\+Explanation}}
+\index{translate\+Single\+Explanation@{translate\+Single\+Explanation}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{translate\+Single\+Explanation}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+translate\+Single\+Explanation (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{explanation\+\_\+sentences, }
+\item[{}]{translations}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_equation_step_parser_aef7a56859ca1922b836ddd56370288bb}
+
+
+translates a single explanation array to use binary nodes an explanation array is a list of elements that look like\+: \mbox{[}explanation\+\_\+string, \mbox{[}list\+\_\+of\+\_\+operands\mbox{]}\mbox{]} 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em explanation\+\_\+sentences} & a list of \mbox{[}explanation\+\_\+string, \mbox{[}list\+\_\+of\+\_\+operands\mbox{]}\mbox{]} elements \\
+\hline
+\mbox{\tt in}  & {\em translations} & a hashmap with mappings old\+\_\+node\+\_\+id --$>$ new\+\_\+node\+\_\+id \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a list of explanation sentences with the nodes changed to Nell\textquotesingle{}s format 
+\end{DoxyReturn}
+
+
+Definition at line 253 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_a25048323c9f80cbb0ea140985dfc1333}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!translate\+Strategy\+Data@{translate\+Strategy\+Data}}
+\index{translate\+Strategy\+Data@{translate\+Strategy\+Data}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{translate\+Strategy\+Data}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+translate\+Strategy\+Data (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_equation_step_parser_a25048323c9f80cbb0ea140985dfc1333}
+
+
+use translator from \hyperlink{namespacetranslate__tree__nodes}{translate\+\_\+tree\+\_\+nodes} module to convert the node id\textquotesingle{}s in node\+\_\+data to a binary tree representation N\+O\+T\+E\+: this is necessary b/c Nell uses a binary tree to represent an equation but the internal nodes in my expression trees can have any number of children 
+
+
+
+Definition at line 198 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_a7fd1c20efb5a99c2198f0731c9c9aba1}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!update\+Variable@{update\+Variable}}
+\index{update\+Variable@{update\+Variable}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{update\+Variable}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+update\+Variable (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{new\+\_\+var}
+\end{DoxyParamCaption}
+)}\label{classtotally__new__visualizer_1_1_equation_step_parser_a7fd1c20efb5a99c2198f0731c9c9aba1}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em new\+\_\+var} & new variable string to use \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 59 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_a9fd629de7e40b3f7764fb91e9d1c7962}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!misc\+\_\+data@{misc\+\_\+data}}
+\index{misc\+\_\+data@{misc\+\_\+data}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{misc\+\_\+data}]{\setlength{\rightskip}{0pt plus 5cm}totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+misc\+\_\+data}\label{classtotally__new__visualizer_1_1_equation_step_parser_a9fd629de7e40b3f7764fb91e9d1c7962}
+
+
+Definition at line 52 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_ad7bb7147eedff025bb568ecb8826ce08}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!node\+\_\+data@{node\+\_\+data}}
+\index{node\+\_\+data@{node\+\_\+data}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{node\+\_\+data}]{\setlength{\rightskip}{0pt plus 5cm}totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+node\+\_\+data}\label{classtotally__new__visualizer_1_1_equation_step_parser_ad7bb7147eedff025bb568ecb8826ce08}
+
+
+Definition at line 49 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_a1d2445c87a6b9d8400ef8c78ea2e5919}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!optimal\+\_\+action@{optimal\+\_\+action}}
+\index{optimal\+\_\+action@{optimal\+\_\+action}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{optimal\+\_\+action}]{\setlength{\rightskip}{0pt plus 5cm}totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+optimal\+\_\+action}\label{classtotally__new__visualizer_1_1_equation_step_parser_a1d2445c87a6b9d8400ef8c78ea2e5919}
+
+
+Definition at line 54 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_adcf8eb027974aa76205cbd1e42604919}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!optimal\+\_\+operands@{optimal\+\_\+operands}}
+\index{optimal\+\_\+operands@{optimal\+\_\+operands}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{optimal\+\_\+operands}]{\setlength{\rightskip}{0pt plus 5cm}totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+optimal\+\_\+operands}\label{classtotally__new__visualizer_1_1_equation_step_parser_adcf8eb027974aa76205cbd1e42604919}
+
+
+Definition at line 55 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_ac5cad9ea5ae6ed0d1c86a506b0a0e76e}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!strategy\+\_\+data@{strategy\+\_\+data}}
+\index{strategy\+\_\+data@{strategy\+\_\+data}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{strategy\+\_\+data}]{\setlength{\rightskip}{0pt plus 5cm}totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+strategy\+\_\+data}\label{classtotally__new__visualizer_1_1_equation_step_parser_ac5cad9ea5ae6ed0d1c86a506b0a0e76e}
+
+
+Definition at line 53 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{classtotally__new__visualizer_1_1_equation_step_parser_a021358bd55a4cea135012d4a83138711}{}\index{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}!var\+\_\+str@{var\+\_\+str}}
+\index{var\+\_\+str@{var\+\_\+str}!totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser@{totally\+\_\+new\+\_\+visualizer\+::\+Equation\+Step\+Parser}}
+\subsubsection[{var\+\_\+str}]{\setlength{\rightskip}{0pt plus 5cm}totally\+\_\+new\+\_\+visualizer.\+Equation\+Step\+Parser.\+var\+\_\+str}\label{classtotally__new__visualizer_1_1_equation_step_parser_a021358bd55a4cea135012d4a83138711}
+
+
+Definition at line 47 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{totally__new__visualizer_8py}{totally\+\_\+new\+\_\+visualizer.\+py}\end{DoxyCompactItemize}

@@ -1,0 +1,130 @@
+\hypertarget{classeqn__viz_1_1_answer_set_parser}{}\section{eqn\+\_\+viz.\+Answer\+Set\+Parser Class Reference}
+\label{classeqn__viz_1_1_answer_set_parser}\index{eqn\+\_\+viz.\+Answer\+Set\+Parser@{eqn\+\_\+viz.\+Answer\+Set\+Parser}}
+Inheritance diagram for eqn\+\_\+viz.\+Answer\+Set\+Parser\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classeqn__viz_1_1_answer_set_parser}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classeqn__viz_1_1_answer_set_parser_a250d2c845dbf332c9b1b1075eb357e99}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self, predicates)
+\item 
+def \hyperlink{classeqn__viz_1_1_answer_set_parser_afa299b43fbe33fdefb8b2f2e33bac3a4}{parse\+Ans\+Set\+From\+Predicates} (self, predicates\+\_\+list)
+\item 
+def \hyperlink{classeqn__viz_1_1_answer_set_parser_a094b4e636447626a4f20cc12564758bf}{find\+Parser\+Matching\+Predicate}
+\item 
+def \hyperlink{classeqn__viz_1_1_answer_set_parser_a9133543e2c740202778d7cff12c7450c}{parse\+For\+Factor\+Predicates} (self, predicate)
+\item 
+def \hyperlink{classeqn__viz_1_1_answer_set_parser_ae3ed1620e24310cc4b448fd84d74c8a7}{get\+Math\+Problems} (self)
+\item 
+def \hyperlink{classeqn__viz_1_1_answer_set_parser_afebeba4a5dafaa167d0b7a2e76315a09}{get\+Generated\+Ans\+Set} (self)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classeqn__viz_1_1_answer_set_parser_aaf05269f220f98b07c9456d89ddca538}{math\+\_\+problems\+\_\+dict}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 561 of file eqn\+\_\+viz.\+py.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classeqn__viz_1_1_answer_set_parser_a250d2c845dbf332c9b1b1075eb357e99}{}\index{eqn\+\_\+viz\+::\+Answer\+Set\+Parser@{eqn\+\_\+viz\+::\+Answer\+Set\+Parser}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!eqn\+\_\+viz\+::\+Answer\+Set\+Parser@{eqn\+\_\+viz\+::\+Answer\+Set\+Parser}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Answer\+Set\+Parser.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{predicates}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_answer_set_parser_a250d2c845dbf332c9b1b1075eb357e99}
+
+
+Definition at line 562 of file eqn\+\_\+viz.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classeqn__viz_1_1_answer_set_parser_a094b4e636447626a4f20cc12564758bf}{}\index{eqn\+\_\+viz\+::\+Answer\+Set\+Parser@{eqn\+\_\+viz\+::\+Answer\+Set\+Parser}!find\+Parser\+Matching\+Predicate@{find\+Parser\+Matching\+Predicate}}
+\index{find\+Parser\+Matching\+Predicate@{find\+Parser\+Matching\+Predicate}!eqn\+\_\+viz\+::\+Answer\+Set\+Parser@{eqn\+\_\+viz\+::\+Answer\+Set\+Parser}}
+\subsubsection[{find\+Parser\+Matching\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Answer\+Set\+Parser.\+find\+Parser\+Matching\+Predicate (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{predicate, }
+\item[{}]{parser\+\_\+list = {\ttfamily {\bf all\+\_\+parsers}}}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_answer_set_parser_a094b4e636447626a4f20cc12564758bf}
+\begin{DoxyVerb}if any parser successfully parses the predicate, return tokens and the parser\end{DoxyVerb}
+ 
+
+Definition at line 654 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_answer_set_parser_afebeba4a5dafaa167d0b7a2e76315a09}{}\index{eqn\+\_\+viz\+::\+Answer\+Set\+Parser@{eqn\+\_\+viz\+::\+Answer\+Set\+Parser}!get\+Generated\+Ans\+Set@{get\+Generated\+Ans\+Set}}
+\index{get\+Generated\+Ans\+Set@{get\+Generated\+Ans\+Set}!eqn\+\_\+viz\+::\+Answer\+Set\+Parser@{eqn\+\_\+viz\+::\+Answer\+Set\+Parser}}
+\subsubsection[{get\+Generated\+Ans\+Set}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Answer\+Set\+Parser.\+get\+Generated\+Ans\+Set (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_answer_set_parser_afebeba4a5dafaa167d0b7a2e76315a09}
+
+
+Definition at line 674 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_answer_set_parser_ae3ed1620e24310cc4b448fd84d74c8a7}{}\index{eqn\+\_\+viz\+::\+Answer\+Set\+Parser@{eqn\+\_\+viz\+::\+Answer\+Set\+Parser}!get\+Math\+Problems@{get\+Math\+Problems}}
+\index{get\+Math\+Problems@{get\+Math\+Problems}!eqn\+\_\+viz\+::\+Answer\+Set\+Parser@{eqn\+\_\+viz\+::\+Answer\+Set\+Parser}}
+\subsubsection[{get\+Math\+Problems}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Answer\+Set\+Parser.\+get\+Math\+Problems (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_answer_set_parser_ae3ed1620e24310cc4b448fd84d74c8a7}
+
+
+Definition at line 672 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_answer_set_parser_afa299b43fbe33fdefb8b2f2e33bac3a4}{}\index{eqn\+\_\+viz\+::\+Answer\+Set\+Parser@{eqn\+\_\+viz\+::\+Answer\+Set\+Parser}!parse\+Ans\+Set\+From\+Predicates@{parse\+Ans\+Set\+From\+Predicates}}
+\index{parse\+Ans\+Set\+From\+Predicates@{parse\+Ans\+Set\+From\+Predicates}!eqn\+\_\+viz\+::\+Answer\+Set\+Parser@{eqn\+\_\+viz\+::\+Answer\+Set\+Parser}}
+\subsubsection[{parse\+Ans\+Set\+From\+Predicates}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Answer\+Set\+Parser.\+parse\+Ans\+Set\+From\+Predicates (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{predicates\+\_\+list}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_answer_set_parser_afa299b43fbe33fdefb8b2f2e33bac3a4}
+\begin{DoxyVerb}compose as a string every solution in the predicate list given\end{DoxyVerb}
+ 
+
+Definition at line 565 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_answer_set_parser_a9133543e2c740202778d7cff12c7450c}{}\index{eqn\+\_\+viz\+::\+Answer\+Set\+Parser@{eqn\+\_\+viz\+::\+Answer\+Set\+Parser}!parse\+For\+Factor\+Predicates@{parse\+For\+Factor\+Predicates}}
+\index{parse\+For\+Factor\+Predicates@{parse\+For\+Factor\+Predicates}!eqn\+\_\+viz\+::\+Answer\+Set\+Parser@{eqn\+\_\+viz\+::\+Answer\+Set\+Parser}}
+\subsubsection[{parse\+For\+Factor\+Predicates}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Answer\+Set\+Parser.\+parse\+For\+Factor\+Predicates (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{predicate}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_answer_set_parser_a9133543e2c740202778d7cff12c7450c}
+\begin{DoxyVerb}if any parser successfully parses the predicate, return tokens and the parser\end{DoxyVerb}
+ 
+
+Definition at line 663 of file eqn\+\_\+viz.\+py.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classeqn__viz_1_1_answer_set_parser_aaf05269f220f98b07c9456d89ddca538}{}\index{eqn\+\_\+viz\+::\+Answer\+Set\+Parser@{eqn\+\_\+viz\+::\+Answer\+Set\+Parser}!math\+\_\+problems\+\_\+dict@{math\+\_\+problems\+\_\+dict}}
+\index{math\+\_\+problems\+\_\+dict@{math\+\_\+problems\+\_\+dict}!eqn\+\_\+viz\+::\+Answer\+Set\+Parser@{eqn\+\_\+viz\+::\+Answer\+Set\+Parser}}
+\subsubsection[{math\+\_\+problems\+\_\+dict}]{\setlength{\rightskip}{0pt plus 5cm}eqn\+\_\+viz.\+Answer\+Set\+Parser.\+math\+\_\+problems\+\_\+dict}\label{classeqn__viz_1_1_answer_set_parser_aaf05269f220f98b07c9456d89ddca538}
+
+
+Definition at line 563 of file eqn\+\_\+viz.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{eqn__viz_8py}{eqn\+\_\+viz.\+py}\end{DoxyCompactItemize}

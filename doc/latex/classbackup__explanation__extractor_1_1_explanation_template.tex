@@ -1,0 +1,268 @@
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_template}{}\section{backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template Class Reference}
+\label{classbackup__explanation__extractor_1_1_explanation_template}\index{backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template}}
+Inheritance diagram for backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classbackup__explanation__extractor_1_1_explanation_template}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_template_a2af2c7e8746cada01b2224b1dd801d51}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self, \hyperlink{classbackup__explanation__extractor_1_1_explanation_template_a2af6ecb7ac9890bc38f063369c1dd966}{rule}, \hyperlink{classbackup__explanation__extractor_1_1_explanation_template_a210493351b1a5da793855d40db5495d1}{manager})
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_template_a6810c242d5bcbefefb898c54cb753834}{add\+Additional\+Explanation} (self, \hyperlink{classbackup__explanation__extractor_1_1_explanation_template_a2af6ecb7ac9890bc38f063369c1dd966}{rule})
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_template_a9f57fbe9338950fdf8430a4965aa9957}{unify\+Vars} (self, var\+\_\+dictionary, model\+\_\+manager)
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_template_af8d3f520250ab3d123ac2d41cd3a31d8}{make\+Explanation}
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_template_a000b5dde5d3283d3bb8ff67f5dc3b196}{make\+Head\+Explanation} (self, var\+\_\+assignments)
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_template_af334342a124e95d4bfc71f8a9dd280fa}{unify\+And\+Make\+Body\+Explanation}
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_template_a74bb8f8495acbb8e4289c38bb186713b}{make\+Body\+Explanation}
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_template_a9a69a548709d5f6d4d19a9e21b5f3e36}{pred\+List\+To\+Sentences} (self, pred\+\_\+list, var\+\_\+asignments)
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_template_a29410d042101cae9fcbfb96793399e00}{make\+Predicate\+Explanation} (self, predicate, var\+\_\+assignments)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_template_a02531a40b21d06449441dd38b0b687f0}{is\+Unified} (condition, var\+\_\+assignment)
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_template_ab7d8b1ccb577ddccb1753c1939fb0dfc}{substitute\+Variable\+Values} (var\+\_\+names, var\+\_\+assignment)
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_template_a5da5f79a2b74d1dd42841381fcbab16b}{translate\+Vars\+To\+Template\+Names} (template, var\+\_\+assignment, old\+\_\+variables)
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_template_acd03764adbc028db20e879b6bf6e9db0}{unify} (var\+\_\+assignment, conditions, model\+\_\+mgr)
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_template_ad7bb0cb3a278fc21d562506e196e20a1}{get\+Predicate\+Variables} (predicate)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classbackup__explanation__extractor_1_1_explanation_template_a2af6ecb7ac9890bc38f063369c1dd966}{rule}
+\item 
+\hyperlink{classbackup__explanation__extractor_1_1_explanation_template_a210493351b1a5da793855d40db5495d1}{manager}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}stores the explanation logic for a single predicate type. A predicate type
+is defined by both predicate name and arity.\end{DoxyVerb}
+ 
+
+Definition at line 135 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_template_a2af2c7e8746cada01b2224b1dd801d51}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{rule, }
+\item[{}]{manager}
+\end{DoxyParamCaption}
+)}\label{classbackup__explanation__extractor_1_1_explanation_template_a2af2c7e8746cada01b2224b1dd801d51}
+
+
+Definition at line 138 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_template_a6810c242d5bcbefefb898c54cb753834}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}!add\+Additional\+Explanation@{add\+Additional\+Explanation}}
+\index{add\+Additional\+Explanation@{add\+Additional\+Explanation}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}}
+\subsubsection[{add\+Additional\+Explanation}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template.\+add\+Additional\+Explanation (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{rule}
+\end{DoxyParamCaption}
+)}\label{classbackup__explanation__extractor_1_1_explanation_template_a6810c242d5bcbefefb898c54cb753834}
+\begin{DoxyVerb}Some predicates can be derived in more than one way\end{DoxyVerb}
+ 
+
+Definition at line 143 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_template_ad7bb0cb3a278fc21d562506e196e20a1}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}!get\+Predicate\+Variables@{get\+Predicate\+Variables}}
+\index{get\+Predicate\+Variables@{get\+Predicate\+Variables}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}}
+\subsubsection[{get\+Predicate\+Variables}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template.\+get\+Predicate\+Variables (
+\begin{DoxyParamCaption}
+\item[{}]{predicate}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classbackup__explanation__extractor_1_1_explanation_template_ad7bb0cb3a278fc21d562506e196e20a1}
+\begin{DoxyVerb}return a list of variables referenced by given predicate\end{DoxyVerb}
+ 
+
+Definition at line 261 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_template_a02531a40b21d06449441dd38b0b687f0}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}!is\+Unified@{is\+Unified}}
+\index{is\+Unified@{is\+Unified}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}}
+\subsubsection[{is\+Unified}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template.\+is\+Unified (
+\begin{DoxyParamCaption}
+\item[{}]{condition, }
+\item[{}]{var\+\_\+assignment}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classbackup__explanation__extractor_1_1_explanation_template_a02531a40b21d06449441dd38b0b687f0}
+
+
+Definition at line 148 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_template_a74bb8f8495acbb8e4289c38bb186713b}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}!make\+Body\+Explanation@{make\+Body\+Explanation}}
+\index{make\+Body\+Explanation@{make\+Body\+Explanation}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}}
+\subsubsection[{make\+Body\+Explanation}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template.\+make\+Body\+Explanation (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{var\+\_\+assignments, }
+\item[{}]{model\+\_\+manager = {\ttfamily None}, }
+\item[{}]{depth = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)}\label{classbackup__explanation__extractor_1_1_explanation_template_a74bb8f8495acbb8e4289c38bb186713b}
+
+
+Definition at line 239 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_template_af8d3f520250ab3d123ac2d41cd3a31d8}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}!make\+Explanation@{make\+Explanation}}
+\index{make\+Explanation@{make\+Explanation}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}}
+\subsubsection[{make\+Explanation}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template.\+make\+Explanation (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{var\+\_\+values, }
+\item[{}]{model\+\_\+manager = {\ttfamily None}, }
+\item[{}]{depth = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)}\label{classbackup__explanation__extractor_1_1_explanation_template_af8d3f520250ab3d123ac2d41cd3a31d8}
+\begin{DoxyVerb}return list of template sentences containing explanation\end{DoxyVerb}
+ 
+
+Definition at line 214 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_template_a000b5dde5d3283d3bb8ff67f5dc3b196}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}!make\+Head\+Explanation@{make\+Head\+Explanation}}
+\index{make\+Head\+Explanation@{make\+Head\+Explanation}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}}
+\subsubsection[{make\+Head\+Explanation}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template.\+make\+Head\+Explanation (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{var\+\_\+assignments}
+\end{DoxyParamCaption}
+)}\label{classbackup__explanation__extractor_1_1_explanation_template_a000b5dde5d3283d3bb8ff67f5dc3b196}
+
+
+Definition at line 224 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_template_a29410d042101cae9fcbfb96793399e00}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}!make\+Predicate\+Explanation@{make\+Predicate\+Explanation}}
+\index{make\+Predicate\+Explanation@{make\+Predicate\+Explanation}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}}
+\subsubsection[{make\+Predicate\+Explanation}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template.\+make\+Predicate\+Explanation (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{predicate, }
+\item[{}]{var\+\_\+assignments}
+\end{DoxyParamCaption}
+)}\label{classbackup__explanation__extractor_1_1_explanation_template_a29410d042101cae9fcbfb96793399e00}
+
+
+Definition at line 270 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_template_a9a69a548709d5f6d4d19a9e21b5f3e36}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}!pred\+List\+To\+Sentences@{pred\+List\+To\+Sentences}}
+\index{pred\+List\+To\+Sentences@{pred\+List\+To\+Sentences}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}}
+\subsubsection[{pred\+List\+To\+Sentences}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template.\+pred\+List\+To\+Sentences (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{pred\+\_\+list, }
+\item[{}]{var\+\_\+asignments}
+\end{DoxyParamCaption}
+)}\label{classbackup__explanation__extractor_1_1_explanation_template_a9a69a548709d5f6d4d19a9e21b5f3e36}
+
+
+Definition at line 258 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_template_ab7d8b1ccb577ddccb1753c1939fb0dfc}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}!substitute\+Variable\+Values@{substitute\+Variable\+Values}}
+\index{substitute\+Variable\+Values@{substitute\+Variable\+Values}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}}
+\subsubsection[{substitute\+Variable\+Values}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template.\+substitute\+Variable\+Values (
+\begin{DoxyParamCaption}
+\item[{}]{var\+\_\+names, }
+\item[{}]{var\+\_\+assignment}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classbackup__explanation__extractor_1_1_explanation_template_ab7d8b1ccb577ddccb1753c1939fb0dfc}
+
+
+Definition at line 154 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_template_a5da5f79a2b74d1dd42841381fcbab16b}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}!translate\+Vars\+To\+Template\+Names@{translate\+Vars\+To\+Template\+Names}}
+\index{translate\+Vars\+To\+Template\+Names@{translate\+Vars\+To\+Template\+Names}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}}
+\subsubsection[{translate\+Vars\+To\+Template\+Names}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template.\+translate\+Vars\+To\+Template\+Names (
+\begin{DoxyParamCaption}
+\item[{}]{template, }
+\item[{}]{var\+\_\+assignment, }
+\item[{}]{old\+\_\+variables}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classbackup__explanation__extractor_1_1_explanation_template_a5da5f79a2b74d1dd42841381fcbab16b}
+
+
+Definition at line 166 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_template_acd03764adbc028db20e879b6bf6e9db0}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}!unify@{unify}}
+\index{unify@{unify}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}}
+\subsubsection[{unify}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template.\+unify (
+\begin{DoxyParamCaption}
+\item[{}]{var\+\_\+assignment, }
+\item[{}]{conditions, }
+\item[{}]{model\+\_\+mgr}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classbackup__explanation__extractor_1_1_explanation_template_acd03764adbc028db20e879b6bf6e9db0}
+
+
+Definition at line 178 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_template_af334342a124e95d4bfc71f8a9dd280fa}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}!unify\+And\+Make\+Body\+Explanation@{unify\+And\+Make\+Body\+Explanation}}
+\index{unify\+And\+Make\+Body\+Explanation@{unify\+And\+Make\+Body\+Explanation}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}}
+\subsubsection[{unify\+And\+Make\+Body\+Explanation}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template.\+unify\+And\+Make\+Body\+Explanation (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{var\+\_\+assignments, }
+\item[{}]{model\+\_\+manager = {\ttfamily None}, }
+\item[{}]{depth = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)}\label{classbackup__explanation__extractor_1_1_explanation_template_af334342a124e95d4bfc71f8a9dd280fa}
+
+
+Definition at line 233 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_template_a9f57fbe9338950fdf8430a4965aa9957}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}!unify\+Vars@{unify\+Vars}}
+\index{unify\+Vars@{unify\+Vars}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}}
+\subsubsection[{unify\+Vars}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template.\+unify\+Vars (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{var\+\_\+dictionary, }
+\item[{}]{model\+\_\+manager}
+\end{DoxyParamCaption}
+)}\label{classbackup__explanation__extractor_1_1_explanation_template_a9f57fbe9338950fdf8430a4965aa9957}
+
+
+Definition at line 209 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_template_a210493351b1a5da793855d40db5495d1}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}!manager@{manager}}
+\index{manager@{manager}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}}
+\subsubsection[{manager}]{\setlength{\rightskip}{0pt plus 5cm}backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template.\+manager}\label{classbackup__explanation__extractor_1_1_explanation_template_a210493351b1a5da793855d40db5495d1}
+
+
+Definition at line 141 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_template_a2af6ecb7ac9890bc38f063369c1dd966}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}!rule@{rule}}
+\index{rule@{rule}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Template}}
+\subsubsection[{rule}]{\setlength{\rightskip}{0pt plus 5cm}backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Template.\+rule}\label{classbackup__explanation__extractor_1_1_explanation_template_a2af6ecb7ac9890bc38f063369c1dd966}
+
+
+Definition at line 140 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{backup__explanation__extractor_8py}{backup\+\_\+explanation\+\_\+extractor.\+py}\end{DoxyCompactItemize}

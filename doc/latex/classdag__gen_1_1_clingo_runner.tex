@@ -1,0 +1,239 @@
+\hypertarget{classdag__gen_1_1_clingo_runner}{}\section{dag\+\_\+gen.\+Clingo\+Runner Class Reference}
+\label{classdag__gen_1_1_clingo_runner}\index{dag\+\_\+gen.\+Clingo\+Runner@{dag\+\_\+gen.\+Clingo\+Runner}}
+Inheritance diagram for dag\+\_\+gen.\+Clingo\+Runner\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classdag__gen_1_1_clingo_runner}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classdag__gen_1_1_clingo_runner_a7441ae2288ff73302b0ee7e930639ab3}{\+\_\+\+\_\+init\+\_\+\+\_\+}
+\item 
+def \hyperlink{classdag__gen_1_1_clingo_runner_af9fe9a18de802ad6ae4bbde932f13f7d}{init\+Cmd\+Parser} (self)
+\item 
+def \hyperlink{classdag__gen_1_1_clingo_runner_ab989b98542007db0859beac9596f4923}{write\+Solver\+Config\+File}
+\item 
+def \hyperlink{classdag__gen_1_1_clingo_runner_ab2e79a582f9fd5003e83ecfca09612a4}{run\+Solver}
+\item 
+def \hyperlink{classdag__gen_1_1_clingo_runner_a73440fbbc4ff2cae5936e1b8e62da47e}{display\+Ans\+Sets}
+\item 
+def \hyperlink{classdag__gen_1_1_clingo_runner_aae48d9486b94f29592ea36d8fddd2962}{iterative\+Deepening\+Generation} (self, param\+\_\+dict)
+\item 
+def \hyperlink{classdag__gen_1_1_clingo_runner_a1cf014fe7656bdeffb3c431e3d542358}{compute\+Ans\+Sets} (self, param\+\_\+dict)
+\item 
+def \hyperlink{classdag__gen_1_1_clingo_runner_a7468c2faec4b7d8460a9c2ece1e9c243}{parse\+Generated\+Problems} (self, json\+\_\+output)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classdag__gen_1_1_clingo_runner_a492a99985894a1ae69f7b38af7d285e5}{bash\+\_\+cmd}
+\item 
+\hyperlink{classdag__gen_1_1_clingo_runner_a3700bc111e62e4f818f7e5681660e531}{boolean\+\_\+flags}
+\item 
+\hyperlink{classdag__gen_1_1_clingo_runner_a2b2372c6cc18c1448476a3630b82a949}{misc\+\_\+params}
+\item 
+\hyperlink{classdag__gen_1_1_clingo_runner_aca2f82b398bcefe24a04c43b77481a67}{cmd\+\_\+parser}
+\item 
+\hyperlink{classdag__gen_1_1_clingo_runner_a0fe5719667663d763ca57ebb8001546f}{args}
+\item 
+\hyperlink{classdag__gen_1_1_clingo_runner_af2b25ea63f098e5b596944511e5a09f1}{graph}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+string \hyperlink{classdag__gen_1_1_clingo_runner_ae58afdbd0d16c11d9a6319117d9a3593}{B\+A\+S\+H\+\_\+\+C\+O\+M\+M\+A\+N\+D} = \char`\"{}clingo eqn\+\_\+generator.\+lp -\/-\/project -\/n 0 -\/-\/outf=2 \char`\"{}
+\item 
+string \hyperlink{classdag__gen_1_1_clingo_runner_aa7b89cf2eba47c9b33f009f34848be46}{T\+E\+S\+T\+\_\+\+C\+O\+M\+M\+A\+N\+D} = \char`\"{}cat three\+\_\+steps\+\_\+output\char`\"{}
+\item 
+list \hyperlink{classdag__gen_1_1_clingo_runner_a02e60fad8150929b05e3f7ea78b96c7f}{B\+O\+O\+L\+E\+A\+N\+\_\+\+F\+L\+A\+G\+S} = \mbox{[}\textquotesingle{}iterative\textquotesingle{}, \textquotesingle{}json\textquotesingle{}\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Run clingo based on command line arguments, optionally generates graph based on generated problems\end{DoxyVerb}
+ 
+
+Definition at line 8 of file dag\+\_\+gen.\+py.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classdag__gen_1_1_clingo_runner_a7441ae2288ff73302b0ee7e930639ab3}{}\index{dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def dag\+\_\+gen.\+Clingo\+Runner.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{bash\+\_\+cmd = {\ttfamily {\bf B\+A\+S\+H\+\_\+\+C\+O\+M\+M\+A\+N\+D}}, }
+\item[{}]{flags = {\ttfamily {\bf B\+O\+O\+L\+E\+A\+N\+\_\+\+F\+L\+A\+G\+S}}, }
+\item[{}]{misc\+\_\+params = {\ttfamily dict()}}
+\end{DoxyParamCaption}
+)}\label{classdag__gen_1_1_clingo_runner_a7441ae2288ff73302b0ee7e930639ab3}
+
+
+Definition at line 14 of file dag\+\_\+gen.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classdag__gen_1_1_clingo_runner_a1cf014fe7656bdeffb3c431e3d542358}{}\index{dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}!compute\+Ans\+Sets@{compute\+Ans\+Sets}}
+\index{compute\+Ans\+Sets@{compute\+Ans\+Sets}!dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}}
+\subsubsection[{compute\+Ans\+Sets}]{\setlength{\rightskip}{0pt plus 5cm}def dag\+\_\+gen.\+Clingo\+Runner.\+compute\+Ans\+Sets (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{param\+\_\+dict}
+\end{DoxyParamCaption}
+)}\label{classdag__gen_1_1_clingo_runner_a1cf014fe7656bdeffb3c431e3d542358}
+\begin{DoxyVerb}run clingo with param_dict options, and return the resulting AnswerSetManager instance\end{DoxyVerb}
+ 
+
+Definition at line 88 of file dag\+\_\+gen.\+py.
+
+\hypertarget{classdag__gen_1_1_clingo_runner_a73440fbbc4ff2cae5936e1b8e62da47e}{}\index{dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}!display\+Ans\+Sets@{display\+Ans\+Sets}}
+\index{display\+Ans\+Sets@{display\+Ans\+Sets}!dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}}
+\subsubsection[{display\+Ans\+Sets}]{\setlength{\rightskip}{0pt plus 5cm}def dag\+\_\+gen.\+Clingo\+Runner.\+display\+Ans\+Sets (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{ans\+\_\+set\+\_\+list, }
+\item[{}]{make\+\_\+graph = {\ttfamily True}}
+\end{DoxyParamCaption}
+)}\label{classdag__gen_1_1_clingo_runner_a73440fbbc4ff2cae5936e1b8e62da47e}
+
+
+Definition at line 61 of file dag\+\_\+gen.\+py.
+
+\hypertarget{classdag__gen_1_1_clingo_runner_af9fe9a18de802ad6ae4bbde932f13f7d}{}\index{dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}!init\+Cmd\+Parser@{init\+Cmd\+Parser}}
+\index{init\+Cmd\+Parser@{init\+Cmd\+Parser}!dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}}
+\subsubsection[{init\+Cmd\+Parser}]{\setlength{\rightskip}{0pt plus 5cm}def dag\+\_\+gen.\+Clingo\+Runner.\+init\+Cmd\+Parser (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classdag__gen_1_1_clingo_runner_af9fe9a18de802ad6ae4bbde932f13f7d}
+
+
+Definition at line 21 of file dag\+\_\+gen.\+py.
+
+\hypertarget{classdag__gen_1_1_clingo_runner_aae48d9486b94f29592ea36d8fddd2962}{}\index{dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}!iterative\+Deepening\+Generation@{iterative\+Deepening\+Generation}}
+\index{iterative\+Deepening\+Generation@{iterative\+Deepening\+Generation}!dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}}
+\subsubsection[{iterative\+Deepening\+Generation}]{\setlength{\rightskip}{0pt plus 5cm}def dag\+\_\+gen.\+Clingo\+Runner.\+iterative\+Deepening\+Generation (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{param\+\_\+dict}
+\end{DoxyParamCaption}
+)}\label{classdag__gen_1_1_clingo_runner_aae48d9486b94f29592ea36d8fddd2962}
+\begin{DoxyVerb}return a list of AnswerSetManager instances\end{DoxyVerb}
+ 
+
+Definition at line 80 of file dag\+\_\+gen.\+py.
+
+\hypertarget{classdag__gen_1_1_clingo_runner_a7468c2faec4b7d8460a9c2ece1e9c243}{}\index{dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}!parse\+Generated\+Problems@{parse\+Generated\+Problems}}
+\index{parse\+Generated\+Problems@{parse\+Generated\+Problems}!dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}}
+\subsubsection[{parse\+Generated\+Problems}]{\setlength{\rightskip}{0pt plus 5cm}def dag\+\_\+gen.\+Clingo\+Runner.\+parse\+Generated\+Problems (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{json\+\_\+output}
+\end{DoxyParamCaption}
+)}\label{classdag__gen_1_1_clingo_runner_a7468c2faec4b7d8460a9c2ece1e9c243}
+\begin{DoxyVerb}parse output string with AnswerSetManager and return the manager\end{DoxyVerb}
+ 
+
+Definition at line 96 of file dag\+\_\+gen.\+py.
+
+\hypertarget{classdag__gen_1_1_clingo_runner_ab2e79a582f9fd5003e83ecfca09612a4}{}\index{dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}!run\+Solver@{run\+Solver}}
+\index{run\+Solver@{run\+Solver}!dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}}
+\subsubsection[{run\+Solver}]{\setlength{\rightskip}{0pt plus 5cm}def dag\+\_\+gen.\+Clingo\+Runner.\+run\+Solver (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{make\+\_\+graph = {\ttfamily True}}
+\end{DoxyParamCaption}
+)}\label{classdag__gen_1_1_clingo_runner_ab2e79a582f9fd5003e83ecfca09612a4}
+
+
+Definition at line 51 of file dag\+\_\+gen.\+py.
+
+\hypertarget{classdag__gen_1_1_clingo_runner_ab989b98542007db0859beac9596f4923}{}\index{dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}!write\+Solver\+Config\+File@{write\+Solver\+Config\+File}}
+\index{write\+Solver\+Config\+File@{write\+Solver\+Config\+File}!dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}}
+\subsubsection[{write\+Solver\+Config\+File}]{\setlength{\rightskip}{0pt plus 5cm}def dag\+\_\+gen.\+Clingo\+Runner.\+write\+Solver\+Config\+File (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{param\+\_\+dict, }
+\item[{}]{filename = {\ttfamily \textquotesingle{}config\+\_\+params.lp\textquotesingle{}}, }
+\item[{}]{misc\+\_\+constraints = {\ttfamily \textquotesingle{}\textquotesingle{}}}
+\end{DoxyParamCaption}
+)}\label{classdag__gen_1_1_clingo_runner_ab989b98542007db0859beac9596f4923}
+
+
+Definition at line 39 of file dag\+\_\+gen.\+py.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classdag__gen_1_1_clingo_runner_a0fe5719667663d763ca57ebb8001546f}{}\index{dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}!args@{args}}
+\index{args@{args}!dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}}
+\subsubsection[{args}]{\setlength{\rightskip}{0pt plus 5cm}dag\+\_\+gen.\+Clingo\+Runner.\+args}\label{classdag__gen_1_1_clingo_runner_a0fe5719667663d763ca57ebb8001546f}
+
+
+Definition at line 19 of file dag\+\_\+gen.\+py.
+
+\hypertarget{classdag__gen_1_1_clingo_runner_a492a99985894a1ae69f7b38af7d285e5}{}\index{dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}!bash\+\_\+cmd@{bash\+\_\+cmd}}
+\index{bash\+\_\+cmd@{bash\+\_\+cmd}!dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}}
+\subsubsection[{bash\+\_\+cmd}]{\setlength{\rightskip}{0pt plus 5cm}dag\+\_\+gen.\+Clingo\+Runner.\+bash\+\_\+cmd}\label{classdag__gen_1_1_clingo_runner_a492a99985894a1ae69f7b38af7d285e5}
+
+
+Definition at line 15 of file dag\+\_\+gen.\+py.
+
+\hypertarget{classdag__gen_1_1_clingo_runner_ae58afdbd0d16c11d9a6319117d9a3593}{}\index{dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}!B\+A\+S\+H\+\_\+\+C\+O\+M\+M\+A\+N\+D@{B\+A\+S\+H\+\_\+\+C\+O\+M\+M\+A\+N\+D}}
+\index{B\+A\+S\+H\+\_\+\+C\+O\+M\+M\+A\+N\+D@{B\+A\+S\+H\+\_\+\+C\+O\+M\+M\+A\+N\+D}!dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}}
+\subsubsection[{B\+A\+S\+H\+\_\+\+C\+O\+M\+M\+A\+N\+D}]{\setlength{\rightskip}{0pt plus 5cm}string dag\+\_\+gen.\+Clingo\+Runner.\+B\+A\+S\+H\+\_\+\+C\+O\+M\+M\+A\+N\+D = \char`\"{}clingo eqn\+\_\+generator.\+lp -\/-\/project -\/n 0 -\/-\/outf=2 \char`\"{}\hspace{0.3cm}{\ttfamily [static]}}\label{classdag__gen_1_1_clingo_runner_ae58afdbd0d16c11d9a6319117d9a3593}
+
+
+Definition at line 10 of file dag\+\_\+gen.\+py.
+
+\hypertarget{classdag__gen_1_1_clingo_runner_a02e60fad8150929b05e3f7ea78b96c7f}{}\index{dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}!B\+O\+O\+L\+E\+A\+N\+\_\+\+F\+L\+A\+G\+S@{B\+O\+O\+L\+E\+A\+N\+\_\+\+F\+L\+A\+G\+S}}
+\index{B\+O\+O\+L\+E\+A\+N\+\_\+\+F\+L\+A\+G\+S@{B\+O\+O\+L\+E\+A\+N\+\_\+\+F\+L\+A\+G\+S}!dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}}
+\subsubsection[{B\+O\+O\+L\+E\+A\+N\+\_\+\+F\+L\+A\+G\+S}]{\setlength{\rightskip}{0pt plus 5cm}list dag\+\_\+gen.\+Clingo\+Runner.\+B\+O\+O\+L\+E\+A\+N\+\_\+\+F\+L\+A\+G\+S = \mbox{[}\textquotesingle{}iterative\textquotesingle{}, \textquotesingle{}json\textquotesingle{}\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}\label{classdag__gen_1_1_clingo_runner_a02e60fad8150929b05e3f7ea78b96c7f}
+
+
+Definition at line 13 of file dag\+\_\+gen.\+py.
+
+\hypertarget{classdag__gen_1_1_clingo_runner_a3700bc111e62e4f818f7e5681660e531}{}\index{dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}!boolean\+\_\+flags@{boolean\+\_\+flags}}
+\index{boolean\+\_\+flags@{boolean\+\_\+flags}!dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}}
+\subsubsection[{boolean\+\_\+flags}]{\setlength{\rightskip}{0pt plus 5cm}dag\+\_\+gen.\+Clingo\+Runner.\+boolean\+\_\+flags}\label{classdag__gen_1_1_clingo_runner_a3700bc111e62e4f818f7e5681660e531}
+
+
+Definition at line 16 of file dag\+\_\+gen.\+py.
+
+\hypertarget{classdag__gen_1_1_clingo_runner_aca2f82b398bcefe24a04c43b77481a67}{}\index{dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}!cmd\+\_\+parser@{cmd\+\_\+parser}}
+\index{cmd\+\_\+parser@{cmd\+\_\+parser}!dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}}
+\subsubsection[{cmd\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}dag\+\_\+gen.\+Clingo\+Runner.\+cmd\+\_\+parser}\label{classdag__gen_1_1_clingo_runner_aca2f82b398bcefe24a04c43b77481a67}
+
+
+Definition at line 18 of file dag\+\_\+gen.\+py.
+
+\hypertarget{classdag__gen_1_1_clingo_runner_af2b25ea63f098e5b596944511e5a09f1}{}\index{dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}!graph@{graph}}
+\index{graph@{graph}!dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}}
+\subsubsection[{graph}]{\setlength{\rightskip}{0pt plus 5cm}dag\+\_\+gen.\+Clingo\+Runner.\+graph}\label{classdag__gen_1_1_clingo_runner_af2b25ea63f098e5b596944511e5a09f1}
+
+
+Definition at line 76 of file dag\+\_\+gen.\+py.
+
+\hypertarget{classdag__gen_1_1_clingo_runner_a2b2372c6cc18c1448476a3630b82a949}{}\index{dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}!misc\+\_\+params@{misc\+\_\+params}}
+\index{misc\+\_\+params@{misc\+\_\+params}!dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}}
+\subsubsection[{misc\+\_\+params}]{\setlength{\rightskip}{0pt plus 5cm}dag\+\_\+gen.\+Clingo\+Runner.\+misc\+\_\+params}\label{classdag__gen_1_1_clingo_runner_a2b2372c6cc18c1448476a3630b82a949}
+
+
+Definition at line 17 of file dag\+\_\+gen.\+py.
+
+\hypertarget{classdag__gen_1_1_clingo_runner_aa7b89cf2eba47c9b33f009f34848be46}{}\index{dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}!T\+E\+S\+T\+\_\+\+C\+O\+M\+M\+A\+N\+D@{T\+E\+S\+T\+\_\+\+C\+O\+M\+M\+A\+N\+D}}
+\index{T\+E\+S\+T\+\_\+\+C\+O\+M\+M\+A\+N\+D@{T\+E\+S\+T\+\_\+\+C\+O\+M\+M\+A\+N\+D}!dag\+\_\+gen\+::\+Clingo\+Runner@{dag\+\_\+gen\+::\+Clingo\+Runner}}
+\subsubsection[{T\+E\+S\+T\+\_\+\+C\+O\+M\+M\+A\+N\+D}]{\setlength{\rightskip}{0pt plus 5cm}string dag\+\_\+gen.\+Clingo\+Runner.\+T\+E\+S\+T\+\_\+\+C\+O\+M\+M\+A\+N\+D = \char`\"{}cat three\+\_\+steps\+\_\+output\char`\"{}\hspace{0.3cm}{\ttfamily [static]}}\label{classdag__gen_1_1_clingo_runner_aa7b89cf2eba47c9b33f009f34848be46}
+
+
+Definition at line 11 of file dag\+\_\+gen.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{dag__gen_8py}{dag\+\_\+gen.\+py}\end{DoxyCompactItemize}

@@ -1,0 +1,444 @@
+\hypertarget{namespaceeqn__viz}{}\section{eqn\+\_\+viz Namespace Reference}
+\label{namespaceeqn__viz}\index{eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classeqn__viz_1_1_algebra_node}{Algebra\+Node}
+\item 
+class \hyperlink{classeqn__viz_1_1_answer_set_manager}{Answer\+Set\+Manager}
+\item 
+class \hyperlink{classeqn__viz_1_1_answer_set_parser}{Answer\+Set\+Parser}
+\item 
+class \hyperlink{classeqn__viz_1_1_equation_step_parser}{Equation\+Step\+Parser}
+\item 
+class \hyperlink{classeqn__viz_1_1_generated_answer_set}{Generated\+Answer\+Set}
+\item 
+class \hyperlink{classeqn__viz_1_1_generated_problem}{Generated\+Problem}
+\item 
+class \hyperlink{classeqn__viz_1_1_math_problem_parser}{Math\+Problem\+Parser}
+\item 
+class \hyperlink{classeqn__viz_1_1_model_manager}{Model\+Manager}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{namespaceeqn__viz_a09faf0d0395a3e4f6075cce89ff0285d}{get\+Template\+Manager} ()
+\item 
+def \hyperlink{namespaceeqn__viz_a77840944e82440038b71417a8d7204b1}{compose\+Parsers} (left, middle, right)
+\item 
+def \hyperlink{namespaceeqn__viz_a993af6aa282c460f53ded3ad8c8b0b93}{peel\+Holds} (tokens)
+\item 
+def \hyperlink{namespaceeqn__viz_afb82e11030ed8435793bb5958189540d}{main} (cmd\+\_\+line\+\_\+args)
+\item 
+def \hyperlink{namespaceeqn__viz_a1ced7888f4e1050beff42555639b94ef}{get\+Cmd\+Line\+Args} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+tuple \hyperlink{namespaceeqn__viz_a0e6b1a683d662dd566b0cece84265fae}{Heuristic} = namedtuple(\textquotesingle{}Heuristic\textquotesingle{}, \mbox{[}\textquotesingle{}name\textquotesingle{}, \textquotesingle{}priority\textquotesingle{}, \textquotesingle{}trigger\textquotesingle{}\mbox{]})
+\item 
+tuple \hyperlink{namespaceeqn__viz_a1bea532f61715c9742cbbe0bef8e5121}{heur\+\_\+file} = open(\textquotesingle{}list\+\_\+of\+\_\+heuristics.\+txt\textquotesingle{}, \textquotesingle{}r\textquotesingle{})
+\item 
+dictionary \hyperlink{namespaceeqn__viz_a8017c4f105a541309fcf639e7925a88b}{H\+E\+U\+R\+\_\+\+I\+N\+F\+O} = \{\}
+\item 
+\hyperlink{namespaceeqn__viz_af2da9273cfc3d8dc9ce1f05558cbc838}{T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+M\+A\+N\+A\+G\+E\+R} = None
+\item 
+tuple \hyperlink{namespaceeqn__viz_a5e65c3435a54324008033d990d858e72}{number\+\_\+parser} = Word(nums + \textquotesingle{}-\/\textquotesingle{})
+\item 
+tuple \hyperlink{namespaceeqn__viz_ad9dc00d4b3c0b288d0f204937297b179}{word\+\_\+parser} = Word(alphas)
+\item 
+string \hyperlink{namespaceeqn__viz_aa3f9b7373809e0e391e1383fd878b616}{node\+\_\+parser} = \textquotesingle{}id(\textquotesingle{}
+\item 
+\hyperlink{namespaceeqn__viz_ae1292d980053c2a15be129430ee3ebb1}{coeff} = \hyperlink{namespaceeqn__viz_a5e65c3435a54324008033d990d858e72}{number\+\_\+parser}
+\item 
+\hyperlink{namespaceeqn__viz_a1376f5d1deece596253f6876d746a500}{deg} = \hyperlink{namespaceeqn__viz_a5e65c3435a54324008033d990d858e72}{number\+\_\+parser}
+\item 
+\hyperlink{namespaceeqn__viz_aa45f3f597ca3ecacab90d141137afe1c}{poly\+\_\+parser} = \hyperlink{namespaceeqn__viz_a5e65c3435a54324008033d990d858e72}{number\+\_\+parser}
+\item 
+string \hyperlink{namespaceeqn__viz_a7bf2f0fb75b2d7a493e3ebf9cf2f580e}{time\+\_\+parser} = \textquotesingle{}time(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_ab821f1efc209d98cc2cbfce1f818acbc}{action\+\_\+parser} = \textquotesingle{}selected\+Heuristic(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_a854e9036019062010a0620dca4adcf5f}{factora\+\_\+parser} = \textquotesingle{}factor1(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_a830b341130da6861c90efd9ac0858486}{factorb\+\_\+parser} = \textquotesingle{}factor2(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_addfe6dbd1f7e4817decc2f392291d743}{factorc\+\_\+parser} = \textquotesingle{}factor3(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_a17e1b80ac39bb02b3448c7cc9e5e7821}{factord\+\_\+parser} = \textquotesingle{}factor4(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_a28dbd804760bc7a217c14254976e5575}{refer\+\_\+to\+\_\+\+Parser} = \textquotesingle{}refer\+To(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_ab4bb266f8ba35459c0d095bcffadbad4}{soln\+\_\+parser} = \textquotesingle{}solution\+Value(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_aacd332e3c02218eb9ae4ec66a3e31fd0}{substitute\+\_\+parser} = \textquotesingle{}substituted\+Degree(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_a7a7eda2f6b22edf43034366ee5b0e433}{binary\+\_\+operand\+\_\+parser} = \textquotesingle{}selected\+Heur\+Operands(\textquotesingle{}
+\item 
+string \hyperlink{namespaceeqn__viz_a0eb89bf8984a1b19989d2031cae402a6}{unary\+\_\+operand\+\_\+parser} = \textquotesingle{}selected\+Heur\+Operands(\textquotesingle{}
+\item 
+tuple \hyperlink{namespaceeqn__viz_a716255e5870a531e1bfc6d184278bc8d}{wrap\+Node\+Fact} = lambdaparser\+:compose\+Parsers(\textquotesingle{}fact(\textquotesingle{}+ \hyperlink{namespaceeqn__viz_aa3f9b7373809e0e391e1383fd878b616}{node\+\_\+parser} + \textquotesingle{},\textquotesingle{}, parser, \textquotesingle{})\textquotesingle{})
+\item 
+tuple \hyperlink{namespaceeqn__viz_aa72fea76ddf1127d6dbcb77d7c76c63d}{wrap\+Poly\+Fact} = lambdaparser\+:compose\+Parsers(\textquotesingle{}fact(\textquotesingle{}+ \hyperlink{namespaceeqn__viz_aa45f3f597ca3ecacab90d141137afe1c}{poly\+\_\+parser} + \textquotesingle{},\textquotesingle{}, parser, \textquotesingle{})\textquotesingle{})
+\item 
+tuple \hyperlink{namespaceeqn__viz_adf51f57cbfcd953ec98550b85dcc3d0c}{wrap\+Key\+Value\+Pair} = lambdaparser\+:compose\+Parsers(\textquotesingle{}node\+Field(\textquotesingle{}, parser, \textquotesingle{})\textquotesingle{})
+\item 
+tuple \hyperlink{namespaceeqn__viz_afead5f7b23dd83ce8d2c7092b9887606}{wrap\+With\+Monomial} = lambdaparser\+:compose\+Parsers(\textquotesingle{}mono(\textquotesingle{}, parser, \textquotesingle{})\textquotesingle{})
+\item 
+tuple \hyperlink{namespaceeqn__viz_a66245c2eeb429b7809bc02fc6852d0ec}{wrap\+With\+Holds} = lambdafluent\+:compose\+Parsers(\textquotesingle{}holds(\textquotesingle{},\hyperlink{namespaceeqn__viz_a7bf2f0fb75b2d7a493e3ebf9cf2f580e}{time\+\_\+parser}, \textquotesingle{},\textquotesingle{} + fluent + \textquotesingle{})\textquotesingle{})
+\item 
+tuple \hyperlink{namespaceeqn__viz_aaabd8c0ea3860c55e9022abed90dab61}{word\+\_\+word\+\_\+parser} = \hyperlink{namespaceeqn__viz_a77840944e82440038b71417a8d7204b1}{compose\+Parsers}(\hyperlink{namespaceeqn__viz_ad9dc00d4b3c0b288d0f204937297b179}{word\+\_\+parser}, \textquotesingle{},\textquotesingle{} , \hyperlink{namespaceeqn__viz_ad9dc00d4b3c0b288d0f204937297b179}{word\+\_\+parser})
+\item 
+tuple \hyperlink{namespaceeqn__viz_ae9d46b4030dff778fd4a908af15b1461}{number\+\_\+number\+\_\+parser} = \hyperlink{namespaceeqn__viz_a77840944e82440038b71417a8d7204b1}{compose\+Parsers}(\hyperlink{namespaceeqn__viz_a5e65c3435a54324008033d990d858e72}{number\+\_\+parser}, \textquotesingle{},\textquotesingle{} , \hyperlink{namespaceeqn__viz_a5e65c3435a54324008033d990d858e72}{number\+\_\+parser})
+\item 
+tuple \hyperlink{namespaceeqn__viz_a125896c7d7db5d4f150b2b6699176c2a}{word\+\_\+number\+\_\+parser} = \hyperlink{namespaceeqn__viz_a77840944e82440038b71417a8d7204b1}{compose\+Parsers}(\hyperlink{namespaceeqn__viz_ad9dc00d4b3c0b288d0f204937297b179}{word\+\_\+parser}, \textquotesingle{},\textquotesingle{} , \hyperlink{namespaceeqn__viz_a5e65c3435a54324008033d990d858e72}{number\+\_\+parser})
+\item 
+tuple \hyperlink{namespaceeqn__viz_ade698a80074d34a48d27d50b0b6faafc}{word\+\_\+node\+\_\+parser} = \hyperlink{namespaceeqn__viz_a77840944e82440038b71417a8d7204b1}{compose\+Parsers}(\hyperlink{namespaceeqn__viz_ad9dc00d4b3c0b288d0f204937297b179}{word\+\_\+parser}, \textquotesingle{},\textquotesingle{} , \hyperlink{namespaceeqn__viz_aa3f9b7373809e0e391e1383fd878b616}{node\+\_\+parser})
+\item 
+tuple \hyperlink{namespaceeqn__viz_aff7c3fc95453270d356d2c9fef5be210}{wrap\+In\+Key\+Value\+And\+Fact} = lambdaparser\+:wrap\+With\+Holds(\hyperlink{namespaceeqn__viz_a716255e5870a531e1bfc6d184278bc8d}{wrap\+Node\+Fact}(\hyperlink{namespaceeqn__viz_adf51f57cbfcd953ec98550b85dcc3d0c}{wrap\+Key\+Value\+Pair}(parser)))
+\item 
+tuple \hyperlink{namespaceeqn__viz_a80772625f40909e83c3baefb38694d27}{type\+\_\+parser} = \hyperlink{namespaceeqn__viz_aff7c3fc95453270d356d2c9fef5be210}{wrap\+In\+Key\+Value\+And\+Fact}(\hyperlink{namespaceeqn__viz_aaabd8c0ea3860c55e9022abed90dab61}{word\+\_\+word\+\_\+parser})
+\item 
+tuple \hyperlink{namespaceeqn__viz_aa7fc0cae83db0b5d1e6d5c5842cea401}{deg\+\_\+coeff\+\_\+parser} = \hyperlink{namespaceeqn__viz_aff7c3fc95453270d356d2c9fef5be210}{wrap\+In\+Key\+Value\+And\+Fact}(\hyperlink{namespaceeqn__viz_a125896c7d7db5d4f150b2b6699176c2a}{word\+\_\+number\+\_\+parser})
+\item 
+tuple \hyperlink{namespaceeqn__viz_a333b4ac72b3d28145584b60f44dc5230}{child\+\_\+parser} = \hyperlink{namespaceeqn__viz_aff7c3fc95453270d356d2c9fef5be210}{wrap\+In\+Key\+Value\+And\+Fact}(\hyperlink{namespaceeqn__viz_ade698a80074d34a48d27d50b0b6faafc}{word\+\_\+node\+\_\+parser})
+\item 
+string \hyperlink{namespaceeqn__viz_adb85cfac07b72248b7de0626b8e31bff}{applicable\+\_\+heur\+\_\+parser} = \textquotesingle{}applicable\+Heuristic(\textquotesingle{}
+\item 
+list \hyperlink{namespaceeqn__viz_a7be3eddfb6de11856410a9b26fc4a701}{all\+\_\+parsers} = \mbox{[} \hyperlink{namespaceeqn__viz_a80772625f40909e83c3baefb38694d27}{type\+\_\+parser}, \hyperlink{namespaceeqn__viz_a333b4ac72b3d28145584b60f44dc5230}{child\+\_\+parser}, \hyperlink{namespaceeqn__viz_aa7fc0cae83db0b5d1e6d5c5842cea401}{deg\+\_\+coeff\+\_\+parser}, \hyperlink{namespaceeqn__viz_ab821f1efc209d98cc2cbfce1f818acbc}{action\+\_\+parser}, \hyperlink{namespaceeqn__viz_a7a7eda2f6b22edf43034366ee5b0e433}{binary\+\_\+operand\+\_\+parser}, \hyperlink{namespaceeqn__viz_a0eb89bf8984a1b19989d2031cae402a6}{unary\+\_\+operand\+\_\+parser}, \hyperlink{namespaceeqn__viz_adb85cfac07b72248b7de0626b8e31bff}{applicable\+\_\+heur\+\_\+parser}\mbox{]}
+\item 
+list \hyperlink{namespaceeqn__viz_a87c2b92574d4b106ac2b4a2627a5824b}{factor\+\_\+parsers} = \mbox{[}\hyperlink{namespaceeqn__viz_a854e9036019062010a0620dca4adcf5f}{factora\+\_\+parser}, \hyperlink{namespaceeqn__viz_a830b341130da6861c90efd9ac0858486}{factorb\+\_\+parser}, \hyperlink{namespaceeqn__viz_addfe6dbd1f7e4817decc2f392291d743}{factorc\+\_\+parser}, \hyperlink{namespaceeqn__viz_a17e1b80ac39bb02b3448c7cc9e5e7821}{factord\+\_\+parser}, \hyperlink{namespaceeqn__viz_a28dbd804760bc7a217c14254976e5575}{refer\+\_\+to\+\_\+\+Parser}, \hyperlink{namespaceeqn__viz_ab4bb266f8ba35459c0d095bcffadbad4}{soln\+\_\+parser}, \hyperlink{namespaceeqn__viz_aacd332e3c02218eb9ae4ec66a3e31fd0}{substitute\+\_\+parser}\mbox{]}
+\item 
+dictionary \hyperlink{namespaceeqn__viz_a9377a4d68a694cfe5b8fd887d7d4f045}{op\+\_\+symbols} = \{\textquotesingle{}add\textquotesingle{} \+: \textquotesingle{}+\textquotesingle{} , \textquotesingle{}div\textquotesingle{} \+: \textquotesingle{}/\textquotesingle{} , \textquotesingle{}mul\textquotesingle{} \+: \textquotesingle{}$\ast$\textquotesingle{} , \textquotesingle{}neg\textquotesingle{} \+: \textquotesingle{}-\/\textquotesingle{}\}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{namespaceeqn__viz_a77840944e82440038b71417a8d7204b1}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!compose\+Parsers@{compose\+Parsers}}
+\index{compose\+Parsers@{compose\+Parsers}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{compose\+Parsers}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+compose\+Parsers (
+\begin{DoxyParamCaption}
+\item[{}]{left, }
+\item[{}]{middle, }
+\item[{}]{right}
+\end{DoxyParamCaption}
+)}\label{namespaceeqn__viz_a77840944e82440038b71417a8d7204b1}
+
+
+Definition at line 68 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a1ced7888f4e1050beff42555639b94ef}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!get\+Cmd\+Line\+Args@{get\+Cmd\+Line\+Args}}
+\index{get\+Cmd\+Line\+Args@{get\+Cmd\+Line\+Args}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{get\+Cmd\+Line\+Args}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+get\+Cmd\+Line\+Args (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespaceeqn__viz_a1ced7888f4e1050beff42555639b94ef}
+
+
+Definition at line 780 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a09faf0d0395a3e4f6075cce89ff0285d}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!get\+Template\+Manager@{get\+Template\+Manager}}
+\index{get\+Template\+Manager@{get\+Template\+Manager}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{get\+Template\+Manager}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+get\+Template\+Manager (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespaceeqn__viz_a09faf0d0395a3e4f6075cce89ff0285d}
+
+
+Definition at line 38 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_afb82e11030ed8435793bb5958189540d}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!main@{main}}
+\index{main@{main}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+main (
+\begin{DoxyParamCaption}
+\item[{}]{cmd\+\_\+line\+\_\+args}
+\end{DoxyParamCaption}
+)}\label{namespaceeqn__viz_afb82e11030ed8435793bb5958189540d}
+\begin{DoxyVerb}get cmd line args, initialize manager, set stdout if needed \end{DoxyVerb}
+ 
+
+Definition at line 755 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a993af6aa282c460f53ded3ad8c8b0b93}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!peel\+Holds@{peel\+Holds}}
+\index{peel\+Holds@{peel\+Holds}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{peel\+Holds}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+peel\+Holds (
+\begin{DoxyParamCaption}
+\item[{}]{tokens}
+\end{DoxyParamCaption}
+)}\label{namespaceeqn__viz_a993af6aa282c460f53ded3ad8c8b0b93}
+\begin{DoxyVerb}extract time and fact from tokens\end{DoxyVerb}
+ 
+
+Definition at line 387 of file eqn\+\_\+viz.\+py.
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{namespaceeqn__viz_ab821f1efc209d98cc2cbfce1f818acbc}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!action\+\_\+parser@{action\+\_\+parser}}
+\index{action\+\_\+parser@{action\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{action\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}string eqn\+\_\+viz.\+action\+\_\+parser = \textquotesingle{}selected\+Heuristic(\textquotesingle{}}\label{namespaceeqn__viz_ab821f1efc209d98cc2cbfce1f818acbc}
+
+
+Definition at line 56 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a7be3eddfb6de11856410a9b26fc4a701}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!all\+\_\+parsers@{all\+\_\+parsers}}
+\index{all\+\_\+parsers@{all\+\_\+parsers}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{all\+\_\+parsers}]{\setlength{\rightskip}{0pt plus 5cm}list eqn\+\_\+viz.\+all\+\_\+parsers = \mbox{[} {\bf type\+\_\+parser}, {\bf child\+\_\+parser}, {\bf deg\+\_\+coeff\+\_\+parser}, {\bf action\+\_\+parser}, {\bf binary\+\_\+operand\+\_\+parser}, {\bf unary\+\_\+operand\+\_\+parser}, {\bf applicable\+\_\+heur\+\_\+parser}\mbox{]}}\label{namespaceeqn__viz_a7be3eddfb6de11856410a9b26fc4a701}
+
+
+Definition at line 91 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_adb85cfac07b72248b7de0626b8e31bff}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!applicable\+\_\+heur\+\_\+parser@{applicable\+\_\+heur\+\_\+parser}}
+\index{applicable\+\_\+heur\+\_\+parser@{applicable\+\_\+heur\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{applicable\+\_\+heur\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}string eqn\+\_\+viz.\+applicable\+\_\+heur\+\_\+parser = \textquotesingle{}applicable\+Heuristic(\textquotesingle{}}\label{namespaceeqn__viz_adb85cfac07b72248b7de0626b8e31bff}
+
+
+Definition at line 89 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a7a7eda2f6b22edf43034366ee5b0e433}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!binary\+\_\+operand\+\_\+parser@{binary\+\_\+operand\+\_\+parser}}
+\index{binary\+\_\+operand\+\_\+parser@{binary\+\_\+operand\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{binary\+\_\+operand\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}string eqn\+\_\+viz.\+binary\+\_\+operand\+\_\+parser = \textquotesingle{}selected\+Heur\+Operands(\textquotesingle{}}\label{namespaceeqn__viz_a7a7eda2f6b22edf43034366ee5b0e433}
+
+
+Definition at line 65 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a333b4ac72b3d28145584b60f44dc5230}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!child\+\_\+parser@{child\+\_\+parser}}
+\index{child\+\_\+parser@{child\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{child\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}tuple eqn\+\_\+viz.\+child\+\_\+parser = {\bf wrap\+In\+Key\+Value\+And\+Fact}({\bf word\+\_\+node\+\_\+parser})}\label{namespaceeqn__viz_a333b4ac72b3d28145584b60f44dc5230}
+
+
+Definition at line 88 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_ae1292d980053c2a15be129430ee3ebb1}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!coeff@{coeff}}
+\index{coeff@{coeff}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{coeff}]{\setlength{\rightskip}{0pt plus 5cm}eqn\+\_\+viz.\+coeff = {\bf number\+\_\+parser}}\label{namespaceeqn__viz_ae1292d980053c2a15be129430ee3ebb1}
+
+
+Definition at line 52 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a1376f5d1deece596253f6876d746a500}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!deg@{deg}}
+\index{deg@{deg}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{deg}]{\setlength{\rightskip}{0pt plus 5cm}eqn\+\_\+viz.\+deg = {\bf number\+\_\+parser}}\label{namespaceeqn__viz_a1376f5d1deece596253f6876d746a500}
+
+
+Definition at line 53 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_aa7fc0cae83db0b5d1e6d5c5842cea401}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!deg\+\_\+coeff\+\_\+parser@{deg\+\_\+coeff\+\_\+parser}}
+\index{deg\+\_\+coeff\+\_\+parser@{deg\+\_\+coeff\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{deg\+\_\+coeff\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}tuple eqn\+\_\+viz.\+deg\+\_\+coeff\+\_\+parser = {\bf wrap\+In\+Key\+Value\+And\+Fact}({\bf word\+\_\+number\+\_\+parser})}\label{namespaceeqn__viz_aa7fc0cae83db0b5d1e6d5c5842cea401}
+
+
+Definition at line 87 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a87c2b92574d4b106ac2b4a2627a5824b}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!factor\+\_\+parsers@{factor\+\_\+parsers}}
+\index{factor\+\_\+parsers@{factor\+\_\+parsers}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{factor\+\_\+parsers}]{\setlength{\rightskip}{0pt plus 5cm}list eqn\+\_\+viz.\+factor\+\_\+parsers = \mbox{[}{\bf factora\+\_\+parser}, {\bf factorb\+\_\+parser}, {\bf factorc\+\_\+parser}, {\bf factord\+\_\+parser}, {\bf refer\+\_\+to\+\_\+\+Parser}, {\bf soln\+\_\+parser}, {\bf substitute\+\_\+parser}\mbox{]}}\label{namespaceeqn__viz_a87c2b92574d4b106ac2b4a2627a5824b}
+
+
+Definition at line 92 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a854e9036019062010a0620dca4adcf5f}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!factora\+\_\+parser@{factora\+\_\+parser}}
+\index{factora\+\_\+parser@{factora\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{factora\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}string eqn\+\_\+viz.\+factora\+\_\+parser = \textquotesingle{}factor1(\textquotesingle{}}\label{namespaceeqn__viz_a854e9036019062010a0620dca4adcf5f}
+
+
+Definition at line 57 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a830b341130da6861c90efd9ac0858486}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!factorb\+\_\+parser@{factorb\+\_\+parser}}
+\index{factorb\+\_\+parser@{factorb\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{factorb\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}string eqn\+\_\+viz.\+factorb\+\_\+parser = \textquotesingle{}factor2(\textquotesingle{}}\label{namespaceeqn__viz_a830b341130da6861c90efd9ac0858486}
+
+
+Definition at line 58 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_addfe6dbd1f7e4817decc2f392291d743}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!factorc\+\_\+parser@{factorc\+\_\+parser}}
+\index{factorc\+\_\+parser@{factorc\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{factorc\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}string eqn\+\_\+viz.\+factorc\+\_\+parser = \textquotesingle{}factor3(\textquotesingle{}}\label{namespaceeqn__viz_addfe6dbd1f7e4817decc2f392291d743}
+
+
+Definition at line 59 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a17e1b80ac39bb02b3448c7cc9e5e7821}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!factord\+\_\+parser@{factord\+\_\+parser}}
+\index{factord\+\_\+parser@{factord\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{factord\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}string eqn\+\_\+viz.\+factord\+\_\+parser = \textquotesingle{}factor4(\textquotesingle{}}\label{namespaceeqn__viz_a17e1b80ac39bb02b3448c7cc9e5e7821}
+
+
+Definition at line 60 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a1bea532f61715c9742cbbe0bef8e5121}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!heur\+\_\+file@{heur\+\_\+file}}
+\index{heur\+\_\+file@{heur\+\_\+file}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{heur\+\_\+file}]{\setlength{\rightskip}{0pt plus 5cm}tuple eqn\+\_\+viz.\+heur\+\_\+file = open(\textquotesingle{}list\+\_\+of\+\_\+heuristics.\+txt\textquotesingle{}, \textquotesingle{}r\textquotesingle{})}\label{namespaceeqn__viz_a1bea532f61715c9742cbbe0bef8e5121}
+
+
+Definition at line 28 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a8017c4f105a541309fcf639e7925a88b}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!H\+E\+U\+R\+\_\+\+I\+N\+F\+O@{H\+E\+U\+R\+\_\+\+I\+N\+F\+O}}
+\index{H\+E\+U\+R\+\_\+\+I\+N\+F\+O@{H\+E\+U\+R\+\_\+\+I\+N\+F\+O}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{H\+E\+U\+R\+\_\+\+I\+N\+F\+O}]{\setlength{\rightskip}{0pt plus 5cm}dictionary eqn\+\_\+viz.\+H\+E\+U\+R\+\_\+\+I\+N\+F\+O = \{\}}\label{namespaceeqn__viz_a8017c4f105a541309fcf639e7925a88b}
+
+
+Definition at line 29 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a0e6b1a683d662dd566b0cece84265fae}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!Heuristic@{Heuristic}}
+\index{Heuristic@{Heuristic}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{Heuristic}]{\setlength{\rightskip}{0pt plus 5cm}tuple eqn\+\_\+viz.\+Heuristic = namedtuple(\textquotesingle{}Heuristic\textquotesingle{}, \mbox{[}\textquotesingle{}name\textquotesingle{}, \textquotesingle{}priority\textquotesingle{}, \textquotesingle{}trigger\textquotesingle{}\mbox{]})}\label{namespaceeqn__viz_a0e6b1a683d662dd566b0cece84265fae}
+
+
+Definition at line 27 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_aa3f9b7373809e0e391e1383fd878b616}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!node\+\_\+parser@{node\+\_\+parser}}
+\index{node\+\_\+parser@{node\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{node\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}string eqn\+\_\+viz.\+node\+\_\+parser = \textquotesingle{}id(\textquotesingle{}}\label{namespaceeqn__viz_aa3f9b7373809e0e391e1383fd878b616}
+
+
+Definition at line 51 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_ae9d46b4030dff778fd4a908af15b1461}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!number\+\_\+number\+\_\+parser@{number\+\_\+number\+\_\+parser}}
+\index{number\+\_\+number\+\_\+parser@{number\+\_\+number\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{number\+\_\+number\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}tuple eqn\+\_\+viz.\+number\+\_\+number\+\_\+parser = {\bf compose\+Parsers}({\bf number\+\_\+parser}, \textquotesingle{},\textquotesingle{} , {\bf number\+\_\+parser})}\label{namespaceeqn__viz_ae9d46b4030dff778fd4a908af15b1461}
+
+
+Definition at line 79 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a5e65c3435a54324008033d990d858e72}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!number\+\_\+parser@{number\+\_\+parser}}
+\index{number\+\_\+parser@{number\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{number\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}tuple eqn\+\_\+viz.\+number\+\_\+parser = Word(nums + \textquotesingle{}-\/\textquotesingle{})}\label{namespaceeqn__viz_a5e65c3435a54324008033d990d858e72}
+
+
+Definition at line 48 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a9377a4d68a694cfe5b8fd887d7d4f045}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!op\+\_\+symbols@{op\+\_\+symbols}}
+\index{op\+\_\+symbols@{op\+\_\+symbols}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{op\+\_\+symbols}]{\setlength{\rightskip}{0pt plus 5cm}dictionary eqn\+\_\+viz.\+op\+\_\+symbols = \{\textquotesingle{}add\textquotesingle{} \+: \textquotesingle{}+\textquotesingle{} , \textquotesingle{}div\textquotesingle{} \+: \textquotesingle{}/\textquotesingle{} , \textquotesingle{}mul\textquotesingle{} \+: \textquotesingle{}$\ast$\textquotesingle{} , \textquotesingle{}neg\textquotesingle{} \+: \textquotesingle{}-\/\textquotesingle{}\}}\label{namespaceeqn__viz_a9377a4d68a694cfe5b8fd887d7d4f045}
+
+
+Definition at line 93 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_aa45f3f597ca3ecacab90d141137afe1c}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!poly\+\_\+parser@{poly\+\_\+parser}}
+\index{poly\+\_\+parser@{poly\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{poly\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}eqn\+\_\+viz.\+poly\+\_\+parser = {\bf number\+\_\+parser}}\label{namespaceeqn__viz_aa45f3f597ca3ecacab90d141137afe1c}
+
+
+Definition at line 54 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a28dbd804760bc7a217c14254976e5575}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!refer\+\_\+to\+\_\+\+Parser@{refer\+\_\+to\+\_\+\+Parser}}
+\index{refer\+\_\+to\+\_\+\+Parser@{refer\+\_\+to\+\_\+\+Parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{refer\+\_\+to\+\_\+\+Parser}]{\setlength{\rightskip}{0pt plus 5cm}string eqn\+\_\+viz.\+refer\+\_\+to\+\_\+\+Parser = \textquotesingle{}refer\+To(\textquotesingle{}}\label{namespaceeqn__viz_a28dbd804760bc7a217c14254976e5575}
+
+
+Definition at line 61 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_ab4bb266f8ba35459c0d095bcffadbad4}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!soln\+\_\+parser@{soln\+\_\+parser}}
+\index{soln\+\_\+parser@{soln\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{soln\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}string eqn\+\_\+viz.\+soln\+\_\+parser = \textquotesingle{}solution\+Value(\textquotesingle{}}\label{namespaceeqn__viz_ab4bb266f8ba35459c0d095bcffadbad4}
+
+
+Definition at line 62 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_aacd332e3c02218eb9ae4ec66a3e31fd0}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!substitute\+\_\+parser@{substitute\+\_\+parser}}
+\index{substitute\+\_\+parser@{substitute\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{substitute\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}string eqn\+\_\+viz.\+substitute\+\_\+parser = \textquotesingle{}substituted\+Degree(\textquotesingle{}}\label{namespaceeqn__viz_aacd332e3c02218eb9ae4ec66a3e31fd0}
+
+
+Definition at line 63 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_af2da9273cfc3d8dc9ce1f05558cbc838}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+M\+A\+N\+A\+G\+E\+R@{T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+M\+A\+N\+A\+G\+E\+R}}
+\index{T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+M\+A\+N\+A\+G\+E\+R@{T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+M\+A\+N\+A\+G\+E\+R}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+M\+A\+N\+A\+G\+E\+R}]{\setlength{\rightskip}{0pt plus 5cm}eqn\+\_\+viz.\+T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+M\+A\+N\+A\+G\+E\+R = None}\label{namespaceeqn__viz_af2da9273cfc3d8dc9ce1f05558cbc838}
+
+
+Definition at line 37 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a7bf2f0fb75b2d7a493e3ebf9cf2f580e}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!time\+\_\+parser@{time\+\_\+parser}}
+\index{time\+\_\+parser@{time\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{time\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}string eqn\+\_\+viz.\+time\+\_\+parser = \textquotesingle{}time(\textquotesingle{}}\label{namespaceeqn__viz_a7bf2f0fb75b2d7a493e3ebf9cf2f580e}
+
+
+Definition at line 55 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a80772625f40909e83c3baefb38694d27}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!type\+\_\+parser@{type\+\_\+parser}}
+\index{type\+\_\+parser@{type\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{type\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}tuple eqn\+\_\+viz.\+type\+\_\+parser = {\bf wrap\+In\+Key\+Value\+And\+Fact}({\bf word\+\_\+word\+\_\+parser})}\label{namespaceeqn__viz_a80772625f40909e83c3baefb38694d27}
+
+
+Definition at line 86 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a0eb89bf8984a1b19989d2031cae402a6}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!unary\+\_\+operand\+\_\+parser@{unary\+\_\+operand\+\_\+parser}}
+\index{unary\+\_\+operand\+\_\+parser@{unary\+\_\+operand\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{unary\+\_\+operand\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}string eqn\+\_\+viz.\+unary\+\_\+operand\+\_\+parser = \textquotesingle{}selected\+Heur\+Operands(\textquotesingle{}}\label{namespaceeqn__viz_a0eb89bf8984a1b19989d2031cae402a6}
+
+
+Definition at line 66 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_ade698a80074d34a48d27d50b0b6faafc}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!word\+\_\+node\+\_\+parser@{word\+\_\+node\+\_\+parser}}
+\index{word\+\_\+node\+\_\+parser@{word\+\_\+node\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{word\+\_\+node\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}tuple eqn\+\_\+viz.\+word\+\_\+node\+\_\+parser = {\bf compose\+Parsers}({\bf word\+\_\+parser}, \textquotesingle{},\textquotesingle{} , {\bf node\+\_\+parser})}\label{namespaceeqn__viz_ade698a80074d34a48d27d50b0b6faafc}
+
+
+Definition at line 81 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a125896c7d7db5d4f150b2b6699176c2a}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!word\+\_\+number\+\_\+parser@{word\+\_\+number\+\_\+parser}}
+\index{word\+\_\+number\+\_\+parser@{word\+\_\+number\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{word\+\_\+number\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}tuple eqn\+\_\+viz.\+word\+\_\+number\+\_\+parser = {\bf compose\+Parsers}({\bf word\+\_\+parser}, \textquotesingle{},\textquotesingle{} , {\bf number\+\_\+parser})}\label{namespaceeqn__viz_a125896c7d7db5d4f150b2b6699176c2a}
+
+
+Definition at line 80 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_ad9dc00d4b3c0b288d0f204937297b179}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!word\+\_\+parser@{word\+\_\+parser}}
+\index{word\+\_\+parser@{word\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{word\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}tuple eqn\+\_\+viz.\+word\+\_\+parser = Word(alphas)}\label{namespaceeqn__viz_ad9dc00d4b3c0b288d0f204937297b179}
+
+
+Definition at line 49 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_aaabd8c0ea3860c55e9022abed90dab61}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!word\+\_\+word\+\_\+parser@{word\+\_\+word\+\_\+parser}}
+\index{word\+\_\+word\+\_\+parser@{word\+\_\+word\+\_\+parser}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{word\+\_\+word\+\_\+parser}]{\setlength{\rightskip}{0pt plus 5cm}tuple eqn\+\_\+viz.\+word\+\_\+word\+\_\+parser = {\bf compose\+Parsers}({\bf word\+\_\+parser}, \textquotesingle{},\textquotesingle{} , {\bf word\+\_\+parser})}\label{namespaceeqn__viz_aaabd8c0ea3860c55e9022abed90dab61}
+
+
+Definition at line 78 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_aff7c3fc95453270d356d2c9fef5be210}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!wrap\+In\+Key\+Value\+And\+Fact@{wrap\+In\+Key\+Value\+And\+Fact}}
+\index{wrap\+In\+Key\+Value\+And\+Fact@{wrap\+In\+Key\+Value\+And\+Fact}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{wrap\+In\+Key\+Value\+And\+Fact}]{\setlength{\rightskip}{0pt plus 5cm}tuple eqn\+\_\+viz.\+wrap\+In\+Key\+Value\+And\+Fact = lambdaparser\+:wrap\+With\+Holds({\bf wrap\+Node\+Fact}({\bf wrap\+Key\+Value\+Pair}(parser)))}\label{namespaceeqn__viz_aff7c3fc95453270d356d2c9fef5be210}
+
+
+Definition at line 85 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_adf51f57cbfcd953ec98550b85dcc3d0c}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!wrap\+Key\+Value\+Pair@{wrap\+Key\+Value\+Pair}}
+\index{wrap\+Key\+Value\+Pair@{wrap\+Key\+Value\+Pair}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{wrap\+Key\+Value\+Pair}]{\setlength{\rightskip}{0pt plus 5cm}tuple eqn\+\_\+viz.\+wrap\+Key\+Value\+Pair = lambdaparser\+:compose\+Parsers(\textquotesingle{}node\+Field(\textquotesingle{}, parser, \textquotesingle{})\textquotesingle{})}\label{namespaceeqn__viz_adf51f57cbfcd953ec98550b85dcc3d0c}
+
+
+Definition at line 73 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a716255e5870a531e1bfc6d184278bc8d}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!wrap\+Node\+Fact@{wrap\+Node\+Fact}}
+\index{wrap\+Node\+Fact@{wrap\+Node\+Fact}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{wrap\+Node\+Fact}]{\setlength{\rightskip}{0pt plus 5cm}tuple eqn\+\_\+viz.\+wrap\+Node\+Fact = lambdaparser\+:compose\+Parsers(\textquotesingle{}fact(\textquotesingle{}+ {\bf node\+\_\+parser} + \textquotesingle{},\textquotesingle{}, parser, \textquotesingle{})\textquotesingle{})}\label{namespaceeqn__viz_a716255e5870a531e1bfc6d184278bc8d}
+
+
+Definition at line 71 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_aa72fea76ddf1127d6dbcb77d7c76c63d}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!wrap\+Poly\+Fact@{wrap\+Poly\+Fact}}
+\index{wrap\+Poly\+Fact@{wrap\+Poly\+Fact}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{wrap\+Poly\+Fact}]{\setlength{\rightskip}{0pt plus 5cm}tuple eqn\+\_\+viz.\+wrap\+Poly\+Fact = lambdaparser\+:compose\+Parsers(\textquotesingle{}fact(\textquotesingle{}+ {\bf poly\+\_\+parser} + \textquotesingle{},\textquotesingle{}, parser, \textquotesingle{})\textquotesingle{})}\label{namespaceeqn__viz_aa72fea76ddf1127d6dbcb77d7c76c63d}
+
+
+Definition at line 72 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_a66245c2eeb429b7809bc02fc6852d0ec}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!wrap\+With\+Holds@{wrap\+With\+Holds}}
+\index{wrap\+With\+Holds@{wrap\+With\+Holds}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{wrap\+With\+Holds}]{\setlength{\rightskip}{0pt plus 5cm}tuple eqn\+\_\+viz.\+wrap\+With\+Holds = lambdafluent\+:compose\+Parsers(\textquotesingle{}holds(\textquotesingle{},{\bf time\+\_\+parser}, \textquotesingle{},\textquotesingle{} + fluent + \textquotesingle{})\textquotesingle{})}\label{namespaceeqn__viz_a66245c2eeb429b7809bc02fc6852d0ec}
+
+
+Definition at line 75 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{namespaceeqn__viz_afead5f7b23dd83ce8d2c7092b9887606}{}\index{eqn\+\_\+viz@{eqn\+\_\+viz}!wrap\+With\+Monomial@{wrap\+With\+Monomial}}
+\index{wrap\+With\+Monomial@{wrap\+With\+Monomial}!eqn\+\_\+viz@{eqn\+\_\+viz}}
+\subsubsection[{wrap\+With\+Monomial}]{\setlength{\rightskip}{0pt plus 5cm}tuple eqn\+\_\+viz.\+wrap\+With\+Monomial = lambdaparser\+:compose\+Parsers(\textquotesingle{}mono(\textquotesingle{}, parser, \textquotesingle{})\textquotesingle{})}\label{namespaceeqn__viz_afead5f7b23dd83ce8d2c7092b9887606}
+
+
+Definition at line 74 of file eqn\+\_\+viz.\+py.
+

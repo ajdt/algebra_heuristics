@@ -1,0 +1,332 @@
+\hypertarget{namespacedist__metric__eqn}{}\section{dist\+\_\+metric\+\_\+eqn Namespace Reference}
+\label{namespacedist__metric__eqn}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{namespacedist__metric__eqn_ab4def04a832b446de3b516010c9d25c8}{distance\+Between\+Eqn} (fst\+\_\+eqn, snd\+\_\+eqn)
+\item 
+def \hyperlink{namespacedist__metric__eqn_a7c272f023cb7f03d89b02abfbe1e3db4}{ast\+Of\+Eqn} (eqn\+\_\+string)
+\item 
+def \hyperlink{namespacedist__metric__eqn_a0edcc8b6da256e87db3a3be211edd30c}{sanitize\+Eqn\+String} (equation)
+\item 
+def \hyperlink{namespacedist__metric__eqn_a885aa0745926a86faa53586adf1b96cd}{distance\+Of\+A\+S\+Ts} (fst\+\_\+tree, snd\+\_\+tree)
+\item 
+def \hyperlink{namespacedist__metric__eqn_a1257cacac74473c011cd73cc9ab42662}{compare\+Expressions\+Recursive}
+\item 
+def \hyperlink{namespacedist__metric__eqn_acc471149507b72a3ae90479ce8d1d530}{compute\+Subtree\+Weight}
+\item 
+def \hyperlink{namespacedist__metric__eqn_a1ed3fe178511ac2221f10e8b265616de}{compare\+Monomials} (fst\+\_\+mono, snd\+\_\+mono)
+\item 
+def \hyperlink{namespacedist__metric__eqn_a3c77142a78935fdb677e08c99072f75f}{is\+Const\+Term} (expr)
+\item 
+def \hyperlink{namespacedist__metric__eqn_a4b224f351734acf574055f60fe2414f9}{is\+Exponentiated\+Variable} (expr)
+\item 
+def \hyperlink{namespacedist__metric__eqn_a9accdb032b41a2b1f4c7d670140ff5d2}{is\+Variable\+Term} (expr)
+\item 
+def \hyperlink{namespacedist__metric__eqn_ab5f8a8fe7e017ea46cf425f103f9c745}{is\+Mono\+In\+Standard\+Form} (expr)
+\item 
+def \hyperlink{namespacedist__metric__eqn_adfb57d0eb8cb656d890cfeac71aff1dd}{is\+Monomial} (expr)
+\item 
+def \hyperlink{namespacedist__metric__eqn_a23d8ec2868beb4e11d36b4611e2c7f6e}{iterate\+Pairs} (some\+\_\+list)
+\item 
+def \hyperlink{namespacedist__metric__eqn_ae8046557c5972d9ffd9c77d25e5abd49}{find\+Contrasting\+Cases} (generated\+\_\+probs\+\_\+list, max\+\_\+distance)
+\item 
+def \hyperlink{namespacedist__metric__eqn_af77246294f5fbb93d6788c455ae1f827}{include\+By\+Heuristic} (generated\+\_\+probs\+\_\+list, heuristic)
+\item 
+def \hyperlink{namespacedist__metric__eqn_a3eb6af1e2f9fc3cad956ad7ecb9852d2}{exclude\+By\+Heuristic} (generated\+\_\+probs\+\_\+list, heuristic)
+\item 
+def \hyperlink{namespacedist__metric__eqn_ada852c0f3c349db11cf1b4ea5da89e74}{alternate\+Contrasting\+Cases} (generated\+\_\+problems\+\_\+list, max\+\_\+distance)
+\item 
+def \hyperlink{namespacedist__metric__eqn_ad6e4e1db6faa529b0986aad5954f969b}{main} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{namespacedist__metric__eqn_ac65c2f73b8bc8a1d97a09c48efc58937}{D\+I\+F\+F\+\_\+\+M\+O\+N\+O\+S\+\_\+\+P\+E\+N\+A\+L\+T\+Y} = 1
+\item 
+int \hyperlink{namespacedist__metric__eqn_a01d67ad0b779a93cdf541bc1ffd0cf2c}{D\+I\+F\+F\+\_\+\+N\+O\+D\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+P\+E\+N\+A\+L\+T\+Y} = 2
+\item 
+int \hyperlink{namespacedist__metric__eqn_a230e03fde3fb3e89b8816b5ae0fdc4dc}{M\+A\+X\+\_\+\+D\+E\+P\+T\+H\+\_\+\+P\+E\+N\+A\+L\+T\+Y} = 4
+\item 
+list \hyperlink{namespacedist__metric__eqn_a684e63911b91cc150a8c6e7ace89ea78}{current\+\_\+depth} = \mbox{[}1\mbox{]}
+\item 
+list \hyperlink{namespacedist__metric__eqn_a6ed7ee3e88472aac349189bc8e620026}{all\+\_\+heuristics}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{namespacedist__metric__eqn_ada852c0f3c349db11cf1b4ea5da89e74}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!alternate\+Contrasting\+Cases@{alternate\+Contrasting\+Cases}}
+\index{alternate\+Contrasting\+Cases@{alternate\+Contrasting\+Cases}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{alternate\+Contrasting\+Cases}]{\setlength{\rightskip}{0pt plus 5cm}def dist\+\_\+metric\+\_\+eqn.\+alternate\+Contrasting\+Cases (
+\begin{DoxyParamCaption}
+\item[{}]{generated\+\_\+problems\+\_\+list, }
+\item[{}]{max\+\_\+distance}
+\end{DoxyParamCaption}
+)}\label{namespacedist__metric__eqn_ada852c0f3c349db11cf1b4ea5da89e74}
+
+
+Definition at line 161 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_a7c272f023cb7f03d89b02abfbe1e3db4}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!ast\+Of\+Eqn@{ast\+Of\+Eqn}}
+\index{ast\+Of\+Eqn@{ast\+Of\+Eqn}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{ast\+Of\+Eqn}]{\setlength{\rightskip}{0pt plus 5cm}def dist\+\_\+metric\+\_\+eqn.\+ast\+Of\+Eqn (
+\begin{DoxyParamCaption}
+\item[{}]{eqn\+\_\+string}
+\end{DoxyParamCaption}
+)}\label{namespacedist__metric__eqn_a7c272f023cb7f03d89b02abfbe1e3db4}
+\begin{DoxyVerb}use compiler to return tuple containing AST of given string equation\end{DoxyVerb}
+ 
+
+Definition at line 27 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_a1257cacac74473c011cd73cc9ab42662}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!compare\+Expressions\+Recursive@{compare\+Expressions\+Recursive}}
+\index{compare\+Expressions\+Recursive@{compare\+Expressions\+Recursive}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{compare\+Expressions\+Recursive}]{\setlength{\rightskip}{0pt plus 5cm}def dist\+\_\+metric\+\_\+eqn.\+compare\+Expressions\+Recursive (
+\begin{DoxyParamCaption}
+\item[{}]{fst\+\_\+expr, }
+\item[{}]{snd\+\_\+expr, }
+\item[{}]{depth = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)}\label{namespacedist__metric__eqn_a1257cacac74473c011cd73cc9ab42662}
+\begin{DoxyVerb}compare two parsed expressions and return their differences\end{DoxyVerb}
+ 
+
+Definition at line 46 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_a1ed3fe178511ac2221f10e8b265616de}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!compare\+Monomials@{compare\+Monomials}}
+\index{compare\+Monomials@{compare\+Monomials}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{compare\+Monomials}]{\setlength{\rightskip}{0pt plus 5cm}def dist\+\_\+metric\+\_\+eqn.\+compare\+Monomials (
+\begin{DoxyParamCaption}
+\item[{}]{fst\+\_\+mono, }
+\item[{}]{snd\+\_\+mono}
+\end{DoxyParamCaption}
+)}\label{namespacedist__metric__eqn_a1ed3fe178511ac2221f10e8b265616de}
+
+
+Definition at line 76 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_acc471149507b72a3ae90479ce8d1d530}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!compute\+Subtree\+Weight@{compute\+Subtree\+Weight}}
+\index{compute\+Subtree\+Weight@{compute\+Subtree\+Weight}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{compute\+Subtree\+Weight}]{\setlength{\rightskip}{0pt plus 5cm}def dist\+\_\+metric\+\_\+eqn.\+compute\+Subtree\+Weight (
+\begin{DoxyParamCaption}
+\item[{}]{expr, }
+\item[{}]{depth = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)}\label{namespacedist__metric__eqn_acc471149507b72a3ae90479ce8d1d530}
+
+
+Definition at line 68 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_ab4def04a832b446de3b516010c9d25c8}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!distance\+Between\+Eqn@{distance\+Between\+Eqn}}
+\index{distance\+Between\+Eqn@{distance\+Between\+Eqn}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{distance\+Between\+Eqn}]{\setlength{\rightskip}{0pt plus 5cm}def dist\+\_\+metric\+\_\+eqn.\+distance\+Between\+Eqn (
+\begin{DoxyParamCaption}
+\item[{}]{fst\+\_\+eqn, }
+\item[{}]{snd\+\_\+eqn}
+\end{DoxyParamCaption}
+)}\label{namespacedist__metric__eqn_ab4def04a832b446de3b516010c9d25c8}
+\begin{DoxyVerb}compute the 'distance' between two equations\end{DoxyVerb}
+ 
+
+Definition at line 19 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_a885aa0745926a86faa53586adf1b96cd}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!distance\+Of\+A\+S\+Ts@{distance\+Of\+A\+S\+Ts}}
+\index{distance\+Of\+A\+S\+Ts@{distance\+Of\+A\+S\+Ts}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{distance\+Of\+A\+S\+Ts}]{\setlength{\rightskip}{0pt plus 5cm}def dist\+\_\+metric\+\_\+eqn.\+distance\+Of\+A\+S\+Ts (
+\begin{DoxyParamCaption}
+\item[{}]{fst\+\_\+tree, }
+\item[{}]{snd\+\_\+tree}
+\end{DoxyParamCaption}
+)}\label{namespacedist__metric__eqn_a885aa0745926a86faa53586adf1b96cd}
+\begin{DoxyVerb}compare two trees and return the 'difference' between them\end{DoxyVerb}
+ 
+
+Definition at line 41 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_a3eb6af1e2f9fc3cad956ad7ecb9852d2}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!exclude\+By\+Heuristic@{exclude\+By\+Heuristic}}
+\index{exclude\+By\+Heuristic@{exclude\+By\+Heuristic}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{exclude\+By\+Heuristic}]{\setlength{\rightskip}{0pt plus 5cm}def dist\+\_\+metric\+\_\+eqn.\+exclude\+By\+Heuristic (
+\begin{DoxyParamCaption}
+\item[{}]{generated\+\_\+probs\+\_\+list, }
+\item[{}]{heuristic}
+\end{DoxyParamCaption}
+)}\label{namespacedist__metric__eqn_a3eb6af1e2f9fc3cad956ad7ecb9852d2}
+
+
+Definition at line 137 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_ae8046557c5972d9ffd9c77d25e5abd49}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!find\+Contrasting\+Cases@{find\+Contrasting\+Cases}}
+\index{find\+Contrasting\+Cases@{find\+Contrasting\+Cases}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{find\+Contrasting\+Cases}]{\setlength{\rightskip}{0pt plus 5cm}def dist\+\_\+metric\+\_\+eqn.\+find\+Contrasting\+Cases (
+\begin{DoxyParamCaption}
+\item[{}]{generated\+\_\+probs\+\_\+list, }
+\item[{}]{max\+\_\+distance}
+\end{DoxyParamCaption}
+)}\label{namespacedist__metric__eqn_ae8046557c5972d9ffd9c77d25e5abd49}
+
+
+Definition at line 119 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_af77246294f5fbb93d6788c455ae1f827}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!include\+By\+Heuristic@{include\+By\+Heuristic}}
+\index{include\+By\+Heuristic@{include\+By\+Heuristic}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{include\+By\+Heuristic}]{\setlength{\rightskip}{0pt plus 5cm}def dist\+\_\+metric\+\_\+eqn.\+include\+By\+Heuristic (
+\begin{DoxyParamCaption}
+\item[{}]{generated\+\_\+probs\+\_\+list, }
+\item[{}]{heuristic}
+\end{DoxyParamCaption}
+)}\label{namespacedist__metric__eqn_af77246294f5fbb93d6788c455ae1f827}
+
+
+Definition at line 135 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_a3c77142a78935fdb677e08c99072f75f}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!is\+Const\+Term@{is\+Const\+Term}}
+\index{is\+Const\+Term@{is\+Const\+Term}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{is\+Const\+Term}]{\setlength{\rightskip}{0pt plus 5cm}def dist\+\_\+metric\+\_\+eqn.\+is\+Const\+Term (
+\begin{DoxyParamCaption}
+\item[{}]{expr}
+\end{DoxyParamCaption}
+)}\label{namespacedist__metric__eqn_a3c77142a78935fdb677e08c99072f75f}
+
+
+Definition at line 82 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_a4b224f351734acf574055f60fe2414f9}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!is\+Exponentiated\+Variable@{is\+Exponentiated\+Variable}}
+\index{is\+Exponentiated\+Variable@{is\+Exponentiated\+Variable}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{is\+Exponentiated\+Variable}]{\setlength{\rightskip}{0pt plus 5cm}def dist\+\_\+metric\+\_\+eqn.\+is\+Exponentiated\+Variable (
+\begin{DoxyParamCaption}
+\item[{}]{expr}
+\end{DoxyParamCaption}
+)}\label{namespacedist__metric__eqn_a4b224f351734acf574055f60fe2414f9}
+\begin{DoxyVerb}indicates expr has form x^n\end{DoxyVerb}
+ 
+
+Definition at line 85 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_ab5f8a8fe7e017ea46cf425f103f9c745}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!is\+Mono\+In\+Standard\+Form@{is\+Mono\+In\+Standard\+Form}}
+\index{is\+Mono\+In\+Standard\+Form@{is\+Mono\+In\+Standard\+Form}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{is\+Mono\+In\+Standard\+Form}]{\setlength{\rightskip}{0pt plus 5cm}def dist\+\_\+metric\+\_\+eqn.\+is\+Mono\+In\+Standard\+Form (
+\begin{DoxyParamCaption}
+\item[{}]{expr}
+\end{DoxyParamCaption}
+)}\label{namespacedist__metric__eqn_ab5f8a8fe7e017ea46cf425f103f9c745}
+
+
+Definition at line 98 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_adfb57d0eb8cb656d890cfeac71aff1dd}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!is\+Monomial@{is\+Monomial}}
+\index{is\+Monomial@{is\+Monomial}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{is\+Monomial}]{\setlength{\rightskip}{0pt plus 5cm}def dist\+\_\+metric\+\_\+eqn.\+is\+Monomial (
+\begin{DoxyParamCaption}
+\item[{}]{expr}
+\end{DoxyParamCaption}
+)}\label{namespacedist__metric__eqn_adfb57d0eb8cb656d890cfeac71aff1dd}
+
+
+Definition at line 106 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_a9accdb032b41a2b1f4c7d670140ff5d2}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!is\+Variable\+Term@{is\+Variable\+Term}}
+\index{is\+Variable\+Term@{is\+Variable\+Term}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{is\+Variable\+Term}]{\setlength{\rightskip}{0pt plus 5cm}def dist\+\_\+metric\+\_\+eqn.\+is\+Variable\+Term (
+\begin{DoxyParamCaption}
+\item[{}]{expr}
+\end{DoxyParamCaption}
+)}\label{namespacedist__metric__eqn_a9accdb032b41a2b1f4c7d670140ff5d2}
+
+
+Definition at line 95 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_a23d8ec2868beb4e11d36b4611e2c7f6e}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!iterate\+Pairs@{iterate\+Pairs}}
+\index{iterate\+Pairs@{iterate\+Pairs}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{iterate\+Pairs}]{\setlength{\rightskip}{0pt plus 5cm}def dist\+\_\+metric\+\_\+eqn.\+iterate\+Pairs (
+\begin{DoxyParamCaption}
+\item[{}]{some\+\_\+list}
+\end{DoxyParamCaption}
+)}\label{namespacedist__metric__eqn_a23d8ec2868beb4e11d36b4611e2c7f6e}
+
+
+Definition at line 109 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_ad6e4e1db6faa529b0986aad5954f969b}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!main@{main}}
+\index{main@{main}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}def dist\+\_\+metric\+\_\+eqn.\+main (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespacedist__metric__eqn_ad6e4e1db6faa529b0986aad5954f969b}
+
+
+Definition at line 172 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_a0edcc8b6da256e87db3a3be211edd30c}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!sanitize\+Eqn\+String@{sanitize\+Eqn\+String}}
+\index{sanitize\+Eqn\+String@{sanitize\+Eqn\+String}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{sanitize\+Eqn\+String}]{\setlength{\rightskip}{0pt plus 5cm}def dist\+\_\+metric\+\_\+eqn.\+sanitize\+Eqn\+String (
+\begin{DoxyParamCaption}
+\item[{}]{equation}
+\end{DoxyParamCaption}
+)}\label{namespacedist__metric__eqn_a0edcc8b6da256e87db3a3be211edd30c}
+\begin{DoxyVerb}convert Eqn String into a format that's more friendly to astParser\end{DoxyVerb}
+ 
+
+Definition at line 37 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{namespacedist__metric__eqn_a6ed7ee3e88472aac349189bc8e620026}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!all\+\_\+heuristics@{all\+\_\+heuristics}}
+\index{all\+\_\+heuristics@{all\+\_\+heuristics}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{all\+\_\+heuristics}]{\setlength{\rightskip}{0pt plus 5cm}list dist\+\_\+metric\+\_\+eqn.\+all\+\_\+heuristics}\label{namespacedist__metric__eqn_a6ed7ee3e88472aac349189bc8e620026}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+1 = [ \textcolor{stringliteral}{'addFractions'},
+2                     \textcolor{stringliteral}{'addInverses'},
+3                     \textcolor{stringliteral}{'additiveIdentity'},
+4                     \textcolor{stringliteral}{'applyDistribute'},
+5                     \textcolor{stringliteral}{'cancelAcrossEqn'},
+6                     \textcolor{stringliteral}{'cancelCommTerms'},
+7                     \textcolor{stringliteral}{'cancelNeg'},
+8                     \textcolor{stringliteral}{'combineLikeTerms'},
+9                     \textcolor{stringliteral}{'divByOne'},
+10                     \textcolor{stringliteral}{'factorSimpleQuad'},
+11                     \textcolor{stringliteral}{'ignoreDenom'},
+12                     \textcolor{stringliteral}{'isolateConst'},
+13                     \textcolor{stringliteral}{'isolateVars'},
+14                     \textcolor{stringliteral}{'multiplyByOne'},
+15                     \textcolor{stringliteral}{'multiplyByZero'},
+16                     \textcolor{stringliteral}{'multiplyMonoms'},
+17                     \textcolor{stringliteral}{'multiplyWithFrac'},
+18                     \textcolor{stringliteral}{'setRHSZero'},
+19                     \textcolor{stringliteral}{'substitute'}
+20                 ]
+\end{DoxyCode}
+
+
+Definition at line 141 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_a684e63911b91cc150a8c6e7ace89ea78}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!current\+\_\+depth@{current\+\_\+depth}}
+\index{current\+\_\+depth@{current\+\_\+depth}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{current\+\_\+depth}]{\setlength{\rightskip}{0pt plus 5cm}list dist\+\_\+metric\+\_\+eqn.\+current\+\_\+depth = \mbox{[}1\mbox{]}}\label{namespacedist__metric__eqn_a684e63911b91cc150a8c6e7ace89ea78}
+
+
+Definition at line 45 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_ac65c2f73b8bc8a1d97a09c48efc58937}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!D\+I\+F\+F\+\_\+\+M\+O\+N\+O\+S\+\_\+\+P\+E\+N\+A\+L\+T\+Y@{D\+I\+F\+F\+\_\+\+M\+O\+N\+O\+S\+\_\+\+P\+E\+N\+A\+L\+T\+Y}}
+\index{D\+I\+F\+F\+\_\+\+M\+O\+N\+O\+S\+\_\+\+P\+E\+N\+A\+L\+T\+Y@{D\+I\+F\+F\+\_\+\+M\+O\+N\+O\+S\+\_\+\+P\+E\+N\+A\+L\+T\+Y}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{D\+I\+F\+F\+\_\+\+M\+O\+N\+O\+S\+\_\+\+P\+E\+N\+A\+L\+T\+Y}]{\setlength{\rightskip}{0pt plus 5cm}int dist\+\_\+metric\+\_\+eqn.\+D\+I\+F\+F\+\_\+\+M\+O\+N\+O\+S\+\_\+\+P\+E\+N\+A\+L\+T\+Y = 1}\label{namespacedist__metric__eqn_ac65c2f73b8bc8a1d97a09c48efc58937}
+
+
+Definition at line 16 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_a01d67ad0b779a93cdf541bc1ffd0cf2c}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!D\+I\+F\+F\+\_\+\+N\+O\+D\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+P\+E\+N\+A\+L\+T\+Y@{D\+I\+F\+F\+\_\+\+N\+O\+D\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+P\+E\+N\+A\+L\+T\+Y}}
+\index{D\+I\+F\+F\+\_\+\+N\+O\+D\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+P\+E\+N\+A\+L\+T\+Y@{D\+I\+F\+F\+\_\+\+N\+O\+D\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+P\+E\+N\+A\+L\+T\+Y}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{D\+I\+F\+F\+\_\+\+N\+O\+D\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+P\+E\+N\+A\+L\+T\+Y}]{\setlength{\rightskip}{0pt plus 5cm}int dist\+\_\+metric\+\_\+eqn.\+D\+I\+F\+F\+\_\+\+N\+O\+D\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+P\+E\+N\+A\+L\+T\+Y = 2}\label{namespacedist__metric__eqn_a01d67ad0b779a93cdf541bc1ffd0cf2c}
+
+
+Definition at line 17 of file dist\+\_\+metric\+\_\+eqn.\+py.
+
+\hypertarget{namespacedist__metric__eqn_a230e03fde3fb3e89b8816b5ae0fdc4dc}{}\index{dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}!M\+A\+X\+\_\+\+D\+E\+P\+T\+H\+\_\+\+P\+E\+N\+A\+L\+T\+Y@{M\+A\+X\+\_\+\+D\+E\+P\+T\+H\+\_\+\+P\+E\+N\+A\+L\+T\+Y}}
+\index{M\+A\+X\+\_\+\+D\+E\+P\+T\+H\+\_\+\+P\+E\+N\+A\+L\+T\+Y@{M\+A\+X\+\_\+\+D\+E\+P\+T\+H\+\_\+\+P\+E\+N\+A\+L\+T\+Y}!dist\+\_\+metric\+\_\+eqn@{dist\+\_\+metric\+\_\+eqn}}
+\subsubsection[{M\+A\+X\+\_\+\+D\+E\+P\+T\+H\+\_\+\+P\+E\+N\+A\+L\+T\+Y}]{\setlength{\rightskip}{0pt plus 5cm}int dist\+\_\+metric\+\_\+eqn.\+M\+A\+X\+\_\+\+D\+E\+P\+T\+H\+\_\+\+P\+E\+N\+A\+L\+T\+Y = 4}\label{namespacedist__metric__eqn_a230e03fde3fb3e89b8816b5ae0fdc4dc}
+
+
+Definition at line 18 of file dist\+\_\+metric\+\_\+eqn.\+py.
+

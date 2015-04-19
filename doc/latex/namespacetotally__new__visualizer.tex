@@ -1,0 +1,106 @@
+\hypertarget{namespacetotally__new__visualizer}{}\section{totally\+\_\+new\+\_\+visualizer Namespace Reference}
+\label{namespacetotally__new__visualizer}\index{totally\+\_\+new\+\_\+visualizer@{totally\+\_\+new\+\_\+visualizer}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classtotally__new__visualizer_1_1_answer_set_j_s_o_n_encoder}{Answer\+Set\+J\+S\+O\+N\+Encoder}
+\item 
+class \hyperlink{classtotally__new__visualizer_1_1_answer_set_manager}{Answer\+Set\+Manager}
+\begin{DoxyCompactList}\small\item\em Store and separate all the answer sets in the input provided. \end{DoxyCompactList}\item 
+class \hyperlink{classtotally__new__visualizer_1_1_equation_step_parser}{Equation\+Step\+Parser}
+\begin{DoxyCompactList}\small\item\em Parses predicates related to one step of a solution trace contains the data members\+: var\+\_\+str -- what variable an equation should be expressed with node\+\_\+data -- dictionary containing all node info parsed strategy\+\_\+data -- parsed explanations for the different strategy classes. \end{DoxyCompactList}\item 
+class \hyperlink{classtotally__new__visualizer_1_1_problem_parser}{Problem\+Parser}
+\begin{DoxyCompactList}\small\item\em Handles the parsing of a single generated problem. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{namespacetotally__new__visualizer_aa58bcbc4c3c0a513fa8d58155d9d6e46}{main} (cmd\+\_\+line\+\_\+args)
+\item 
+def \hyperlink{namespacetotally__new__visualizer_a5ed81f6c9d94b6894d3ba36844436f9e}{get\+Cmd\+Line\+Args} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+dictionary \hyperlink{namespacetotally__new__visualizer_a3dd0f4daa013b2acf2fbd1f7aa0ad07c}{op\+\_\+symbols} = \{\textquotesingle{}add\textquotesingle{} \+: \textquotesingle{}+\textquotesingle{} , \textquotesingle{}div\textquotesingle{} \+: \textquotesingle{}/\textquotesingle{} , \textquotesingle{}mul\textquotesingle{} \+: \textquotesingle{}$\ast$\textquotesingle{} , \textquotesingle{}neg\textquotesingle{} \+: \textquotesingle{}-\/\textquotesingle{}\}
+\item 
+list \hyperlink{namespacetotally__new__visualizer_ab706e5502043e33aaccc4cd5db3a11a8}{factor\+\_\+predicates} = \mbox{[}\textquotesingle{}factor\textquotesingle{} + n for n in list(\textquotesingle{}1234\textquotesingle{})\mbox{]}
+\item 
+dictionary \hyperlink{namespacetotally__new__visualizer_ac35b4d88f3973e9437d26d620f6404d3}{factor\+\_\+name\+\_\+dict} = \{\textquotesingle{}factor1\textquotesingle{}\+:\textquotesingle{}F\+A\+C\+T\+O\+R\+A\textquotesingle{} , \textquotesingle{}factor2\textquotesingle{}\+:\textquotesingle{}F\+A\+C\+T\+O\+R\+B\textquotesingle{}, \textquotesingle{}factor3\textquotesingle{}\+:\textquotesingle{}F\+A\+C\+T\+O\+R\+X\textquotesingle{}, \textquotesingle{}factor4\textquotesingle{}\+:\textquotesingle{}F\+A\+C\+T\+O\+R\+Y\textquotesingle{} \}
+\item 
+list \hyperlink{namespacetotally__new__visualizer_a0336db197e4d6b0cc49dd792fa21d890}{all\+\_\+strategies} = \mbox{[}\textquotesingle{}cancel\textquotesingle{}, \textquotesingle{}combine\textquotesingle{}, \textquotesingle{}rearrange\textquotesingle{}, \textquotesingle{}move\textquotesingle{}, \textquotesingle{}expand\textquotesingle{}\mbox{]}
+\item 
+tuple \hyperlink{namespacetotally__new__visualizer_a69a6b4328317f3ea8abc150eafbda370}{Generated\+Step} = namedtuple(\textquotesingle{}Generated\+Step\textquotesingle{}, \mbox{[}\textquotesingle{}equation\+\_\+string\textquotesingle{}, \textquotesingle{}step\+\_\+data\textquotesingle{}\mbox{]})
+\item 
+tuple \hyperlink{namespacetotally__new__visualizer_ab9dc95295259f8165e1fdf15f954d2b1}{Generated\+Solution} = namedtuple(\textquotesingle{}Generated\+Solution\textquotesingle{}, \mbox{[}\textquotesingle{}problem\+\_\+string\textquotesingle{}, \textquotesingle{}solution\+\_\+steps\textquotesingle{}\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{namespacetotally__new__visualizer_a5ed81f6c9d94b6894d3ba36844436f9e}{}\index{totally\+\_\+new\+\_\+visualizer@{totally\+\_\+new\+\_\+visualizer}!get\+Cmd\+Line\+Args@{get\+Cmd\+Line\+Args}}
+\index{get\+Cmd\+Line\+Args@{get\+Cmd\+Line\+Args}!totally\+\_\+new\+\_\+visualizer@{totally\+\_\+new\+\_\+visualizer}}
+\subsubsection[{get\+Cmd\+Line\+Args}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+get\+Cmd\+Line\+Args (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespacetotally__new__visualizer_a5ed81f6c9d94b6894d3ba36844436f9e}
+
+
+Definition at line 513 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{namespacetotally__new__visualizer_aa58bcbc4c3c0a513fa8d58155d9d6e46}{}\index{totally\+\_\+new\+\_\+visualizer@{totally\+\_\+new\+\_\+visualizer}!main@{main}}
+\index{main@{main}!totally\+\_\+new\+\_\+visualizer@{totally\+\_\+new\+\_\+visualizer}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}def totally\+\_\+new\+\_\+visualizer.\+main (
+\begin{DoxyParamCaption}
+\item[{}]{cmd\+\_\+line\+\_\+args}
+\end{DoxyParamCaption}
+)}\label{namespacetotally__new__visualizer_aa58bcbc4c3c0a513fa8d58155d9d6e46}
+\begin{DoxyVerb}get cmd line args, initialize manager, set stdout if needed \end{DoxyVerb}
+ 
+
+Definition at line 485 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{namespacetotally__new__visualizer_a0336db197e4d6b0cc49dd792fa21d890}{}\index{totally\+\_\+new\+\_\+visualizer@{totally\+\_\+new\+\_\+visualizer}!all\+\_\+strategies@{all\+\_\+strategies}}
+\index{all\+\_\+strategies@{all\+\_\+strategies}!totally\+\_\+new\+\_\+visualizer@{totally\+\_\+new\+\_\+visualizer}}
+\subsubsection[{all\+\_\+strategies}]{\setlength{\rightskip}{0pt plus 5cm}list totally\+\_\+new\+\_\+visualizer.\+all\+\_\+strategies = \mbox{[}\textquotesingle{}cancel\textquotesingle{}, \textquotesingle{}combine\textquotesingle{}, \textquotesingle{}rearrange\textquotesingle{}, \textquotesingle{}move\textquotesingle{}, \textquotesingle{}expand\textquotesingle{}\mbox{]}}\label{namespacetotally__new__visualizer_a0336db197e4d6b0cc49dd792fa21d890}
+
+
+Definition at line 32 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{namespacetotally__new__visualizer_ac35b4d88f3973e9437d26d620f6404d3}{}\index{totally\+\_\+new\+\_\+visualizer@{totally\+\_\+new\+\_\+visualizer}!factor\+\_\+name\+\_\+dict@{factor\+\_\+name\+\_\+dict}}
+\index{factor\+\_\+name\+\_\+dict@{factor\+\_\+name\+\_\+dict}!totally\+\_\+new\+\_\+visualizer@{totally\+\_\+new\+\_\+visualizer}}
+\subsubsection[{factor\+\_\+name\+\_\+dict}]{\setlength{\rightskip}{0pt plus 5cm}dictionary totally\+\_\+new\+\_\+visualizer.\+factor\+\_\+name\+\_\+dict = \{\textquotesingle{}factor1\textquotesingle{}\+:\textquotesingle{}F\+A\+C\+T\+O\+R\+A\textquotesingle{} , \textquotesingle{}factor2\textquotesingle{}\+:\textquotesingle{}F\+A\+C\+T\+O\+R\+B\textquotesingle{}, \textquotesingle{}factor3\textquotesingle{}\+:\textquotesingle{}F\+A\+C\+T\+O\+R\+X\textquotesingle{}, \textquotesingle{}factor4\textquotesingle{}\+:\textquotesingle{}F\+A\+C\+T\+O\+R\+Y\textquotesingle{} \}}\label{namespacetotally__new__visualizer_ac35b4d88f3973e9437d26d620f6404d3}
+
+
+Definition at line 29 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{namespacetotally__new__visualizer_ab706e5502043e33aaccc4cd5db3a11a8}{}\index{totally\+\_\+new\+\_\+visualizer@{totally\+\_\+new\+\_\+visualizer}!factor\+\_\+predicates@{factor\+\_\+predicates}}
+\index{factor\+\_\+predicates@{factor\+\_\+predicates}!totally\+\_\+new\+\_\+visualizer@{totally\+\_\+new\+\_\+visualizer}}
+\subsubsection[{factor\+\_\+predicates}]{\setlength{\rightskip}{0pt plus 5cm}list totally\+\_\+new\+\_\+visualizer.\+factor\+\_\+predicates = \mbox{[}\textquotesingle{}factor\textquotesingle{} + n for n in list(\textquotesingle{}1234\textquotesingle{})\mbox{]}}\label{namespacetotally__new__visualizer_ab706e5502043e33aaccc4cd5db3a11a8}
+
+
+Definition at line 28 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{namespacetotally__new__visualizer_ab9dc95295259f8165e1fdf15f954d2b1}{}\index{totally\+\_\+new\+\_\+visualizer@{totally\+\_\+new\+\_\+visualizer}!Generated\+Solution@{Generated\+Solution}}
+\index{Generated\+Solution@{Generated\+Solution}!totally\+\_\+new\+\_\+visualizer@{totally\+\_\+new\+\_\+visualizer}}
+\subsubsection[{Generated\+Solution}]{\setlength{\rightskip}{0pt plus 5cm}tuple totally\+\_\+new\+\_\+visualizer.\+Generated\+Solution = namedtuple(\textquotesingle{}Generated\+Solution\textquotesingle{}, \mbox{[}\textquotesingle{}problem\+\_\+string\textquotesingle{}, \textquotesingle{}solution\+\_\+steps\textquotesingle{}\mbox{]})}\label{namespacetotally__new__visualizer_ab9dc95295259f8165e1fdf15f954d2b1}
+
+
+Definition at line 321 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{namespacetotally__new__visualizer_a69a6b4328317f3ea8abc150eafbda370}{}\index{totally\+\_\+new\+\_\+visualizer@{totally\+\_\+new\+\_\+visualizer}!Generated\+Step@{Generated\+Step}}
+\index{Generated\+Step@{Generated\+Step}!totally\+\_\+new\+\_\+visualizer@{totally\+\_\+new\+\_\+visualizer}}
+\subsubsection[{Generated\+Step}]{\setlength{\rightskip}{0pt plus 5cm}tuple totally\+\_\+new\+\_\+visualizer.\+Generated\+Step = namedtuple(\textquotesingle{}Generated\+Step\textquotesingle{}, \mbox{[}\textquotesingle{}equation\+\_\+string\textquotesingle{}, \textquotesingle{}step\+\_\+data\textquotesingle{}\mbox{]})}\label{namespacetotally__new__visualizer_a69a6b4328317f3ea8abc150eafbda370}
+
+
+Definition at line 35 of file totally\+\_\+new\+\_\+visualizer.\+py.
+
+\hypertarget{namespacetotally__new__visualizer_a3dd0f4daa013b2acf2fbd1f7aa0ad07c}{}\index{totally\+\_\+new\+\_\+visualizer@{totally\+\_\+new\+\_\+visualizer}!op\+\_\+symbols@{op\+\_\+symbols}}
+\index{op\+\_\+symbols@{op\+\_\+symbols}!totally\+\_\+new\+\_\+visualizer@{totally\+\_\+new\+\_\+visualizer}}
+\subsubsection[{op\+\_\+symbols}]{\setlength{\rightskip}{0pt plus 5cm}dictionary totally\+\_\+new\+\_\+visualizer.\+op\+\_\+symbols = \{\textquotesingle{}add\textquotesingle{} \+: \textquotesingle{}+\textquotesingle{} , \textquotesingle{}div\textquotesingle{} \+: \textquotesingle{}/\textquotesingle{} , \textquotesingle{}mul\textquotesingle{} \+: \textquotesingle{}$\ast$\textquotesingle{} , \textquotesingle{}neg\textquotesingle{} \+: \textquotesingle{}-\/\textquotesingle{}\}}\label{namespacetotally__new__visualizer_a3dd0f4daa013b2acf2fbd1f7aa0ad07c}
+
+
+Definition at line 25 of file totally\+\_\+new\+\_\+visualizer.\+py.
+

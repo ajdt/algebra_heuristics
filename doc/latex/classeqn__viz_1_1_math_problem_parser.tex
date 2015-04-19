@@ -1,0 +1,367 @@
+\hypertarget{classeqn__viz_1_1_math_problem_parser}{}\section{eqn\+\_\+viz.\+Math\+Problem\+Parser Class Reference}
+\label{classeqn__viz_1_1_math_problem_parser}\index{eqn\+\_\+viz.\+Math\+Problem\+Parser@{eqn\+\_\+viz.\+Math\+Problem\+Parser}}
+Inheritance diagram for eqn\+\_\+viz.\+Math\+Problem\+Parser\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classeqn__viz_1_1_math_problem_parser}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classeqn__viz_1_1_math_problem_parser_a2a21411a119d6a44fd67d010f452765d}{\+\_\+\+\_\+init\+\_\+\+\_\+}
+\item 
+def \hyperlink{classeqn__viz_1_1_math_problem_parser_a427749aff431b9838949ce868dd81621}{add\+Predicate} (self, time, pred\+\_\+array)
+\item 
+def \hyperlink{classeqn__viz_1_1_math_problem_parser_a127c28e9a12bbc78838891b2bbe85ef4}{get\+Solution\+String}
+\item 
+def \hyperlink{classeqn__viz_1_1_math_problem_parser_ae163bcbeaacca8c7e47af8d1a15fde8c}{add\+Action\+Pred} (self, step, action\+\_\+name)
+\item 
+def \hyperlink{classeqn__viz_1_1_math_problem_parser_ad7c8469e93c4c2f620f30d663f563c4b}{add\+Reference} (self, time\+\_\+step, pred\+\_\+num, node\+\_\+id)
+\item 
+def \hyperlink{classeqn__viz_1_1_math_problem_parser_ab05994e7b9a83931e5e0802b2c724261}{add\+Factor\+Pred} (self, time\+\_\+step, factor\+\_\+data)
+\item 
+def \hyperlink{classeqn__viz_1_1_math_problem_parser_ad1f35b057ba94c414bf18ff3eb414202}{add\+Operands} (self, time, operands)
+\item 
+def \hyperlink{classeqn__viz_1_1_math_problem_parser_a0e36a14a794a3612141dde4ddce4050d}{add\+Time} (self, time)
+\item 
+def \hyperlink{classeqn__viz_1_1_math_problem_parser_a71da891f047cb55a65759b22343f33e2}{get\+Problem} (self)
+\item 
+def \hyperlink{classeqn__viz_1_1_math_problem_parser_af59f19417ba8a05ef152b41e34c208eb}{get\+Operands} (self)
+\item 
+def \hyperlink{classeqn__viz_1_1_math_problem_parser_acaa8d2253504d12ee95cd79070289551}{get\+Eqn\+Steps} (self)
+\item 
+def \hyperlink{classeqn__viz_1_1_math_problem_parser_a4a4f4a6aa62b717dc159ec39ce25c35f}{use\+Y\+Variable} (self, \hyperlink{classeqn__viz_1_1_math_problem_parser_aa35a182df8bfc89e74a840e370e089f2}{solution\+\_\+steps})
+\item 
+def \hyperlink{classeqn__viz_1_1_math_problem_parser_adc7dee767cc96c729f3172cc399955a5}{append\+X\+Solutions} (self, \hyperlink{classeqn__viz_1_1_math_problem_parser_aa35a182df8bfc89e74a840e370e089f2}{solution\+\_\+steps})
+\item 
+def \hyperlink{classeqn__viz_1_1_math_problem_parser_a105702b6ef3f51d49153c51b1a5b1a29}{get\+Eqn\+Trees} (self)
+\item 
+def \hyperlink{classeqn__viz_1_1_math_problem_parser_aabf2f43b2ee403d9cf0cb873bbe28db9}{get\+Actions} (self)
+\item 
+def \hyperlink{classeqn__viz_1_1_math_problem_parser_a247aa12b6f38592c0fbcd0ac15b5520d}{get\+Explanations\+For\+Steps} (self)
+\item 
+def \hyperlink{classeqn__viz_1_1_math_problem_parser_af346d451472b46a9228c07d3dd7f0de8}{add\+Applicable\+Action} (self, action\+\_\+name)
+\item 
+def \hyperlink{classeqn__viz_1_1_math_problem_parser_aa8aded82942f9ac196e6e109fb9a45ec}{get\+Applicable\+Actions} (self)
+\item 
+def \hyperlink{classeqn__viz_1_1_math_problem_parser_a6adfec45bb22a5585db6e689c27aa393}{json\+Friendly\+Format} (self)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classeqn__viz_1_1_math_problem_parser_aa35a182df8bfc89e74a840e370e089f2}{solution\+\_\+steps}
+\item 
+\hyperlink{classeqn__viz_1_1_math_problem_parser_a3b02b0edd100ee6fd0b5b7d66bb22ecb}{actions}
+\item 
+\hyperlink{classeqn__viz_1_1_math_problem_parser_a09056a3b2b2490dccc4d3527c75c8f69}{applicable\+\_\+actions}
+\item 
+\hyperlink{classeqn__viz_1_1_math_problem_parser_a90141c1857b83a1bdfa5951453217204}{substitution\+\_\+happened}
+\item 
+\hyperlink{classeqn__viz_1_1_math_problem_parser_adda230f26ba7a90aa56f72e58a748c9e}{substitution\+\_\+degree}
+\item 
+\hyperlink{classeqn__viz_1_1_math_problem_parser_a6761399d080e0fd649cd5c2582590ccd}{substitution\+\_\+time\+\_\+step}
+\item 
+\hyperlink{classeqn__viz_1_1_math_problem_parser_ab84ba1169767799be1491b2baecb10ed}{solutions}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}parse a single solution to a problem. This is done by adding
+predicates one at a time to the parser, then calling 
+getSolutionString().
+\end{DoxyVerb}
+ 
+
+Definition at line 395 of file eqn\+\_\+viz.\+py.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classeqn__viz_1_1_math_problem_parser_a2a21411a119d6a44fd67d010f452765d}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Math\+Problem\+Parser.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{model\+\_\+mgr = {\ttfamily None}}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_math_problem_parser_a2a21411a119d6a44fd67d010f452765d}
+
+
+Definition at line 401 of file eqn\+\_\+viz.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classeqn__viz_1_1_math_problem_parser_ae163bcbeaacca8c7e47af8d1a15fde8c}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!add\+Action\+Pred@{add\+Action\+Pred}}
+\index{add\+Action\+Pred@{add\+Action\+Pred}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{add\+Action\+Pred}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Math\+Problem\+Parser.\+add\+Action\+Pred (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{step, }
+\item[{}]{action\+\_\+name}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_math_problem_parser_ae163bcbeaacca8c7e47af8d1a15fde8c}
+
+
+Definition at line 428 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_af346d451472b46a9228c07d3dd7f0de8}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!add\+Applicable\+Action@{add\+Applicable\+Action}}
+\index{add\+Applicable\+Action@{add\+Applicable\+Action}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{add\+Applicable\+Action}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Math\+Problem\+Parser.\+add\+Applicable\+Action (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{action\+\_\+name}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_math_problem_parser_af346d451472b46a9228c07d3dd7f0de8}
+
+
+Definition at line 484 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_ab05994e7b9a83931e5e0802b2c724261}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!add\+Factor\+Pred@{add\+Factor\+Pred}}
+\index{add\+Factor\+Pred@{add\+Factor\+Pred}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{add\+Factor\+Pred}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Math\+Problem\+Parser.\+add\+Factor\+Pred (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{time\+\_\+step, }
+\item[{}]{factor\+\_\+data}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_math_problem_parser_ab05994e7b9a83931e5e0802b2c724261}
+
+
+Definition at line 434 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_ad1f35b057ba94c414bf18ff3eb414202}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!add\+Operands@{add\+Operands}}
+\index{add\+Operands@{add\+Operands}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{add\+Operands}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Math\+Problem\+Parser.\+add\+Operands (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{time, }
+\item[{}]{operands}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_math_problem_parser_ad1f35b057ba94c414bf18ff3eb414202}
+
+
+Definition at line 436 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_a427749aff431b9838949ce868dd81621}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!add\+Predicate@{add\+Predicate}}
+\index{add\+Predicate@{add\+Predicate}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{add\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Math\+Problem\+Parser.\+add\+Predicate (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{time, }
+\item[{}]{pred\+\_\+array}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_math_problem_parser_a427749aff431b9838949ce868dd81621}
+
+
+Definition at line 410 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_ad7c8469e93c4c2f620f30d663f563c4b}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!add\+Reference@{add\+Reference}}
+\index{add\+Reference@{add\+Reference}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{add\+Reference}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Math\+Problem\+Parser.\+add\+Reference (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{time\+\_\+step, }
+\item[{}]{pred\+\_\+num, }
+\item[{}]{node\+\_\+id}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_math_problem_parser_ad7c8469e93c4c2f620f30d663f563c4b}
+
+
+Definition at line 432 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_a0e36a14a794a3612141dde4ddce4050d}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!add\+Time@{add\+Time}}
+\index{add\+Time@{add\+Time}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{add\+Time}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Math\+Problem\+Parser.\+add\+Time (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{time}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_math_problem_parser_a0e36a14a794a3612141dde4ddce4050d}
+
+
+Definition at line 439 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_adc7dee767cc96c729f3172cc399955a5}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!append\+X\+Solutions@{append\+X\+Solutions}}
+\index{append\+X\+Solutions@{append\+X\+Solutions}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{append\+X\+Solutions}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Math\+Problem\+Parser.\+append\+X\+Solutions (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{solution\+\_\+steps}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_math_problem_parser_adc7dee767cc96c729f3172cc399955a5}
+
+
+Definition at line 460 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_aabf2f43b2ee403d9cf0cb873bbe28db9}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!get\+Actions@{get\+Actions}}
+\index{get\+Actions@{get\+Actions}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{get\+Actions}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Math\+Problem\+Parser.\+get\+Actions (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_math_problem_parser_aabf2f43b2ee403d9cf0cb873bbe28db9}
+
+
+Definition at line 474 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_aa8aded82942f9ac196e6e109fb9a45ec}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!get\+Applicable\+Actions@{get\+Applicable\+Actions}}
+\index{get\+Applicable\+Actions@{get\+Applicable\+Actions}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{get\+Applicable\+Actions}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Math\+Problem\+Parser.\+get\+Applicable\+Actions (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_math_problem_parser_aa8aded82942f9ac196e6e109fb9a45ec}
+
+
+Definition at line 486 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_acaa8d2253504d12ee95cd79070289551}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!get\+Eqn\+Steps@{get\+Eqn\+Steps}}
+\index{get\+Eqn\+Steps@{get\+Eqn\+Steps}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{get\+Eqn\+Steps}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Math\+Problem\+Parser.\+get\+Eqn\+Steps (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_math_problem_parser_acaa8d2253504d12ee95cd79070289551}
+
+
+Definition at line 446 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_a105702b6ef3f51d49153c51b1a5b1a29}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!get\+Eqn\+Trees@{get\+Eqn\+Trees}}
+\index{get\+Eqn\+Trees@{get\+Eqn\+Trees}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{get\+Eqn\+Trees}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Math\+Problem\+Parser.\+get\+Eqn\+Trees (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_math_problem_parser_a105702b6ef3f51d49153c51b1a5b1a29}
+
+
+Definition at line 472 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_a247aa12b6f38592c0fbcd0ac15b5520d}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!get\+Explanations\+For\+Steps@{get\+Explanations\+For\+Steps}}
+\index{get\+Explanations\+For\+Steps@{get\+Explanations\+For\+Steps}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{get\+Explanations\+For\+Steps}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Math\+Problem\+Parser.\+get\+Explanations\+For\+Steps (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_math_problem_parser_a247aa12b6f38592c0fbcd0ac15b5520d}
+
+
+Definition at line 477 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_af59f19417ba8a05ef152b41e34c208eb}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!get\+Operands@{get\+Operands}}
+\index{get\+Operands@{get\+Operands}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{get\+Operands}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Math\+Problem\+Parser.\+get\+Operands (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_math_problem_parser_af59f19417ba8a05ef152b41e34c208eb}
+
+
+Definition at line 444 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_a71da891f047cb55a65759b22343f33e2}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!get\+Problem@{get\+Problem}}
+\index{get\+Problem@{get\+Problem}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{get\+Problem}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Math\+Problem\+Parser.\+get\+Problem (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_math_problem_parser_a71da891f047cb55a65759b22343f33e2}
+
+
+Definition at line 442 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_a127c28e9a12bbc78838891b2bbe85ef4}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!get\+Solution\+String@{get\+Solution\+String}}
+\index{get\+Solution\+String@{get\+Solution\+String}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{get\+Solution\+String}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Math\+Problem\+Parser.\+get\+Solution\+String (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{as\+\_\+latex = {\ttfamily False}, }
+\item[{}]{json\+\_\+output = {\ttfamily False}}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_math_problem_parser_a127c28e9a12bbc78838891b2bbe85ef4}
+
+
+Definition at line 413 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_a6adfec45bb22a5585db6e689c27aa393}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!json\+Friendly\+Format@{json\+Friendly\+Format}}
+\index{json\+Friendly\+Format@{json\+Friendly\+Format}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{json\+Friendly\+Format}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Math\+Problem\+Parser.\+json\+Friendly\+Format (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_math_problem_parser_a6adfec45bb22a5585db6e689c27aa393}
+
+
+Definition at line 488 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_a4a4f4a6aa62b717dc159ec39ce25c35f}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!use\+Y\+Variable@{use\+Y\+Variable}}
+\index{use\+Y\+Variable@{use\+Y\+Variable}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{use\+Y\+Variable}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Math\+Problem\+Parser.\+use\+Y\+Variable (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{solution\+\_\+steps}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_math_problem_parser_a4a4f4a6aa62b717dc159ec39ce25c35f}
+
+
+Definition at line 452 of file eqn\+\_\+viz.\+py.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classeqn__viz_1_1_math_problem_parser_a3b02b0edd100ee6fd0b5b7d66bb22ecb}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!actions@{actions}}
+\index{actions@{actions}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{actions}]{\setlength{\rightskip}{0pt plus 5cm}eqn\+\_\+viz.\+Math\+Problem\+Parser.\+actions}\label{classeqn__viz_1_1_math_problem_parser_a3b02b0edd100ee6fd0b5b7d66bb22ecb}
+
+
+Definition at line 403 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_a09056a3b2b2490dccc4d3527c75c8f69}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!applicable\+\_\+actions@{applicable\+\_\+actions}}
+\index{applicable\+\_\+actions@{applicable\+\_\+actions}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{applicable\+\_\+actions}]{\setlength{\rightskip}{0pt plus 5cm}eqn\+\_\+viz.\+Math\+Problem\+Parser.\+applicable\+\_\+actions}\label{classeqn__viz_1_1_math_problem_parser_a09056a3b2b2490dccc4d3527c75c8f69}
+
+
+Definition at line 404 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_aa35a182df8bfc89e74a840e370e089f2}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!solution\+\_\+steps@{solution\+\_\+steps}}
+\index{solution\+\_\+steps@{solution\+\_\+steps}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{solution\+\_\+steps}]{\setlength{\rightskip}{0pt plus 5cm}eqn\+\_\+viz.\+Math\+Problem\+Parser.\+solution\+\_\+steps}\label{classeqn__viz_1_1_math_problem_parser_aa35a182df8bfc89e74a840e370e089f2}
+
+
+Definition at line 402 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_ab84ba1169767799be1491b2baecb10ed}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!solutions@{solutions}}
+\index{solutions@{solutions}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{solutions}]{\setlength{\rightskip}{0pt plus 5cm}eqn\+\_\+viz.\+Math\+Problem\+Parser.\+solutions}\label{classeqn__viz_1_1_math_problem_parser_ab84ba1169767799be1491b2baecb10ed}
+
+
+Definition at line 409 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_adda230f26ba7a90aa56f72e58a748c9e}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!substitution\+\_\+degree@{substitution\+\_\+degree}}
+\index{substitution\+\_\+degree@{substitution\+\_\+degree}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{substitution\+\_\+degree}]{\setlength{\rightskip}{0pt plus 5cm}eqn\+\_\+viz.\+Math\+Problem\+Parser.\+substitution\+\_\+degree}\label{classeqn__viz_1_1_math_problem_parser_adda230f26ba7a90aa56f72e58a748c9e}
+
+
+Definition at line 407 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_a90141c1857b83a1bdfa5951453217204}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!substitution\+\_\+happened@{substitution\+\_\+happened}}
+\index{substitution\+\_\+happened@{substitution\+\_\+happened}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{substitution\+\_\+happened}]{\setlength{\rightskip}{0pt plus 5cm}eqn\+\_\+viz.\+Math\+Problem\+Parser.\+substitution\+\_\+happened}\label{classeqn__viz_1_1_math_problem_parser_a90141c1857b83a1bdfa5951453217204}
+
+
+Definition at line 406 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_math_problem_parser_a6761399d080e0fd649cd5c2582590ccd}{}\index{eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}!substitution\+\_\+time\+\_\+step@{substitution\+\_\+time\+\_\+step}}
+\index{substitution\+\_\+time\+\_\+step@{substitution\+\_\+time\+\_\+step}!eqn\+\_\+viz\+::\+Math\+Problem\+Parser@{eqn\+\_\+viz\+::\+Math\+Problem\+Parser}}
+\subsubsection[{substitution\+\_\+time\+\_\+step}]{\setlength{\rightskip}{0pt plus 5cm}eqn\+\_\+viz.\+Math\+Problem\+Parser.\+substitution\+\_\+time\+\_\+step}\label{classeqn__viz_1_1_math_problem_parser_a6761399d080e0fd649cd5c2582590ccd}
+
+
+Definition at line 408 of file eqn\+\_\+viz.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{eqn__viz_8py}{eqn\+\_\+viz.\+py}\end{DoxyCompactItemize}

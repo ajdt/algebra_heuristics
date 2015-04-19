@@ -1,0 +1,169 @@
+\hypertarget{classeqn__viz_1_1_answer_set_manager}{}\section{eqn\+\_\+viz.\+Answer\+Set\+Manager Class Reference}
+\label{classeqn__viz_1_1_answer_set_manager}\index{eqn\+\_\+viz.\+Answer\+Set\+Manager@{eqn\+\_\+viz.\+Answer\+Set\+Manager}}
+Inheritance diagram for eqn\+\_\+viz.\+Answer\+Set\+Manager\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classeqn__viz_1_1_answer_set_manager}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classeqn__viz_1_1_answer_set_manager_a9bd9622d26fa24a188a825d2b5137b13}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self, \hyperlink{classeqn__viz_1_1_answer_set_manager_a15d9c03574ab43af95dc420cb125df11}{cmdline\+\_\+args})
+\item 
+def \hyperlink{classeqn__viz_1_1_answer_set_manager_a66cb1f21deee1507810d80f670bcdeb7}{get\+Generated\+Ans\+Sets} (self)
+\item 
+def \hyperlink{classeqn__viz_1_1_answer_set_manager_a54a34f14351d91c57ca1a0fb5292959b}{get\+Generated\+Problems} (self)
+\item 
+def \hyperlink{classeqn__viz_1_1_answer_set_manager_ac9d5c0d89ad8693ed7c31df75d61c8c7}{init\+From\+S\+T\+D\+I\+N} (self)
+\item 
+def \hyperlink{classeqn__viz_1_1_answer_set_manager_a61acb8db5bc5cb6bdf9300016fc21a60}{default} (self, answer\+\_\+set)
+\item 
+def \hyperlink{classeqn__viz_1_1_answer_set_manager_a9ac22e2d51a183ee9ad9eeb928ab1a1c}{init\+From\+J\+S\+O\+N\+File} (self, file\+\_\+name)
+\item 
+def \hyperlink{classeqn__viz_1_1_answer_set_manager_a3e89932b2df88cc458570b1e88f587df}{get\+Ans\+Sets\+As\+J\+S\+O\+N} (self)
+\item 
+def \hyperlink{classeqn__viz_1_1_answer_set_manager_ae3c8a041865a03bb4d521a59064aaaf1}{print\+Answer\+Sets}
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classeqn__viz_1_1_answer_set_manager_a15d9c03574ab43af95dc420cb125df11}{cmdline\+\_\+args}
+\item 
+\hyperlink{classeqn__viz_1_1_answer_set_manager_ab50545866708c615d07364479ab771e5}{answer\+\_\+sets}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}This class parses answer sets from stdin or json file, outputs to file in json format or user-friendly format\end{DoxyVerb}
+ 
+
+Definition at line 677 of file eqn\+\_\+viz.\+py.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classeqn__viz_1_1_answer_set_manager_a9bd9622d26fa24a188a825d2b5137b13}{}\index{eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Answer\+Set\+Manager.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{cmdline\+\_\+args}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_answer_set_manager_a9bd9622d26fa24a188a825d2b5137b13}
+
+
+Definition at line 679 of file eqn\+\_\+viz.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classeqn__viz_1_1_answer_set_manager_a61acb8db5bc5cb6bdf9300016fc21a60}{}\index{eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}!default@{default}}
+\index{default@{default}!eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}}
+\subsubsection[{default}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Answer\+Set\+Manager.\+default (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{answer\+\_\+set}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_answer_set_manager_a61acb8db5bc5cb6bdf9300016fc21a60}
+\begin{DoxyVerb}:param answer_set: answers set to save
+:return: json encoded answer set (a string)
+\end{DoxyVerb}
+ 
+
+Definition at line 710 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_answer_set_manager_a3e89932b2df88cc458570b1e88f587df}{}\index{eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}!get\+Ans\+Sets\+As\+J\+S\+O\+N@{get\+Ans\+Sets\+As\+J\+S\+O\+N}}
+\index{get\+Ans\+Sets\+As\+J\+S\+O\+N@{get\+Ans\+Sets\+As\+J\+S\+O\+N}!eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}}
+\subsubsection[{get\+Ans\+Sets\+As\+J\+S\+O\+N}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Answer\+Set\+Manager.\+get\+Ans\+Sets\+As\+J\+S\+O\+N (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_answer_set_manager_a3e89932b2df88cc458570b1e88f587df}
+
+
+Definition at line 733 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_answer_set_manager_a66cb1f21deee1507810d80f670bcdeb7}{}\index{eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}!get\+Generated\+Ans\+Sets@{get\+Generated\+Ans\+Sets}}
+\index{get\+Generated\+Ans\+Sets@{get\+Generated\+Ans\+Sets}!eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}}
+\subsubsection[{get\+Generated\+Ans\+Sets}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Answer\+Set\+Manager.\+get\+Generated\+Ans\+Sets (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_answer_set_manager_a66cb1f21deee1507810d80f670bcdeb7}
+
+
+Definition at line 686 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_answer_set_manager_a54a34f14351d91c57ca1a0fb5292959b}{}\index{eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}!get\+Generated\+Problems@{get\+Generated\+Problems}}
+\index{get\+Generated\+Problems@{get\+Generated\+Problems}!eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}}
+\subsubsection[{get\+Generated\+Problems}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Answer\+Set\+Manager.\+get\+Generated\+Problems (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_answer_set_manager_a54a34f14351d91c57ca1a0fb5292959b}
+\begin{DoxyVerb}returns a flat list of all problems contained by answer set manager\end{DoxyVerb}
+ 
+
+Definition at line 688 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_answer_set_manager_a9ac22e2d51a183ee9ad9eeb928ab1a1c}{}\index{eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}!init\+From\+J\+S\+O\+N\+File@{init\+From\+J\+S\+O\+N\+File}}
+\index{init\+From\+J\+S\+O\+N\+File@{init\+From\+J\+S\+O\+N\+File}!eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}}
+\subsubsection[{init\+From\+J\+S\+O\+N\+File}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Answer\+Set\+Manager.\+init\+From\+J\+S\+O\+N\+File (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{file\+\_\+name}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_answer_set_manager_a9ac22e2d51a183ee9ad9eeb928ab1a1c}
+
+
+Definition at line 727 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_answer_set_manager_ac9d5c0d89ad8693ed7c31df75d61c8c7}{}\index{eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}!init\+From\+S\+T\+D\+I\+N@{init\+From\+S\+T\+D\+I\+N}}
+\index{init\+From\+S\+T\+D\+I\+N@{init\+From\+S\+T\+D\+I\+N}!eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}}
+\subsubsection[{init\+From\+S\+T\+D\+I\+N}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Answer\+Set\+Manager.\+init\+From\+S\+T\+D\+I\+N (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_answer_set_manager_ac9d5c0d89ad8693ed7c31df75d61c8c7}
+\begin{DoxyVerb}load answer sets from stdin NOTE: expects JSON input via clingo --outf=2\end{DoxyVerb}
+ 
+
+Definition at line 695 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_answer_set_manager_ae3c8a041865a03bb4d521a59064aaaf1}{}\index{eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}!print\+Answer\+Sets@{print\+Answer\+Sets}}
+\index{print\+Answer\+Sets@{print\+Answer\+Sets}!eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}}
+\subsubsection[{print\+Answer\+Sets}]{\setlength{\rightskip}{0pt plus 5cm}def eqn\+\_\+viz.\+Answer\+Set\+Manager.\+print\+Answer\+Sets (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{json\+\_\+printing = {\ttfamily False}, }
+\item[{}]{with\+\_\+explanation = {\ttfamily False}}
+\end{DoxyParamCaption}
+)}\label{classeqn__viz_1_1_answer_set_manager_ae3c8a041865a03bb4d521a59064aaaf1}
+\begin{DoxyVerb}display all answer sets in user-friendly way\end{DoxyVerb}
+ 
+
+Definition at line 736 of file eqn\+\_\+viz.\+py.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classeqn__viz_1_1_answer_set_manager_ab50545866708c615d07364479ab771e5}{}\index{eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}!answer\+\_\+sets@{answer\+\_\+sets}}
+\index{answer\+\_\+sets@{answer\+\_\+sets}!eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}}
+\subsubsection[{answer\+\_\+sets}]{\setlength{\rightskip}{0pt plus 5cm}eqn\+\_\+viz.\+Answer\+Set\+Manager.\+answer\+\_\+sets}\label{classeqn__viz_1_1_answer_set_manager_ab50545866708c615d07364479ab771e5}
+
+
+Definition at line 682 of file eqn\+\_\+viz.\+py.
+
+\hypertarget{classeqn__viz_1_1_answer_set_manager_a15d9c03574ab43af95dc420cb125df11}{}\index{eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}!cmdline\+\_\+args@{cmdline\+\_\+args}}
+\index{cmdline\+\_\+args@{cmdline\+\_\+args}!eqn\+\_\+viz\+::\+Answer\+Set\+Manager@{eqn\+\_\+viz\+::\+Answer\+Set\+Manager}}
+\subsubsection[{cmdline\+\_\+args}]{\setlength{\rightskip}{0pt plus 5cm}eqn\+\_\+viz.\+Answer\+Set\+Manager.\+cmdline\+\_\+args}\label{classeqn__viz_1_1_answer_set_manager_a15d9c03574ab43af95dc420cb125df11}
+
+
+Definition at line 681 of file eqn\+\_\+viz.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{eqn__viz_8py}{eqn\+\_\+viz.\+py}\end{DoxyCompactItemize}

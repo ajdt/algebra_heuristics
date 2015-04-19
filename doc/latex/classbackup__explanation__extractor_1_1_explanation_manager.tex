@@ -1,0 +1,137 @@
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_manager}{}\section{backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Manager Class Reference}
+\label{classbackup__explanation__extractor_1_1_explanation_manager}\index{backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Manager@{backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Manager}}
+Inheritance diagram for backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Manager\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classbackup__explanation__extractor_1_1_explanation_manager}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_manager_aa2842d3b1c2f716100c77d95a52c8b6a}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self)
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_manager_a4e1b098346393b688f542168aebbaa62}{add\+Explanation\+Template} (self, rule)
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_manager_ab5208b00e61e27dbb1c6f4b3891fbc50}{lookup\+Template\+For} (self, predicate\+\_\+key)
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_manager_ae3c83379e94efca909379a8eddcb7e5d}{has\+Explanation\+For\+Predicate} (self, predicate)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_manager_ac27597c7bea9c19093d416f89a7c53f7}{make\+Rule\+Key} (rule)
+\item 
+def \hyperlink{classbackup__explanation__extractor_1_1_explanation_manager_a44c3459fd2b8c483e9427200bdd35888}{make\+Pred\+Key} (predicate)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classbackup__explanation__extractor_1_1_explanation_manager_a34cc772a5dd34f98c5e9ea3a64f1b480}{templates}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}manages a set of explanations extracted from ASP gringo files\end{DoxyVerb}
+ 
+
+Definition at line 87 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_manager_aa2842d3b1c2f716100c77d95a52c8b6a}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Manager.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classbackup__explanation__extractor_1_1_explanation_manager_aa2842d3b1c2f716100c77d95a52c8b6a}
+
+
+Definition at line 89 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_manager_a4e1b098346393b688f542168aebbaa62}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager}!add\+Explanation\+Template@{add\+Explanation\+Template}}
+\index{add\+Explanation\+Template@{add\+Explanation\+Template}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager}}
+\subsubsection[{add\+Explanation\+Template}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Manager.\+add\+Explanation\+Template (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{rule}
+\end{DoxyParamCaption}
+)}\label{classbackup__explanation__extractor_1_1_explanation_manager_a4e1b098346393b688f542168aebbaa62}
+\begin{DoxyVerb}instantiate new ExplanationTemplate instance for given predicate \end{DoxyVerb}
+ 
+
+Definition at line 93 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_manager_ae3c83379e94efca909379a8eddcb7e5d}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager}!has\+Explanation\+For\+Predicate@{has\+Explanation\+For\+Predicate}}
+\index{has\+Explanation\+For\+Predicate@{has\+Explanation\+For\+Predicate}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager}}
+\subsubsection[{has\+Explanation\+For\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Manager.\+has\+Explanation\+For\+Predicate (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{predicate}
+\end{DoxyParamCaption}
+)}\label{classbackup__explanation__extractor_1_1_explanation_manager_ae3c83379e94efca909379a8eddcb7e5d}
+
+
+Definition at line 131 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_manager_ab5208b00e61e27dbb1c6f4b3891fbc50}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager}!lookup\+Template\+For@{lookup\+Template\+For}}
+\index{lookup\+Template\+For@{lookup\+Template\+For}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager}}
+\subsubsection[{lookup\+Template\+For}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Manager.\+lookup\+Template\+For (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{predicate\+\_\+key}
+\end{DoxyParamCaption}
+)}\label{classbackup__explanation__extractor_1_1_explanation_manager_ab5208b00e61e27dbb1c6f4b3891fbc50}
+\begin{DoxyVerb}Return an ExplanationTemplate instance for given predicate_key
+predicate_ key = (predicate_name, arity)
+NOTE: predicate_key  should be generated using ExplanationManager.makeRuleKey(rule) or makePredKey()
+\end{DoxyVerb}
+ 
+
+Definition at line 101 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_manager_a44c3459fd2b8c483e9427200bdd35888}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager}!make\+Pred\+Key@{make\+Pred\+Key}}
+\index{make\+Pred\+Key@{make\+Pred\+Key}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager}}
+\subsubsection[{make\+Pred\+Key}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Manager.\+make\+Pred\+Key (
+\begin{DoxyParamCaption}
+\item[{}]{predicate}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classbackup__explanation__extractor_1_1_explanation_manager_a44c3459fd2b8c483e9427200bdd35888}
+\begin{DoxyVerb}heuristics have a key determined by condition and arity of their operands. Other predicates
+are indexed by their own predicate name and arity\end{DoxyVerb}
+ 
+
+Definition at line 117 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_manager_ac27597c7bea9c19093d416f89a7c53f7}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager}!make\+Rule\+Key@{make\+Rule\+Key}}
+\index{make\+Rule\+Key@{make\+Rule\+Key}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager}}
+\subsubsection[{make\+Rule\+Key}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Manager.\+make\+Rule\+Key (
+\begin{DoxyParamCaption}
+\item[{}]{rule}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classbackup__explanation__extractor_1_1_explanation_manager_ac27597c7bea9c19093d416f89a7c53f7}
+\begin{DoxyVerb}return predicate key for given rule \end{DoxyVerb}
+ 
+
+Definition at line 112 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classbackup__explanation__extractor_1_1_explanation_manager_a34cc772a5dd34f98c5e9ea3a64f1b480}{}\index{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager}!templates@{templates}}
+\index{templates@{templates}!backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager@{backup\+\_\+explanation\+\_\+extractor\+::\+Explanation\+Manager}}
+\subsubsection[{templates}]{\setlength{\rightskip}{0pt plus 5cm}backup\+\_\+explanation\+\_\+extractor.\+Explanation\+Manager.\+templates}\label{classbackup__explanation__extractor_1_1_explanation_manager_a34cc772a5dd34f98c5e9ea3a64f1b480}
+
+
+Definition at line 91 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{backup__explanation__extractor_8py}{backup\+\_\+explanation\+\_\+extractor.\+py}\end{DoxyCompactItemize}

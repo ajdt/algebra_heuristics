@@ -1,0 +1,415 @@
+\hypertarget{namespaceexplanation__extractor}{}\section{explanation\+\_\+extractor Namespace Reference}
+\label{namespaceexplanation__extractor}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classexplanation__extractor_1_1_explanation_manager}{Explanation\+Manager}
+\item 
+class \hyperlink{classexplanation__extractor_1_1_explanation_template}{Explanation\+Template}
+\item 
+class \hyperlink{classexplanation__extractor_1_1_template_sentence}{Template\+Sentence}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{namespaceexplanation__extractor_a7d686ee54e958cf12fdf7f9522b8bae3}{get\+Template\+Manager} ()
+\item 
+def \hyperlink{namespaceexplanation__extractor_a7a90d19505230cd0706029001284f6a6}{make\+Sanitized\+File} (file\+\_\+name)
+\item 
+def \hyperlink{namespaceexplanation__extractor_a5d9319a84e5b2170b092d43d5eff8af4}{get\+Rules\+List\+From\+File} (file\+\_\+name)
+\item 
+def \hyperlink{namespaceexplanation__extractor_a003f30bfe39fe27dc9b5c95310ac37ab}{parse\+Files} (file\+\_\+list)
+\item 
+def \hyperlink{namespaceexplanation__extractor_acbb78e911fb2dff47a068c333495b85d}{parse\+Rules} ()
+\item 
+def \hyperlink{namespaceexplanation__extractor_a1208b0a7c420f414703614c42083ed8f}{convert\+From\+Camel\+Case} (name)
+\begin{DoxyCompactList}\small\item\em convert predicate name from camelcase to proper explanation \end{DoxyCompactList}\item 
+def \hyperlink{namespaceexplanation__extractor_a3ca2de4ae7247867c29feb24c8b85f95}{is\+Predicate} (condition)
+\item 
+def \hyperlink{namespaceexplanation__extractor_aecacec3e63255e9ee8653a73aa4416ce}{is\+Heuristic\+Predicate} (predicate)
+\item 
+def \hyperlink{namespaceexplanation__extractor_a4de4948093b3eb32c6d46109dccca83d}{is\+Skipped\+Predicate} (predicate)
+\item 
+def \hyperlink{namespaceexplanation__extractor_a7e792778552def0590947344cab0c799}{filter\+Unused\+Conditions} (condition\+\_\+list)
+\item 
+def \hyperlink{namespaceexplanation__extractor_af072d9ebdb289310aac8bdfc6d18c45d}{is\+Not\+Predicate} (condition)
+\item 
+def \hyperlink{namespaceexplanation__extractor_a3ff66fa3cac572ce943aadb6edd15faa}{cond\+Is\+True\+Under\+Assignment} (cond, assign\+\_\+dict, mgr)
+\item 
+def \hyperlink{namespaceexplanation__extractor_a25cb9de50e008dc4719c37a755767f6c}{get\+Level\+Two\+Predicates} (pred\+\_\+key)
+\item 
+def \hyperlink{namespaceexplanation__extractor_a97bc4aa83dd1f33e2055e0cd04280983}{find\+Almost\+Matches\+Predicates} (pred\+\_\+key, model\+\_\+mgr)
+\item 
+def \hyperlink{namespaceexplanation__extractor_ad9ad528058d7d4a987217e34962fafa1}{make\+Almost\+Fire\+Explanations} (pred\+\_\+key, model\+\_\+mgr)
+\item 
+def \hyperlink{namespaceexplanation__extractor_a245c76a80c6861aa9913a4c0ae657532}{get\+All\+Satisfying\+Assignments} (conditions, model\+\_\+mgr)
+\item 
+def \hyperlink{namespaceexplanation__extractor_aa2ee543a844a51fd175237425613e637}{find\+Assign} (cond\+\_\+list, mgr, assign, all\+\_\+assign)
+\item 
+def \hyperlink{namespaceexplanation__extractor_a6f48fd0483449ab57c4fc59bf46d9030}{get\+All\+Compatible\+Matches} (cond, mgr, assign)
+\item 
+def \hyperlink{namespaceexplanation__extractor_ac4ebd7452ba8d0cd181de6ff9e826a97}{is\+Compatible\+With} (ground\+\_\+dict, assign\+\_\+dict)
+\item 
+def \hyperlink{namespaceexplanation__extractor_a9ff3544e6f17deeb9ca26720176c3425}{get\+Body\+Template\+Objects} (template)
+\item 
+def \hyperlink{namespaceexplanation__extractor_aceb0f7d5fe4722c93251a451c0887cf9}{make\+List\+Of\+Almost\+Fire\+Conditions} (list\+\_\+of\+\_\+conditions)
+\item 
+def \hyperlink{namespaceexplanation__extractor_a83d1ad83ea4f6f229f663c8f2a6fec4e}{get\+Test\+Model\+Mgr} ()
+\item 
+def \hyperlink{namespaceexplanation__extractor_ab07ea7707a24b1b7c5a0abfeab45c62d}{main} (files)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+dictionary \hyperlink{namespaceexplanation__extractor_a4e9dc7c262525efa41529de247ccb96a}{heuristic\+\_\+to\+\_\+strategy}
+\item 
+tuple \hyperlink{namespaceexplanation__extractor_ac32b3e381284882ab71367fde9f5c646}{strategy\+\_\+to\+\_\+heuristic} = defaultdict(list)
+\item 
+tuple \hyperlink{namespaceexplanation__extractor_a4f4d79f4f4c8925bd6353200232eb735}{list\+\_\+of\+\_\+heuristics} = heuristic\+\_\+to\+\_\+strategy.\+keys()
+\item 
+\hyperlink{namespaceexplanation__extractor_add16cd790071f284854455eddfa329a1}{T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+M\+A\+N\+A\+G\+E\+R} = None
+\item 
+list \hyperlink{namespaceexplanation__extractor_a4df375151186067de08268d91ffe50f9}{files\+\_\+to\+\_\+parse} = \mbox{[}\textquotesingle{}rules.\+lp\textquotesingle{}\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{namespaceexplanation__extractor_a3ff66fa3cac572ce943aadb6edd15faa}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!cond\+Is\+True\+Under\+Assignment@{cond\+Is\+True\+Under\+Assignment}}
+\index{cond\+Is\+True\+Under\+Assignment@{cond\+Is\+True\+Under\+Assignment}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{cond\+Is\+True\+Under\+Assignment}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+cond\+Is\+True\+Under\+Assignment (
+\begin{DoxyParamCaption}
+\item[{}]{cond, }
+\item[{}]{assign\+\_\+dict, }
+\item[{}]{mgr}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_a3ff66fa3cac572ce943aadb6edd15faa}
+
+
+Definition at line 385 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_a1208b0a7c420f414703614c42083ed8f}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!convert\+From\+Camel\+Case@{convert\+From\+Camel\+Case}}
+\index{convert\+From\+Camel\+Case@{convert\+From\+Camel\+Case}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{convert\+From\+Camel\+Case}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+convert\+From\+Camel\+Case (
+\begin{DoxyParamCaption}
+\item[{}]{name}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_a1208b0a7c420f414703614c42083ed8f}
+
+
+convert predicate name from camelcase to proper explanation 
+
+\begin{DoxyVerb}Takes a string like 'ILikePuppies' and returns 'i like puppies' \end{DoxyVerb}
+ 
+
+Definition at line 112 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_a7e792778552def0590947344cab0c799}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!filter\+Unused\+Conditions@{filter\+Unused\+Conditions}}
+\index{filter\+Unused\+Conditions@{filter\+Unused\+Conditions}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{filter\+Unused\+Conditions}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+filter\+Unused\+Conditions (
+\begin{DoxyParamCaption}
+\item[{}]{condition\+\_\+list}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_a7e792778552def0590947344cab0c799}
+
+
+Definition at line 128 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_a97bc4aa83dd1f33e2055e0cd04280983}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!find\+Almost\+Matches\+Predicates@{find\+Almost\+Matches\+Predicates}}
+\index{find\+Almost\+Matches\+Predicates@{find\+Almost\+Matches\+Predicates}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{find\+Almost\+Matches\+Predicates}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+find\+Almost\+Matches\+Predicates (
+\begin{DoxyParamCaption}
+\item[{}]{pred\+\_\+key, }
+\item[{}]{model\+\_\+mgr}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_a97bc4aa83dd1f33e2055e0cd04280983}
+
+
+Definition at line 412 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_aa2ee543a844a51fd175237425613e637}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!find\+Assign@{find\+Assign}}
+\index{find\+Assign@{find\+Assign}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{find\+Assign}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+find\+Assign (
+\begin{DoxyParamCaption}
+\item[{}]{cond\+\_\+list, }
+\item[{}]{mgr, }
+\item[{}]{assign, }
+\item[{}]{all\+\_\+assign}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_aa2ee543a844a51fd175237425613e637}
+
+
+Definition at line 450 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_a6f48fd0483449ab57c4fc59bf46d9030}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!get\+All\+Compatible\+Matches@{get\+All\+Compatible\+Matches}}
+\index{get\+All\+Compatible\+Matches@{get\+All\+Compatible\+Matches}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{get\+All\+Compatible\+Matches}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+get\+All\+Compatible\+Matches (
+\begin{DoxyParamCaption}
+\item[{}]{cond, }
+\item[{}]{mgr, }
+\item[{}]{assign}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_a6f48fd0483449ab57c4fc59bf46d9030}
+
+
+Definition at line 463 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_a245c76a80c6861aa9913a4c0ae657532}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!get\+All\+Satisfying\+Assignments@{get\+All\+Satisfying\+Assignments}}
+\index{get\+All\+Satisfying\+Assignments@{get\+All\+Satisfying\+Assignments}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{get\+All\+Satisfying\+Assignments}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+get\+All\+Satisfying\+Assignments (
+\begin{DoxyParamCaption}
+\item[{}]{conditions, }
+\item[{}]{model\+\_\+mgr}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_a245c76a80c6861aa9913a4c0ae657532}
+
+
+Definition at line 444 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_a9ff3544e6f17deeb9ca26720176c3425}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!get\+Body\+Template\+Objects@{get\+Body\+Template\+Objects}}
+\index{get\+Body\+Template\+Objects@{get\+Body\+Template\+Objects}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{get\+Body\+Template\+Objects}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+get\+Body\+Template\+Objects (
+\begin{DoxyParamCaption}
+\item[{}]{template}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_a9ff3544e6f17deeb9ca26720176c3425}
+
+
+Definition at line 484 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_a25cb9de50e008dc4719c37a755767f6c}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!get\+Level\+Two\+Predicates@{get\+Level\+Two\+Predicates}}
+\index{get\+Level\+Two\+Predicates@{get\+Level\+Two\+Predicates}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{get\+Level\+Two\+Predicates}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+get\+Level\+Two\+Predicates (
+\begin{DoxyParamCaption}
+\item[{}]{pred\+\_\+key}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_a25cb9de50e008dc4719c37a755767f6c}
+
+
+Definition at line 396 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_a5d9319a84e5b2170b092d43d5eff8af4}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!get\+Rules\+List\+From\+File@{get\+Rules\+List\+From\+File}}
+\index{get\+Rules\+List\+From\+File@{get\+Rules\+List\+From\+File}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{get\+Rules\+List\+From\+File}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+get\+Rules\+List\+From\+File (
+\begin{DoxyParamCaption}
+\item[{}]{file\+\_\+name}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_a5d9319a84e5b2170b092d43d5eff8af4}
+
+
+Definition at line 80 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_a7d686ee54e958cf12fdf7f9522b8bae3}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!get\+Template\+Manager@{get\+Template\+Manager}}
+\index{get\+Template\+Manager@{get\+Template\+Manager}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{get\+Template\+Manager}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+get\+Template\+Manager (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_a7d686ee54e958cf12fdf7f9522b8bae3}
+
+
+Definition at line 58 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_a83d1ad83ea4f6f229f663c8f2a6fec4e}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!get\+Test\+Model\+Mgr@{get\+Test\+Model\+Mgr}}
+\index{get\+Test\+Model\+Mgr@{get\+Test\+Model\+Mgr}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{get\+Test\+Model\+Mgr}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+get\+Test\+Model\+Mgr (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_a83d1ad83ea4f6f229f663c8f2a6fec4e}
+
+
+Definition at line 509 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_ac4ebd7452ba8d0cd181de6ff9e826a97}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!is\+Compatible\+With@{is\+Compatible\+With}}
+\index{is\+Compatible\+With@{is\+Compatible\+With}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{is\+Compatible\+With}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+is\+Compatible\+With (
+\begin{DoxyParamCaption}
+\item[{}]{ground\+\_\+dict, }
+\item[{}]{assign\+\_\+dict}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_ac4ebd7452ba8d0cd181de6ff9e826a97}
+
+
+Definition at line 475 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_aecacec3e63255e9ee8653a73aa4416ce}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!is\+Heuristic\+Predicate@{is\+Heuristic\+Predicate}}
+\index{is\+Heuristic\+Predicate@{is\+Heuristic\+Predicate}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{is\+Heuristic\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+is\+Heuristic\+Predicate (
+\begin{DoxyParamCaption}
+\item[{}]{predicate}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_aecacec3e63255e9ee8653a73aa4416ce}
+
+
+Definition at line 124 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_af072d9ebdb289310aac8bdfc6d18c45d}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!is\+Not\+Predicate@{is\+Not\+Predicate}}
+\index{is\+Not\+Predicate@{is\+Not\+Predicate}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{is\+Not\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+is\+Not\+Predicate (
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_af072d9ebdb289310aac8bdfc6d18c45d}
+
+
+Definition at line 380 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_a3ca2de4ae7247867c29feb24c8b85f95}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!is\+Predicate@{is\+Predicate}}
+\index{is\+Predicate@{is\+Predicate}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{is\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+is\+Predicate (
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_a3ca2de4ae7247867c29feb24c8b85f95}
+
+
+Definition at line 122 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_a4de4948093b3eb32c6d46109dccca83d}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!is\+Skipped\+Predicate@{is\+Skipped\+Predicate}}
+\index{is\+Skipped\+Predicate@{is\+Skipped\+Predicate}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{is\+Skipped\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+is\+Skipped\+Predicate (
+\begin{DoxyParamCaption}
+\item[{}]{predicate}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_a4de4948093b3eb32c6d46109dccca83d}
+
+
+Definition at line 126 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_ab07ea7707a24b1b7c5a0abfeab45c62d}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!main@{main}}
+\index{main@{main}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+main (
+\begin{DoxyParamCaption}
+\item[{}]{files}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_ab07ea7707a24b1b7c5a0abfeab45c62d}
+
+
+Definition at line 517 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_ad9ad528058d7d4a987217e34962fafa1}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!make\+Almost\+Fire\+Explanations@{make\+Almost\+Fire\+Explanations}}
+\index{make\+Almost\+Fire\+Explanations@{make\+Almost\+Fire\+Explanations}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{make\+Almost\+Fire\+Explanations}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+make\+Almost\+Fire\+Explanations (
+\begin{DoxyParamCaption}
+\item[{}]{pred\+\_\+key, }
+\item[{}]{model\+\_\+mgr}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_ad9ad528058d7d4a987217e34962fafa1}
+
+
+Definition at line 423 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_aceb0f7d5fe4722c93251a451c0887cf9}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!make\+List\+Of\+Almost\+Fire\+Conditions@{make\+List\+Of\+Almost\+Fire\+Conditions}}
+\index{make\+List\+Of\+Almost\+Fire\+Conditions@{make\+List\+Of\+Almost\+Fire\+Conditions}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{make\+List\+Of\+Almost\+Fire\+Conditions}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+make\+List\+Of\+Almost\+Fire\+Conditions (
+\begin{DoxyParamCaption}
+\item[{}]{list\+\_\+of\+\_\+conditions}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_aceb0f7d5fe4722c93251a451c0887cf9}
+
+
+Definition at line 499 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_a7a90d19505230cd0706029001284f6a6}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!make\+Sanitized\+File@{make\+Sanitized\+File}}
+\index{make\+Sanitized\+File@{make\+Sanitized\+File}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{make\+Sanitized\+File}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+make\+Sanitized\+File (
+\begin{DoxyParamCaption}
+\item[{}]{file\+\_\+name}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_a7a90d19505230cd0706029001284f6a6}
+\begin{DoxyVerb}remove comments. Save to new file\end{DoxyVerb}
+ 
+
+Definition at line 66 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_a003f30bfe39fe27dc9b5c95310ac37ab}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!parse\+Files@{parse\+Files}}
+\index{parse\+Files@{parse\+Files}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{parse\+Files}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+parse\+Files (
+\begin{DoxyParamCaption}
+\item[{}]{file\+\_\+list}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_a003f30bfe39fe27dc9b5c95310ac37ab}
+
+
+Definition at line 86 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_acbb78e911fb2dff47a068c333495b85d}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!parse\+Rules@{parse\+Rules}}
+\index{parse\+Rules@{parse\+Rules}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{parse\+Rules}]{\setlength{\rightskip}{0pt plus 5cm}def explanation\+\_\+extractor.\+parse\+Rules (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespaceexplanation__extractor_acbb78e911fb2dff47a068c333495b85d}
+\begin{DoxyVerb}parse rules file and initialize an explanation manager for the parsed rules\end{DoxyVerb}
+ 
+
+Definition at line 107 of file explanation\+\_\+extractor.\+py.
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{namespaceexplanation__extractor_a4df375151186067de08268d91ffe50f9}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!files\+\_\+to\+\_\+parse@{files\+\_\+to\+\_\+parse}}
+\index{files\+\_\+to\+\_\+parse@{files\+\_\+to\+\_\+parse}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{files\+\_\+to\+\_\+parse}]{\setlength{\rightskip}{0pt plus 5cm}list explanation\+\_\+extractor.\+files\+\_\+to\+\_\+parse = \mbox{[}\textquotesingle{}rules.\+lp\textquotesingle{}\mbox{]}}\label{namespaceexplanation__extractor_a4df375151186067de08268d91ffe50f9}
+
+
+Definition at line 522 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_a4e9dc7c262525efa41529de247ccb96a}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!heuristic\+\_\+to\+\_\+strategy@{heuristic\+\_\+to\+\_\+strategy}}
+\index{heuristic\+\_\+to\+\_\+strategy@{heuristic\+\_\+to\+\_\+strategy}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{heuristic\+\_\+to\+\_\+strategy}]{\setlength{\rightskip}{0pt plus 5cm}dictionary explanation\+\_\+extractor.\+heuristic\+\_\+to\+\_\+strategy}\label{namespaceexplanation__extractor_a4e9dc7c262525efa41529de247ccb96a}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+1 = \{
+2 \textcolor{stringliteral}{'thisFractionCanBeSimplifiedToOne'}: \textcolor{stringliteral}{'cancel'},
+3 \textcolor{stringliteral}{'weCanSimplifyByPerformingFractionMultiplicationOnTheseTwoTerms'}: \textcolor{stringliteral}{'combine'},
+4 \textcolor{stringliteral}{'weCanSimplifyByMultiplyingByTheInverseOfThisFractionInstead'}: \textcolor{stringliteral}{'rearrange'},
+5 \textcolor{stringliteral}{'soTheNumeratorOfThisFractionMustBeEqualToZero'}: \textcolor{stringliteral}{'cancel'},
+6 \textcolor{stringliteral}{'weCanSimplifyByAddingTheseTwoTermsTogether'}: \textcolor{stringliteral}{'combine'},
+7 \textcolor{stringliteral}{'weCanSimplifyByCombiningTheseIntoASingleTerm'}: \textcolor{stringliteral}{'combine'},
+8 \textcolor{stringliteral}{'weCanSimplifyByCancellingThisTermInTheNumeratorAndTheDenominator'}: \textcolor{stringliteral}{'cancel'},
+9 \textcolor{stringliteral}{'weCanSimplifyByFactoringThisExpression'}: \textcolor{stringliteral}{'expand'},
+10 \textcolor{stringliteral}{'weCanSimplifyByCombiningTheseTwoFractionsIntoASingleFraction'}: \textcolor{stringliteral}{'combine'},
+11 \textcolor{stringliteral}{'weCanSimplifyByDistributingTheSingleFactor'}: \textcolor{stringliteral}{'expand'},
+12 \textcolor{stringliteral}{'weCanSimplifyByCancellingTheDenominatorOfThisFraction'}: \textcolor{stringliteral}{'cancel'},
+13 \textcolor{stringliteral}{'weCanSimplifyByCancellingTheZero'}: \textcolor{stringliteral}{'cancel'},
+14 \textcolor{stringliteral}{'weCanSimplifyBySubstitutingTheFactorsOfTheTerm'}: \textcolor{stringliteral}{'expand'},
+15 \textcolor{stringliteral}{'weCanSimplifyByFactoringOutAFACTORA'}: \textcolor{stringliteral}{'expand'},
+16 \textcolor{stringliteral}{'theProductOfTheseTermsIsZero'}: \textcolor{stringliteral}{'combine'},
+17 \textcolor{stringliteral}{'weCanSimplifyByCancellingTheOne'}: \textcolor{stringliteral}{'combine'},
+18 \textcolor{stringliteral}{'weCanSimplifyByMultiplyingTheNumeratorAndDenominatorByTERM'}: \textcolor{stringliteral}{'expand'},
+19 \textcolor{stringliteral}{'weCanSimplifyByCancellingTheseTerms'}: \textcolor{stringliteral}{'cancel'},
+20 \textcolor{stringliteral}{'weCanSimplifyBySubtractingTheTermFromBothSides'}: \textcolor{stringliteral}{'move'},
+21 \textcolor{stringliteral}{'weCanSimplifyBySubtractingTheVariableTermFromBothSides'}: \textcolor{stringliteral}{'move'},
+22 \textcolor{stringliteral}{'weCanSimplifyBySubtractingTheNonZeroTermFromBothSides'}: \textcolor{stringliteral}{'move'},
+23 \textcolor{stringliteral}{'weCanSimplifyByMultiplyingBothSidesOfTheEquationByThisDenominator'}: \textcolor{stringliteral}{'expand'},
+24 \textcolor{stringliteral}{'weCanDivideBothSidesByTheCoefficientOfTheLeftSide'}: \textcolor{stringliteral}{'rearrange'},
+25 \textcolor{stringliteral}{'weCanSimplifyBySubstitutingYForFACTORA'}: \textcolor{stringliteral}{'expand'},
+26 \textcolor{stringliteral}{'weCanSimplifyByMultiplyingTheNumeratorByTheTerm'}: \textcolor{stringliteral}{'combine'}
+27 \}
+\end{DoxyCode}
+
+
+Definition at line 22 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_a4f4d79f4f4c8925bd6353200232eb735}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!list\+\_\+of\+\_\+heuristics@{list\+\_\+of\+\_\+heuristics}}
+\index{list\+\_\+of\+\_\+heuristics@{list\+\_\+of\+\_\+heuristics}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{list\+\_\+of\+\_\+heuristics}]{\setlength{\rightskip}{0pt plus 5cm}tuple explanation\+\_\+extractor.\+list\+\_\+of\+\_\+heuristics = heuristic\+\_\+to\+\_\+strategy.\+keys()}\label{namespaceexplanation__extractor_a4f4d79f4f4c8925bd6353200232eb735}
+
+
+Definition at line 54 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_ac32b3e381284882ab71367fde9f5c646}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!strategy\+\_\+to\+\_\+heuristic@{strategy\+\_\+to\+\_\+heuristic}}
+\index{strategy\+\_\+to\+\_\+heuristic@{strategy\+\_\+to\+\_\+heuristic}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{strategy\+\_\+to\+\_\+heuristic}]{\setlength{\rightskip}{0pt plus 5cm}tuple explanation\+\_\+extractor.\+strategy\+\_\+to\+\_\+heuristic = defaultdict(list)}\label{namespaceexplanation__extractor_ac32b3e381284882ab71367fde9f5c646}
+
+
+Definition at line 51 of file explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespaceexplanation__extractor_add16cd790071f284854455eddfa329a1}{}\index{explanation\+\_\+extractor@{explanation\+\_\+extractor}!T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+M\+A\+N\+A\+G\+E\+R@{T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+M\+A\+N\+A\+G\+E\+R}}
+\index{T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+M\+A\+N\+A\+G\+E\+R@{T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+M\+A\+N\+A\+G\+E\+R}!explanation\+\_\+extractor@{explanation\+\_\+extractor}}
+\subsubsection[{T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+M\+A\+N\+A\+G\+E\+R}]{\setlength{\rightskip}{0pt plus 5cm}explanation\+\_\+extractor.\+T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+M\+A\+N\+A\+G\+E\+R = None}\label{namespaceexplanation__extractor_add16cd790071f284854455eddfa329a1}
+
+
+Definition at line 57 of file explanation\+\_\+extractor.\+py.
+

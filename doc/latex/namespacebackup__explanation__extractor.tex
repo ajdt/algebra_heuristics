@@ -1,0 +1,173 @@
+\hypertarget{namespacebackup__explanation__extractor}{}\section{backup\+\_\+explanation\+\_\+extractor Namespace Reference}
+\label{namespacebackup__explanation__extractor}\index{backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classbackup__explanation__extractor_1_1_explanation_manager}{Explanation\+Manager}
+\item 
+class \hyperlink{classbackup__explanation__extractor_1_1_explanation_template}{Explanation\+Template}
+\item 
+class \hyperlink{classbackup__explanation__extractor_1_1_template_sentence}{Template\+Sentence}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{namespacebackup__explanation__extractor_ae51b01d8c3e5086d2b19beb5b987150f}{make\+Sanitized\+File} (file\+\_\+name)
+\begin{DoxyCompactList}\small\item\em H\+E\+L\+P\+E\+R F\+U\+N\+C\+T\+I\+O\+N\+S \#\#\#. \end{DoxyCompactList}\item 
+def \hyperlink{namespacebackup__explanation__extractor_aa761046202ff522175b70f61fa55e7fa}{get\+Rules\+List\+From\+File} (file\+\_\+name)
+\item 
+def \hyperlink{namespacebackup__explanation__extractor_af766f7564352e867a33c729257abf58c}{parse\+Files} (file\+\_\+list)
+\item 
+def \hyperlink{namespacebackup__explanation__extractor_a27ba333fe108951d398839d9f09bc131}{parse\+Rules} ()
+\item 
+def \hyperlink{namespacebackup__explanation__extractor_a00f143c652b1f1c8028e660aa492cbaa}{convert\+From\+Camel\+Case} (name)
+\begin{DoxyCompactList}\small\item\em convert predicate name from camelcase to proper explanation \end{DoxyCompactList}\item 
+def \hyperlink{namespacebackup__explanation__extractor_a63235fa6432ae68c4af6d2f599af3ae2}{is\+Predicate} (condition)
+\item 
+def \hyperlink{namespacebackup__explanation__extractor_ab6dd6b5063f67001af246bfbbf8f75a4}{is\+Heuristic\+Predicate} (predicate)
+\item 
+def \hyperlink{namespacebackup__explanation__extractor_ac67d352bf37181e6a01ebf534a128d38}{is\+Skipped\+Predicate} (predicate)
+\item 
+def \hyperlink{namespacebackup__explanation__extractor_aaa45b4b2e8470f6a38d6450c11872141}{filter\+Unused\+Conditions} (condition\+\_\+list)
+\item 
+def \hyperlink{namespacebackup__explanation__extractor_ac2eb1ac173ebcad12b7f4463c65578ec}{main} (files)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+list \hyperlink{namespacebackup__explanation__extractor_a8ca3177d62dbe8c44c1b1a8066af71a7}{files\+\_\+to\+\_\+parse} = \mbox{[}\textquotesingle{}rules.\+lp\textquotesingle{}, \textquotesingle{}eqn\+\_\+generator.\+lp\textquotesingle{}, \textquotesingle{}nodes.\+lp\textquotesingle{}, \textquotesingle{}polynomial.\+lp\textquotesingle{}, \textquotesingle{}heuristics.\+lp\textquotesingle{}\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{namespacebackup__explanation__extractor_a00f143c652b1f1c8028e660aa492cbaa}{}\index{backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}!convert\+From\+Camel\+Case@{convert\+From\+Camel\+Case}}
+\index{convert\+From\+Camel\+Case@{convert\+From\+Camel\+Case}!backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}}
+\subsubsection[{convert\+From\+Camel\+Case}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+convert\+From\+Camel\+Case (
+\begin{DoxyParamCaption}
+\item[{}]{name}
+\end{DoxyParamCaption}
+)}\label{namespacebackup__explanation__extractor_a00f143c652b1f1c8028e660aa492cbaa}
+
+
+convert predicate name from camelcase to proper explanation 
+
+\begin{DoxyVerb}Takes a string like 'ILikePuppies' and returns 'i like puppies' \end{DoxyVerb}
+ 
+
+Definition at line 66 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespacebackup__explanation__extractor_aaa45b4b2e8470f6a38d6450c11872141}{}\index{backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}!filter\+Unused\+Conditions@{filter\+Unused\+Conditions}}
+\index{filter\+Unused\+Conditions@{filter\+Unused\+Conditions}!backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}}
+\subsubsection[{filter\+Unused\+Conditions}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+filter\+Unused\+Conditions (
+\begin{DoxyParamCaption}
+\item[{}]{condition\+\_\+list}
+\end{DoxyParamCaption}
+)}\label{namespacebackup__explanation__extractor_aaa45b4b2e8470f6a38d6450c11872141}
+
+
+Definition at line 82 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespacebackup__explanation__extractor_aa761046202ff522175b70f61fa55e7fa}{}\index{backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}!get\+Rules\+List\+From\+File@{get\+Rules\+List\+From\+File}}
+\index{get\+Rules\+List\+From\+File@{get\+Rules\+List\+From\+File}!backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}}
+\subsubsection[{get\+Rules\+List\+From\+File}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+get\+Rules\+List\+From\+File (
+\begin{DoxyParamCaption}
+\item[{}]{file\+\_\+name}
+\end{DoxyParamCaption}
+)}\label{namespacebackup__explanation__extractor_aa761046202ff522175b70f61fa55e7fa}
+
+
+Definition at line 34 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespacebackup__explanation__extractor_ab6dd6b5063f67001af246bfbbf8f75a4}{}\index{backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}!is\+Heuristic\+Predicate@{is\+Heuristic\+Predicate}}
+\index{is\+Heuristic\+Predicate@{is\+Heuristic\+Predicate}!backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}}
+\subsubsection[{is\+Heuristic\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+is\+Heuristic\+Predicate (
+\begin{DoxyParamCaption}
+\item[{}]{predicate}
+\end{DoxyParamCaption}
+)}\label{namespacebackup__explanation__extractor_ab6dd6b5063f67001af246bfbbf8f75a4}
+
+
+Definition at line 78 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespacebackup__explanation__extractor_a63235fa6432ae68c4af6d2f599af3ae2}{}\index{backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}!is\+Predicate@{is\+Predicate}}
+\index{is\+Predicate@{is\+Predicate}!backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}}
+\subsubsection[{is\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+is\+Predicate (
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)}\label{namespacebackup__explanation__extractor_a63235fa6432ae68c4af6d2f599af3ae2}
+
+
+Definition at line 76 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespacebackup__explanation__extractor_ac67d352bf37181e6a01ebf534a128d38}{}\index{backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}!is\+Skipped\+Predicate@{is\+Skipped\+Predicate}}
+\index{is\+Skipped\+Predicate@{is\+Skipped\+Predicate}!backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}}
+\subsubsection[{is\+Skipped\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+is\+Skipped\+Predicate (
+\begin{DoxyParamCaption}
+\item[{}]{predicate}
+\end{DoxyParamCaption}
+)}\label{namespacebackup__explanation__extractor_ac67d352bf37181e6a01ebf534a128d38}
+
+
+Definition at line 80 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespacebackup__explanation__extractor_ac2eb1ac173ebcad12b7f4463c65578ec}{}\index{backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}!main@{main}}
+\index{main@{main}!backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+main (
+\begin{DoxyParamCaption}
+\item[{}]{files}
+\end{DoxyParamCaption}
+)}\label{namespacebackup__explanation__extractor_ac2eb1ac173ebcad12b7f4463c65578ec}
+
+
+Definition at line 320 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespacebackup__explanation__extractor_ae51b01d8c3e5086d2b19beb5b987150f}{}\index{backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}!make\+Sanitized\+File@{make\+Sanitized\+File}}
+\index{make\+Sanitized\+File@{make\+Sanitized\+File}!backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}}
+\subsubsection[{make\+Sanitized\+File}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+make\+Sanitized\+File (
+\begin{DoxyParamCaption}
+\item[{}]{file\+\_\+name}
+\end{DoxyParamCaption}
+)}\label{namespacebackup__explanation__extractor_ae51b01d8c3e5086d2b19beb5b987150f}
+
+
+H\+E\+L\+P\+E\+R F\+U\+N\+C\+T\+I\+O\+N\+S \#\#\#. 
+
+\begin{DoxyVerb}remove comments. Save to new file\end{DoxyVerb}
+ 
+
+Definition at line 20 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespacebackup__explanation__extractor_af766f7564352e867a33c729257abf58c}{}\index{backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}!parse\+Files@{parse\+Files}}
+\index{parse\+Files@{parse\+Files}!backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}}
+\subsubsection[{parse\+Files}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+parse\+Files (
+\begin{DoxyParamCaption}
+\item[{}]{file\+\_\+list}
+\end{DoxyParamCaption}
+)}\label{namespacebackup__explanation__extractor_af766f7564352e867a33c729257abf58c}
+
+
+Definition at line 40 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+\hypertarget{namespacebackup__explanation__extractor_a27ba333fe108951d398839d9f09bc131}{}\index{backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}!parse\+Rules@{parse\+Rules}}
+\index{parse\+Rules@{parse\+Rules}!backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}}
+\subsubsection[{parse\+Rules}]{\setlength{\rightskip}{0pt plus 5cm}def backup\+\_\+explanation\+\_\+extractor.\+parse\+Rules (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespacebackup__explanation__extractor_a27ba333fe108951d398839d9f09bc131}
+\begin{DoxyVerb}parse rules file and initialize an explanation manager for the parsed rules\end{DoxyVerb}
+ 
+
+Definition at line 61 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{namespacebackup__explanation__extractor_a8ca3177d62dbe8c44c1b1a8066af71a7}{}\index{backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}!files\+\_\+to\+\_\+parse@{files\+\_\+to\+\_\+parse}}
+\index{files\+\_\+to\+\_\+parse@{files\+\_\+to\+\_\+parse}!backup\+\_\+explanation\+\_\+extractor@{backup\+\_\+explanation\+\_\+extractor}}
+\subsubsection[{files\+\_\+to\+\_\+parse}]{\setlength{\rightskip}{0pt plus 5cm}list backup\+\_\+explanation\+\_\+extractor.\+files\+\_\+to\+\_\+parse = \mbox{[}\textquotesingle{}rules.\+lp\textquotesingle{}, \textquotesingle{}eqn\+\_\+generator.\+lp\textquotesingle{}, \textquotesingle{}nodes.\+lp\textquotesingle{}, \textquotesingle{}polynomial.\+lp\textquotesingle{}, \textquotesingle{}heuristics.\+lp\textquotesingle{}\mbox{]}}\label{namespacebackup__explanation__extractor_a8ca3177d62dbe8c44c1b1a8066af71a7}
+
+
+Definition at line 323 of file backup\+\_\+explanation\+\_\+extractor.\+py.
+
