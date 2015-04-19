@@ -46,7 +46,7 @@ expression tree.
 
 Installation Dependencies
 =========================
-* Python
+* Python modules
     1. tempfile
     2. antlr4
     3. argparse
@@ -57,6 +57,8 @@ Installation Dependencies
     8. pygraphviz
 * antlr4 
     * version 4.4
+        * see the instructions at (https://theantlrguy.atlassian.net/wiki/display/ANTLR4/Python+Target)
 * clingo 
     * version 4.3
+        * (can be downloaded from: http://potassco.sourceforge.net/)
 
